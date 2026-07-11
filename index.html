@@ -118,7 +118,7 @@ img {
   background-image: url('https://images.unsplash.com/photo-1485236715568-ddc5ee6ca227?q=80&w=2000&auto=format&fit=crop');
   background-size: cover;
   background-position: center;
-  opacity: 0.5;
+  opacity: 0.6;
   mix-blend-mode: screen;
 }
 
@@ -127,7 +127,7 @@ img {
   inset: 0;
   z-index: -2;
   pointer-events: none;
-  background: radial-gradient(ellipse at 50% 100%, rgba(158,8,8,0.1) 0%, rgba(5,7,11,0.85) 60%, rgba(5,7,11,1) 100%);
+  background: radial-gradient(ellipse at 50% 100%, rgba(158,8,8,0.15) 0%, rgba(5,7,11,0.85) 60%, rgba(5,7,11,1) 100%);
 }
 
 .fog-layer {
@@ -135,7 +135,7 @@ img {
   inset: -50%;
   z-index: -1;
   pointer-events: none;
-  opacity: 0.4;
+  opacity: 0.5;
   mix-blend-mode: screen;
   background-image: 
     radial-gradient(circle at 30% 40%, rgba(200, 200, 220, 0.2) 0%, transparent 40%),
@@ -506,7 +506,7 @@ body.admin-active .admin-editable:hover {
   cursor: pointer;
 }
 body.admin-active .admin-editable::after {
-  content: "✏️ Click để sửa";
+  content: "✏️ Click để sửa thông tin Trưởng Ga";
   position: absolute;
   top: 10px;
   right: 10px;
@@ -668,7 +668,7 @@ body.admin-active .admin-only-btn { display: inline-flex; }
 .toggle-switch input:checked + .toggle-slider:before { transform: translateX(20px); }
 .toggle-label { font-size: 12px; color: var(--silver); }
 
-.submit-btn { padding: 12px 24px; border-radius: 999px; background: linear-gradient(90deg, var(--blood), #5e0505); color: var(--pearl); font-weight: 700; font-size: 12px; letter-spacing: 1px; font-family: var(--font-kicker); box-shadow: 0 0 10px rgba(158,8,8,0.5); width: 100%; }
+.submit-btn { padding: 12px 24px; border-radius: 999px; background: linear-gradient(90deg, var(--blood), #5e0505); color: var(--pearl); font-weight: 700; font-size: 12px; letter-spacing: 1px; font-family: var(--font-kicker); box-shadow: 0 0 10px rgba(158,8,8,0.5); width: 100%; cursor: pointer; transition: 0.3s; }
 .submit-btn:hover { filter: brightness(1.2); box-shadow: 0 0 20px rgba(158,8,8,0.8); }
 
 /* Tải Ảnh Trực Tiếp Thay Vì Link */
@@ -794,6 +794,10 @@ body.admin-active .admin-add-music-btn { display: flex; }
 .close-btn { color: var(--silver); font-size: 24px; }
 .close-btn:hover { color: var(--blood-soft); }
 
+/* Bổ sung cuộn cho modal nếu cần thiết */
+.modal-box::-webkit-scrollbar { width: 6px; }
+.modal-box::-webkit-scrollbar-thumb { background: var(--blood-soft); border-radius: 4px; }
+
 @media (max-width: 520px) {
   .nav-item, .nav-home { padding: 8px 10px; font-size: 10px; }
   .nav-tooltip { display: none; }
@@ -907,7 +911,7 @@ body.admin-active .admin-add-music-btn { display: flex; }
     <div class="section-view hidden" id="view-recruitment">
       <h2 class="embossed-title" style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center;">
         HỒ SƠ DỰ BỊ
-        <button class="admin-only-btn" style="margin-bottom:0;" onclick="openAdminForm('upcoming')">➕ Thêm Hồ Sơ</button>
+        <button class="admin-only-btn" style="margin-bottom:0;" onclick="openAdminForm('upcoming')">➕ Thêm Hồ Sơ Dự Bị</button>
       </h2>
       <div class="staff-grid" id="upcomingBotsGrid" style="margin-bottom: 40px;"></div>
 
@@ -951,20 +955,20 @@ body.admin-active .admin-add-music-btn { display: flex; }
   <!-- Trung Khúc -->
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
     <div style="font-size:12px; color:#c99339;">Trung Khúc</div>
-    <button class="admin-add-music-btn" onclick="openAdminForm('playlist', 'trung')">+</button>
+    <button class="admin-add-music-btn" title="Thêm Playlist Trung Khúc" onclick="openAdminForm('playlist', 'trung')">+</button>
   </div>
   <select class="gramo-select-box" id="plTrungSelect"><option value="">-- Chọn Playlist Trung Khúc --</option></select>
 
   <!-- Việt Khúc -->
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
     <div style="font-size:12px; color:#c99339;">Việt Khúc</div>
-    <button class="admin-add-music-btn" onclick="openAdminForm('playlist', 'viet')">+</button>
+    <button class="admin-add-music-btn" title="Thêm Playlist Việt Khúc" onclick="openAdminForm('playlist', 'viet')">+</button>
   </div>
   <select class="gramo-select-box" id="plVietSelect"><option value="">-- Chọn Playlist Việt Khúc --</option></select>
   
   <div style="display:flex; justify-content:space-between; margin-bottom:8px; align-items:center;">
-    <span style="font-size:12px; color:#a67c33;">Danh sách bài hát</span>
-    <button class="admin-add-music-btn" onclick="openAdminForm('song')">+</button>
+    <span style="font-size:12px; color:#a67c33;" id="gramoTitle">Danh sách bài hát</span>
+    <button class="admin-add-music-btn" title="Thêm Bài Hát Mới" onclick="openAdminForm('song')">+</button>
   </div>
   <div class="gramo-song-list" id="gramoSongList"></div>
 
@@ -1141,8 +1145,7 @@ document.querySelectorAll(".nav-item").forEach(btn => {
    CƠ CHẾ ADMIN TRỰC TIẾP (IN-PLACE EDITING) & DB
    ============================================================ */
 function checkAdminLogin() {
-  const urlParams = new URLSearchParams(window.location.search);
-  if(urlParams.get('admin') === 'true' && !isAdminMode) {
+  if(window.location.href.includes('admin=true') && !isAdminMode) {
     let pwd = prompt("LỐI VÀO ẨN: Vui lòng nhập mật mã bảo mật của Trưởng Ga:");
     if(pwd === ADMIN_PASSWORD) {
       isAdminMode = true;
@@ -1156,7 +1159,7 @@ function checkAdminLogin() {
       document.getElementById("gbNameWrap").innerHTML = `<div style="color:var(--amber); font-weight:bold; margin-bottom:10px;">${adminAvatarHtml} Trưởng ga Meown ${VERIFIED_TICK}</div>`;
       document.getElementById("rcNameWrap").innerHTML = `<div style="color:var(--amber); font-weight:bold; margin-bottom:10px;">${adminAvatarHtml} Trưởng ga Meown ${VERIFIED_TICK}</div>`;
       
-      alert("Đã cấp quyền Trưởng Ga. Bạn có thể bấm trực tiếp vào Bảng Trưởng Ga để sửa, hoặc sử dụng các nút thêm ở các mục khác.");
+      alert("Đã cấp quyền Trưởng Ga. Hệ thống đã mở giao diện chỉnh sửa trực tiếp.");
     } else { alert("Sai mật mã."); }
   }
 }
@@ -1184,7 +1187,6 @@ async function saveStationConfigToDB() {
 }
 
 function updateStationMasterUI() {
-  // Ảnh trang 1 không dùng ảnh mèo nếu bạn đã tự thêm ảnh khác
   document.getElementById("landingAvatar").src = CONFIG.landingAvatar || "";
   document.getElementById("smAvatar").src = CONFIG.stationMaster.avatar || "";
   document.getElementById("smBio").textContent = CONFIG.stationMaster.bio;
@@ -1207,7 +1209,7 @@ function openAdminForm(type, extraArg) {
     document.getElementById("generalModalTitle").textContent = "CẬP NHẬT TRƯỞNG GA";
     body.innerHTML = `
       <div class="form-row"><label>Ảnh Avatar Trưởng Ga</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aAvtFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Tải ảnh</label><div id="aAvtPrev" class="img-preview-grid"></div></div></div>
-      <div class="form-row"><label>Tiểu sử</label><textarea id="aBio">${CONFIG.stationMaster.bio}</textarea></div>
+      <div class="form-row"><label>Tiểu sử</label><textarea id="aBio" style="height: 100px;">${CONFIG.stationMaster.bio}</textarea></div>
       <div class="form-row"><label>Tên Facebook</label><input type="text" id="aFbName" value="${CONFIG.stationMaster.facebook.name||''}"></div>
       <div class="form-row"><label>Link Facebook</label><input type="text" id="aFbUrl" value="${CONFIG.stationMaster.facebook.url||''}"></div>
       <div class="form-row"><label>Lời chào FB</label><input type="text" id="aFbDesc" value="${CONFIG.stationMaster.facebook.desc||''}"></div>
@@ -1255,14 +1257,24 @@ function openAdminForm(type, extraArg) {
   else if(type === 'upcoming') {
     document.getElementById("generalModalTitle").textContent = "THÊM HỒ SƠ DỰ BỊ";
     body.innerHTML = `
-      <div class="form-row"><label>Tên</label><input type="text" id="aUpName"></div>
-      <div class="form-row"><label>Avatar</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aUpFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Tải ảnh</label><div id="aUpPrev" class="img-preview-grid"></div></div></div>
-      <div class="form-row"><label>Giới thiệu / Tuyến tàu dự kiến</label><textarea id="aUpDesc"></textarea></div>
+      <div class="form-row"><label>Tên Bot (Dự kiến)</label><input type="text" id="aUpName"></div>
+      <div class="form-row"><label>Ảnh Minh Họa</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aUpFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Tải ảnh</label><div id="aUpPrev" class="img-preview-grid"></div></div></div>
+      <div class="form-row"><label>Ý Tưởng Nhân Vật</label><textarea id="aUpIdea" style="height: 80px;" placeholder="Mô tả ý tưởng, tính cách..."></textarea></div>
+      <div class="form-row"><label>Tuyến Tàu Dự Kiến</label><input type="text" id="aUpTrain" placeholder="Ví dụ: Tàu Lãng Mạn"></div>
+      <div class="form-row"><label>Tags Thể Loại (cách nhau dấu phẩy)</label><input type="text" id="aUpTags" placeholder="Ví dụ: #ngontinh, #xuyenkhong"></div>
       <button class="submit-btn" id="saveUp">THÊM HỒ SƠ</button>
     `;
     loadIcons(); let uB64 = ""; document.getElementById("aUpFile").addEventListener("change", async (e)=>{ uB64 = await resizeImage(e.target.files[0]); document.getElementById("aUpPrev").innerHTML=`<img src="${uB64}">`; });
     document.getElementById("saveUp").addEventListener("click", () => {
-      CONFIG.upcomingBots.push({ id: "u_"+Date.now(), name: document.getElementById("aUpName").value, avatar: uB64, desc: document.getElementById("aUpDesc").value });
+      const tagsArray = document.getElementById("aUpTags").value.split(',').map(t=>t.trim()).filter(t=>t);
+      CONFIG.upcomingBots.push({ 
+        id: "u_"+Date.now(), 
+        name: document.getElementById("aUpName").value, 
+        avatar: uB64, 
+        idea: document.getElementById("aUpIdea").value,
+        train: document.getElementById("aUpTrain").value,
+        tags: tagsArray
+      });
       saveStationConfigToDB(); renderUpcomingBots(); document.getElementById("generalModal").classList.add("hidden");
     });
   }
@@ -1278,11 +1290,46 @@ function openAdminForm(type, extraArg) {
   }
   else if(type === 'song') {
     if(!activeMusicPl) return alert("Vui lòng chọn 1 Playlist ở màn hình Máy Hát trước!");
-    document.getElementById("generalModalTitle").textContent = "THÊM BÀI HÁT";
-    body.innerHTML = `<div class="form-row"><label>Tên bài hát</label><input type="text" id="aSgName"></div><div class="form-row"><label>Link Audio (mp3, m4a...)</label><input type="text" id="aSgUrl"></div><button class="submit-btn" id="saveSg">THÊM BÀI</button>`;
+    document.getElementById("generalModalTitle").textContent = "THÊM BÀI HÁT VÀO PLAYLIST ĐANG CHỌN";
+    
+    // Giao diện cho phép tạo nhiều bài hát cùng lúc
+    body.innerHTML = `
+      <div id="songsContainer">
+        <div class="form-row song-row" style="display:flex; gap:10px; margin-bottom: 12px; align-items:center;">
+          <input type="text" class="sgName" placeholder="Tên bài hát..." style="flex:1;">
+          <input type="text" class="sgUrl" placeholder="Link audio (mp3, url...)" style="flex:2;">
+        </div>
+      </div>
+      <div style="display:flex; justify-content:space-between; margin-top:20px; gap:10px;">
+        <button class="admin-only-btn" id="addMoreRow" style="margin-bottom:0; flex:1; justify-content:center; background:rgba(158,8,8,0.3); color:var(--amber);">➕ Thêm dòng mới</button>
+        <button class="submit-btn" id="saveSg" style="flex:2;">LƯU TẤT CẢ VÀO PLAYLIST</button>
+      </div>
+    `;
+    
+    document.getElementById("addMoreRow").addEventListener("click", () => {
+      const row = document.createElement("div"); row.className = "form-row song-row"; row.style.cssText = "display:flex; gap:10px; margin-bottom: 12px; align-items:center;";
+      row.innerHTML = `<input type="text" class="sgName" placeholder="Tên bài hát..." style="flex:1;"><input type="text" class="sgUrl" placeholder="Link audio (mp3, url...)" style="flex:2;">`;
+      document.getElementById("songsContainer").appendChild(row);
+    });
+
     document.getElementById("saveSg").addEventListener("click", () => {
       let found = false;
-      CONFIG.musicLibrary.forEach(c => c.playlists.forEach(p => { if(p.id === activeMusicPl) { p.songs.push({ title: document.getElementById("aSgName").value, src: document.getElementById("aSgUrl").value }); found = true; } }));
+      const rows = document.querySelectorAll(".song-row");
+      const newSongs = [];
+      rows.forEach(r => {
+        const title = r.querySelector(".sgName").value.trim();
+        const url = r.querySelector(".sgUrl").value.trim();
+        if(title && url) newSongs.push({ title: title, src: url });
+      });
+
+      if(newSongs.length === 0) return alert("Chưa nhập đủ thông tin cho bài hát nào!");
+
+      CONFIG.musicLibrary.forEach(c => c.playlists.forEach(p => { 
+        if(p.id === activeMusicPl) { 
+          p.songs.push(...newSongs); 
+          found = true; 
+        } 
+      }));
       if(found) { saveStationConfigToDB(); renderGramoSongs(activeMusicPl); document.getElementById("generalModal").classList.add("hidden"); }
     });
   }
@@ -1393,7 +1440,16 @@ function renderUpcomingBots() {
   if(CONFIG.upcomingBots.length === 0) { grid.innerHTML = "<p style='color:var(--silver); font-style:italic;'>Hiện chưa có hồ sơ dự bị nào.</p>"; return; }
   CONFIG.upcomingBots.forEach(bot => {
     const card = document.createElement("div"); card.className = "staff-card";
-    card.innerHTML = `<img class="staff-avatar" src="${bot.avatar}" onerror="this.style.opacity=0"><div class="staff-name">${bot.name}</div><div class="staff-hook" style="margin-bottom:0;">${bot.desc}</div>`;
+    
+    let tagHTML = (bot.tags||[]).map(t => `<span class="staff-tag">${t.trim().startsWith('#')?t.trim():'#'+t.trim()}</span>`).join('');
+    
+    card.innerHTML = `
+      <img class="staff-avatar" src="${bot.avatar}" onerror="this.style.opacity=0">
+      <div class="staff-name">${bot.name}</div>
+      <div class="staff-hook" style="margin-bottom:6px;"><strong>Tuyến dự kiến:</strong> <span style="color:var(--amber);">${bot.train || 'Chưa định'}</span></div>
+      <div class="staff-hook" style="font-size:12px; margin-bottom:10px;">${bot.idea || bot.desc || ''}</div>
+      <div class="staff-tags">${tagHTML}</div>
+    `;
     grid.appendChild(card);
   });
 }
@@ -1444,7 +1500,7 @@ function renderFeed(type, sortOption) {
       imagesHtml = `<div class="post-image-grid ${gridClass}">${post.image_urls.map(url => `<img class="post-image" src="${url}" onerror="this.style.display='none'">`).join('')}</div>`;
     }
 
-    let aInfo = post.author === "Trưởng ga Meown" ? `<img src="${ADMIN_CAT_AVATAR}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;border:1px solid var(--amber);"> Trưởng ga Meown ${VERIFIED_TICK}` : post.author;
+    let aInfo = post.author === "Trưởng ga Meown" ? `<img src="${ADMIN_CAT_AVATAR}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;border:1px solid var(--amber);display:inline-block;vertical-align:middle;"> <span style="vertical-align:middle;margin-left:4px;">Trưởng ga Meown</span> ${VERIFIED_TICK}` : post.author;
     postEl.innerHTML = `<div class="post-header"><div class="post-author">${aInfo}</div><div class="post-time">${post.date}</div></div><div class="post-content">${post.content}</div>${imagesHtml}`;
 
     if(!post.reactions) post.reactions = {}; if(!post.comments) post.comments = [];
@@ -1473,7 +1529,7 @@ function renderFeed(type, sortOption) {
         const cItem = document.createElement("div"); cItem.className = "comment-item";
         if(!c.reactions) c.reactions = {};
         let cmtReactsHTML = ""; Object.keys(EMOJIS).forEach(k => { const cCount = c.reactions[k] || 0; if(cCount > 0) cmtReactsHTML += `<span style="font-size:11px;">${EMOJIS[k]}${cCount}</span> `; });
-        let aTag = c.isAdmin ? `<img src="${ADMIN_CAT_AVATAR}" style="width:16px;height:16px;border-radius:50%;vertical-align:middle;border:1px solid var(--amber);"> Trưởng ga Meown ${VERIFIED_TICK}` : c.author;
+        let aTag = c.isAdmin ? `<img src="${ADMIN_CAT_AVATAR}" style="width:18px;height:18px;border-radius:50%;vertical-align:middle;border:1px solid var(--amber);"> <span style="vertical-align:middle;">Trưởng ga Meown</span> ${VERIFIED_TICK}` : c.author;
         cItem.innerHTML = `<div class="comment-author">${aTag}</div><div class="comment-text">${c.content}</div><div class="comment-time">${c.date} ${cmtReactsHTML}</div><div class="cmt-react-bar"></div>`;
         
         const cmtReactBar = cItem.querySelector(".cmt-react-bar"); const cmtReactKey = `react_${type}_cmt_${post.id}_${idx}`; const cUserReact = localStorage.getItem(cmtReactKey);
@@ -1490,7 +1546,7 @@ function renderFeed(type, sortOption) {
       const inputArea = document.createElement("div"); inputArea.className = "comment-input-area";
       if(isAdminMode) {
         // Form nhập cho Admin có Tick Xanh
-        inputArea.innerHTML = `<div style="color:var(--amber); font-weight:bold; display:flex; align-items:center; gap:6px;"><img src="${ADMIN_CAT_AVATAR}" style="width:20px;height:20px;border-radius:50%;border:1px solid var(--amber);"> Trưởng ga Meown ${VERIFIED_TICK}</div><textarea placeholder="Viết bình luận..."></textarea><button class="submit-btn" style="width:auto; padding:8px 16px;">GỬI</button>`;
+        inputArea.innerHTML = `<div style="color:var(--amber); font-weight:bold; display:flex; align-items:center; gap:6px;"><img src="${ADMIN_CAT_AVATAR}" style="width:20px;height:20px;border-radius:50%;border:1px solid var(--amber);"> Trưởng ga Meown ${VERIFIED_TICK}</div><textarea placeholder="Viết bình luận..."></textarea><button class="submit-btn" style="width:auto; padding:8px 16px;">GỬI BÌNH LUẬN</button>`;
         inputArea.querySelector(".submit-btn").addEventListener("click", () => {
           const cContentInput = inputArea.querySelector("textarea"); if(!cContentInput.value) return;
           post.comments.push({ author: "Trưởng ga Meown", content: cContentInput.value, date: new Date().toLocaleString('vi-VN'), isAdmin: true, reactions: {} });
@@ -1535,15 +1591,25 @@ document.getElementById("recruitForm").addEventListener("submit", (e) => {
 /* ============================================================
    MÁY HÁT GRAMOPHONE CHUẨN GIAO DIỆN (Trung Khúc/Việt Khúc)
    ============================================================ */
-const audio = document.getElementById("gramoAudio"), playBtn = document.getElementById("gramoPlay"), vinyl = document.getElementById("gramoVinyl"), gramoToggle = document.getElementById("gramoToggle");
+const audio = document.getElementById("gramoAudio"), playBtn = document.getElementById("gramoPlay"), vinyl = document.getElementById("gramoToggle"), gramoToggle = document.getElementById("gramoToggle");
 let isPlaying = false, isLoop = false, isShuffle = false; let curQueue = [], curIndex = 0;
 
 document.getElementById("gramoLoopBtn").addEventListener("click", function(){ isLoop = !isLoop; this.classList.toggle("active", isLoop); });
 document.getElementById("gramoShuffleBtn").addEventListener("click", function(){ isShuffle = !isShuffle; this.classList.toggle("active", isShuffle); });
 
 playBtn.addEventListener("click", () => { if(!audio.src) return; isPlaying ? audio.pause() : audio.play(); });
-audio.addEventListener("play", () => { isPlaying = true; playBtn.innerHTML = icon("pause"); vinyl.classList.remove("paused"); gramoToggle.classList.remove("paused"); });
-audio.addEventListener("pause", () => { isPlaying = false; playBtn.innerHTML = icon("play"); vinyl.classList.add("paused"); gramoToggle.classList.add("paused"); });
+audio.addEventListener("play", () => { 
+  isPlaying = true; 
+  playBtn.innerHTML = '<span class="icon-slot" data-icon="pause"></span>'; 
+  loadIcons();
+  vinyl.classList.remove("paused"); 
+});
+audio.addEventListener("pause", () => { 
+  isPlaying = false; 
+  playBtn.innerHTML = '<span class="icon-slot" data-icon="play"></span>'; 
+  loadIcons();
+  vinyl.classList.add("paused"); 
+});
 audio.addEventListener("ended", () => { if(isLoop){ audio.currentTime = 0; audio.play(); } else { document.getElementById("gramoNext").click(); } });
 
 function loadSong(index){
