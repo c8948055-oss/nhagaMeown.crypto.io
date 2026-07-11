@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nhà Ga Meown</title>
 <!-- Favicon hình chú mèo Trưởng Ga -->
-<link rel="icon" href="./ChatGPT_Image_02_56_58_7_thg_7__2026-removebg-preview-removebg-preview.png">
+<link rel="icon" href="./ChatGPT_Image_02_56_58_7_thg_7__2026-removebg-preview-removebg-preview.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
@@ -49,31 +49,35 @@ img{max-width:100%; display:block;}
 .hidden{display:none !important;}
 
 /* ============================================================
-   REAL FOG BACKGROUND & EFFECTS
+   BACKGROUND SƯƠNG MÙ CHÂN THỰC & ĐA TẦNG
    ============================================================ */
 .real-fog-bg {
   position: fixed; inset: 0; z-index: -2; pointer-events: none;
-  background-image: url('https://images.unsplash.com/photo-1485236715568-ddc5ee6ca227?q=80&w=2000&auto=format&fit=crop');
-  background-size: cover; background-position: center; opacity: 0.35; mix-blend-mode: screen;
+  background: 
+    radial-gradient(ellipse at top left, rgba(120, 130, 150, 0.15), transparent 60%),
+    radial-gradient(ellipse at bottom right, rgba(150, 160, 180, 0.1), transparent 60%),
+    radial-gradient(circle at 50% 50%, rgba(10, 15, 29, 0.9), var(--bg-abyss) 100%);
+  background-size: cover;
 }
-.dark-overlay {
-  position: fixed; inset: 0; z-index: -1; pointer-events: none;
-  background: radial-gradient(ellipse at 50% 100%, rgba(158,8,8,0.2) 0%, rgba(5,7,11,0.85) 60%, rgba(5,7,11,1) 100%);
+.fog-layer {
+  position: fixed; inset: -50%; z-index: -1; pointer-events: none; opacity: 0.35; mix-blend-mode: screen;
+  background-image: 
+    radial-gradient(circle at 30% 40%, rgba(200, 200, 220, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 70% 60%, rgba(200, 200, 220, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(200, 200, 220, 0.2) 0%, transparent 45%);
+  filter: blur(40px); animation: heavyFog 40s infinite alternate linear;
 }
+.fog-layer-2 {
+  position: fixed; inset: -50%; z-index: -1; pointer-events: none; opacity: 0.25; mix-blend-mode: screen;
+  background-image: 
+    radial-gradient(circle at 60% 30%, rgba(220, 220, 240, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 20% 70%, rgba(220, 220, 240, 0.2) 0%, transparent 55%);
+  filter: blur(60px); animation: heavyFog2 50s infinite alternate-reverse linear;
+}
+@keyframes heavyFog { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(5%, 5%) scale(1.1); } 100% { transform: translate(-5%, -5%) scale(1); } }
+@keyframes heavyFog2 { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-5%, 8%) scale(1.15); } 100% { transform: translate(5%, -8%) scale(1); } }
 
-#page1{ position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; padding:40px 20px; transition:opacity 0.9s ease, filter 0.9s ease; z-index: 1; }
-#page1.leaving{opacity:0; filter:blur(12px);}
-
-.fog{ position:absolute; border-radius:50%; filter:blur(50px); opacity:0.3; pointer-events:none; background:radial-gradient(circle, rgba(120,130,150,0.5) 0%, rgba(120,130,150,0) 70%); z-index: 0; mix-blend-mode: screen; }
-.fog-tl{width:65vw; height:65vw; top:-25vw; left:-25vw; animation:driftTL 26s ease-in-out infinite;}
-.fog-tr{width:60vw; height:60vw; top:-20vw; right:-20vw; animation:driftTR 32s ease-in-out infinite;}
-.fog-bl{width:60vw; height:60vw; bottom:-20vw; left:-20vw; animation:driftBL 30s ease-in-out infinite;}
-.fog-br{width:65vw; height:65vw; bottom:-25vw; right:-25vw; animation:driftBR 28s ease-in-out infinite;}
-@keyframes driftTL{0%,100%{transform:translate(0,0);}50%{transform:translate(35px,25px);}}
-@keyframes driftTR{0%,100%{transform:translate(0,0);}50%{transform:translate(-30px,30px);}}
-@keyframes driftBL{0%,100%{transform:translate(0,0);}50%{transform:translate(30px,-25px);}}
-@keyframes driftBR{0%,100%{transform:translate(0,0);}50%{transform:translate(-35px,-30px);}}
-
+/* Ánh đèn pha tàu & hào quang máu */
 .blood-glow{ position:absolute; border-radius:50%; pointer-events:none; background:radial-gradient(circle, var(--blood-glow) 0%, rgba(158,8,8,0) 70%); filter:blur(25px); animation:bloodPulse 8s ease-in-out infinite; z-index: 0; }
 .blood-glow.b1{width:300px; height:300px; bottom:-10%; left:20%; animation-delay:0s;}
 .blood-glow.b2{width:250px; height:250px; top:10%; right:15%; animation-delay:4s;}
@@ -84,7 +88,12 @@ img{max-width:100%; display:block;}
 @keyframes pulseGlow{0%,100%{opacity:0.1; transform:scale(0.8);}50%{opacity:0.8; transform:scale(1.3);}}
 @keyframes flicker{0%,100%,6%,41%,45%{filter:blur(8px) brightness(1);} 4%,43%{filter:blur(8px) brightness(0.3);}}
 
-/* Thẻ kính trung tâm & Avatar Mèo */
+/* ============================================================
+   PAGE 1 — CỔNG VÀO (LANDING)
+   ============================================================ */
+#page1{ position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; padding:40px 20px; transition:opacity 0.9s ease, filter 0.9s ease; z-index: 1; }
+#page1.leaving{opacity:0; filter:blur(12px); pointer-events:none;}
+
 .station-card{ position:relative; z-index:2; width:min(420px, 92vw); padding:44px 32px 36px; border-radius:28px; background:var(--glass); border:1px solid var(--amber); backdrop-filter:blur(16px); display:flex; flex-direction:column; align-items:center; text-align:center; animation:breathe 6s ease-in-out infinite; }
 @keyframes breathe{ 0%,100%{box-shadow:0 0 15px rgba(255,176,0,0.2), 0 0 40px rgba(158,8,8,0.1), inset 0 0 20px rgba(255,176,0,0.05);} 50%{box-shadow:0 0 30px rgba(255,176,0,0.5), 0 0 80px rgba(158,8,8,0.3), inset 0 0 40px rgba(255,176,0,0.15);} }
 
@@ -108,10 +117,10 @@ img{max-width:100%; display:block;}
 
 
 /* ============================================================
-   PAGE 2 — MAIN PORTFOLIO & THANH ĐIỀU HƯỚNG 1 DÒNG
+   PAGE 2 — MAIN PORTFOLIO & NAVBAR
    ============================================================ */
-#page2{ position:relative; min-height:100vh; padding-top:100px; padding-bottom:80px; opacity:0; transition:opacity 0.9s ease; z-index: 2; }
-#page2.entering{opacity:1;}
+#page2{ position:relative; min-height:100vh; padding-top:100px; padding-bottom:80px; opacity:0; transition:opacity 0.9s ease; z-index: 2; display:none; }
+#page2.entering{opacity:1; display:block;}
 
 .topnav{
   position:fixed; top:16px; left:50%; transform:translateX(-50%); z-index:150;
@@ -271,7 +280,7 @@ img{max-width:100%; display:block;}
 .contact-url { font-family: var(--font-kicker); font-size: 10px; color: var(--silver-dim); word-break: break-all; letter-spacing: 0.5px; }
 
 /* ============================================================
-   MÁY HÁT GRAMOPHONE MỚI (CHUẨN GIAO DIỆN THE GRAMOPHONE)
+   MÁY HÁT GRAMOPHONE MỚI (GIAO DIỆN CHUẨN)
    ============================================================ */
 .gramo-toggle{ position:fixed; right:20px; bottom:20px; z-index:60; width:56px; height:56px; border-radius:50%; background:radial-gradient(circle at 35% 35%, #222, #050505); border:1px solid var(--blood); box-shadow:0 0 15px rgba(158,8,8,0.4); display:flex; align-items:center; justify-content:center; color:var(--amber); font-size:24px; transition:0.3s; }
 .gramo-toggle:hover{box-shadow:0 0 25px rgba(255,176,0,0.6);}
@@ -311,7 +320,7 @@ img{max-width:100%; display:block;}
 .gramo-song-item.active { border-color: #c99339; background: rgba(201,147,57,0.2); color: #fff; }
 
 .gramo-player-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(201,147,57,0.3); }
-.g-ctrl-btn { font-size: 18px; color: #c99339; transition: 0.2s; }
+.g-ctrl-btn { font-size: 18px; color: #c99339; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
 .g-ctrl-btn:hover { color: #fff; transform: scale(1.1); }
 .g-ctrl-btn.active { color: #fff; text-shadow: 0 0 8px #c99339; }
 
@@ -335,6 +344,8 @@ img{max-width:100%; display:block;}
 
 <div class="real-fog-bg"></div>
 <div class="dark-overlay"></div>
+<div class="fog-layer"></div>
+<div class="fog-layer-2"></div>
 
 <!-- PAGE 1 — CỔNG VÀO -->
 <section id="page1">
@@ -345,7 +356,7 @@ img{max-width:100%; display:block;}
   <div class="station-card">
     <div class="avatar-wrap">
       <div class="avatar-halo"></div>
-      <img class="avatar-img" id="landingAvatar" src="./ChatGPT_Image_02_56_58_7_thg_7__2026-removebg-preview-removebg-preview.png" alt="Trưởng ga mèo" onerror="this.src='https://i.ibb.co/VvzK1zX/cat.jpg'">
+      <img class="avatar-img" id="landingAvatar" src="./ChatGPT_Image_02_56_58_7_thg_7__2026-removebg-preview-removebg-preview.png" alt="Trưởng ga mèo" onerror="this.style.opacity=0;">
       <div class="avatar-eye left"></div> <div class="avatar-eye right"></div>
     </div>
     <p class="kicker">CHÀO MỪNG QUÝ KHÁCH ĐẾN VỚI</p>
@@ -361,7 +372,7 @@ img{max-width:100%; display:block;}
 </section>
 
 <!-- PAGE 2 — SÂN GA -->
-<section id="page2" class="hidden">
+<section id="page2">
   <nav class="topnav">
     <button class="nav-home" id="btnGoHome"><span class="icon-slot" data-icon="train"></span> TRỞ VỀ CỔNG CHÍNH</button>
     <button class="nav-item active" data-view="stationmaster">PHÒNG TRƯỞNG GA
@@ -384,7 +395,7 @@ img{max-width:100%; display:block;}
       <div class="wood-box" id="smBoxContainer">
         <h2 class="embossed-title">ĐÔI CHÚT VỀ TRƯỞNG GA</h2>
         <div style="display:flex; gap:20px; flex-wrap:wrap;">
-          <img style="width:100px; height:100px; border-radius:12px; border:1px solid var(--blood); object-fit:cover;" id="smAvatar" src="" onerror="this.src='./ChatGPT_Image_02_56_58_7_thg_7__2026-removebg-preview-removebg-preview.png'">
+          <img style="width:100px; height:100px; border-radius:12px; border:1px solid var(--blood); object-fit:cover;" id="smAvatar" src="./ChatGPT_Image_02_56_58_7_thg_7__2026-removebg-preview-removebg-preview.png">
           <p id="smBio" style="font-style:italic; color:var(--silver); font-size:14px; line-height:1.8; flex:1; min-width:200px;"></p>
         </div>
         <a href="#" target="_blank" class="contact-card hidden" id="smFbCard">
@@ -408,7 +419,7 @@ img{max-width:100%; display:block;}
 
       <div class="search-bar-basic">
         <input type="text" id="staffSearch" class="search-input" placeholder="🔍 Tìm tên nhân viên...">
-        <button class="admin-inline-btn" style="background: rgba(158,8,8,0.2); color: var(--amber);" id="randomStaffBtn">${icon("loop")} Gợi ý ngẫu nhiên</button>
+        <button class="admin-inline-btn" style="background: rgba(158,8,8,0.2); color: var(--amber);" id="randomStaffBtn"><span class="icon-slot" data-icon="loop"></span> Gợi ý ngẫu nhiên</button>
       </div>
       
       <div id="trainsList"></div>
@@ -424,7 +435,7 @@ img{max-width:100%; display:block;}
             <div class="toggle-wrapper"><label class="toggle-switch"><input type="checkbox" id="gbAnonToggle"><span class="toggle-slider"></span></label><span class="toggle-label">Gửi ẩn danh</span></div>
           </div>
           <div class="form-row file-upload-wrapper">
-            <label class="file-btn"><input type="file" accept="image/*" multiple id="gbFileInp" style="display:none;">${icon("paperclip")} Đăng ảnh trực tiếp (Chọn nhiều)</label>
+            <label class="file-btn"><input type="file" accept="image/*" multiple id="gbFileInp" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Đăng ảnh trực tiếp (Chọn nhiều)</label>
             <div id="gbPreview" class="img-preview-grid"></div>
           </div>
           <div class="form-row"><label>Lời nhắn cho mọi người</label><textarea id="gbMessage" placeholder="Viết phản hồi hoặc tâm sự ở đây..." required style="height: 100px;"></textarea></div>
@@ -454,7 +465,7 @@ img{max-width:100%; display:block;}
             <div class="toggle-wrapper"><label class="toggle-switch"><input type="checkbox" id="rcAnonToggle"><span class="toggle-slider"></span></label><span class="toggle-label">Gửi ẩn danh</span></div>
           </div>
           <div class="form-row file-upload-wrapper">
-            <label class="file-btn"><input type="file" accept="image/*" multiple id="rcFileInp" style="display:none;">${icon("paperclip")} Đăng ảnh trực tiếp (Chọn nhiều)</label>
+            <label class="file-btn"><input type="file" accept="image/*" multiple id="rcFileInp" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Đăng ảnh trực tiếp (Chọn nhiều)</label>
             <div id="rcPreview" class="img-preview-grid"></div>
           </div>
           <div class="form-row"><label>Ý tưởng nhân vật</label><textarea id="rcMessage" placeholder="Mô tả chi tiết tại đây..." required style="height: 100px;"></textarea></div>
@@ -473,9 +484,9 @@ img{max-width:100%; display:block;}
 <button class="gramo-toggle paused" id="gramoToggle"><span class="vinyl-spin icon-slot" data-icon="disc"></span></button>
 <div class="gramo-panel-new hidden-panel" id="gramoPanel">
   <div class="gramo-new-header">
-    <div class="gramo-new-title">${icon("disc")} THE GRAMOPHONE</div>
+    <div class="gramo-new-title"><span class="icon-slot" data-icon="disc"></span> THE GRAMOPHONE</div>
     <div class="gramo-new-actions">
-      <button id="gramoReload">${icon("loop")}</button>
+      <button id="gramoReload" title="Chơi lại từ đầu"><span class="icon-slot" data-icon="loop"></span></button>
       <button id="gramoClose">✕</button>
     </div>
   </div>
@@ -493,11 +504,11 @@ img{max-width:100%; display:block;}
   </div>
 
   <div class="gramo-player-controls">
-    <button class="g-ctrl-btn" id="gramoLoop">${icon("loop")}</button>
-    <button class="g-ctrl-btn" id="gramoPrev">${icon("prev")}</button>
-    <button class="g-ctrl-btn" id="gramoPlay" style="font-size:24px;">${icon("play")}</button>
-    <button class="g-ctrl-btn" id="gramoNext">${icon("next")}</button>
-    <button class="g-ctrl-btn" id="gramoShuffle">${icon("shuffle")}</button>
+    <button class="g-ctrl-btn" id="gramoLoopBtn"><span class="icon-slot" data-icon="loop"></span></button>
+    <button class="g-ctrl-btn" id="gramoPrev"><span class="icon-slot" data-icon="prev"></span></button>
+    <button class="g-ctrl-btn" id="gramoPlay" style="font-size:24px;"><span class="icon-slot" data-icon="play"></span></button>
+    <button class="g-ctrl-btn" id="gramoNext"><span class="icon-slot" data-icon="next"></span></button>
+    <button class="g-ctrl-btn" id="gramoShuffleBtn"><span class="icon-slot" data-icon="shuffle"></span></button>
   </div>
   <audio id="gramoAudio"></audio>
 </div>
@@ -523,20 +534,17 @@ const ICONS = {
   train: '<svg class="icon" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="14" rx="2"/><path d="M8 21l-2-4M16 21l2-4M12 17v4M8 8h8"/></svg>',
   star: '<svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
   paperclip: '<svg class="icon" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>',
-  game: '<svg class="icon" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="3"/><circle cx="18" cy="12" r="1" fill="currentColor"/><circle cx="15" cy="14" r="1" fill="currentColor"/><path d="M6 12h4M8 10v4"/></svg>',
   disc: '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>',
   play: '<svg class="icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>',
   pause: '<svg class="icon" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>',
   prev: '<svg class="icon" viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>',
   next: '<svg class="icon" viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>',
-  loop: '<svg class="icon" viewBox="0 0 24 24"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>', /* Icon 1 nét cơ bản cho Random/Loop */
+  loop: '<svg class="icon" viewBox="0 0 24 24"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>',
   shuffle: '<svg class="icon" viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>',
-  folder: '<svg class="icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>',
   facebook: '<svg class="icon" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>',
   comment: '<svg class="icon" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>'
 };
-document.querySelectorAll(".icon-slot").forEach(el => el.innerHTML = ICONS[el.dataset.icon]||"");
-function icon(name){ return ICONS[name] || ""; }
+function loadIcons() { document.querySelectorAll(".icon-slot").forEach(el => { el.innerHTML = ICONS[el.dataset.icon]||""; }); }
 const VERIFIED_TICK = `<svg style="width:14px; height:14px; display:inline-block; vertical-align:middle; margin-left:4px;" viewBox="0 0 24 24" fill="#0866FF"><circle cx="12" cy="12" r="10"/><path d="M16.5 8.5l-6 6-3-3" stroke="#fff" stroke-width="2" fill="none"/></svg>`;
 
 /* ============================================================
@@ -569,12 +577,9 @@ function resizeImage(file, maxSize = 800) {
     reader.onload = (e) => {
       const img = new Image();
       img.onload = () => {
-        const canvas = document.createElement('canvas');
-        let w = img.width, h = img.height;
+        const canvas = document.createElement('canvas'); let w = img.width, h = img.height;
         if(w > maxSize || h > maxSize) { if(w > h) { h = Math.round((h * maxSize) / w); w = maxSize; } else { w = Math.round((w * maxSize) / h); h = maxSize; } }
-        canvas.width = w; canvas.height = h;
-        const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, w, h);
-        resolve(canvas.toDataURL('image/jpeg', 0.6));
+        canvas.width = w; canvas.height = h; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, w, h); resolve(canvas.toDataURL('image/jpeg', 0.6));
       }; img.src = e.target.result;
     }; reader.readAsDataURL(file);
   });
@@ -584,20 +589,36 @@ function setupImageUploader(inputId, previewId) {
   const inp = document.getElementById(inputId); const prev = document.getElementById(previewId);
   let base64Array = [];
   inp.addEventListener("change", async (e) => {
-    for(let f of e.target.files) {
-      const b64 = await resizeImage(f); base64Array.push(b64);
-      const img = document.createElement("img"); img.src = b64; prev.appendChild(img);
-    }
+    for(let f of e.target.files) { const b64 = await resizeImage(f); base64Array.push(b64); const img = document.createElement("img"); img.src = b64; prev.appendChild(img); }
   });
   return { getFiles: () => base64Array, clear: () => { base64Array = []; prev.innerHTML = ""; inp.value = ""; } };
 }
-const gbUploader = setupImageUploader("gbFileInp", "gbPreview");
-const rcUploader = setupImageUploader("rcFileInp", "rcPreview");
 
 /* ============================================================
-   INITIALIZATION & ADMIN LOGIN
+   XỬ LÝ ÂM THANH CHUYỂN TRANG
    ============================================================ */
+let audioCtx;
+function getCtx(){ if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); return audioCtx; }
+function playWhistle(){
+  try{
+    const ctx = getCtx(); const osc = ctx.createOscillator(); const gain = ctx.createGain();
+    osc.type = "sine"; osc.frequency.setValueAtTime(450, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime+0.4); osc.frequency.exponentialRampToValueAtTime(400, ctx.currentTime+1.5);
+    gain.gain.setValueAtTime(0.001, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.15, ctx.currentTime+0.2); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+1.5);
+    osc.connect(gain).connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime+1.6);
+  }catch(e){}
+}
+
+/* ============================================================
+   KHỞI TẠO CHÍNH (INITIALIZATION)
+   ============================================================ */
+let gbUploader, rcUploader;
+
 document.addEventListener("DOMContentLoaded", async () => {
+  loadIcons(); // Render SVG icons safely
+  gbUploader = setupImageUploader("gbFileInp", "gbPreview");
+  rcUploader = setupImageUploader("rcFileInp", "rcPreview");
+  
   await fetchStationConfig();
   rollNumber(document.getElementById("statStaff"), CONFIG.staff.length);
   rollNumber(document.getElementById("statVisits"), CONFIG.stats.totalVisits);
@@ -613,6 +634,49 @@ document.addEventListener("DOMContentLoaded", async () => {
   checkAdminLogin();
 });
 
+function rollNumber(el, target){
+  const start = performance.now();
+  function tick(now){
+    const p = Math.min(1, (now-start)/1500); const eased = 1 - Math.pow(1-p, 3);
+    el.textContent = Math.round(eased * target).toLocaleString("vi-VN");
+    if(p < 1) requestAnimationFrame(tick);
+  } requestAnimationFrame(tick);
+}
+
+// Chuyển trang mượt mà (Đã fix lỗi bị đơ)
+const page1 = document.getElementById("page1"), page2 = document.getElementById("page2");
+document.getElementById("ctaGoStation").addEventListener("click", () => {
+  playWhistle(); 
+  page1.classList.add("leaving");
+  setTimeout(() => { 
+    page1.style.display = "none"; 
+    page2.style.display = "block";
+    // Trigger reflow to ensure CSS animation runs
+    void page2.offsetWidth;
+    page2.classList.add("entering"); 
+  }, 900);
+});
+document.getElementById("btnGoHome").addEventListener("click", () => {
+  page2.classList.remove("entering"); 
+  setTimeout(() => { 
+    page2.style.display = "none"; 
+    page1.style.display = "flex"; 
+    page1.classList.remove("leaving"); 
+  }, 900);
+});
+
+// Chuyển Tab trong Page 2
+document.querySelectorAll(".nav-item").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active")); btn.classList.add("active");
+    document.querySelectorAll(".section-view").forEach(v => v.classList.add("hidden"));
+    document.getElementById("view-" + btn.dataset.view).classList.remove("hidden");
+  });
+});
+
+/* ============================================================
+   CƠ CHẾ ADMIN BÍ MẬT & FETCH DB
+   ============================================================ */
 function checkAdminLogin() {
   const urlParams = new URLSearchParams(window.location.search);
   if(urlParams.get('admin') === 'true' && !isAdminMode) {
@@ -624,9 +688,10 @@ function checkAdminLogin() {
       document.getElementById("adminUpcomingBtn").classList.remove("hidden");
       document.getElementById("adminAddPlBtn").classList.remove("hidden");
       document.getElementById("adminAddSongBtn").classList.remove("hidden");
-      // Sửa form khi Admin cmt
-      document.getElementById("gbNameWrap").innerHTML = `<div style="color:var(--amber); font-weight:bold; margin-bottom:10px;"><img src="${CONFIG.stationMaster.avatar}" style="width:24px; height:24px; border-radius:50%; display:inline-block; vertical-align:middle;"> Trưởng ga Meown ${VERIFIED_TICK}</div>`;
-      document.getElementById("rcNameWrap").innerHTML = `<div style="color:var(--amber); font-weight:bold; margin-bottom:10px;"><img src="${CONFIG.stationMaster.avatar}" style="width:24px; height:24px; border-radius:50%; display:inline-block; vertical-align:middle;"> Trưởng ga Meown ${VERIFIED_TICK}</div>`;
+      
+      const adminAvatarHtml = `<img src="${CONFIG.stationMaster.avatar}" style="width:24px; height:24px; border-radius:50%; display:inline-block; vertical-align:middle; border:1px solid var(--amber);">`;
+      document.getElementById("gbNameWrap").innerHTML = `<div style="color:var(--amber); font-weight:bold; margin-bottom:10px;">${adminAvatarHtml} Trưởng ga Meown ${VERIFIED_TICK}</div>`;
+      document.getElementById("rcNameWrap").innerHTML = `<div style="color:var(--amber); font-weight:bold; margin-bottom:10px;">${adminAvatarHtml} Trưởng ga Meown ${VERIFIED_TICK}</div>`;
       alert("Đã cấp quyền Trưởng Ga!");
     } else { alert("Sai mật mã. Kẻ lạ mặt không được phép truy cập."); }
   }
@@ -642,6 +707,7 @@ async function fetchStationConfig() {
       if(dbConfig.staff) CONFIG.staff = dbConfig.staff;
       if(dbConfig.upcomingBots) CONFIG.upcomingBots = dbConfig.upcomingBots;
       if(dbConfig.musicLibrary) CONFIG.musicLibrary = dbConfig.musicLibrary;
+      if(dbConfig.landingAvatar) CONFIG.landingAvatar = dbConfig.landingAvatar;
     }
   } catch(e) {}
 }
@@ -655,11 +721,11 @@ async function saveStationConfigToDB() {
 }
 
 function updateStationMasterUI() {
+  document.getElementById("landingAvatar").src = CONFIG.landingAvatar || "./ChatGPT_Image_02_56_58_7_thg_7__2026-removebg-preview-removebg-preview.png";
   document.getElementById("smAvatar").src = CONFIG.stationMaster.avatar || "./ChatGPT_Image_02_56_58_7_thg_7__2026-removebg-preview-removebg-preview.png";
   document.getElementById("smBio").textContent = CONFIG.stationMaster.bio;
   if(CONFIG.stationMaster.facebook && CONFIG.stationMaster.facebook.url) {
-    const fbCard = document.getElementById("smFbCard");
-    fbCard.href = CONFIG.stationMaster.facebook.url;
+    const fbCard = document.getElementById("smFbCard"); fbCard.href = CONFIG.stationMaster.facebook.url;
     document.getElementById("smFbName").textContent = CONFIG.stationMaster.facebook.name ? `(${CONFIG.stationMaster.facebook.name})` : "";
     document.getElementById("smFbDesc").textContent = CONFIG.stationMaster.facebook.desc;
     document.getElementById("smFbUrlText").textContent = CONFIG.stationMaster.facebook.url;
@@ -667,48 +733,26 @@ function updateStationMasterUI() {
   }
 }
 
-// Chuyển trang
-const page1 = document.getElementById("page1"), page2 = document.getElementById("page2");
-document.getElementById("ctaGoStation").addEventListener("click", () => {
-  playWhistle(); page1.classList.add("leaving");
-  setTimeout(() => { page1.classList.add("hidden"); page2.classList.remove("hidden"); requestAnimationFrame(()=>page2.classList.add("entering")); }, 850);
-});
-document.getElementById("btnGoHome").addEventListener("click", () => {
-  page2.classList.remove("entering"); setTimeout(() => { page2.classList.add("hidden"); page1.classList.remove("hidden","leaving"); }, 600);
-});
-
-document.querySelectorAll(".nav-item").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active")); btn.classList.add("active");
-    document.querySelectorAll(".section-view").forEach(v => v.classList.add("hidden"));
-    document.getElementById("view-" + btn.dataset.view).classList.remove("hidden");
-  });
-});
-
 /* ============================================================
-   BẢNG ADMIN FORMS (MỞ MODAL)
+   BẢNG ADMIN FORMS (MODAL)
    ============================================================ */
 function openAdminForm(type) {
-  const body = document.getElementById("generalModalBody");
-  document.getElementById("generalModal").classList.remove("hidden");
-  body.innerHTML = "";
-
+  const body = document.getElementById("generalModalBody"); document.getElementById("generalModal").classList.remove("hidden"); body.innerHTML = "";
   if(type === 'sm') {
     document.getElementById("generalModalTitle").textContent = "CẬP NHẬT TRƯỞNG GA";
     body.innerHTML = `
-      <div class="form-row"><label>Ảnh Avatar Trưởng ga (Bỏ trống để dùng ảnh mặc định)</label>
-        <div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="adminAvatarFile" style="display:none;">${icon("paperclip")} Tải ảnh lên</label><div id="adminAvatarPrev" class="img-preview-grid"></div></div>
-      </div>
+      <div class="form-row"><label>Ảnh Avatar (Để trống dùng mặc định)</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aAvtFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Tải ảnh</label><div id="aAvtPrev" class="img-preview-grid"></div></div></div>
       <div class="form-row"><label>Tiểu sử</label><textarea id="aBio">${CONFIG.stationMaster.bio}</textarea></div>
       <div class="form-row"><label>Tên Facebook</label><input type="text" id="aFbName" value="${CONFIG.stationMaster.facebook.name||''}"></div>
       <div class="form-row"><label>Link Facebook</label><input type="text" id="aFbUrl" value="${CONFIG.stationMaster.facebook.url||''}"></div>
       <div class="form-row"><label>Lời chào FB</label><input type="text" id="aFbDesc" value="${CONFIG.stationMaster.facebook.desc||''}"></div>
       <button class="submit-btn" id="saveSM">LƯU THÔNG TIN</button>
     `;
+    loadIcons();
     let tempB64 = CONFIG.stationMaster.avatar;
-    document.getElementById("adminAvatarFile").addEventListener("change", async (e)=>{ tempB64 = await resizeImage(e.target.files[0]); document.getElementById("adminAvatarPrev").innerHTML=`<img src="${tempB64}">`; });
+    document.getElementById("aAvtFile").addEventListener("change", async (e)=>{ tempB64 = await resizeImage(e.target.files[0]); document.getElementById("aAvtPrev").innerHTML=`<img src="${tempB64}">`; });
     document.getElementById("saveSM").addEventListener("click", () => {
-      CONFIG.stationMaster.avatar = tempB64; CONFIG.stationMaster.bio = document.getElementById("aBio").value;
+      CONFIG.stationMaster.avatar = tempB64; CONFIG.landingAvatar = tempB64; CONFIG.stationMaster.bio = document.getElementById("aBio").value;
       CONFIG.stationMaster.facebook = { name: document.getElementById("aFbName").value, url: document.getElementById("aFbUrl").value, desc: document.getElementById("aFbDesc").value };
       saveStationConfigToDB(); updateStationMasterUI(); document.getElementById("generalModal").classList.add("hidden");
     });
@@ -718,11 +762,10 @@ function openAdminForm(type) {
     body.innerHTML = `
       <div class="form-row"><label>Tên Tàu</label><input type="text" id="aTrName"></div>
       <div class="form-row"><label>Thể Loại</label><input type="text" id="aTrGenre"></div>
-      <div class="form-row"><label>Ảnh Banner</label>
-        <div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aTrFile" style="display:none;">${icon("paperclip")} Tải ảnh lên</label><div id="aTrPrev" class="img-preview-grid"></div></div>
-      </div>
+      <div class="form-row"><label>Ảnh Banner</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aTrFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Tải ảnh</label><div id="aTrPrev" class="img-preview-grid"></div></div></div>
       <button class="submit-btn" id="saveTr">THÊM TÀU</button>
     `;
+    loadIcons();
     let tB64 = ""; document.getElementById("aTrFile").addEventListener("change", async (e)=>{ tB64 = await resizeImage(e.target.files[0]); document.getElementById("aTrPrev").innerHTML=`<img src="${tB64}">`; });
     document.getElementById("saveTr").addEventListener("click", () => {
       CONFIG.trains.push({ id: "t_"+Date.now(), name: document.getElementById("aTrName").value, genre: document.getElementById("aTrGenre").value, banner: tB64 });
@@ -733,14 +776,13 @@ function openAdminForm(type) {
     document.getElementById("generalModalTitle").textContent = "THÊM NHÂN VIÊN";
     body.innerHTML = `
       <div class="form-row"><label>Tên</label><input type="text" id="aStName"></div>
-      <div class="form-row"><label>Avatar</label>
-        <div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aStFile" style="display:none;">${icon("paperclip")} Tải ảnh lên</label><div id="aStPrev" class="img-preview-grid"></div></div>
-      </div>
+      <div class="form-row"><label>Avatar</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aStFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Tải ảnh</label><div id="aStPrev" class="img-preview-grid"></div></div></div>
       <div class="form-row"><label>Câu Hook</label><input type="text" id="aStHook"></div>
       <div class="form-row"><label>Chuyến tàu</label><select id="aStTrain">${CONFIG.trains.map(t=>`<option value="${t.id}">${t.name}</option>`).join('')}</select></div>
       <div class="form-row"><label>Tags (Cách nhau bằng dấu phẩy)</label><input type="text" id="aStTags"><div style="font-size:11px; color:var(--silver-dim); margin-top:6px;">Tag đã có: ${getUniqueTags().join(", ")}</div></div>
       <button class="submit-btn" id="saveSt">THÊM NHÂN VIÊN</button>
     `;
+    loadIcons();
     let sB64 = ""; document.getElementById("aStFile").addEventListener("change", async (e)=>{ sB64 = await resizeImage(e.target.files[0]); document.getElementById("aStPrev").innerHTML=`<img src="${sB64}">`; });
     document.getElementById("saveSt").addEventListener("click", () => {
       const tags = document.getElementById("aStTags").value.split(',').map(t=>t.trim()).filter(t=>t);
@@ -752,12 +794,11 @@ function openAdminForm(type) {
     document.getElementById("generalModalTitle").textContent = "THÊM HỒ SƠ DỰ BỊ";
     body.innerHTML = `
       <div class="form-row"><label>Tên</label><input type="text" id="aUpName"></div>
-      <div class="form-row"><label>Avatar</label>
-        <div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aUpFile" style="display:none;">${icon("paperclip")} Tải ảnh lên</label><div id="aUpPrev" class="img-preview-grid"></div></div>
-      </div>
+      <div class="form-row"><label>Avatar</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aUpFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Tải ảnh</label><div id="aUpPrev" class="img-preview-grid"></div></div></div>
       <div class="form-row"><label>Giới thiệu / Tuyến tàu dự kiến</label><textarea id="aUpDesc"></textarea></div>
       <button class="submit-btn" id="saveUp">THÊM HỒ SƠ</button>
     `;
+    loadIcons();
     let uB64 = ""; document.getElementById("aUpFile").addEventListener("change", async (e)=>{ uB64 = await resizeImage(e.target.files[0]); document.getElementById("aUpPrev").innerHTML=`<img src="${uB64}">`; });
     document.getElementById("saveUp").addEventListener("click", () => {
       CONFIG.upcomingBots.push({ id: "u_"+Date.now(), name: document.getElementById("aUpName").value, avatar: uB64, desc: document.getElementById("aUpDesc").value });
@@ -781,8 +822,8 @@ function openAdminForm(type) {
   }
   else if(type === 'song') {
     const selPl = document.getElementById("gramoPlaylistSelect").value;
-    if(!selPl) return alert("Vui lòng chọn 1 Playlist ở ngoài Gramophone trước!");
-    document.getElementById("generalModalTitle").textContent = "THÊM BÀI HÁT VÀO PLAYLIST NÀY";
+    if(!selPl) return alert("Vui lòng chọn 1 Playlist ở màn hình Máy Hát trước!");
+    document.getElementById("generalModalTitle").textContent = "THÊM BÀI HÁT";
     body.innerHTML = `
       <div class="form-row"><label>Tên bài hát</label><input type="text" id="aSgName"></div>
       <div class="form-row"><label>Link Audio (mp3, m4a, link dropbox...)</label><input type="text" id="aSgUrl"></div>
@@ -800,14 +841,14 @@ function openAdminForm(type) {
 document.getElementById("closeGeneralModal").addEventListener("click", () => document.getElementById("generalModal").classList.add("hidden"));
 
 /* ============================================================
-   RENDER CHUYẾN TÀU + SEARCH + RANDOM + TAGS
+   CÁC CHUYẾN TÀU & LỌC TAG
    ============================================================ */
 document.getElementById("staffSearch").addEventListener("input", (e) => { currentSearch = e.target.value; renderTrains(); });
 
 document.getElementById("randomStaffBtn").addEventListener("click", async () => {
   if(CONFIG.staff.length === 0) return alert("Chưa có nhân viên nào!");
   const randomStaff = CONFIG.staff[Math.floor(Math.random() * CONFIG.staff.length)];
-  const body = document.getElementById("generalModalBody"); document.getElementById("generalModalTitle").textContent = "GỢI Ý NHÂN VIÊN"; body.innerHTML = "";
+  const body = document.getElementById("generalModalBody"); document.getElementById("generalModalTitle").textContent = "GỢI Ý NGẪU NHIÊN"; body.innerHTML = "";
   const card = await createStaffCard(randomStaff); card.style.margin = "0 auto"; card.style.maxWidth = "300px";
   body.appendChild(card); document.getElementById("generalModal").classList.remove("hidden");
 });
@@ -818,17 +859,9 @@ function getUniqueTags() {
 }
 
 async function handleTagClick(tag, trainId) {
-  // Modal hỏi filter
-  const body = document.getElementById("generalModalBody");
-  document.getElementById("generalModalTitle").textContent = `BỘ LỌC TAG ${tag}`;
-  body.innerHTML = `
-    <div style="display:flex; flex-direction:column; gap:10px;">
-      <button class="submit-btn" id="flAll">HIỂN THỊ TRÊN TOÀN BỘ NHÀ GA</button>
-      <button class="submit-btn" id="flCurrent">CHỈ HIỂN THỊ TRONG CHUYẾN TÀU NÀY</button>
-    </div>
-  `;
+  const body = document.getElementById("generalModalBody"); document.getElementById("generalModalTitle").textContent = `BỘ LỌC TÌM KIẾM ${tag}`;
+  body.innerHTML = `<div style="display:flex; flex-direction:column; gap:10px;"><button class="submit-btn" id="flAll">HIỂN THỊ TOÀN BỘ NHÀ GA</button><button class="submit-btn" id="flCurrent">CHỈ HIỂN THỊ TRONG TÀU NÀY</button></div>`;
   document.getElementById("generalModal").classList.remove("hidden");
-  
   return new Promise((resolve) => {
     document.getElementById("flAll").onclick = () => { document.getElementById("generalModal").classList.add("hidden"); resolve("all"); };
     document.getElementById("flCurrent").onclick = () => { document.getElementById("generalModal").classList.add("hidden"); resolve("train"); };
@@ -844,7 +877,6 @@ async function renderTrains(){
     banner.innerHTML = `<div class="ratio"><img src="${train.banner}" onerror="this.style.display='none'"></div><div class="train-title">${train.name} <span style="font-size:14px; color:var(--amber-soft); opacity:0.8;">- ${train.genre || 'Chưa rõ'}</span></div>`;
     const acc = document.createElement("div"); acc.className = "train-accordion";
     
-    // Tag cloud nội bộ
     const tagCloud = document.createElement("div"); tagCloud.className = "inner-tag-cloud";
     const uTags = getUniqueTags();
     uTags.forEach(tag => {
@@ -857,10 +889,8 @@ async function renderTrains(){
         for(let st of filteredStaff) { grid.appendChild(await createStaffCard(st)); }
         if(filteredStaff.length===0) grid.innerHTML = "<p style='color:var(--silver);'>Không tìm thấy ai.</p>";
         body.appendChild(grid); document.getElementById("generalModal").classList.remove("hidden");
-      };
-      tagCloud.appendChild(btn);
-    });
-    acc.appendChild(tagCloud);
+      }; tagCloud.appendChild(btn);
+    }); acc.appendChild(tagCloud);
 
     const grid = document.createElement("div"); grid.className = "staff-grid";
     const trainStaff = CONFIG.staff.filter(s => s.trainId === train.id && s.name.toLowerCase().includes(q));
@@ -887,15 +917,15 @@ async function createStaffCard(staff){
     <div class="staff-hook">${staff.hook}</div>
     <div class="staff-tags">${(staff.tags||[]).map(t=>{let txt=t.trim().startsWith('#')?t:'#'+t; return `<span class="staff-tag">${txt}</span>`}).join("")}</div>
     <div class="action-row">
-      <button class="action-btn star-trigger">${icon("star")} <span class="avg-rating">${avgText}</span> Đánh giá</button>
-      <button class="action-btn game-trigger" style="display:none;">${icon("game")} Trò chơi</button>
+      <button class="action-btn star-trigger"><span class="icon-slot" data-icon="star"></span> <span class="avg-rating">${avgText}</span> Đánh giá</button>
     </div>
     <div class="rating-panel">
-      <div class="stars-row">${[1,2,3,4,5].map(n=>`<span class="star-icon" data-n="${n}">${icon("star")}</span>`).join("")}</div>
+      <div class="stars-row">${[1,2,3,4,5].map(n=>`<span class="star-icon" data-n="${n}"><span class="icon-slot" data-icon="star"></span></span>`).join("")}</div>
       <textarea placeholder="Cảm nhận của bạn (Chỉ Trưởng Ga đọc được)..."></textarea>
       <button class="submit-btn" style="width:100%;">GỬI ĐÁNH GIÁ</button>
     </div>
   `;
+  loadIcons();
   
   const trigger = card.querySelector(".star-trigger"), panel = card.querySelector(".rating-panel");
   trigger.addEventListener("click", () => panel.classList.toggle("open"));
@@ -912,7 +942,6 @@ async function createStaffCard(staff){
     try { await supa.from('meown_ratings').insert([{ staff_id: staff.id, rating: curRating, feedback: feedback, created_at: new Date().toISOString() }]); } catch(e){}
     panel.innerHTML = "<p style='color:var(--amber); font-size:12px; font-weight:bold;'>Cảm ơn bạn đã gửi đánh giá!</p>";
   });
-
   return card;
 }
 
@@ -956,7 +985,6 @@ async function syncPostToDB(type, post) {
 }
 
 function getSortScore(post) { return Object.values(post.reactions || {}).reduce((a,b)=>a+b, 0) + (post.comments || []).length; }
-
 const EMOJIS = { like: '👍', heart: '❤️', haha: '😂', wow: '😮', sad: '😢' };
 
 function renderFeed(type, sortOption) {
@@ -973,19 +1001,18 @@ function renderFeed(type, sortOption) {
       imagesHtml = `<div class="post-image-grid ${gridClass}">${post.image_urls.map(url => `<img class="post-image" src="${url}" onerror="this.style.display='none'">`).join('')}</div>`;
     }
 
-    let aInfo = post.author === "Trưởng ga Meown" ? `<img src="${CONFIG.stationMaster.avatar}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;"> Trưởng ga Meown ${VERIFIED_TICK}` : post.author;
+    let aInfo = post.author === "Trưởng ga Meown" ? `<img src="${CONFIG.stationMaster.avatar}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;border:1px solid var(--amber);"> Trưởng ga Meown ${VERIFIED_TICK}` : post.author;
     postEl.innerHTML = `<div class="post-header"><div class="post-author">${aInfo}</div><div class="post-time">${post.date}</div></div><div class="post-content">${post.content}</div>${imagesHtml}`;
 
     if(!post.reactions) post.reactions = {}; if(!post.comments) post.comments = [];
     const rBar = document.createElement("div"); rBar.className = "reaction-bar";
     const leftGrp = document.createElement("div"); leftGrp.className = "react-group"; const rightGrp = document.createElement("div"); rightGrp.className = "react-group";
 
-    const cmtBtn = document.createElement("button"); cmtBtn.className = "react-btn"; cmtBtn.innerHTML = `${icon("comment")} Bình luận (${post.comments.length})`; rightGrp.appendChild(cmtBtn);
+    const cmtBtn = document.createElement("button"); cmtBtn.className = "react-btn"; cmtBtn.innerHTML = `<span class="icon-slot" data-icon="comment"></span> Bình luận (${post.comments.length})`; rightGrp.appendChild(cmtBtn);
     const localStorageKey = `react_${type}_post_${post.id}`; const userCurrentReact = localStorage.getItem(localStorageKey);
 
     Object.keys(EMOJIS).forEach(key => {
-      const btn = document.createElement("button"); btn.className = "react-btn";
-      if(userCurrentReact === key) btn.classList.add("active");
+      const btn = document.createElement("button"); btn.className = "react-btn"; if(userCurrentReact === key) btn.classList.add("active");
       btn.innerHTML = `${EMOJIS[key]} ${post.reactions[key] || 0}`;
       btn.addEventListener("click", () => {
         const activeNow = localStorage.getItem(localStorageKey);
@@ -994,7 +1021,6 @@ function renderFeed(type, sortOption) {
         syncPostToDB(type, post); renderFeed(type, document.getElementById(type==="guestbook"?"gbSortSelect":"rcSortSelect").value);
       }); leftGrp.appendChild(btn);
     });
-
     rBar.appendChild(leftGrp); rBar.appendChild(rightGrp); postEl.appendChild(rBar);
 
     const cmtSection = document.createElement("div"); cmtSection.className = "comment-section";
@@ -1004,7 +1030,7 @@ function renderFeed(type, sortOption) {
         const cItem = document.createElement("div"); cItem.className = "comment-item";
         if(!c.reactions) c.reactions = {};
         let cmtReactsHTML = ""; Object.keys(EMOJIS).forEach(k => { const cCount = c.reactions[k] || 0; if(cCount > 0) cmtReactsHTML += `<span style="font-size:11px;">${EMOJIS[k]}${cCount}</span> `; });
-        let aTag = c.isAdmin ? `<img src="${CONFIG.stationMaster.avatar}"> Trưởng ga Meown ${VERIFIED_TICK}` : c.author;
+        let aTag = c.isAdmin ? `<img src="${CONFIG.stationMaster.avatar}" style="width:16px;height:16px;border-radius:50%;vertical-align:middle;border:1px solid var(--amber);"> Trưởng ga Meown ${VERIFIED_TICK}` : c.author;
         cItem.innerHTML = `<div class="comment-author">${aTag}</div><div class="comment-text">${c.content}</div><div class="comment-time">${c.date} ${cmtReactsHTML}</div><div class="cmt-react-bar"></div>`;
         
         const cmtReactBar = cItem.querySelector(".cmt-react-bar"); const cmtReactKey = `react_${type}_cmt_${post.id}_${idx}`; const cUserReact = localStorage.getItem(cmtReactKey);
@@ -1020,11 +1046,11 @@ function renderFeed(type, sortOption) {
       
       const inputArea = document.createElement("div"); inputArea.className = "comment-input-area";
       if(isAdminMode) {
-        inputArea.innerHTML = `<div style="color:var(--amber); font-weight:bold;"><img src="${CONFIG.stationMaster.avatar}" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;"> Trưởng ga Meown ${VERIFIED_TICK}</div><textarea placeholder="Viết bình luận..."></textarea><button class="submit-btn" style="width:auto; padding:8px 16px;">GỬI</button>`;
+        inputArea.innerHTML = `<div style="color:var(--amber); font-weight:bold;"><img src="${CONFIG.stationMaster.avatar}" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;border:1px solid var(--amber);"> Trưởng ga Meown ${VERIFIED_TICK}</div><textarea placeholder="Viết bình luận..."></textarea><button class="submit-btn" style="width:auto; padding:8px 16px;">GỬI</button>`;
         inputArea.querySelector(".submit-btn").addEventListener("click", () => {
           const cContentInput = inputArea.querySelector("textarea"); if(!cContentInput.value) return;
           post.comments.push({ author: "Trưởng ga Meown", content: cContentInput.value, date: new Date().toLocaleString('vi-VN'), isAdmin: true, reactions: {} });
-          syncPostToDB(type, post); cmtBtn.innerHTML = `${icon("comment")} Bình luận (${post.comments.length})`; renderComments();
+          syncPostToDB(type, post); cmtBtn.innerHTML = `<span class="icon-slot" data-icon="comment"></span> Bình luận (${post.comments.length})`; renderComments(); loadIcons();
         });
       } else {
         inputArea.innerHTML = `<div style="display:flex; gap:10px; align-items:center;"><input type="text" placeholder="Tên của bạn..." style="flex:1;"><div class="toggle-wrapper" style="margin:0;"><label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label><span class="toggle-label">Ẩn danh</span></div></div><textarea placeholder="Viết bình luận công khai..."></textarea><button class="submit-btn" style="width:auto; padding:8px 16px;">GỬI</button>`;
@@ -1033,13 +1059,12 @@ function renderFeed(type, sortOption) {
         inputArea.querySelector(".submit-btn").addEventListener("click", () => {
           if(!cNameInput.value || !cContentInput.value) return;
           post.comments.push({ author: cNameInput.value, content: cContentInput.value, date: new Date().toLocaleString('vi-VN'), isAdmin: false, reactions: {} });
-          syncPostToDB(type, post); cmtBtn.innerHTML = `${icon("comment")} Bình luận (${post.comments.length})`; renderComments();
+          syncPostToDB(type, post); cmtBtn.innerHTML = `<span class="icon-slot" data-icon="comment"></span> Bình luận (${post.comments.length})`; renderComments(); loadIcons();
         });
-      }
-      cmtSection.appendChild(inputArea);
+      } cmtSection.appendChild(inputArea);
     };
 
-    renderComments();
+    renderComments(); loadIcons();
     cmtBtn.addEventListener("click", () => cmtSection.classList.toggle("active"));
     postEl.appendChild(cmtSection); container.appendChild(postEl);
   });
@@ -1049,30 +1074,28 @@ document.getElementById("gbSortSelect").addEventListener("change", (e) => render
 document.getElementById("rcSortSelect").addEventListener("change", (e) => renderFeed("recruit", e.target.value));
 
 document.getElementById("guestbookForm").addEventListener("submit", (e) => {
-  e.preventDefault();
-  let authorName = isAdminMode ? "Trưởng ga Meown" : document.getElementById("gbName").value;
+  e.preventDefault(); let authorName = isAdminMode ? "Trưởng ga Meown" : document.getElementById("gbName").value;
   const post = { id: Date.now(), author: authorName, content: document.getElementById("gbMessage").value, image_urls: gbUploader.getFiles(), date: new Date().toLocaleString('vi-VN'), reactions: {}, comments: [] };
   localGuestbook.push(post); syncPostToDB("guestbook", post);
   document.getElementById("gbMessage").value = ""; gbUploader.clear(); renderFeed("guestbook", document.getElementById("gbSortSelect").value);
 });
 
 document.getElementById("recruitForm").addEventListener("submit", (e) => {
-  e.preventDefault();
-  let authorName = isAdminMode ? "Trưởng ga Meown" : document.getElementById("rcName").value;
+  e.preventDefault(); let authorName = isAdminMode ? "Trưởng ga Meown" : document.getElementById("rcName").value;
   const post = { id: Date.now(), author: authorName, content: document.getElementById("rcMessage").value, image_urls: rcUploader.getFiles(), date: new Date().toLocaleString('vi-VN'), reactions: {}, comments: [] };
   localRecruit.push(post); syncPostToDB("recruit", post);
   document.getElementById("rcMessage").value = ""; rcUploader.clear(); renderFeed("recruit", document.getElementById("rcSortSelect").value);
 });
 
-
 /* ============================================================
-   MÁY HÁT GRAMOPHONE MỚI ĐÚNG GIAO DIỆN CẦN
+   THE GRAMOPHONE (MÁY HÁT) MỚI CHUẨN GIAO DIỆN UI
    ============================================================ */
-const audio = document.getElementById("gramoAudio"), playBtn = document.getElementById("gramoPlay"), vinyl = document.getElementById("gramoVinyl"), gramoToggle = document.getElementById("gramoToggle");
+const audio = document.getElementById("gramoAudio"), vinyl = document.getElementById("gramoVinyl"), gramoToggle = document.getElementById("gramoToggle");
+const playBtn = document.getElementById("gramoPlay");
 let isPlaying = false, isLoop = false, isShuffle = false; let curQueue = [], curIndex = 0;
 
-document.getElementById("gramoLoop").addEventListener("click", function(){ isLoop = !isLoop; this.classList.toggle("active", isLoop); });
-document.getElementById("gramoShuffle").addEventListener("click", function(){ isShuffle = !isShuffle; this.classList.toggle("active", isShuffle); });
+document.getElementById("gramoLoopBtn").addEventListener("click", function(){ isLoop = !isLoop; this.classList.toggle("active", isLoop); });
+document.getElementById("gramoShuffleBtn").addEventListener("click", function(){ isShuffle = !isShuffle; this.classList.toggle("active", isShuffle); });
 
 playBtn.addEventListener("click", () => { if(!audio.src) return; isPlaying ? audio.pause() : audio.play(); });
 audio.addEventListener("play", () => { isPlaying = true; playBtn.innerHTML = icon("pause"); vinyl.classList.remove("paused"); gramoToggle.classList.remove("paused"); });
@@ -1082,7 +1105,7 @@ audio.addEventListener("ended", () => { if(isLoop){ audio.currentTime = 0; audio
 function loadSong(index){
   if(!curQueue[index]) return; curIndex = index;
   document.getElementById("gramoTitle").textContent = curQueue[index].title; audio.src = curQueue[index].src; audio.play();
-  renderGramoSongs(document.getElementById("gramoPlaylistSelect").value); // Update active class
+  renderGramoSongs(document.getElementById("gramoPlaylistSelect").value);
 }
 document.getElementById("gramoNext").addEventListener("click", () => { if(curQueue.length===0) return; loadSong(isShuffle ? Math.floor(Math.random()*curQueue.length) : (curIndex+1)%curQueue.length); });
 document.getElementById("gramoPrev").addEventListener("click", () => { if(curQueue.length===0) return; loadSong((curIndex-1+curQueue.length)%curQueue.length); });
@@ -1105,17 +1128,15 @@ document.getElementById("gramoPlaylistSelect").addEventListener("change", (e) =>
 function renderGramoSongs(plId) {
   const list = document.getElementById("gramoSongList"); list.innerHTML = "";
   if(!plId) return;
-  let targetPl = null;
-  CONFIG.musicLibrary.forEach(c => { const found = c.playlists.find(p=>p.id===plId); if(found) targetPl = found; });
-  if(!targetPl) return;
-  curQueue = targetPl.songs;
+  let targetPl = null; CONFIG.musicLibrary.forEach(c => { const found = c.playlists.find(p=>p.id===plId); if(found) targetPl = found; });
+  if(!targetPl) return; curQueue = targetPl.songs;
   targetPl.songs.forEach((s, idx) => {
     const item = document.createElement("div"); item.className = "gramo-song-item";
     if(idx === curIndex && document.getElementById("gramoTitle").textContent === s.title) item.classList.add("active");
-    item.innerHTML = `<span>${s.title}</span> <span>🎵</span>`;
-    item.onclick = () => loadSong(idx);
-    list.appendChild(item);
+    item.innerHTML = `<span>${s.title}</span> <span><span class="icon-slot" data-icon="disc"></span></span>`;
+    item.onclick = () => loadSong(idx); list.appendChild(item);
   });
+  loadIcons();
 }
 </script>
 </body>
