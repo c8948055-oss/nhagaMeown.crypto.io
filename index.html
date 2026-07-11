@@ -114,7 +114,32 @@
             aspect-ratio: 9/16; 
             min-height: 480px; 
             --theme-color: #FFB000; 
+            position: relative;
         }
+
+        /* Nút tùy chỉnh Admin trên thẻ */
+        .admin-card-controls {
+            position: absolute;
+            top: -15px; left: 0; right: 0;
+            display: none;
+            justify-content: center;
+            gap: 10px;
+            z-index: 10;
+        }
+        body.admin-active .admin-card-controls { display: flex; }
+        .admin-card-btn {
+            background: rgba(0,0,0,0.8);
+            border: 1px solid var(--amber);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: white;
+            font-family: var(--font-kicker);
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.8);
+        }
+        .admin-card-btn:hover { background: var(--amber); color: black; }
+        .admin-card-btn.del:hover { background: red; color: white; border-color: red; }
 
         .staff-card-inner {
             position: relative;
@@ -142,6 +167,9 @@
             flex-direction: column;
             overflow: hidden;
         }
+
+        /* Khi bị ẩn */
+        .staff-card-container.is-hidden { opacity: 0.4; filter: grayscale(0.8); }
 
         /* --- MẶT TRƯỚC --- */
         .card-front .c-name { font-family: var(--font-heading); font-size: 26px; font-weight: 700; color: var(--theme-color); text-shadow: 0 0 15px var(--theme-color); text-align: center; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
@@ -546,9 +574,15 @@
         }
 
         /* ============================================================
-           KHỞI TẠO VÀ LẤY DỮ LIỆU TỪ SUPABASE
+           KHỞI TẠO VÀ LẤY DỮ LIỆU TỪ SUPABASE (CÓ FALLBACK LOCAL)
            ============================================================ */
         document.addEventListener("DOMContentLoaded", async () => {
+            // Load fallback local data first to make sure UI shows something if Supabase is slow
+            const localFallback = localStorage.getItem("meown_config_backup");
+            if(localFallback) {
+                try { Object.assign(CONFIG, JSON.parse(localFallback)); } catch(e){}
+            }
+
             await fetchStationConfig();
             await fetchFeeds();
             
@@ -569,35 +603,56 @@
                 if (data && data.data) {
                     const dbConfig = typeof data.data === 'string' ? JSON.parse(data.data) : data.data;
                     Object.assign(CONFIG, dbConfig);
+                    // Cập nhật lại bản backup cục bộ
+                    localStorage.setItem("meown_config_backup", JSON.stringify(CONFIG));
                 }
             } catch(e) { console.warn("Lỗi load Supabase config:", e); }
         }
 
         async function saveStationConfigToDB() {
             try {
+                // LUÔN LƯU VÀO BỘ NHỚ MÁY TRƯỚC ĐỂ PHÒNG NGỪA SUPABASE CHẶN DO FILE NHẠC NẶNG
+                localStorage.setItem("meown_config_backup", JSON.stringify(CONFIG));
+
                 const payload = { landingAvatar: CONFIG.landingAvatar, stationMaster: CONFIG.stationMaster, trains: CONFIG.trains, staff: CONFIG.staff, upcomingBots: CONFIG.upcomingBots, musicLibrary: CONFIG.musicLibrary };
                 const { error } = await supa.from('station_config').upsert([{ id: 1, data: JSON.stringify(payload) }]);
                 if(error) throw error;
-            } catch(e) { alert("Lỗi lưu Supabase!"); console.error(e); }
+            } catch(e) { 
+                console.error(e);
+                alert("Lỗi lưu Supabase! (Dữ liệu của bạn ĐÃ ĐƯỢC LƯU TẠM VÀO MÁY, bạn không bị mất dữ liệu). Lỗi này thường do bạn tải lên file âm thanh/ảnh quá nặng khiến Supabase từ chối."); 
+            }
         }
 
         function checkAdminLogin() {
             const urlParams = new URLSearchParams(window.location.search);
-            if(urlParams.get('admin') === 'true' && !isAdminMode) {
-                let pwd = prompt("LỐI VÀO ẨN: Vui lòng nhập mật mã bảo mật của Trưởng Ga:");
-                if(pwd === "bhnt2006") {
-                    isAdminMode = true; 
-                    document.body.classList.add("admin-active");
-                    document.getElementById("smBoxContainer").addEventListener("click", () => { if(isAdminMode) openAdminForm('sm'); });
-                    
-                    const adminAvatarHtml = `<img src="${ADMIN_CAT_AVATAR}" style="width:24px; height:24px; border-radius:50%; display:inline-block; vertical-align:middle; border:1px solid var(--amber);">`;
-                    document.getElementById("gbNameWrap").innerHTML = `<div style="color:var(--amber); font-weight:bold; margin-bottom:10px;">${adminAvatarHtml} Trưởng ga Meown ${VERIFIED_TICK}</div>`;
-                    document.getElementById("rcNameWrap").innerHTML = `<div style="color:var(--amber); font-weight:bold; margin-bottom:10px;">${adminAvatarHtml} Trưởng ga Meown ${VERIFIED_TICK}</div>`;
+            if(urlParams.get('admin') === 'true' || sessionStorage.getItem('isAdmin') === 'true') {
+                if (!sessionStorage.getItem('isAdmin')) {
+                    let pwd = prompt("LỐI VÀO ẨN: Vui lòng nhập mật mã bảo mật của Trưởng Ga:");
+                    if(pwd === "bhnt2006") {
+                        sessionStorage.setItem('isAdmin', 'true');
+                    } else { 
+                        alert("Sai mật mã."); 
+                        window.location.href = window.location.pathname; // Đá văng ra ngoài
+                        return;
+                    }
+                }
+                
+                isAdminMode = true; 
+                document.body.classList.add("admin-active");
+                document.getElementById("smBoxContainer").addEventListener("click", () => { if(isAdminMode) openAdminForm('sm'); });
+                
+                const adminAvatarHtml = `<img src="${ADMIN_CAT_AVATAR}" style="width:24px; height:24px; border-radius:50%; display:inline-block; vertical-align:middle; border:1px solid var(--amber);">`;
+                const gbWrap = document.getElementById("gbNameWrap");
+                const rcWrap = document.getElementById("rcNameWrap");
+                if(gbWrap) gbWrap.innerHTML = `<div style="color:var(--amber); font-weight:bold; margin-bottom:10px;">${adminAvatarHtml} Trưởng ga Meown ${VERIFIED_TICK}</div>`;
+                if(rcWrap) rcWrap.innerHTML = `<div style="color:var(--amber); font-weight:bold; margin-bottom:10px;">${adminAvatarHtml} Trưởng ga Meown ${VERIFIED_TICK}</div>`;
 
-                    const cleanUrl = window.location.href.split('?')[0];
-                    window.history.replaceState({}, document.title, cleanUrl);
-                    alert("Đã xác nhận Trưởng Ga. Mở khóa chỉnh sửa!");
-                } else { alert("Sai mật mã."); }
+                const cleanUrl = window.location.href.split('?')[0];
+                window.history.replaceState({}, document.title, cleanUrl);
+                
+                // Rerender again to show all hidden items and admin buttons
+                renderTrains();
+                renderUpcomingBots();
             }
         }
 
@@ -626,7 +681,7 @@
         }
 
         /* ============================================================
-           BẢNG ADMIN FORMS
+           BẢNG ADMIN FORMS (CÓ ĐẦY ĐỦ TÍNH NĂNG)
            ============================================================ */
         function openAdminForm(type, extraArg) {
             const body = document.getElementById("generalModalBody"); 
@@ -672,7 +727,6 @@
                 const trainObj = CONFIG.trains.find(t=>t.id===extraArg);
                 const trainColor = trainObj ? (trainObj.color || '#FFB000') : '#FFB000';
                 
-                // Lấy 10 màu sắc dựa trên màu của tàu
                 const palette = generate10Colors(trainColor);
                 let colorSwatchesHTML = palette.map((hex, i) => {
                     return `<div class="color-swatch ${i===0 ? 'selected' : ''}" style="background-color: ${hex};" data-color="${hex}"></div>`;
@@ -729,8 +783,9 @@
                         name: document.getElementById("aStName").value, 
                         avatar: sB64, hook: document.getElementById("aStHook").value, 
                         tags: tags, scenario: document.getElementById("aStScenario").innerHTML, chatLink: document.getElementById("aStChat").value,
-                        color: selectedStaffColor, // Lưu màu sắc đã chọn
-                        createdAt: Date.now(), rating: { sum: 0, count: 0 } 
+                        color: selectedStaffColor,
+                        createdAt: Date.now(), rating: { sum: 0, count: 0 },
+                        isHidden: false // Thêm thuộc tính ẩn
                     });
                     await saveStationConfigToDB(); renderTrains(); document.getElementById("generalModal").classList.add("hidden");
                 });
@@ -748,7 +803,7 @@
                 let uB64 = ""; document.getElementById("aUpFile").addEventListener("change", async (e)=>{ uB64 = await resizeImage(e.target.files[0]); document.getElementById("aUpPrev").innerHTML=`<img src="${uB64}">`; });
                 document.getElementById("saveUp").addEventListener("click", async () => {
                     const tagsArray = document.getElementById("aUpTags").value.split(',').map(t=>t.trim()).filter(t=>t);
-                    CONFIG.upcomingBots.push({ id: "u_"+Date.now(), name: document.getElementById("aUpName").value, avatar: uB64, idea: document.getElementById("aUpIdea").value, train: document.getElementById("aUpTrain").value, tags: tagsArray });
+                    CONFIG.upcomingBots.push({ id: "u_"+Date.now(), name: document.getElementById("aUpName").value, avatar: uB64, idea: document.getElementById("aUpIdea").value, train: document.getElementById("aUpTrain").value, tags: tagsArray, isHidden: false });
                     await saveStationConfigToDB(); renderUpcomingBots(); document.getElementById("generalModal").classList.add("hidden");
                 });
             }
@@ -818,14 +873,17 @@
         document.getElementById("closeGeneralModal").addEventListener("click", () => document.getElementById("generalModal").classList.add("hidden"));
 
         /* ============================================================
-           HIỂN THỊ CHUYẾN TÀU VÀ LÁ BÀI 3D
+           HIỂN THỊ CHUYẾN TÀU VÀ LÁ BÀI 3D (XỬ LÝ ẨN/HIỆN CHO ADMIN)
            ============================================================ */
         document.getElementById("staffSearch").addEventListener("input", (e) => { currentSearch = e.target.value; renderTrains(); });
         document.getElementById("staffSortSelect").addEventListener("change", (e) => { currentSort = e.target.value; renderTrains(); });
 
         document.getElementById("randomStaffBtn").addEventListener("click", () => {
-            if(CONFIG.staff.length === 0) return alert("Chưa có nhân viên nào!");
-            const randomStaff = CONFIG.staff[Math.floor(Math.random() * CONFIG.staff.length)];
+            let availableStaff = CONFIG.staff;
+            if(!isAdminMode) availableStaff = availableStaff.filter(s => !s.isHidden);
+            if(availableStaff.length === 0) return alert("Chưa có nhân viên nào!");
+
+            const randomStaff = availableStaff[Math.floor(Math.random() * availableStaff.length)];
             const body = document.getElementById("generalModalBody"); 
             document.getElementById("generalModalTitle").textContent = "GỢI Ý NGẪU NHIÊN"; 
             body.innerHTML = "";
@@ -879,13 +937,15 @@
                     acc.appendChild(addStaffArea);
                 }
 
+                // Lọc staff theo Search và Quyền Admin
                 let trainStaff = CONFIG.staff.filter(s => s.trainId === train.id && s.name.toLowerCase().includes(q));
+                if(!isAdminMode) trainStaff = trainStaff.filter(s => !s.isHidden); // Khách không thấy thẻ ẩn
+                
                 trainStaff = sortStaffList(trainStaff);
 
                 const grid = document.createElement("div"); 
                 grid.className = "staff-grid";
                 for(let st of trainStaff) { 
-                    // Ưu tiên dùng màu riêng của staff, nếu không có thì lấy màu mặc định của tàu
                     const finalColor = st.color || themeColor;
                     grid.appendChild(createStaffCard(st, finalColor)); 
                 }
@@ -900,11 +960,34 @@
             }
         }
 
-        // HÀM TẠO LÁ BÀI 3D
+        /* HÀM QUẢN LÝ XÓA / ẨN CHO ADMIN TRÊN CARD NHÂN VIÊN */
+        window.toggleHideStaff = async function(staffId, event) {
+            event.stopPropagation();
+            const st = CONFIG.staff.find(s => s.id === staffId);
+            if(st) {
+                st.isHidden = !st.isHidden;
+                await saveStationConfigToDB();
+                renderTrains();
+            }
+        };
+        window.deleteStaff = async function(staffId, event) {
+            event.stopPropagation();
+            if(confirm("XÓA VĨNH VIỄN nhân viên này. Bạn chắc chứ?")) {
+                CONFIG.staff = CONFIG.staff.filter(s => s.id !== staffId);
+                await saveStationConfigToDB();
+                renderTrains();
+            }
+        };
+
+        // HÀM TẠO LÁ BÀI 3D CÓ THÊM TÍNH NĂNG ADMIN XÓA/ẨN
         function createStaffCard(staff, themeColor) {
             const cardWrap = document.createElement("div");
             cardWrap.className = "staff-card-container";
             cardWrap.style.setProperty('--theme-color', themeColor);
+            
+            if(staff.isHidden && isAdminMode) {
+                cardWrap.classList.add("is-hidden");
+            }
 
             const rData = staff.rating || { sum: 0, count: 0 };
             const avgText = rData.count === 0 ? "0.0" : (rData.sum / rData.count).toFixed(1);
@@ -916,7 +999,19 @@
 
             const scenarioHTML = staff.scenario && staff.scenario.trim() !== "" ? staff.scenario : "<p style='font-style:italic; text-align:center; color:gray;'>Hồ sơ chưa cập nhật</p>";
 
+            let adminControls = "";
+            if(isAdminMode) {
+                const hiddenText = staff.isHidden ? '👁️ Mở Hiện' : '👁️ Đang Ẩn';
+                adminControls = `
+                    <div class="admin-card-controls">
+                        <button class="admin-card-btn" onclick="toggleHideStaff('${staff.id}', event)">${hiddenText}</button>
+                        <button class="admin-card-btn del" onclick="deleteStaff('${staff.id}', event)">🗑️ Xóa</button>
+                    </div>
+                `;
+            }
+
             cardWrap.innerHTML = `
+                ${adminControls}
                 <div class="staff-card-inner">
                     <div class="card-front">
                         <div class="c-name">${staff.name}</div>
@@ -1102,14 +1197,53 @@
             document.getElementById("rcMessage").value = ""; rcUploader.clear(); renderFeed("recruit", document.getElementById("rcSortSelect").value);
         });
 
+        /* QUẢN LÝ XÓA / ẨN CHO HỒ SƠ DỰ BỊ */
+        window.toggleHideUpcoming = async function(botId, event) {
+            event.stopPropagation();
+            const bot = CONFIG.upcomingBots.find(b => b.id === botId);
+            if(bot) {
+                bot.isHidden = !bot.isHidden;
+                await saveStationConfigToDB();
+                renderUpcomingBots();
+            }
+        };
+        window.deleteUpcoming = async function(botId, event) {
+            event.stopPropagation();
+            if(confirm("XÓA VĨNH VIỄN hồ sơ dự bị này. Bạn chắc chứ?")) {
+                CONFIG.upcomingBots = CONFIG.upcomingBots.filter(b => b.id !== botId);
+                await saveStationConfigToDB();
+                renderUpcomingBots();
+            }
+        };
+
         function renderUpcomingBots() {
             const grid = document.getElementById("upcomingBotsGrid"); grid.innerHTML = "";
-            if(CONFIG.upcomingBots.length === 0) { grid.innerHTML = "<p style='color:var(--silver); font-style:italic;'>Chưa có hồ sơ.</p>"; return; }
-            CONFIG.upcomingBots.forEach(bot => {
+            
+            let upBots = CONFIG.upcomingBots || [];
+            if(!isAdminMode) upBots = upBots.filter(b => !b.isHidden);
+            
+            if(upBots.length === 0) { grid.innerHTML = "<p style='color:var(--silver); font-style:italic;'>Chưa có hồ sơ dự bị nào.</p>"; return; }
+            
+            upBots.forEach(bot => {
                 const card = document.createElement("div"); card.className = "staff-card";
                 card.style.background = "rgba(10,10,15,0.7)";
+                if(bot.isHidden && isAdminMode) card.style.opacity = "0.5";
+
                 let tagHTML = (bot.tags||[]).map(t => `<span class="staff-tag">${t.trim().startsWith('#')?t.trim():'#'+t.trim()}</span>`).join('');
+                
+                let adminControls = "";
+                if(isAdminMode) {
+                    const hiddenText = bot.isHidden ? '👁️ Mở Hiện' : '👁️ Đang Ẩn';
+                    adminControls = `
+                        <div style="display:flex; justify-content:center; gap:10px; margin-bottom:10px;">
+                            <button class="admin-card-btn" onclick="toggleHideUpcoming('${bot.id}', event)">${hiddenText}</button>
+                            <button class="admin-card-btn del" onclick="deleteUpcoming('${bot.id}', event)">🗑️ Xóa</button>
+                        </div>
+                    `;
+                }
+
                 card.innerHTML = `
+                    ${adminControls}
                     <img class="staff-avatar" src="${bot.avatar}" onerror="this.style.opacity=0">
                     <div class="staff-name">${bot.name}</div>
                     <div class="staff-hook" style="margin-bottom:6px;"><strong>Tuyến:</strong> <span style="color:var(--amber);">${bot.train || 'Chưa định'}</span></div>
