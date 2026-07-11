@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nhà Ga Meown</title>
+<!-- Favicon hình chú mèo Trưởng Ga -->
+<link rel="icon" type="image/png" href="ChatGPT_Image_02_56_58_7_thg_7__2026-removebg-preview-removebg-preview.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
@@ -22,7 +25,7 @@
   --glass:rgba(9,13,24,0.87);
   --brass:#B08D57;
   --brass-dark:#6E5530;
-  --wood:#1A0F0A; /* Tối hơn, kinh dị hơn */
+  --wood:#1A0F0A; 
   --wood-light:#2A1612;
   --font-kicker:'Be Vietnam Pro', sans-serif;
   --font-heading:'Playfair Display', serif;
@@ -38,7 +41,7 @@ html,body{
   overflow-x:hidden;
 }
 button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit;}
-input,textarea{font-family:inherit; color:inherit; outline:none;}
+input,textarea,select{font-family:inherit; color:inherit; outline:none;}
 img{max-width:100%; display:block;}
 ::selection{background:var(--blood); color:var(--pearl);}
 
@@ -74,15 +77,16 @@ img{max-width:100%; display:block;}
   overflow:hidden;
   padding:40px 20px;
   transition:opacity 0.9s ease, filter 0.9s ease;
+  z-index: 1;
 }
 #page1.leaving{opacity:0; filter:blur(12px);}
 
 #page1::before, #page2::before{
-  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
   background:radial-gradient(ellipse at 50% 100%, rgba(158,8,8,0.15) 0%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0.9) 100%);
 }
 #page1::after{
-  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
   opacity:0.06; mix-blend-mode:overlay;
   background-image:repeating-radial-gradient(circle at 20% 30%, #fff 0 1px, transparent 1px 3px);
   animation:grainShift 1.4s steps(3) infinite;
@@ -91,12 +95,8 @@ img{max-width:100%; display:block;}
 
 /* Sương mù trôi chậm 4 góc */
 .fog{
-  position:absolute;
-  border-radius:50%;
-  filter:blur(50px);
-  opacity:0.35;
-  pointer-events:none;
-  background:radial-gradient(circle, rgba(100,110,130,0.5) 0%, rgba(100,110,130,0) 70%);
+  position:absolute; border-radius:50%; filter:blur(50px); opacity:0.35; pointer-events:none;
+  background:radial-gradient(circle, rgba(100,110,130,0.5) 0%, rgba(100,110,130,0) 70%); z-index: 0; mix-blend-mode: screen;
 }
 .fog-tl{width:65vw; height:65vw; top:-25vw; left:-25vw; animation:driftTL 26s ease-in-out infinite;}
 .fog-tr{width:60vw; height:60vw; top:-20vw; right:-20vw; animation:driftTR 32s ease-in-out infinite;}
@@ -111,7 +111,7 @@ img{max-width:100%; display:block;}
 .blood-glow{
   position:absolute; border-radius:50%; pointer-events:none;
   background:radial-gradient(circle, var(--blood-glow) 0%, rgba(158,8,8,0) 70%);
-  filter:blur(25px); animation:bloodPulse 8s ease-in-out infinite;
+  filter:blur(25px); animation:bloodPulse 8s ease-in-out infinite; z-index: 0;
 }
 .blood-glow.b1{width:300px; height:300px; bottom:-10%; left:20%; animation-delay:0s;}
 .blood-glow.b2{width:250px; height:250px; top:10%; right:15%; animation-delay:4s;}
@@ -120,7 +120,7 @@ img{max-width:100%; display:block;}
 .headlight{
   position:absolute; width:100px; height:100px; border-radius:50%;
   background:radial-gradient(circle, rgba(255,176,0,0.6) 0%, rgba(255,176,0,0) 70%);
-  filter:blur(8px); animation:pulseGlow 5s ease-in-out infinite, flicker 7s linear infinite; pointer-events:none;
+  filter:blur(8px); animation:pulseGlow 5s ease-in-out infinite, flicker 7s linear infinite; pointer-events:none; z-index: 0;
 }
 .headlight.h1{top:15%; left:10%;}
 .headlight.h2{top:80%; right:8%; animation-delay:1.5s;}
@@ -142,12 +142,10 @@ img{max-width:100%; display:block;}
   50%{box-shadow:0 0 30px rgba(255,176,0,0.5), 0 0 80px rgba(158,8,8,0.3), inset 0 0 40px rgba(255,176,0,0.15);}
 }
 
-/* Avatar mèo */
 .avatar-wrap{position:relative; width:112px; height:112px; border-radius:50%; margin-bottom:22px;}
 .avatar-halo{
   position:absolute; inset:-6px; border-radius:50%; border:1px solid var(--amber);
-  box-shadow:0 0 15px var(--amber), 0 0 30px var(--blood);
-  animation:haloPulse 3s ease-in-out infinite;
+  box-shadow:0 0 15px var(--amber), 0 0 30px var(--blood); animation:haloPulse 3s ease-in-out infinite;
 }
 @keyframes haloPulse{0%,100%{opacity:0.5; transform:scale(1);}50%{opacity:1; transform:scale(1.02);}}
 .avatar-img{width:112px; height:112px; border-radius:50%; object-fit:cover; background:linear-gradient(160deg, var(--wood-light), var(--wood)); display:block;}
@@ -158,7 +156,6 @@ img{max-width:100%; display:block;}
 .avatar-eye.left{left:33%;} .avatar-eye.right{right:33%;}
 @keyframes blinkEye{0%,92%,100%{opacity:1; transform:scaleY(1);} 94%,96%{opacity:0.1; transform:scaleY(0.1);}}
 
-/* Typography */
 .kicker{font-family:var(--font-kicker); font-weight:300; letter-spacing:4px; font-size:12px; color:var(--pearl); text-transform:uppercase; margin-bottom:10px;}
 .heading{
   font-family:var(--font-heading); font-weight:700; font-size:clamp(26px,6vw,36px); letter-spacing:1px;
@@ -167,25 +164,17 @@ img{max-width:100%; display:block;}
 }
 .body-text{font-family:var(--font-body); font-style:italic; font-weight:300; font-size:14.5px; line-height:1.75; color:var(--silver); margin-bottom:30px;}
 
-/* Nút CTA */
 .cta-btn{
   position:relative; padding:15px 38px; border-radius:999px;
   font-family:var(--font-kicker); font-weight:700; font-size:14px; letter-spacing:1px; color:#3B1F00;
   background:linear-gradient(90deg, #FF8A00, var(--amber) 55%, #FFD166);
-  box-shadow:0 0 20px rgba(158,8,8,0.6), 0 0 40px rgba(255,140,0,0.3);
-  transition:all 0.3s ease;
+  box-shadow:0 0 20px rgba(158,8,8,0.6), 0 0 40px rgba(255,140,0,0.3); transition:all 0.3s ease;
 }
-.cta-btn:hover{
-  transform:translateY(-2px) scale(1.05);
-  box-shadow:0 0 30px rgba(255,110,0,0.9), 0 0 60px rgba(158,8,8,0.7);
-  color:#1a0e00;
-}
+.cta-btn:hover{transform:translateY(-2px) scale(1.05); box-shadow:0 0 30px rgba(255,110,0,0.9), 0 0 60px rgba(158,8,8,0.7); color:#1a0e00;}
 
-/* Thẻ bài hành lý (Góc dưới trái) */
 .luggage-tag{
   position:fixed; left:20px; bottom:20px; z-index:5; padding:12px 18px; border-radius:8px;
-  background:rgba(5,7,11,0.6); border:1px solid rgba(255,176,0,0.2);
-  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  background:rgba(5,7,11,0.6); border:1px solid rgba(255,176,0,0.2); backdrop-filter:blur(8px);
   font-family:var(--font-kicker); font-size:12px; color:var(--silver); line-height:2; transform:rotate(-2deg);
 }
 .luggage-tag .tag-line{display:flex; align-items:center; gap:8px;}
@@ -199,15 +188,14 @@ img{max-width:100%; display:block;}
 #page2{
   position:relative; min-height:100vh;
   background: radial-gradient(circle at 10% 20%, rgba(158,8,8,0.05), transparent 40%), linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-abyss) 100%);
-  padding-top:90px; padding-bottom:80px; opacity:0; transition:opacity 0.9s ease;
+  padding-top:90px; padding-bottom:80px; opacity:0; transition:opacity 0.9s ease; z-index: 1;
 }
 #page2.entering{opacity:1;}
 
 .topnav{
   position:fixed; top:16px; left:50%; transform:translateX(-50%); z-index:50;
   display:flex; align-items:center; gap:8px; padding:8px; border-radius:999px;
-  background:rgba(5,7,11,0.85); border:1px solid rgba(158,8,8,0.4);
-  backdrop-filter:blur(10px); max-width:94vw; overflow-x:auto;
+  background:rgba(5,7,11,0.85); border:1px solid rgba(158,8,8,0.4); backdrop-filter:blur(10px); max-width:94vw; overflow-x:auto;
 }
 .nav-home{
   display:inline-flex; align-items:center; gap:6px; padding:9px 16px; border-radius:999px;
@@ -255,8 +243,7 @@ img{max-width:100%; display:block;}
 .staff-card:hover{border-color:var(--blood-soft);}
 .staff-avatar{
   width:70px; height:70px; border-radius:50%; margin:0 auto 12px;
-  border:2px solid var(--blood-soft); box-shadow:0 0 15px rgba(158,8,8,0.5);
-  background:var(--wood); object-fit:cover;
+  border:2px solid var(--blood-soft); box-shadow:0 0 15px rgba(158,8,8,0.5); background:var(--wood); object-fit:cover;
 }
 .staff-name{font-family:var(--font-heading); font-size:16px; color:var(--amber); margin-bottom:6px;}
 .staff-hook{font-size:12.5px; font-style:italic; color:var(--silver); margin-bottom:10px; line-height:1.4;}
@@ -266,7 +253,7 @@ img{max-width:100%; display:block;}
 .action-btn{display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--silver); transition:color 0.2s;}
 .action-btn:hover{color:var(--amber);}
 
-/* Khung đánh giá */
+/* Khung đánh giá nhân viên (Bot) */
 .rating-panel{margin-top:12px; padding-top:12px; border-top:1px dashed rgba(158,8,8,0.4); display:none; text-align:left;}
 .rating-panel.open{display:block; animation:fadeUp 0.3s ease;}
 .stars-row{display:flex; gap:8px; justify-content:center; margin-bottom:12px;}
@@ -274,43 +261,36 @@ img{max-width:100%; display:block;}
 .star-icon.filled{color:var(--amber); filter:drop-shadow(0 0 5px var(--amber));}
 .rating-panel textarea{width:100%; min-height:80px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,176,0,0.2); color:var(--pearl); padding:10px; border-radius:6px; margin-bottom:10px; font-size:13px;}
 
-/* Sổ lưu bút & Form */
+/* Form và Bảng tin (Feed) Sổ Lưu Bút / Tuyển Dụng */
 .mailbox-panel{
   background:linear-gradient(160deg, #2a1111, var(--bg-abyss)); border:1px solid var(--blood);
-  border-radius:12px; padding:28px; position:relative; box-shadow:0 12px 30px rgba(0,0,0,0.7);
+  border-radius:12px; padding:28px; position:relative; box-shadow:0 12px 30px rgba(0,0,0,0.7); margin-bottom: 24px;
 }
 .form-row{margin-bottom:16px;}
 .form-row label{display:block; font-family:var(--font-kicker); font-size:11px; letter-spacing:1px; color:var(--blood-soft); margin-bottom:6px; text-transform:uppercase;}
 .form-row input, .form-row textarea{width:100%; padding:12px; border-radius:6px; background:rgba(0,0,0,0.6); border:1px solid rgba(158,8,8,0.4); color:var(--pearl); font-size:13.5px;}
+
 .submit-btn{
   padding:12px 24px; border-radius:999px; background:linear-gradient(90deg, var(--blood), #5e0505);
-  color:var(--pearl); font-weight:700; font-size:12px; letter-spacing:1px; font-family:var(--font-kicker); box-shadow:0 0 10px rgba(158,8,8,0.5);
+  color:var(--pearl); font-weight:700; font-size:12px; letter-spacing:1px; font-family:var(--font-kicker); box-shadow:0 0 10px rgba(158,8,8,0.5); transition: 0.3s;
 }
 .submit-btn:hover{filter:brightness(1.2); box-shadow:0 0 20px rgba(158,8,8,0.8);}
+.submit-btn:disabled{opacity:0.6; cursor:not-allowed;}
 
-/* Khung liên hệ Facebook */
-.contact-card {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  margin-top: 24px; padding: 20px; border-radius: 12px;
-  background: rgba(10, 10, 15, 0.6); border: 1px solid rgba(255, 176, 0, 0.2);
-  text-decoration: none; transition: 0.3s ease; text-align: center;
-  max-width: 400px; margin-left: auto; margin-right: auto;
+.feed-container { display: flex; flex-direction: column; gap: 20px; }
+.post-card {
+  background: rgba(15, 10, 10, 0.7); border: 1px solid rgba(158,8,8,0.3); border-radius: 12px;
+  padding: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
-.contact-card:hover {
-  background: rgba(158, 8, 8, 0.15); border-color: var(--blood-soft);
-  transform: translateY(-2px);
+.post-header { display: flex; flex-direction: column; margin-bottom: 12px; }
+.post-author { font-family: var(--font-heading); font-size: 16px; color: var(--amber); }
+.post-time { font-size: 11px; color: var(--silver-dim); }
+.post-content { font-size: 14px; color: var(--pearl); line-height: 1.6; margin-bottom: 12px; white-space: pre-wrap; }
+.reaction-bar {
+  display: flex; gap: 16px; border-top: 1px dashed rgba(158,8,8,0.3); padding-top: 8px; margin-bottom: 4px;
 }
-.contact-icon {
-  width: 40px; height: 40px; border-radius: 50%;
-  background: rgba(158, 8, 8, 0.2); color: var(--amber);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px; margin-bottom: 12px;
-  box-shadow: 0 0 10px rgba(158, 8, 8, 0.5);
-}
-.contact-title { font-family: var(--font-heading); font-size: 16px; color: var(--pearl); margin-bottom: 4px; }
-.contact-sub { font-family: var(--font-body); font-size: 12px; color: var(--silver); font-style: normal; font-weight: normal; }
-.contact-desc { font-size: 12.5px; color: var(--amber-soft); font-style: italic; margin-bottom: 8px; line-height: 1.4; }
-.contact-url { font-family: var(--font-kicker); font-size: 10px; color: var(--silver-dim); word-break: break-all; letter-spacing: 0.5px; }
+.react-btn { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--silver); transition: 0.2s; }
+.react-btn:hover { color: var(--amber); transform: scale(1.05); }
 
 /* ============================================================
    MODAL GAME & FASHION UI (Ma mị + Chibi)
@@ -329,7 +309,6 @@ img{max-width:100%; display:block;}
 .close-btn{color:var(--silver); font-size:24px;}
 .close-btn:hover{color:var(--blood-soft);}
 
-/* Thẻ Playlist Game */
 .game-card{
   display:flex; gap:16px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,176,0,0.15);
   border-radius:12px; padding:12px; margin-bottom:12px; cursor:pointer; transition:0.3s;
@@ -340,7 +319,6 @@ img{max-width:100%; display:block;}
 .game-name{font-family:var(--font-kicker); font-weight:700; color:var(--amber); font-size:14px; margin-bottom:4px;}
 .game-desc{font-size:12px; color:var(--silver); font-style:italic;}
 
-/* UI Game Thời Trang */
 .fashion-stage{
   position:relative; width:100%; aspect-ratio:3/4; background-color:#111; background-size:cover; background-position:center;
   border-radius:12px; border:2px solid var(--blood); overflow:hidden; margin-bottom:20px;
@@ -401,7 +379,6 @@ img{max-width:100%; display:block;}
 .gramo-list-btn{font-family:var(--font-kicker); font-size:10px; padding:6px 12px; border:1px solid var(--blood-soft); border-radius:999px; color:var(--silver);}
 .gramo-list-btn:hover{background:rgba(158,8,8,0.2); color:var(--pearl);}
 
-/* Playlist Modal */
 .playlist-tabs{display:flex; gap:8px; margin-bottom:16px;}
 .playlist-tab{flex:1; padding:10px; border-radius:8px; font-family:var(--font-kicker); font-size:11px; color:var(--silver); border:1px solid rgba(255,176,0,0.2);}
 .playlist-tab.active{background:linear-gradient(90deg, var(--blood), #5e0505); color:var(--pearl); border-color:var(--blood);}
@@ -459,15 +436,6 @@ img{max-width:100%; display:block;}
           <img style="width:100px; height:100px; border-radius:12px; border:1px solid var(--blood); object-fit:cover;" id="smAvatar" src="" onerror="this.style.opacity=0;">
           <p id="smBio" style="font-style:italic; color:var(--silver); font-size:14px; line-height:1.8; flex:1; min-width:200px;"></p>
         </div>
-        
-        <!-- Khung liên hệ Facebook -->
-        <a href="#" target="_blank" class="contact-card hidden" id="smFbCard">
-          <div class="contact-icon"><span class="icon-slot" data-icon="facebook"></span></div>
-          <div class="contact-title">Facebook <span class="contact-sub" id="smFbName"></span></div>
-          <div class="contact-desc" id="smFbDesc"></div>
-          <div class="contact-url" id="smFbUrlText"></div>
-        </a>
-        
       </div>
     </div>
 
@@ -483,15 +451,17 @@ img{max-width:100%; display:block;}
         <form id="guestbookForm">
           <div class="form-row">
             <label>Tên của bạn</label>
-            <input type="text" id="gbName" placeholder="Nhập tên...">
+            <input type="text" id="gbName" placeholder="Nhập tên..." required>
           </div>
           <div class="form-row">
-            <label>Lời nhắn cho Trưởng Ga</label>
-            <textarea id="gbMessage" placeholder="Viết ở đây..."></textarea>
+            <label>Lời nhắn cho mọi người</label>
+            <textarea id="gbMessage" placeholder="Viết phản hồi hoặc chia sẻ ở đây..." required></textarea>
           </div>
-          <button type="submit" class="submit-btn">GỬI THƯ</button>
+          <button type="submit" class="submit-btn">GỬI BÀI ĐĂNG</button>
         </form>
       </div>
+      <!-- Khu vực hiển thị bảng tin Sổ Lưu Bút -->
+      <div class="feed-container" id="guestbookFeed"></div>
     </div>
 
     <!-- View: Trạm tuyển dụng -->
@@ -500,11 +470,13 @@ img{max-width:100%; display:block;}
         <h2 class="embossed-title">TRẠM TUYỂN DỤNG</h2>
         <p style="font-style:italic; color:var(--silver); font-size:13px; margin-bottom:16px;">Gửi hồ sơ dự bị — ý tưởng cho nhân viên mới.</p>
         <form id="recruitForm">
-          <div class="form-row"><label>Bút danh</label><input type="text"></div>
-          <div class="form-row"><label>Ý tưởng nhân vật</label><textarea placeholder="Mô tả cốt truyện, tính cách..."></textarea></div>
+          <div class="form-row"><label>Bút danh</label><input type="text" id="rcName" required></div>
+          <div class="form-row"><label>Ý tưởng nhân vật</label><textarea id="rcMessage" placeholder="Mô tả cốt truyện, tính cách..." required></textarea></div>
           <button type="submit" class="submit-btn">GỬI HỒ SƠ</button>
         </form>
       </div>
+      <!-- Khu vực hiển thị bảng tin Trạm Tuyển Dụng -->
+      <div class="feed-container" id="recruitFeed"></div>
     </div>
   </div>
 </section>
@@ -553,25 +525,26 @@ img{max-width:100%; display:block;}
       <div class="modal-title" id="gameModalTitle">Playlist Game</div>
       <button class="close-btn" id="closeGameModal">&times;</button>
     </div>
-    
-    <!-- Màn hình danh sách game -->
     <div id="gameListScreen"></div>
-
-    <!-- Màn hình chơi game Thời Trang Chi Chi -->
     <div id="fashionGameScreen" class="hidden">
-      <div class="fashion-stage" id="fashionStage">
-        <!-- Lớp ảnh nhân vật base & quần áo sẽ được JS render vào đây -->
-      </div>
-      <div class="fashion-inventory" id="fashionInventory">
-        <!-- Các nút chọn đồ render vào đây -->
-      </div>
+      <div class="fashion-stage" id="fashionStage"></div>
+      <div class="fashion-inventory" id="fashionInventory"></div>
       <button class="submit-btn" id="backToGameList" style="margin-top:20px; width:100%;">QUAY LẠI DANH SÁCH</button>
     </div>
   </div>
 </div>
 
-
+<!-- THƯ VIỆN SUPABASE (Để làm web động) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+/* ============================================================
+   KẾT NỐI SUPABASE
+   ============================================================ */
+const SUPABASE_URL = 'https://gmejjxvahnqqrhihahid.supabase.co'; 
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdtZWpqeHZhaG5xcXJoaWhhaGlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM3NTM5OTQsImV4cCI6MjA5OTMyOTk5NH0.Q1uit-9R_Lrs0uM_Azgbn9GGKMoyFl-cFfl3M7IeSMU';
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+
 /* ============================================================
    BỘ ICON CƠ BẢN (1 nét, 1 màu)
    ============================================================ */
@@ -580,7 +553,6 @@ const ICONS = {
   ticket: '<svg class="icon" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M7 6v12M17 6v12"/></svg>',
   train: '<svg class="icon" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="14" rx="2"/><path d="M8 21l-2-4M16 21l2-4M12 17v4M8 8h8"/></svg>',
   star: '<svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
-  paperclip: '<svg class="icon" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>',
   game: '<svg class="icon" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="3"/><circle cx="18" cy="12" r="1" fill="currentColor"/><circle cx="15" cy="14" r="1" fill="currentColor"/><path d="M6 12h4M8 10v4"/></svg>',
   disc: '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>',
   play: '<svg class="icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>',
@@ -589,8 +561,7 @@ const ICONS = {
   next: '<svg class="icon" viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>',
   loop: '<svg class="icon" viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="22" x2="4" y2="22"/><path d="M21 3v4a9 9 0 0 1-9 9H4"/><polyline points="8 21 3 21 3 16"/><path d="M3 21v-4a9 9 0 0 1 9-9h8"/></svg>',
   shuffle: '<svg class="icon" viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>',
-  folder: '<svg class="icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>',
-  facebook: '<svg class="icon" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>'
+  folder: '<svg class="icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>'
 };
 function icon(name){ return ICONS[name] || ""; }
 document.querySelectorAll(".icon-slot").forEach(el => el.innerHTML = icon(el.dataset.icon));
@@ -605,12 +576,7 @@ const CONFIG = {
 
   stationMaster: {
     avatar: "", // [URL ẢNH TRƯỞNG GA]
-    bio: "", // [TIỂU SỬ TRƯỞNG GA]
-    facebook: {
-      url: "",  // [LINK TRANG FACEBOOK CỦA BẠN]
-      name: "", // [TÊN TRANG/CÁ NHÂN]
-      desc: ""  // [MÔ TẢ NGẮN GỌN VÍ DỤ: "Liên hệ qua FB để nhận phản hồi sớm nhất nha"]
-    }
+    bio: "" // [TIỂU SỬ TRƯỞNG GA]
   },
 
   trains: [
@@ -618,29 +584,14 @@ const CONFIG = {
   ],
 
   staff: [
-    // Ví dụ một nhân viên có tích hợp Game Thời Trang:
     // { 
     //   id: "bot1", trainId: "t1", name: "Bé Chi Chi", avatar: "", hook: "Cô bé thích thời trang", tags: ["Cute"],
-    //   games: [
-    //     { id: "g1", type: "standard", name: "Cờ Vua", desc: "Chơi cờ vua giải trí", thumb: "" },
-    //     { 
-    //       id: "g2", type: "fashion", name: "Thời Trang Chi Chi", desc: "Phối đồ cho Chi Chi", thumb: "",
-    //       fashionData: {
-    //         bg: "",      // [URL ẢNH NỀN PHÒNG]
-    //         base: "",    // [URL ẢNH CHAR BASE KHÔNG QUẦN ÁO]
-    //         items: [     // Danh sách quần áo
-    //           { id: "i1", name: "Váy đỏ", src: "[URL_ẢNH_VÁY_CẮT_SẴN_ĐỂ_ĐÈ_LÊN_BASE]", thumb: "[URL_THUMBNAIL_VÁY]" }
-    //         ]
-    //       }
-    //     }
-    //   ]
+    //   games: [...]
     // }
   ],
 
   musicLibrary: {
-    trung: [
-      // { id:"pl1", name:"Nhạc không lời", songs:[ {title:"Bản nhạc 1", src:""} ] }
-    ],
+    trung: [],
     viet: []
   }
 };
@@ -685,19 +636,14 @@ document.addEventListener("DOMContentLoaded", () => {
   if(CONFIG.stationMaster.avatar) document.getElementById("smAvatar").src = CONFIG.stationMaster.avatar;
   document.getElementById("smBio").textContent = CONFIG.stationMaster.bio;
   
-  if(CONFIG.stationMaster.facebook && CONFIG.stationMaster.facebook.url) {
-    const fbCard = document.getElementById("smFbCard");
-    fbCard.href = CONFIG.stationMaster.facebook.url;
-    document.getElementById("smFbName").textContent = CONFIG.stationMaster.facebook.name ? `(${CONFIG.stationMaster.facebook.name})` : "";
-    document.getElementById("smFbDesc").textContent = CONFIG.stationMaster.facebook.desc;
-    document.getElementById("smFbUrlText").textContent = CONFIG.stationMaster.facebook.url;
-    fbCard.classList.remove("hidden");
-  }
-  
   rollNumber(document.getElementById("statStaff"), CONFIG.stats.staffCount || CONFIG.staff.length);
   rollNumber(document.getElementById("statVisits"), CONFIG.stats.totalVisits);
 
   renderTrains();
+  
+  // Nạp dữ liệu các Feed tĩnh từ Supabase
+  fetchAndRenderFeed("guestbook");
+  fetchAndRenderFeed("recruit");
 });
 
 // Chuyển trang
@@ -725,7 +671,7 @@ navItems.forEach(btn => {
 
 
 /* ============================================================
-   RENDER DỮ LIỆU CÁC CHUYẾN TÀU & NHÂN VIÊN
+   RENDER DỮ LIỆU CÁC CHUYẾN TÀU & NHÂN VIÊN VÀ QUẢN LÝ ĐÁNH GIÁ (SUPABASE)
    ============================================================ */
 function renderTrains(){
   const wrap = document.getElementById("trainsList");
@@ -748,23 +694,25 @@ function renderTrains(){
 
 function createStaffCard(staff){
   const card = document.createElement("div"); card.className = "staff-card";
+  card.dataset.staffId = staff.id;
+  
   card.innerHTML = `
     <img class="staff-avatar" src="${staff.avatar}" onerror="this.style.opacity=0">
     <div class="staff-name">${staff.name}</div>
     <div class="staff-hook">${staff.hook}</div>
     <div class="staff-tags">${(staff.tags||[]).map(t=>`<span class="staff-tag">${t}</span>`).join("")}</div>
     <div class="action-row">
-      <button class="action-btn star-trigger">${icon("star")} Đánh giá</button>
+      <button class="action-btn star-trigger">${icon("star")} Đánh giá<span class="rating-avg" style="color:var(--amber); font-weight:bold; margin-left:4px;"></span></button>
       <button class="action-btn game-trigger">${icon("game")} Trò chơi</button>
     </div>
     <div class="rating-panel">
       <div class="stars-row">${[1,2,3,4,5].map(n=>`<span class="star-icon" data-n="${n}">${icon("star")}</span>`).join("")}</div>
-      <textarea placeholder="Cảm nhận của bạn..."></textarea>
+      <textarea placeholder="Cảm nhận của bạn gửi riêng cho Trưởng ga..."></textarea>
       <button class="submit-btn" style="width:100%;">GỬI ĐÁNH GIÁ</button>
     </div>
   `;
   
-  // Logic sao đánh giá
+  // Logic đóng mở khung và sáng ngôi sao đánh giá
   const trigger = card.querySelector(".star-trigger"), panel = card.querySelector(".rating-panel");
   trigger.addEventListener("click", () => panel.classList.toggle("open"));
   const stars = card.querySelectorAll(".star-icon"); let cur = 0;
@@ -774,10 +722,167 @@ function createStaffCard(staff){
   });
   panel.addEventListener("mouseleave", () => stars.forEach(st => st.classList.toggle("filled", +st.dataset.n <= cur)));
   
+  // Gửi đánh giá riêng cho Trưởng Ga lên Supabase
+  const submitBtn = card.querySelector(".submit-btn");
+  const textarea = card.querySelector("textarea");
+  submitBtn.addEventListener("click", async () => {
+    if (cur === 0) { alert("Vui lòng chọn số sao trước khi gửi nha quý khách!"); return; }
+    if (!textarea.value.trim()) { alert("Vui lòng nhập cảm nhận của bạn!"); return; }
+    
+    submitBtn.disabled = true;
+    submitBtn.textContent = "ĐANG GỬI...";
+    
+    const { error } = await supabase
+      .from('staff_reviews')
+      .insert([{ staff_id: staff.id, rating: cur, comment: textarea.value }]);
+      
+    if (!error) {
+      alert(`Đánh giá của bạn về ${staff.name} đã được gửi riêng cho Trưởng Ga. Cảm ơn bạn!`);
+      textarea.value = "";
+      cur = 0;
+      stars.forEach(st => st.classList.remove("filled"));
+      panel.classList.remove("open");
+      updateStaffRatingAvg(staff.id, card.querySelector(".rating-avg")); // Cập nhật lại số điểm liền
+    } else {
+      alert("Gửi đánh giá thất bại, hãy kiểm tra lại kết nối nhé.");
+    }
+    submitBtn.disabled = false;
+    submitBtn.textContent = "GỬI ĐÁNH GIÁ";
+  });
+  
+  // Khởi chạy hàm tính điểm trung bình từ lúc load trang
+  updateStaffRatingAvg(staff.id, card.querySelector(".rating-avg"));
+  
   // Logic Game
   card.querySelector(".game-trigger").addEventListener("click", () => openGameModal(staff));
   return card;
 }
+
+// Hàm kết nối Supabase lấy tổng lượt đánh giá để tính trung bình
+async function updateStaffRatingAvg(staffId, displayEl) {
+  try {
+    const { data: reviews, error } = await supabase
+      .from('staff_reviews')
+      .select('rating')
+      .eq('staff_id', staffId);
+      
+    if (error || !reviews || reviews.length === 0) {
+      displayEl.textContent = ""; 
+      return;
+    }
+    
+    const totalStars = reviews.reduce((sum, item) => sum + item.rating, 0);
+    const avg = totalStars / reviews.length;
+    displayEl.textContent = ` ${avg.toFixed(1)}`;
+  } catch (e) {
+    console.error("Lỗi khi đồng bộ điểm:", e);
+  }
+}
+
+
+/* ============================================================
+   LOGIC BẢNG TIN (SỔ LƯU BÚT & TRẠM TUYỂN DỤNG)
+   ============================================================ */
+async function fetchAndRenderFeed(type) {
+  const container = document.getElementById(type === "guestbook" ? "guestbookFeed" : "recruitFeed");
+  container.innerHTML = "<p style='color:var(--silver); font-style:italic;'>Tàu đang chở dữ liệu về...</p>";
+  
+  const table = type === 'guestbook' ? 'guestbook' : 'recruitment';
+  const { data: posts, error } = await supabase
+    .from(table)
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    container.innerHTML = "<p style='color:var(--blood-soft);'>Lỗi kết nối nhà ga dữ liệu!</p>";
+    return;
+  }
+
+  if (!posts || posts.length === 0) {
+    container.innerHTML = "<p style='color:var(--silver); font-style:italic;'>Chưa có bài đăng nào.</p>";
+    return;
+  }
+
+  container.innerHTML = "";
+  posts.forEach(post => {
+    const postEl = document.createElement("div"); postEl.className = "post-card";
+    const dateFormatted = new Date(post.created_at).toLocaleString('vi-VN');
+    
+    postEl.innerHTML = `
+      <div class="post-header">
+        <div class="post-author">${post.author}</div>
+        <div class="post-time">${dateFormatted}</div>
+      </div>
+      <div class="post-content">${post.content}</div>
+      <div class="reaction-bar">
+        <button class="react-btn" onclick="handleLike('${table}', ${post.id}, this)">
+          👍 Thích (<span class="rcount">${post.likes || 0}</span>)
+        </button>
+      </div>
+    `;
+    container.appendChild(postEl);
+  });
+}
+
+// Xử lý nút Thích
+async function handleLike(table, id, btn) {
+  const rCountEl = btn.querySelector(".rcount");
+  let currentLikes = parseInt(rCountEl.textContent);
+  
+  const { error } = await supabase
+    .from(table)
+    .update({ likes: currentLikes + 1 })
+    .eq('id', id);
+    
+  if (!error) {
+    rCountEl.textContent = currentLikes + 1;
+  }
+}
+
+// Xử lý gửi Form Sổ Lưu Bút
+document.getElementById("guestbookForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const name = document.getElementById("gbName").value;
+  const msg = document.getElementById("gbMessage").value;
+  const btn = e.target.querySelector('.submit-btn');
+  
+  btn.textContent = "ĐANG GỬI..."; btn.disabled = true;
+  
+  const { error } = await supabase
+    .from('guestbook')
+    .insert([{ author: name, content: msg }]);
+
+  if (!error) {
+    document.getElementById("gbMessage").value = "";
+    fetchAndRenderFeed("guestbook"); 
+  } else {
+    alert("Không gửi được lời nhắn, kiểm tra lại kết nối nhé!");
+  }
+  btn.textContent = "GỬI BÀI ĐĂNG"; btn.disabled = false;
+});
+
+// Xử lý gửi Form Trạm Tuyển Dụng
+document.getElementById("recruitForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const name = document.getElementById("rcName").value;
+  const msg = document.getElementById("rcMessage").value;
+  const btn = e.target.querySelector('.submit-btn');
+  
+  btn.textContent = "ĐANG GỬI..."; btn.disabled = true;
+  
+  const { error } = await supabase
+    .from('recruitment')
+    .insert([{ author: name, content: msg }]);
+
+  if (!error) {
+    document.getElementById("rcMessage").value = "";
+    fetchAndRenderFeed("recruit"); 
+  } else {
+    alert("Không gửi được ý tưởng, thử lại nha!");
+  }
+  btn.textContent = "GỬI HỒ SƠ"; btn.disabled = false;
+});
+
 
 /* ============================================================
    LOGIC GAME MODAL & FASHION UI
@@ -802,7 +907,6 @@ function openGameModal(staff){
       card.innerHTML = `<img class="game-thumb" src="${g.thumb}" onerror="this.style.opacity=0"><div class="game-info"><div class="game-name">${g.name}</div><div class="game-desc">${g.desc}</div></div>`;
       card.addEventListener("click", () => {
         if(g.type === "fashion") launchFashionGame(g);
-        // Có thể thêm xử lý cho các game khác ở đây
       });
       gameListScreen.appendChild(card);
     });
@@ -827,7 +931,6 @@ function launchFashionGame(game){
   const inv = document.getElementById("fashionInventory");
   const data = game.fashionData || {};
   
-  // Reset stage
   stage.innerHTML = ""; inv.innerHTML = "";
   stage.style.backgroundImage = `url(${data.bg || ''})`;
   
@@ -839,12 +942,10 @@ function launchFashionGame(game){
 
   const items = data.items || [];
   items.forEach(item => {
-    // Tạo layer quần áo (ẩn mặc định)
     const layer = document.createElement("img");
     layer.src = item.src; layer.className = "fashion-layer hidden-item";
     stage.appendChild(layer);
     
-    // Tạo nút bấm trong inventory
     const btn = document.createElement("div"); btn.className = "inv-item";
     btn.innerHTML = `<img src="${item.thumb || item.src}">`;
     btn.addEventListener("click", () => {
@@ -897,10 +998,8 @@ document.getElementById("gramoPrev").addEventListener("click", () => {
   loadSong((curIndex-1+curQueue.length)%curQueue.length);
 });
 
-// Ẩn/hiện Gramo panel
 gramoToggle.addEventListener("click", () => document.getElementById("gramoPanel").classList.toggle("hidden-panel"));
 
-// Logic Playlist Modal
 const plModal = document.getElementById("playlistModal");
 document.getElementById("gramoListBtn").addEventListener("click", () => {
   renderMusicFolders("trung");
