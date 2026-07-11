@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nhà Ga Meown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-deep:#0A0F1D;
+  --bg-abyss:#05070B;
+  --amber:#FFB000;
+  --amber-soft:#FFC94D;
+  --blood:#9E0808;
+  --blood-soft:#C42020;
+  --blood-glow:rgba(158,8,8,0.4);
+  --pearl:#F5F1E8;
+  --silver:rgba(230,230,238,0.7);
+  --silver-dim:rgba(230,230,238,0.45);
+  --glass:rgba(9,13,24,0.87);
+  --brass:#B08D57;
+  --brass-dark:#6E5530;
+  --wood:#1A0F0A; /* Tối hơn, kinh dị hơn */
+  --wood-light:#2A1612;
+  --font-kicker:'Be Vietnam Pro', sans-serif;
+  --font-heading:'Playfair Display', serif;
+  --font-body:'Be Vietnam Pro', sans-serif;
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+html,body{
+  width:100%; min-height:100%;
+  background:var(--bg-abyss);
+  color:var(--pearl);
+  font-family:var(--font-body);
+  overflow-x:hidden;
+}
+button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit;}
+input,textarea{font-family:inherit; color:inherit; outline:none;}
+img{max-width:100%; display:block;}
+::selection{background:var(--blood); color:var(--pearl);}
+
+/* Icon 1 nét cơ bản */
+.icon{
+  width:1em; height:1em;
+  display:inline-block;
+  vertical-align:-0.15em;
+  stroke:currentColor;
+  stroke-width:1.5;
+  fill:none;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.icon.filled{fill:currentColor; stroke:none;}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+}
+
+.hidden{display:none !important;}
+
+/* ============================================================
+   PAGE 1 — LANDING (Ma mị, rùng rợn)
+   ============================================================ */
+#page1{
+  position:relative;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: radial-gradient(ellipse at 50% 20%, #0D1326 0%, var(--bg-deep) 40%, var(--bg-abyss) 100%);
+  overflow:hidden;
+  padding:40px 20px;
+  transition:opacity 0.9s ease, filter 0.9s ease;
+}
+#page1.leaving{opacity:0; filter:blur(12px);}
+
+#page1::before, #page2::before{
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:radial-gradient(ellipse at 50% 100%, rgba(158,8,8,0.15) 0%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0.9) 100%);
+}
+#page1::after{
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  opacity:0.06; mix-blend-mode:overlay;
+  background-image:repeating-radial-gradient(circle at 20% 30%, #fff 0 1px, transparent 1px 3px);
+  animation:grainShift 1.4s steps(3) infinite;
+}
+@keyframes grainShift{0%{transform:translate(0,0);}33%{transform:translate(-1%,1%);}66%{transform:translate(1%,-1%);}100%{transform:translate(0,0);}}
+
+/* Sương mù trôi chậm 4 góc */
+.fog{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(50px);
+  opacity:0.35;
+  pointer-events:none;
+  background:radial-gradient(circle, rgba(100,110,130,0.5) 0%, rgba(100,110,130,0) 70%);
+}
+.fog-tl{width:65vw; height:65vw; top:-25vw; left:-25vw; animation:driftTL 26s ease-in-out infinite;}
+.fog-tr{width:60vw; height:60vw; top:-20vw; right:-20vw; animation:driftTR 32s ease-in-out infinite;}
+.fog-bl{width:60vw; height:60vw; bottom:-20vw; left:-20vw; animation:driftBL 30s ease-in-out infinite;}
+.fog-br{width:65vw; height:65vw; bottom:-25vw; right:-25vw; animation:driftBR 28s ease-in-out infinite;}
+@keyframes driftTL{0%,100%{transform:translate(0,0);}50%{transform:translate(35px,25px);}}
+@keyframes driftTR{0%,100%{transform:translate(0,0);}50%{transform:translate(-30px,30px);}}
+@keyframes driftBL{0%,100%{transform:translate(0,0);}50%{transform:translate(30px,-25px);}}
+@keyframes driftBR{0%,100%{transform:translate(0,0);}50%{transform:translate(-35px,-30px);}}
+
+/* Ánh đèn pha tàu & hào quang máu */
+.blood-glow{
+  position:absolute; border-radius:50%; pointer-events:none;
+  background:radial-gradient(circle, var(--blood-glow) 0%, rgba(158,8,8,0) 70%);
+  filter:blur(25px); animation:bloodPulse 8s ease-in-out infinite;
+}
+.blood-glow.b1{width:300px; height:300px; bottom:-10%; left:20%; animation-delay:0s;}
+.blood-glow.b2{width:250px; height:250px; top:10%; right:15%; animation-delay:4s;}
+@keyframes bloodPulse{0%,100%{opacity:0.2; transform:scale(0.8);}50%{opacity:0.6; transform:scale(1.2);}}
+
+.headlight{
+  position:absolute; width:100px; height:100px; border-radius:50%;
+  background:radial-gradient(circle, rgba(255,176,0,0.6) 0%, rgba(255,176,0,0) 70%);
+  filter:blur(8px); animation:pulseGlow 5s ease-in-out infinite, flicker 7s linear infinite; pointer-events:none;
+}
+.headlight.h1{top:15%; left:10%;}
+.headlight.h2{top:80%; right:8%; animation-delay:1.5s;}
+.headlight.h3{top:50%; left:5%; width:60px; height:60px; animation-delay:3s;}
+@keyframes pulseGlow{0%,100%{opacity:0.1; transform:scale(0.8);}50%{opacity:0.8; transform:scale(1.3);}}
+@keyframes flicker{0%,100%,6%,41%,45%{filter:blur(8px) brightness(1);} 4%,43%{filter:blur(8px) brightness(0.3);}}
+
+/* Thẻ kính trung tâm */
+.station-card{
+  position:relative; z-index:2; width:min(420px, 92vw);
+  padding:44px 32px 36px; border-radius:28px;
+  background:var(--glass); border:1px solid var(--amber);
+  backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+  display:flex; flex-direction:column; align-items:center; text-align:center;
+  animation:breathe 6s ease-in-out infinite;
+}
+@keyframes breathe{
+  0%,100%{box-shadow:0 0 15px rgba(255,176,0,0.2), 0 0 40px rgba(158,8,8,0.1), inset 0 0 20px rgba(255,176,0,0.05);}
+  50%{box-shadow:0 0 30px rgba(255,176,0,0.5), 0 0 80px rgba(158,8,8,0.3), inset 0 0 40px rgba(255,176,0,0.15);}
+}
+
+/* Avatar mèo */
+.avatar-wrap{position:relative; width:112px; height:112px; border-radius:50%; margin-bottom:22px;}
+.avatar-halo{
+  position:absolute; inset:-6px; border-radius:50%; border:1px solid var(--amber);
+  box-shadow:0 0 15px var(--amber), 0 0 30px var(--blood);
+  animation:haloPulse 3s ease-in-out infinite;
+}
+@keyframes haloPulse{0%,100%{opacity:0.5; transform:scale(1);}50%{opacity:1; transform:scale(1.02);}}
+.avatar-img{width:112px; height:112px; border-radius:50%; object-fit:cover; background:linear-gradient(160deg, var(--wood-light), var(--wood)); display:block;}
+.avatar-eye{
+  position:absolute; width:5px; height:5px; border-radius:50%; background:var(--amber);
+  box-shadow:0 0 8px 3px rgba(255,176,0,0.9); top:46%; animation:blinkEye 4s infinite;
+}
+.avatar-eye.left{left:33%;} .avatar-eye.right{right:33%;}
+@keyframes blinkEye{0%,92%,100%{opacity:1; transform:scaleY(1);} 94%,96%{opacity:0.1; transform:scaleY(0.1);}}
+
+/* Typography */
+.kicker{font-family:var(--font-kicker); font-weight:300; letter-spacing:4px; font-size:12px; color:var(--pearl); text-transform:uppercase; margin-bottom:10px;}
+.heading{
+  font-family:var(--font-heading); font-weight:700; font-size:clamp(26px,6vw,36px); letter-spacing:1px;
+  background:linear-gradient(180deg, #FFE8A3 0%, var(--amber) 100%); -webkit-background-clip:text; background-clip:text; color:transparent;
+  filter:drop-shadow(0 0 12px rgba(255,176,0,0.5)); margin-bottom:18px;
+}
+.body-text{font-family:var(--font-body); font-style:italic; font-weight:300; font-size:14.5px; line-height:1.75; color:var(--silver); margin-bottom:30px;}
+
+/* Nút CTA */
+.cta-btn{
+  position:relative; padding:15px 38px; border-radius:999px;
+  font-family:var(--font-kicker); font-weight:700; font-size:14px; letter-spacing:1px; color:#3B1F00;
+  background:linear-gradient(90deg, #FF8A00, var(--amber) 55%, #FFD166);
+  box-shadow:0 0 20px rgba(158,8,8,0.6), 0 0 40px rgba(255,140,0,0.3);
+  transition:all 0.3s ease;
+}
+.cta-btn:hover{
+  transform:translateY(-2px) scale(1.05);
+  box-shadow:0 0 30px rgba(255,110,0,0.9), 0 0 60px rgba(158,8,8,0.7);
+  color:#1a0e00;
+}
+
+/* Thẻ bài hành lý (Góc dưới trái) */
+.luggage-tag{
+  position:fixed; left:20px; bottom:20px; z-index:5; padding:12px 18px; border-radius:8px;
+  background:rgba(5,7,11,0.6); border:1px solid rgba(255,176,0,0.2);
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  font-family:var(--font-kicker); font-size:12px; color:var(--silver); line-height:2; transform:rotate(-2deg);
+}
+.luggage-tag .tag-line{display:flex; align-items:center; gap:8px;}
+.luggage-tag .icon{color:var(--blood-soft); width:14px; height:14px;}
+.luggage-tag .num{display:inline-block; font-variant-numeric:tabular-nums; color:var(--amber); font-weight:600; min-width:1.8em;}
+
+
+/* ============================================================
+   PAGE 2 — MAIN PORTFOLIO & STAFF
+   ============================================================ */
+#page2{
+  position:relative; min-height:100vh;
+  background: radial-gradient(circle at 10% 20%, rgba(158,8,8,0.05), transparent 40%), linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-abyss) 100%);
+  padding-top:90px; padding-bottom:80px; opacity:0; transition:opacity 0.9s ease;
+}
+#page2.entering{opacity:1;}
+
+.topnav{
+  position:fixed; top:16px; left:50%; transform:translateX(-50%); z-index:50;
+  display:flex; align-items:center; gap:8px; padding:8px; border-radius:999px;
+  background:rgba(5,7,11,0.85); border:1px solid rgba(158,8,8,0.4);
+  backdrop-filter:blur(10px); max-width:94vw; overflow-x:auto;
+}
+.nav-home{
+  display:inline-flex; align-items:center; gap:6px; padding:9px 16px; border-radius:999px;
+  border:1px solid var(--amber); font-family:var(--font-kicker); font-size:11px; letter-spacing:0.5px;
+  color:var(--amber); white-space:nowrap; box-shadow:0 0 10px rgba(255,176,0,0.2); transition:0.2s ease;
+}
+.nav-home:hover{box-shadow:0 0 20px rgba(255,176,0,0.5); background:rgba(255,176,0,0.1);}
+.nav-item{
+  position:relative; padding:9px 14px; border-radius:999px; font-family:var(--font-kicker); font-size:11px;
+  letter-spacing:0.5px; color:var(--silver); white-space:nowrap; transition:0.2s ease;
+}
+.nav-item:hover{color:var(--amber); background:rgba(158,8,8,0.2);}
+.nav-item.active{color:var(--bg-abyss); background:linear-gradient(90deg, var(--blood), var(--amber)); font-weight:bold;}
+
+.content-area{position:relative; z-index:2; max-width:920px; margin:0 auto; padding:0 20px;}
+.section-view{animation:fadeUp 0.5s ease;}
+@keyframes fadeUp{from{opacity:0; transform:translateY(15px);} to{opacity:1; transform:translateY(0);}}
+
+.wood-box{
+  background: repeating-linear-gradient(90deg, var(--wood-light) 0 4px, var(--wood) 4px 8px);
+  border:1px solid var(--blood-soft); border-radius:12px; padding:34px 28px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.8), inset 0 0 10px rgba(0,0,0,0.5);
+}
+.embossed-title{
+  font-family:var(--font-heading); font-size:20px; letter-spacing:1.5px; color:var(--amber);
+  text-shadow:2px 2px 5px rgba(0,0,0,0.9); margin-bottom:16px; text-transform:uppercase;
+}
+
+/* Các chuyến tàu & Nhân viên */
+.train-banner{
+  position:relative; border-radius:12px; overflow:hidden; margin-bottom:14px;
+  border:1px solid rgba(158,8,8,0.4); cursor:pointer; background:#050505;
+}
+.train-banner .ratio{aspect-ratio:16/9; width:100%; display:flex; align-items:center; justify-content:center; color:var(--blood-soft);}
+.train-banner .ratio img{width:100%; height:100%; object-fit:cover; filter:brightness(0.8) contrast(1.2);}
+.train-title{position:absolute; left:16px; bottom:12px; font-family:var(--font-heading); font-size:20px; color:var(--pearl); text-shadow:0 2px 8px #000;}
+.train-accordion{max-height:0; overflow:hidden; transition:max-height 0.6s ease; margin-bottom:18px;}
+.train-accordion.open{max-height:3000px;}
+
+.staff-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:16px; padding:16px 0;}
+.staff-card{
+  background:rgba(10,10,15,0.6); border:1px solid rgba(255,176,0,0.2); border-radius:12px; padding:18px; text-align:center;
+  box-shadow:0 4px 15px rgba(0,0,0,0.5); transition:border 0.3s;
+}
+.staff-card:hover{border-color:var(--blood-soft);}
+.staff-avatar{
+  width:70px; height:70px; border-radius:50%; margin:0 auto 12px;
+  border:2px solid var(--blood-soft); box-shadow:0 0 15px rgba(158,8,8,0.5);
+  background:var(--wood); object-fit:cover;
+}
+.staff-name{font-family:var(--font-heading); font-size:16px; color:var(--amber); margin-bottom:6px;}
+.staff-hook{font-size:12.5px; font-style:italic; color:var(--silver); margin-bottom:10px; line-height:1.4;}
+.staff-tags{display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-bottom:14px;}
+.staff-tag{font-size:10px; padding:4px 8px; border-radius:4px; background:rgba(158,8,8,0.2); color:var(--pearl); border:1px solid rgba(158,8,8,0.4);}
+.action-row{display:flex; justify-content:center; gap:16px;}
+.action-btn{display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--silver); transition:color 0.2s;}
+.action-btn:hover{color:var(--amber);}
+
+/* Khung đánh giá */
+.rating-panel{margin-top:12px; padding-top:12px; border-top:1px dashed rgba(158,8,8,0.4); display:none; text-align:left;}
+.rating-panel.open{display:block; animation:fadeUp 0.3s ease;}
+.stars-row{display:flex; gap:8px; justify-content:center; margin-bottom:12px;}
+.star-icon{width:22px; height:22px; color:rgba(255,255,255,0.15); cursor:pointer; transition:0.2s;}
+.star-icon.filled{color:var(--amber); filter:drop-shadow(0 0 5px var(--amber));}
+.rating-panel textarea{width:100%; min-height:80px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,176,0,0.2); color:var(--pearl); padding:10px; border-radius:6px; margin-bottom:10px; font-size:13px;}
+
+/* Sổ lưu bút & Form */
+.mailbox-panel{
+  background:linear-gradient(160deg, #2a1111, var(--bg-abyss)); border:1px solid var(--blood);
+  border-radius:12px; padding:28px; position:relative; box-shadow:0 12px 30px rgba(0,0,0,0.7);
+}
+.form-row{margin-bottom:16px;}
+.form-row label{display:block; font-family:var(--font-kicker); font-size:11px; letter-spacing:1px; color:var(--blood-soft); margin-bottom:6px; text-transform:uppercase;}
+.form-row input, .form-row textarea{width:100%; padding:12px; border-radius:6px; background:rgba(0,0,0,0.6); border:1px solid rgba(158,8,8,0.4); color:var(--pearl); font-size:13.5px;}
+.submit-btn{
+  padding:12px 24px; border-radius:999px; background:linear-gradient(90deg, var(--blood), #5e0505);
+  color:var(--pearl); font-weight:700; font-size:12px; letter-spacing:1px; font-family:var(--font-kicker); box-shadow:0 0 10px rgba(158,8,8,0.5);
+}
+.submit-btn:hover{filter:brightness(1.2); box-shadow:0 0 20px rgba(158,8,8,0.8);}
+
+/* Khung liên hệ Facebook */
+.contact-card {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  margin-top: 24px; padding: 20px; border-radius: 12px;
+  background: rgba(10, 10, 15, 0.6); border: 1px solid rgba(255, 176, 0, 0.2);
+  text-decoration: none; transition: 0.3s ease; text-align: center;
+  max-width: 400px; margin-left: auto; margin-right: auto;
+}
+.contact-card:hover {
+  background: rgba(158, 8, 8, 0.15); border-color: var(--blood-soft);
+  transform: translateY(-2px);
+}
+.contact-icon {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(158, 8, 8, 0.2); color: var(--amber);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; margin-bottom: 12px;
+  box-shadow: 0 0 10px rgba(158, 8, 8, 0.5);
+}
+.contact-title { font-family: var(--font-heading); font-size: 16px; color: var(--pearl); margin-bottom: 4px; }
+.contact-sub { font-family: var(--font-body); font-size: 12px; color: var(--silver); font-style: normal; font-weight: normal; }
+.contact-desc { font-size: 12.5px; color: var(--amber-soft); font-style: italic; margin-bottom: 8px; line-height: 1.4; }
+.contact-url { font-family: var(--font-kicker); font-size: 10px; color: var(--silver-dim); word-break: break-all; letter-spacing: 0.5px; }
+
+/* ============================================================
+   MODAL GAME & FASHION UI (Ma mị + Chibi)
+   ============================================================ */
+.overlay-modal{
+  position:fixed; inset:0; z-index:100; background:rgba(0,0,0,0.85); backdrop-filter:blur(5px);
+  display:flex; align-items:center; justify-content:center; padding:20px;
+}
+.modal-box{
+  width:min(500px, 100%); max-height:85vh; overflow-y:auto;
+  background:var(--wood); border:1px solid var(--blood); border-radius:16px; padding:24px;
+  box-shadow:0 10px 50px rgba(158,8,8,0.3);
+}
+.modal-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:1px dashed var(--blood-soft); padding-bottom:10px;}
+.modal-title{font-family:var(--font-heading); font-size:18px; color:var(--amber);}
+.close-btn{color:var(--silver); font-size:24px;}
+.close-btn:hover{color:var(--blood-soft);}
+
+/* Thẻ Playlist Game */
+.game-card{
+  display:flex; gap:16px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,176,0,0.15);
+  border-radius:12px; padding:12px; margin-bottom:12px; cursor:pointer; transition:0.3s;
+}
+.game-card:hover{background:rgba(158,8,8,0.1); border-color:var(--blood-soft);}
+.game-thumb{width:60px; height:60px; border-radius:8px; background:var(--bg-abyss); object-fit:cover; border:1px solid var(--blood-soft);}
+.game-info{flex:1; display:flex; flex-direction:column; justify-content:center;}
+.game-name{font-family:var(--font-kicker); font-weight:700; color:var(--amber); font-size:14px; margin-bottom:4px;}
+.game-desc{font-size:12px; color:var(--silver); font-style:italic;}
+
+/* UI Game Thời Trang */
+.fashion-stage{
+  position:relative; width:100%; aspect-ratio:3/4; background-color:#111; background-size:cover; background-position:center;
+  border-radius:12px; border:2px solid var(--blood); overflow:hidden; margin-bottom:20px;
+  box-shadow:inset 0 0 40px rgba(0,0,0,0.8);
+}
+.fashion-layer{position:absolute; inset:0; width:100%; height:100%; object-fit:contain; transition:opacity 0.3s;}
+.fashion-layer.hidden-item{opacity:0; pointer-events:none;}
+.fashion-inventory{
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(60px,1fr)); gap:10px;
+  padding:15px; background:rgba(0,0,0,0.4); border-radius:12px; border:1px solid var(--brass-dark);
+}
+.inv-item{
+  aspect-ratio:1; border-radius:8px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,176,0,0.2);
+  cursor:pointer; display:flex; align-items:center; justify-content:center; padding:4px; transition:0.2s;
+}
+.inv-item:hover{border-color:var(--amber); background:rgba(255,176,0,0.1);}
+.inv-item.active{border-color:var(--blood); background:rgba(158,8,8,0.2); box-shadow:0 0 10px rgba(158,8,8,0.5);}
+.inv-item img{max-width:100%; max-height:100%; object-fit:contain;}
+
+/* ============================================================
+   MÁY HÁT GRAMOPHONE
+   ============================================================ */
+.gramo-toggle{
+  position:fixed; right:20px; bottom:20px; z-index:60; width:56px; height:56px; border-radius:50%;
+  background:radial-gradient(circle at 35% 35%, #222, #050505); border:1px solid var(--blood);
+  box-shadow:0 0 15px rgba(158,8,8,0.4); display:flex; align-items:center; justify-content:center;
+  color:var(--amber); font-size:24px; transition:0.3s;
+}
+.gramo-toggle:hover{box-shadow:0 0 25px rgba(255,176,0,0.6);}
+.vinyl-spin{animation:spinVinyl 4s linear infinite;}
+.gramo-toggle.paused .vinyl-spin{animation-play-state:paused;}
+@keyframes spinVinyl{from{transform:rotate(0deg);} to{transform:rotate(360deg);}}
+
+.gramo-panel{
+  position:fixed; right:20px; bottom:88px; z-index:60; width:260px;
+  background:linear-gradient(160deg, var(--wood-light), var(--bg-abyss)); border:1px solid var(--blood-soft);
+  border-radius:16px; padding:20px; box-shadow:0 15px 30px rgba(0,0,0,0.8);
+  transform-origin:bottom right; transition:transform 0.3s ease, opacity 0.3s ease;
+}
+.gramo-panel.hidden-panel{transform:scale(0.8); opacity:0; pointer-events:none;}
+.gramo-vinyl-wrap{width:110px; height:110px; margin:0 auto 12px; position:relative;}
+.gramo-vinyl{
+  width:100%; height:100%; border-radius:50%; background:repeating-radial-gradient(circle, #111 0 2px, #1a1a1a 2px 4px);
+  border:2px solid #000; animation:spinVinyl 5s linear infinite; box-shadow:0 5px 15px rgba(0,0,0,0.6);
+}
+.gramo-vinyl.paused{animation-play-state:paused;}
+.gramo-needle{
+  position:absolute; top:5px; right:5px; width:45px; height:3px; background:var(--brass);
+  border-radius:2px; transform-origin:right center; transform:rotate(-25deg); box-shadow:0 2px 4px rgba(0,0,0,0.5);
+}
+.gramo-title{font-family:var(--font-heading); font-size:14px; color:var(--amber); text-align:center; margin-bottom:12px; min-height:18px;}
+.gramo-controls{display:flex; justify-content:center; align-items:center; gap:20px; margin-bottom:15px; color:var(--pearl);}
+.gramo-controls button{width:22px; height:22px; transition:color 0.2s;}
+.gramo-controls button:hover{color:var(--blood-soft);}
+.gramo-extra{display:flex; justify-content:space-between; align-items:center;}
+.gramo-fx{color:var(--silver-dim); width:20px; height:20px; transition:0.2s;}
+.gramo-fx.active{color:var(--amber); filter:drop-shadow(0 0 5px var(--amber));}
+.gramo-list-btn{font-family:var(--font-kicker); font-size:10px; padding:6px 12px; border:1px solid var(--blood-soft); border-radius:999px; color:var(--silver);}
+.gramo-list-btn:hover{background:rgba(158,8,8,0.2); color:var(--pearl);}
+
+/* Playlist Modal */
+.playlist-tabs{display:flex; gap:8px; margin-bottom:16px;}
+.playlist-tab{flex:1; padding:10px; border-radius:8px; font-family:var(--font-kicker); font-size:11px; color:var(--silver); border:1px solid rgba(255,176,0,0.2);}
+.playlist-tab.active{background:linear-gradient(90deg, var(--blood), #5e0505); color:var(--pearl); border-color:var(--blood);}
+.playlist-item{padding:12px; border-radius:8px; margin-bottom:8px; font-size:13px; color:var(--pearl); display:flex; justify-content:space-between; align-items:center; border:1px solid rgba(255,176,0,0.1); cursor:pointer;}
+.playlist-item:hover{background:rgba(158,8,8,0.15); border-color:var(--blood-soft);}
+
+@media (max-width:520px){
+  .topnav{gap:4px; padding:6px;}
+  .nav-item, .nav-home{padding:8px 10px; font-size:10px;}
+}
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 — CỔNG VÀO -->
+<section id="page1">
+  <div class="fog fog-tl"></div> <div class="fog fog-tr"></div> <div class="fog fog-bl"></div> <div class="fog fog-br"></div>
+  <div class="blood-glow b1"></div> <div class="blood-glow b2"></div>
+  <div class="headlight h1"></div> <div class="headlight h2"></div> <div class="headlight h3"></div>
+
+  <div class="station-card">
+    <div class="avatar-wrap">
+      <div class="avatar-halo"></div>
+      <img class="avatar-img" id="landingAvatar" src="" alt="Trưởng ga mèo" onerror="this.style.opacity=0;">
+      <div class="avatar-eye left"></div> <div class="avatar-eye right"></div>
+    </div>
+    <p class="kicker">CHÀO MỪNG QUÝ KHÁCH ĐẾN VỚI</p>
+    <h1 class="heading">NHÀ GA MEOWN</h1>
+    <p class="body-text">Ở rìa của thực tại, nơi sương mù không bao giờ tan có một nhà ga nhỏ mang tên Meown. Đến với ga, quý khách không cần mua vé bằng tiền. Chỉ cần bạn bước lên tuyến tàu phù hợp, chọn một nhân viên và bắt đầu trò chuyện, con tàu sẽ tự động lăn bánh.</p>
+    <button class="cta-btn" id="ctaGoStation">ĐI ĐẾN NHÀ GA</button>
+  </div>
+
+  <div class="luggage-tag">
+    <div class="tag-line"><span class="icon-slot" data-icon="user"></span> Nhà ga hiện có <span class="num" id="statStaff">0</span> nhân viên.</div>
+    <div class="tag-line"><span class="icon-slot" data-icon="ticket"></span> <span class="num" id="statVisits">0</span> lượt vào ga.</div>
+  </div>
+</section>
+
+<!-- PAGE 2 — SÂN GA -->
+<section id="page2" class="hidden">
+  <nav class="topnav">
+    <button class="nav-home" id="btnGoHome"><span class="icon-slot" data-icon="train"></span> TRỞ VỀ CỔNG CHÍNH</button>
+    <button class="nav-item active" data-view="stationmaster">PHÒNG TRƯỞNG GA</button>
+    <button class="nav-item" data-view="trains">CÁC CHUYẾN TÀU</button>
+    <button class="nav-item" data-view="guestbook">SỔ LƯU BÚT</button>
+    <button class="nav-item" data-view="recruitment">TRẠM TUYỂN DỤNG</button>
+  </nav>
+
+  <div class="content-area">
+    <!-- View: Phòng trưởng ga -->
+    <div class="section-view" id="view-stationmaster">
+      <div class="wood-box">
+        <h2 class="embossed-title">ĐÔI CHÚT VỀ TRƯỞNG GA</h2>
+        <div style="display:flex; gap:20px; flex-wrap:wrap;">
+          <img style="width:100px; height:100px; border-radius:12px; border:1px solid var(--blood); object-fit:cover;" id="smAvatar" src="" onerror="this.style.opacity=0;">
+          <p id="smBio" style="font-style:italic; color:var(--silver); font-size:14px; line-height:1.8; flex:1; min-width:200px;"></p>
+        </div>
+        
+        <!-- Khung liên hệ Facebook -->
+        <a href="#" target="_blank" class="contact-card hidden" id="smFbCard">
+          <div class="contact-icon"><span class="icon-slot" data-icon="facebook"></span></div>
+          <div class="contact-title">Facebook <span class="contact-sub" id="smFbName"></span></div>
+          <div class="contact-desc" id="smFbDesc"></div>
+          <div class="contact-url" id="smFbUrlText"></div>
+        </a>
+        
+      </div>
+    </div>
+
+    <!-- View: Các chuyến tàu -->
+    <div class="section-view hidden" id="view-trains">
+      <div id="trainsList"></div>
+    </div>
+
+    <!-- View: Sổ lưu bút -->
+    <div class="section-view hidden" id="view-guestbook">
+      <div class="mailbox-panel">
+        <h2 class="embossed-title">SỔ LƯU BÚT</h2>
+        <form id="guestbookForm">
+          <div class="form-row">
+            <label>Tên của bạn</label>
+            <input type="text" id="gbName" placeholder="Nhập tên...">
+          </div>
+          <div class="form-row">
+            <label>Lời nhắn cho Trưởng Ga</label>
+            <textarea id="gbMessage" placeholder="Viết ở đây..."></textarea>
+          </div>
+          <button type="submit" class="submit-btn">GỬI THƯ</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- View: Trạm tuyển dụng -->
+    <div class="section-view hidden" id="view-recruitment">
+      <div class="mailbox-panel">
+        <h2 class="embossed-title">TRẠM TUYỂN DỤNG</h2>
+        <p style="font-style:italic; color:var(--silver); font-size:13px; margin-bottom:16px;">Gửi hồ sơ dự bị — ý tưởng cho nhân viên mới.</p>
+        <form id="recruitForm">
+          <div class="form-row"><label>Bút danh</label><input type="text"></div>
+          <div class="form-row"><label>Ý tưởng nhân vật</label><textarea placeholder="Mô tả cốt truyện, tính cách..."></textarea></div>
+          <button type="submit" class="submit-btn">GỬI HỒ SƠ</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MÁY HÁT ĐĨA THAN -->
+<button class="gramo-toggle paused" id="gramoToggle"><span class="vinyl-spin icon-slot" data-icon="disc"></span></button>
+<div class="gramo-panel hidden-panel" id="gramoPanel">
+  <div class="gramo-vinyl-wrap">
+    <div class="gramo-vinyl paused" id="gramoVinyl"></div>
+    <div class="gramo-needle"></div>
+  </div>
+  <div class="gramo-title" id="gramoTitle">Chưa có bài hát</div>
+  <div class="gramo-controls">
+    <button id="gramoPrev"><span class="icon-slot" data-icon="prev"></span></button>
+    <button id="gramoPlay"><span class="icon-slot" data-icon="play"></span></button>
+    <button id="gramoNext"><span class="icon-slot" data-icon="next"></span></button>
+  </div>
+  <div class="gramo-extra">
+    <button class="gramo-fx" id="gramoLoop"><span class="icon-slot" data-icon="loop"></span></button>
+    <button class="gramo-list-btn" id="gramoListBtn">DANH SÁCH DU KHÚC</button>
+    <button class="gramo-fx" id="gramoShuffle"><span class="icon-slot" data-icon="shuffle"></span></button>
+  </div>
+  <audio id="gramoAudio"></audio>
+</div>
+
+<!-- MODAL PLAYLIST NHẠC -->
+<div class="overlay-modal hidden" id="playlistModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">Danh sách bài hát</div>
+      <button class="close-btn" id="playlistClose">&times;</button>
+    </div>
+    <div class="playlist-tabs">
+      <button class="playlist-tab active" data-cat="trung">TRUNG KHÚC</button>
+      <button class="playlist-tab" data-cat="viet">VIỆT KHÚC</button>
+    </div>
+    <div id="playlistFolders"></div>
+    <div id="playlistSongs" class="hidden"></div>
+  </div>
+</div>
+
+<!-- MODAL GAME -->
+<div class="overlay-modal hidden" id="gameModal">
+  <div class="modal-box" id="gameBox">
+    <div class="modal-header">
+      <div class="modal-title" id="gameModalTitle">Playlist Game</div>
+      <button class="close-btn" id="closeGameModal">&times;</button>
+    </div>
+    
+    <!-- Màn hình danh sách game -->
+    <div id="gameListScreen"></div>
+
+    <!-- Màn hình chơi game Thời Trang Chi Chi -->
+    <div id="fashionGameScreen" class="hidden">
+      <div class="fashion-stage" id="fashionStage">
+        <!-- Lớp ảnh nhân vật base & quần áo sẽ được JS render vào đây -->
+      </div>
+      <div class="fashion-inventory" id="fashionInventory">
+        <!-- Các nút chọn đồ render vào đây -->
+      </div>
+      <button class="submit-btn" id="backToGameList" style="margin-top:20px; width:100%;">QUAY LẠI DANH SÁCH</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+/* ============================================================
+   BỘ ICON CƠ BẢN (1 nét, 1 màu)
+   ============================================================ */
+const ICONS = {
+  user: '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/></svg>',
+  ticket: '<svg class="icon" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M7 6v12M17 6v12"/></svg>',
+  train: '<svg class="icon" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="14" rx="2"/><path d="M8 21l-2-4M16 21l2-4M12 17v4M8 8h8"/></svg>',
+  star: '<svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+  paperclip: '<svg class="icon" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>',
+  game: '<svg class="icon" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="3"/><circle cx="18" cy="12" r="1" fill="currentColor"/><circle cx="15" cy="14" r="1" fill="currentColor"/><path d="M6 12h4M8 10v4"/></svg>',
+  disc: '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>',
+  play: '<svg class="icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>',
+  pause: '<svg class="icon" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>',
+  prev: '<svg class="icon" viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>',
+  next: '<svg class="icon" viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>',
+  loop: '<svg class="icon" viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="22" x2="4" y2="22"/><path d="M21 3v4a9 9 0 0 1-9 9H4"/><polyline points="8 21 3 21 3 16"/><path d="M3 21v-4a9 9 0 0 1 9-9h8"/></svg>',
+  shuffle: '<svg class="icon" viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>',
+  folder: '<svg class="icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>',
+  facebook: '<svg class="icon" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>'
+};
+function icon(name){ return ICONS[name] || ""; }
+document.querySelectorAll(".icon-slot").forEach(el => el.innerHTML = icon(el.dataset.icon));
+
+
+/* ============================================================
+   CONFIG — BẢNG ĐIỀU KHIỂN DỮ LIỆU DÀNH CHO TRƯỞNG GA
+   ============================================================ */
+const CONFIG = {
+  landingAvatar: "", // [URL ẢNH AVATAR MÈO]
+  stats: { staffCount: 0, totalVisits: 0 },
+
+  stationMaster: {
+    avatar: "", // [URL ẢNH TRƯỞNG GA]
+    bio: "", // [TIỂU SỬ TRƯỞNG GA]
+    facebook: {
+      url: "",  // [LINK TRANG FACEBOOK CỦA BẠN]
+      name: "", // [TÊN TRANG/CÁ NHÂN]
+      desc: ""  // [MÔ TẢ NGẮN GỌN VÍ DỤ: "Liên hệ qua FB để nhận phản hồi sớm nhất nha"]
+    }
+  },
+
+  trains: [
+    // { id: "t1", name: "Chuyến Tàu Số 1", banner: "" }
+  ],
+
+  staff: [
+    // Ví dụ một nhân viên có tích hợp Game Thời Trang:
+    // { 
+    //   id: "bot1", trainId: "t1", name: "Bé Chi Chi", avatar: "", hook: "Cô bé thích thời trang", tags: ["Cute"],
+    //   games: [
+    //     { id: "g1", type: "standard", name: "Cờ Vua", desc: "Chơi cờ vua giải trí", thumb: "" },
+    //     { 
+    //       id: "g2", type: "fashion", name: "Thời Trang Chi Chi", desc: "Phối đồ cho Chi Chi", thumb: "",
+    //       fashionData: {
+    //         bg: "",      // [URL ẢNH NỀN PHÒNG]
+    //         base: "",    // [URL ẢNH CHAR BASE KHÔNG QUẦN ÁO]
+    //         items: [     // Danh sách quần áo
+    //           { id: "i1", name: "Váy đỏ", src: "[URL_ẢNH_VÁY_CẮT_SẴN_ĐỂ_ĐÈ_LÊN_BASE]", thumb: "[URL_THUMBNAIL_VÁY]" }
+    //         ]
+    //       }
+    //     }
+    //   ]
+    // }
+  ],
+
+  musicLibrary: {
+    trung: [
+      // { id:"pl1", name:"Nhạc không lời", songs:[ {title:"Bản nhạc 1", src:""} ] }
+    ],
+    viet: []
+  }
+};
+
+
+/* ============================================================
+   XỬ LÝ ÂM THANH (Còi tàu & Xé gió)
+   ============================================================ */
+let audioCtx;
+function getCtx(){ if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); return audioCtx; }
+function playWhistle(){
+  try{
+    const ctx = getCtx(); const osc = ctx.createOscillator(); const gain = ctx.createGain();
+    osc.type = "sine"; osc.frequency.setValueAtTime(450, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime+0.4);
+    osc.frequency.exponentialRampToValueAtTime(400, ctx.currentTime+1.5);
+    gain.gain.setValueAtTime(0.001, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.15, ctx.currentTime+0.2);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+1.5);
+    osc.connect(gain).connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime+1.6);
+  }catch(e){}
+}
+
+
+/* ============================================================
+   PAGE LOGIC & EFFECTS
+   ============================================================ */
+// Nhảy số
+function rollNumber(el, target){
+  const start = performance.now();
+  function tick(now){
+    const p = Math.min(1, (now-start)/1500);
+    const eased = 1 - Math.pow(1-p, 3);
+    el.textContent = Math.round(eased * target).toLocaleString("vi-VN");
+    if(p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  if(CONFIG.landingAvatar) document.getElementById("landingAvatar").src = CONFIG.landingAvatar;
+  if(CONFIG.stationMaster.avatar) document.getElementById("smAvatar").src = CONFIG.stationMaster.avatar;
+  document.getElementById("smBio").textContent = CONFIG.stationMaster.bio;
+  
+  if(CONFIG.stationMaster.facebook && CONFIG.stationMaster.facebook.url) {
+    const fbCard = document.getElementById("smFbCard");
+    fbCard.href = CONFIG.stationMaster.facebook.url;
+    document.getElementById("smFbName").textContent = CONFIG.stationMaster.facebook.name ? `(${CONFIG.stationMaster.facebook.name})` : "";
+    document.getElementById("smFbDesc").textContent = CONFIG.stationMaster.facebook.desc;
+    document.getElementById("smFbUrlText").textContent = CONFIG.stationMaster.facebook.url;
+    fbCard.classList.remove("hidden");
+  }
+  
+  rollNumber(document.getElementById("statStaff"), CONFIG.stats.staffCount || CONFIG.staff.length);
+  rollNumber(document.getElementById("statVisits"), CONFIG.stats.totalVisits);
+
+  renderTrains();
+});
+
+// Chuyển trang
+const page1 = document.getElementById("page1"), page2 = document.getElementById("page2");
+document.getElementById("ctaGoStation").addEventListener("click", () => {
+  playWhistle();
+  page1.classList.add("leaving");
+  setTimeout(() => { page1.classList.add("hidden"); page2.classList.remove("hidden"); requestAnimationFrame(()=>page2.classList.add("entering")); }, 850);
+});
+document.getElementById("btnGoHome").addEventListener("click", () => {
+  page2.classList.remove("entering");
+  setTimeout(() => { page2.classList.add("hidden"); page1.classList.remove("hidden","leaving"); }, 600);
+});
+
+// Điều hướng Tab Page 2
+const navItems = document.querySelectorAll(".nav-item");
+navItems.forEach(btn => {
+  btn.addEventListener("click", () => {
+    navItems.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    document.querySelectorAll(".section-view").forEach(v => v.classList.add("hidden"));
+    document.getElementById("view-" + btn.dataset.view).classList.remove("hidden");
+  });
+});
+
+
+/* ============================================================
+   RENDER DỮ LIỆU CÁC CHUYẾN TÀU & NHÂN VIÊN
+   ============================================================ */
+function renderTrains(){
+  const wrap = document.getElementById("trainsList");
+  wrap.innerHTML = "";
+  CONFIG.trains.forEach(train => {
+    const banner = document.createElement("div"); banner.className = "train-banner";
+    banner.innerHTML = `<div class="ratio"><img src="${train.banner}" onerror="this.style.display='none'"></div><div class="train-title">${train.name}</div>`;
+    
+    const acc = document.createElement("div"); acc.className = "train-accordion";
+    const grid = document.createElement("div"); grid.className = "staff-grid";
+    
+    const staffList = CONFIG.staff.filter(s => s.trainId === train.id);
+    staffList.forEach(st => grid.appendChild(createStaffCard(st)));
+    
+    acc.appendChild(grid);
+    banner.addEventListener("click", () => acc.classList.toggle("open"));
+    wrap.appendChild(banner); wrap.appendChild(acc);
+  });
+}
+
+function createStaffCard(staff){
+  const card = document.createElement("div"); card.className = "staff-card";
+  card.innerHTML = `
+    <img class="staff-avatar" src="${staff.avatar}" onerror="this.style.opacity=0">
+    <div class="staff-name">${staff.name}</div>
+    <div class="staff-hook">${staff.hook}</div>
+    <div class="staff-tags">${(staff.tags||[]).map(t=>`<span class="staff-tag">${t}</span>`).join("")}</div>
+    <div class="action-row">
+      <button class="action-btn star-trigger">${icon("star")} Đánh giá</button>
+      <button class="action-btn game-trigger">${icon("game")} Trò chơi</button>
+    </div>
+    <div class="rating-panel">
+      <div class="stars-row">${[1,2,3,4,5].map(n=>`<span class="star-icon" data-n="${n}">${icon("star")}</span>`).join("")}</div>
+      <textarea placeholder="Cảm nhận của bạn..."></textarea>
+      <button class="submit-btn" style="width:100%;">GỬI ĐÁNH GIÁ</button>
+    </div>
+  `;
+  
+  // Logic sao đánh giá
+  const trigger = card.querySelector(".star-trigger"), panel = card.querySelector(".rating-panel");
+  trigger.addEventListener("click", () => panel.classList.toggle("open"));
+  const stars = card.querySelectorAll(".star-icon"); let cur = 0;
+  stars.forEach(s => {
+    s.addEventListener("mouseenter", () => stars.forEach(st => st.classList.toggle("filled", +st.dataset.n <= +s.dataset.n)));
+    s.addEventListener("click", () => cur = +s.dataset.n);
+  });
+  panel.addEventListener("mouseleave", () => stars.forEach(st => st.classList.toggle("filled", +st.dataset.n <= cur)));
+  
+  // Logic Game
+  card.querySelector(".game-trigger").addEventListener("click", () => openGameModal(staff));
+  return card;
+}
+
+/* ============================================================
+   LOGIC GAME MODAL & FASHION UI
+   ============================================================ */
+const gameModal = document.getElementById("gameModal");
+const gameListScreen = document.getElementById("gameListScreen");
+const fashionGameScreen = document.getElementById("fashionGameScreen");
+const gameModalTitle = document.getElementById("gameModalTitle");
+
+function openGameModal(staff){
+  gameModalTitle.textContent = `Playlist Game của ${staff.name}`;
+  gameListScreen.innerHTML = "";
+  fashionGameScreen.classList.add("hidden");
+  gameListScreen.classList.remove("hidden");
+
+  const games = staff.games || [];
+  if(games.length === 0){
+    gameListScreen.innerHTML = "<p style='color:var(--silver); font-style:italic;'>Nhân viên này chưa có trò chơi nào.</p>";
+  } else {
+    games.forEach(g => {
+      const card = document.createElement("div"); card.className = "game-card";
+      card.innerHTML = `<img class="game-thumb" src="${g.thumb}" onerror="this.style.opacity=0"><div class="game-info"><div class="game-name">${g.name}</div><div class="game-desc">${g.desc}</div></div>`;
+      card.addEventListener("click", () => {
+        if(g.type === "fashion") launchFashionGame(g);
+        // Có thể thêm xử lý cho các game khác ở đây
+      });
+      gameListScreen.appendChild(card);
+    });
+  }
+  gameModal.classList.remove("hidden");
+}
+
+document.getElementById("closeGameModal").addEventListener("click", () => gameModal.classList.add("hidden"));
+document.getElementById("backToGameList").addEventListener("click", () => {
+  fashionGameScreen.classList.add("hidden");
+  gameListScreen.classList.remove("hidden");
+  gameModalTitle.textContent = "Playlist Game";
+});
+
+// Chạy game Thời trang
+function launchFashionGame(game){
+  gameModalTitle.textContent = game.name;
+  gameListScreen.classList.add("hidden");
+  fashionGameScreen.classList.remove("hidden");
+  
+  const stage = document.getElementById("fashionStage");
+  const inv = document.getElementById("fashionInventory");
+  const data = game.fashionData || {};
+  
+  // Reset stage
+  stage.innerHTML = ""; inv.innerHTML = "";
+  stage.style.backgroundImage = `url(${data.bg || ''})`;
+  
+  if(data.base){
+    const baseImg = document.createElement("img");
+    baseImg.src = data.base; baseImg.className = "fashion-layer";
+    stage.appendChild(baseImg);
+  }
+
+  const items = data.items || [];
+  items.forEach(item => {
+    // Tạo layer quần áo (ẩn mặc định)
+    const layer = document.createElement("img");
+    layer.src = item.src; layer.className = "fashion-layer hidden-item";
+    stage.appendChild(layer);
+    
+    // Tạo nút bấm trong inventory
+    const btn = document.createElement("div"); btn.className = "inv-item";
+    btn.innerHTML = `<img src="${item.thumb || item.src}">`;
+    btn.addEventListener("click", () => {
+      btn.classList.toggle("active");
+      layer.classList.toggle("hidden-item");
+    });
+    inv.appendChild(btn);
+  });
+}
+
+
+/* ============================================================
+   MÁY PHÁT NHẠC GRAMOPHONE & PLAYLIST
+   ============================================================ */
+const audio = document.getElementById("gramoAudio");
+const playBtn = document.getElementById("gramoPlay");
+const vinyl = document.getElementById("gramoVinyl");
+const gramoToggle = document.getElementById("gramoToggle");
+let isPlaying = false, isLoop = false, isShuffle = false;
+let curQueue = [], curIndex = 0;
+
+document.getElementById("gramoLoop").addEventListener("click", function(){ isLoop = !isLoop; this.classList.toggle("active", isLoop); });
+document.getElementById("gramoShuffle").addEventListener("click", function(){ isShuffle = !isShuffle; this.classList.toggle("active", isShuffle); });
+
+playBtn.addEventListener("click", () => {
+  if(!audio.src) return;
+  isPlaying ? audio.pause() : audio.play();
+});
+
+audio.addEventListener("play", () => { isPlaying = true; playBtn.innerHTML = icon("pause"); vinyl.classList.remove("paused"); gramoToggle.classList.remove("paused"); });
+audio.addEventListener("pause", () => { isPlaying = false; playBtn.innerHTML = icon("play"); vinyl.classList.add("paused"); gramoToggle.classList.add("paused"); });
+audio.addEventListener("ended", () => {
+  if(isLoop){ audio.currentTime = 0; audio.play(); }
+  else { document.getElementById("gramoNext").click(); }
+});
+
+function loadSong(index){
+  if(!curQueue[index]) return;
+  curIndex = index;
+  document.getElementById("gramoTitle").textContent = curQueue[index].title;
+  audio.src = curQueue[index].src;
+  audio.play();
+}
+document.getElementById("gramoNext").addEventListener("click", () => {
+  if(curQueue.length===0) return;
+  loadSong(isShuffle ? Math.floor(Math.random()*curQueue.length) : (curIndex+1)%curQueue.length);
+});
+document.getElementById("gramoPrev").addEventListener("click", () => {
+  if(curQueue.length===0) return;
+  loadSong((curIndex-1+curQueue.length)%curQueue.length);
+});
+
+// Ẩn/hiện Gramo panel
+gramoToggle.addEventListener("click", () => document.getElementById("gramoPanel").classList.toggle("hidden-panel"));
+
+// Logic Playlist Modal
+const plModal = document.getElementById("playlistModal");
+document.getElementById("gramoListBtn").addEventListener("click", () => {
+  renderMusicFolders("trung");
+  plModal.classList.remove("hidden");
+});
+document.getElementById("playlistClose").addEventListener("click", () => plModal.classList.add("hidden"));
+
+const plTabs = document.querySelectorAll(".playlist-tab");
+plTabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    plTabs.forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    renderMusicFolders(tab.dataset.cat);
+  });
+});
+
+function renderMusicFolders(cat){
+  const folderDiv = document.getElementById("playlistFolders");
+  const songDiv = document.getElementById("playlistSongs");
+  songDiv.classList.add("hidden"); folderDiv.classList.remove("hidden");
+  folderDiv.innerHTML = "";
+  
+  const folders = CONFIG.musicLibrary[cat] || [];
+  if(folders.length === 0){ folderDiv.innerHTML = "<p style='color:var(--silver);'>Chưa có nhạc.</p>"; return; }
+  
+  folders.forEach(f => {
+    const el = document.createElement("div"); el.className = "playlist-item";
+    el.innerHTML = `<span>${icon("folder")} ${f.name}</span> <span>${icon("play")}</span>`;
+    el.addEventListener("click", () => renderMusicSongs(f.songs));
+    folderDiv.appendChild(el);
+  });
+}
+
+function renderMusicSongs(songs){
+  const folderDiv = document.getElementById("playlistFolders");
+  const songDiv = document.getElementById("playlistSongs");
+  folderDiv.classList.add("hidden"); songDiv.classList.remove("hidden");
+  songDiv.innerHTML = "<button style='margin-bottom:10px; color:var(--amber);' onclick='document.getElementById(\"playlistFolders\").classList.remove(\"hidden\"); document.getElementById(\"playlistSongs\").classList.add(\"hidden\");'>&laquo; Quay lại</button>";
+  
+  songs.forEach((s, i) => {
+    const el = document.createElement("div"); el.className = "playlist-item";
+    el.innerHTML = `<span>${s.title}</span> <span>${icon("play")}</span>`;
+    el.addEventListener("click", () => {
+      curQueue = songs; loadSong(i); plModal.classList.add("hidden");
+    });
+    songDiv.appendChild(el);
+  });
+}
+</script>
+</body>
+</html>
