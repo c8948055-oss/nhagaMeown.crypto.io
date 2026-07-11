@@ -45,59 +45,44 @@ input,textarea,select{font-family:inherit; color:inherit; outline:none;}
 img{max-width:100%; display:block;}
 ::selection{background:var(--blood); color:var(--pearl);}
 
-/* Icon 1 nét cơ bản */
-.icon{
-  width:1em; height:1em;
-  display:inline-block;
-  vertical-align:-0.15em;
-  stroke:currentColor;
-  stroke-width:1.5;
-  fill:none;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-.icon.filled{fill:currentColor; stroke:none;}
-
-@media (prefers-reduced-motion: reduce){
-  *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
-}
-
 .hidden{display:none !important;}
 
 /* ============================================================
-   PAGE 1 — LANDING (Ma mị, rùng rợn)
+   BỘ ICON CƠ BẢN (CSS)
+   ============================================================ */
+.icon{
+  width:1em; height:1em; display:inline-block; vertical-align:-0.15em;
+  stroke:currentColor; stroke-width:1.5; fill:none; stroke-linecap:round; stroke-linejoin:round;
+}
+.icon.filled{fill:currentColor; stroke:none;}
+
+/* ============================================================
+   PAGE 1 — LANDING (Cấu trúc Layer mới không đè sương mù)
    ============================================================ */
 #page1{
-  position:relative;
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background: radial-gradient(ellipse at 50% 20%, #0D1326 0%, var(--bg-deep) 40%, var(--bg-abyss) 100%);
-  overflow:hidden;
-  padding:40px 20px;
-  transition:opacity 0.9s ease, filter 0.9s ease;
-  z-index: 1;
+  position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center;
+  background:var(--bg-abyss); overflow:hidden; padding:40px 20px; transition:opacity 0.9s ease, filter 0.9s ease;
 }
 #page1.leaving{opacity:0; filter:blur(12px);}
 
-/* Lớp phủ đè màu tối (Đã sửa z-index thành -1 để không che sương mù) */
-#page1::before, #page2::before{
-  content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
-  background:radial-gradient(ellipse at 50% 100%, rgba(158,8,8,0.15) 0%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0.9) 100%);
+.base-bg {
+  position:absolute; inset:0; z-index:1;
+  background:radial-gradient(ellipse at 50% 20%, #0D1326 0%, var(--bg-deep) 40%, var(--bg-abyss) 100%);
 }
-#page1::after{
-  content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
-  opacity:0.06; mix-blend-mode:overlay;
+.vignette-overlay {
+  position:absolute; inset:0; z-index:3; pointer-events:none;
+  background:radial-gradient(ellipse at 50% 100%, rgba(158,8,8,0.15) 0%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0.9) 100%);
+}
+.noise-overlay {
+  position:absolute; inset:0; z-index:4; pointer-events:none; opacity:0.06; mix-blend-mode:overlay;
   background-image:repeating-radial-gradient(circle at 20% 30%, #fff 0 1px, transparent 1px 3px);
   animation:grainShift 1.4s steps(3) infinite;
 }
 @keyframes grainShift{0%{transform:translate(0,0);}33%{transform:translate(-1%,1%);}66%{transform:translate(1%,-1%);}100%{transform:translate(0,0);}}
 
-/* Sương mù trôi chậm 4 góc - z-index: 0 để nổi lên trên lớp overlay */
-.fog{
+.fog {
   position:absolute; border-radius:50%; filter:blur(50px); opacity:0.4; pointer-events:none;
-  background:radial-gradient(circle, rgba(120,130,150,0.6) 0%, rgba(120,130,150,0) 70%); z-index: 0; mix-blend-mode: screen;
+  background:radial-gradient(circle, rgba(120,130,150,0.6) 0%, rgba(120,130,150,0) 70%); z-index:2; mix-blend-mode:screen;
 }
 .fog-tl{width:65vw; height:65vw; top:-25vw; left:-25vw; animation:driftTL 26s ease-in-out infinite;}
 .fog-tr{width:60vw; height:60vw; top:-20vw; right:-20vw; animation:driftTR 32s ease-in-out infinite;}
@@ -108,20 +93,19 @@ img{max-width:100%; display:block;}
 @keyframes driftBL{0%,100%{transform:translate(0,0);}50%{transform:translate(30px,-25px);}}
 @keyframes driftBR{0%,100%{transform:translate(0,0);}50%{transform:translate(-35px,-30px);}}
 
-/* Ánh đèn pha tàu & hào quang máu */
-.blood-glow{
+.blood-glow {
   position:absolute; border-radius:50%; pointer-events:none;
   background:radial-gradient(circle, var(--blood-glow) 0%, rgba(158,8,8,0) 70%);
-  filter:blur(25px); animation:bloodPulse 8s ease-in-out infinite; z-index: 0;
+  filter:blur(25px); animation:bloodPulse 8s ease-in-out infinite; z-index:2;
 }
 .blood-glow.b1{width:300px; height:300px; bottom:-10%; left:20%; animation-delay:0s;}
 .blood-glow.b2{width:250px; height:250px; top:10%; right:15%; animation-delay:4s;}
 @keyframes bloodPulse{0%,100%{opacity:0.2; transform:scale(0.8);}50%{opacity:0.6; transform:scale(1.2);}}
 
-.headlight{
+.headlight {
   position:absolute; width:100px; height:100px; border-radius:50%;
   background:radial-gradient(circle, rgba(255,176,0,0.6) 0%, rgba(255,176,0,0) 70%);
-  filter:blur(8px); animation:pulseGlow 5s ease-in-out infinite, flicker 7s linear infinite; pointer-events:none; z-index: 0;
+  filter:blur(8px); animation:pulseGlow 5s ease-in-out infinite, flicker 7s linear infinite; pointer-events:none; z-index:2;
 }
 .headlight.h1{top:15%; left:10%;}
 .headlight.h2{top:80%; right:8%; animation-delay:1.5s;}
@@ -129,9 +113,8 @@ img{max-width:100%; display:block;}
 @keyframes pulseGlow{0%,100%{opacity:0.1; transform:scale(0.8);}50%{opacity:0.8; transform:scale(1.3);}}
 @keyframes flicker{0%,100%,6%,41%,45%{filter:blur(8px) brightness(1);} 4%,43%{filter:blur(8px) brightness(0.3);}}
 
-/* Thẻ kính trung tâm */
-.station-card{
-  position:relative; z-index:2; width:min(420px, 92vw);
+.station-card {
+  position:relative; z-index:10; width:min(420px, 92vw);
   padding:44px 32px 36px; border-radius:28px;
   background:var(--glass); border:1px solid var(--amber);
   backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
@@ -174,7 +157,7 @@ img{max-width:100%; display:block;}
 .cta-btn:hover{transform:translateY(-2px) scale(1.05); box-shadow:0 0 30px rgba(255,110,0,0.9), 0 0 60px rgba(158,8,8,0.7); color:#1a0e00;}
 
 .luggage-tag{
-  position:fixed; left:20px; bottom:20px; z-index:5; padding:12px 18px; border-radius:8px;
+  position:fixed; left:20px; bottom:20px; z-index:10; padding:12px 18px; border-radius:8px;
   background:rgba(5,7,11,0.6); border:1px solid rgba(255,176,0,0.2); backdrop-filter:blur(8px);
   font-family:var(--font-kicker); font-size:12px; color:var(--silver); line-height:2; transform:rotate(-2deg);
 }
@@ -190,6 +173,10 @@ img{max-width:100%; display:block;}
   position:relative; min-height:100vh;
   background: radial-gradient(circle at 10% 20%, rgba(158,8,8,0.05), transparent 40%), linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-abyss) 100%);
   padding-top:90px; padding-bottom:80px; opacity:0; transition:opacity 0.9s ease; z-index: 1;
+}
+#page2::before {
+  content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
+  background:radial-gradient(ellipse at 50% 100%, rgba(158,8,8,0.15) 0%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0.9) 100%);
 }
 #page2.entering{opacity:1;}
 
@@ -396,6 +383,9 @@ img{max-width:100%; display:block;}
 
 <!-- PAGE 1 — CỔNG VÀO -->
 <section id="page1">
+  <div class="base-bg"></div>
+  <div class="vignette-overlay"></div>
+  <div class="noise-overlay"></div>
   <div class="fog fog-tl"></div> <div class="fog fog-tr"></div> <div class="fog fog-bl"></div> <div class="fog fog-br"></div>
   <div class="blood-glow b1"></div> <div class="blood-glow b2"></div>
   <div class="headlight h1"></div> <div class="headlight h2"></div> <div class="headlight h3"></div>
@@ -403,7 +393,7 @@ img{max-width:100%; display:block;}
   <div class="station-card">
     <div class="avatar-wrap">
       <div class="avatar-halo"></div>
-      <img class="avatar-img" id="landingAvatar" src="" alt="Trưởng ga mèo" onerror="this.style.opacity=0;">
+      <img class="avatar-img" id="landingAvatar" src="" alt="Trưởng ga mèo">
       <div class="avatar-eye left"></div> <div class="avatar-eye right"></div>
     </div>
     <p class="kicker">CHÀO MỪNG QUÝ KHÁCH ĐẾN VỚI</p>
@@ -535,22 +525,12 @@ img{max-width:100%; display:block;}
   </div>
 </div>
 
-<!-- THƯ VIỆN SUPABASE (Để làm web động) -->
+<!-- THƯ VIỆN SUPABASE CHÍNH THỨC -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
 /* ============================================================
-   KẾT NỐI SUPABASE (ĐÃ SỬA CÚ PHÁP ĐỂ KHÔNG SẬP JS)
-   ============================================================ */
-const SUPABASE_URL = 'https://gmejjxvahnqqrhihahid.supabase.co'; 
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdtZWpqeHZhaG5xcXJoaWhhaGlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM3NTM5OTQsImV4cCI6MjA5OTMyOTk5NH0.Q1uit-9R_Lrs0uM_Azgbn9GGKMoyFl-cFfl3M7IeSMU';
-
-// Fix lỗi khai báo trùng tên biến làm sập toàn bộ script
-const _supabase = window.supabase;
-const supabaseClient = _supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-
-/* ============================================================
-   BỘ ICON CƠ BẢN (1 nét, 1 màu)
+   BẢO MẬT UI LÊN HÀNG ĐẦU: RENDER ICON & NÚT BẤM TRƯỚC
    ============================================================ */
 const ICONS = {
   user: '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/></svg>',
@@ -568,37 +548,21 @@ const ICONS = {
   folder: '<svg class="icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>'
 };
 function icon(name){ return ICONS[name] || ""; }
-document.querySelectorAll(".icon-slot").forEach(el => el.innerHTML = icon(el.dataset.icon));
 
+try {
+  document.querySelectorAll(".icon-slot").forEach(el => el.innerHTML = icon(el.dataset.icon));
+} catch(e) { console.error("Lỗi vẽ icon", e); }
 
 /* ============================================================
    CONFIG — BẢNG ĐIỀU KHIỂN DỮ LIỆU DÀNH CHO TRƯỞNG GA
    ============================================================ */
 const CONFIG = {
-  // Đã dán link Avatar mèo vào đây để web hết trống trơn
   landingAvatar: "ChatGPT_Image_02_56_58_7_thg_7__2026-removebg-preview-removebg-preview.png",
   stats: { staffCount: 0, totalVisits: 0 },
-
-  stationMaster: {
-    avatar: "", // [URL ẢNH TRƯỞNG GA]
-    bio: "" // [TIỂU SỬ TRƯỞNG GA]
-  },
-
-  trains: [
-    // { id: "t1", name: "Chuyến Tàu Số 1", banner: "" }
-  ],
-
-  staff: [
-    // { 
-    //   id: "bot1", trainId: "t1", name: "Bé Chi Chi", avatar: "", hook: "Cô bé thích thời trang", tags: ["Cute"],
-    //   games: [...]
-    // }
-  ],
-
-  musicLibrary: {
-    trung: [],
-    viet: []
-  }
+  stationMaster: { avatar: "", bio: "" },
+  trains: [],
+  staff: [],
+  musicLibrary: { trung: [], viet: [] }
 };
 
 
@@ -620,12 +584,11 @@ function playWhistle(){
   }catch(e){}
 }
 
-
 /* ============================================================
-   PAGE LOGIC & EFFECTS
+   PAGE LOGIC & EFFECTS (ĐẢM BẢO LUÔN CHẠY BẤT CHẤP LỖI SUPABASE)
    ============================================================ */
-// Nhảy số
 function rollNumber(el, target){
+  if(!el) return;
   const start = performance.now();
   function tick(now){
     const p = Math.min(1, (now-start)/1500);
@@ -637,7 +600,17 @@ function rollNumber(el, target){
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  if(CONFIG.landingAvatar) document.getElementById("landingAvatar").src = CONFIG.landingAvatar;
+  // Logic Avatar có Backup phòng trường hợp link gãy
+  const landingAvatarEl = document.getElementById("landingAvatar");
+  if(CONFIG.landingAvatar) {
+    landingAvatarEl.src = CONFIG.landingAvatar;
+    landingAvatarEl.onerror = function() {
+      // Nếu ảnh của Tuyết gãy link, nó sẽ hiện một bé mèo đen mặc định để không bị tàng hình
+      this.src = "https://i.imgur.com/vH1M4Hj.png";
+      this.onerror = null;
+    };
+  }
+  
   if(CONFIG.stationMaster.avatar) document.getElementById("smAvatar").src = CONFIG.stationMaster.avatar;
   document.getElementById("smBio").textContent = CONFIG.stationMaster.bio;
   
@@ -646,40 +619,60 @@ document.addEventListener("DOMContentLoaded", () => {
 
   renderTrains();
   
-  // Nạp dữ liệu các Feed tĩnh từ Supabase
-  fetchAndRenderFeed("guestbook");
-  fetchAndRenderFeed("recruit");
-});
+  // Chuyển trang
+  const page1 = document.getElementById("page1"), page2 = document.getElementById("page2");
+  const ctaBtn = document.getElementById("ctaGoStation");
+  if (ctaBtn) {
+    ctaBtn.addEventListener("click", () => {
+      playWhistle();
+      page1.classList.add("leaving");
+      setTimeout(() => { page1.classList.add("hidden"); page2.classList.remove("hidden"); requestAnimationFrame(()=>page2.classList.add("entering")); }, 850);
+    });
+  }
+  
+  document.getElementById("btnGoHome").addEventListener("click", () => {
+    page2.classList.remove("entering");
+    setTimeout(() => { page2.classList.add("hidden"); page1.classList.remove("hidden","leaving"); }, 600);
+  });
 
-// Chuyển trang
-const page1 = document.getElementById("page1"), page2 = document.getElementById("page2");
-document.getElementById("ctaGoStation").addEventListener("click", () => {
-  playWhistle();
-  page1.classList.add("leaving");
-  setTimeout(() => { page1.classList.add("hidden"); page2.classList.remove("hidden"); requestAnimationFrame(()=>page2.classList.add("entering")); }, 850);
-});
-document.getElementById("btnGoHome").addEventListener("click", () => {
-  page2.classList.remove("entering");
-  setTimeout(() => { page2.classList.add("hidden"); page1.classList.remove("hidden","leaving"); }, 600);
-});
-
-// Điều hướng Tab Page 2
-const navItems = document.querySelectorAll(".nav-item");
-navItems.forEach(btn => {
-  btn.addEventListener("click", () => {
-    navItems.forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    document.querySelectorAll(".section-view").forEach(v => v.classList.add("hidden"));
-    document.getElementById("view-" + btn.dataset.view).classList.remove("hidden");
+  // Điều hướng Tab Page 2
+  const navItems = document.querySelectorAll(".nav-item");
+  navItems.forEach(btn => {
+    btn.addEventListener("click", () => {
+      navItems.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      document.querySelectorAll(".section-view").forEach(v => v.classList.add("hidden"));
+      document.getElementById("view-" + btn.dataset.view).classList.remove("hidden");
+    });
   });
 });
 
+/* ============================================================
+   KẾT NỐI SUPABASE (CÁCH LY AN TOÀN TRONG TRY/CATCH)
+   ============================================================ */
+let supabaseClient = null;
+try {
+  const SUPABASE_URL = 'https://gmejjxvahnqqrhihahid.supabase.co'; 
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdtZWpqeHZhaG5xcXJoaWhhaGlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM3NTM5OTQsImV4cCI6MjA5OTMyOTk5NH0.Q1uit-9R_Lrs0uM_Azgbn9GGKMoyFl-cFfl3M7IeSMU';
+  
+  if (window.supabase) {
+      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      // Khi đã kết nối thành công thì mới bắt đầu tải dữ liệu Bảng tin
+      setTimeout(() => {
+        fetchAndRenderFeed("guestbook");
+        fetchAndRenderFeed("recruit");
+      }, 500);
+  }
+} catch (err) {
+  console.warn("Chưa tải được hệ thống dữ liệu, nhưng web vẫn hoạt động bình thường:", err);
+}
 
 /* ============================================================
-   RENDER DỮ LIỆU CÁC CHUYẾN TÀU & NHÂN VIÊN VÀ QUẢN LÝ ĐÁNH GIÁ (SUPABASE)
+   RENDER CÁC CHUYẾN TÀU & QUẢN LÝ ĐÁNH GIÁ (CÓ SUPABASE)
    ============================================================ */
 function renderTrains(){
   const wrap = document.getElementById("trainsList");
+  if (!wrap) return;
   wrap.innerHTML = "";
   CONFIG.trains.forEach(train => {
     const banner = document.createElement("div"); banner.className = "train-banner";
@@ -727,10 +720,11 @@ function createStaffCard(staff){
   });
   panel.addEventListener("mouseleave", () => stars.forEach(st => st.classList.toggle("filled", +st.dataset.n <= cur)));
   
-  // Gửi đánh giá riêng cho Trưởng Ga lên Supabase
+  // Gửi đánh giá
   const submitBtn = card.querySelector(".submit-btn");
   const textarea = card.querySelector("textarea");
   submitBtn.addEventListener("click", async () => {
+    if (!supabaseClient) { alert("Tàu dữ liệu chưa tới, hãy tải lại trang rồi thử nhé!"); return; }
     if (cur === 0) { alert("Vui lòng chọn số sao trước khi gửi nha quý khách!"); return; }
     if (!textarea.value.trim()) { alert("Vui lòng nhập cảm nhận của bạn!"); return; }
     
@@ -747,7 +741,7 @@ function createStaffCard(staff){
       cur = 0;
       stars.forEach(st => st.classList.remove("filled"));
       panel.classList.remove("open");
-      updateStaffRatingAvg(staff.id, card.querySelector(".rating-avg")); // Cập nhật lại số điểm liền
+      updateStaffRatingAvg(staff.id, card.querySelector(".rating-avg")); 
     } else {
       alert("Gửi đánh giá thất bại, hãy kiểm tra lại kết nối nhé.");
     }
@@ -755,16 +749,13 @@ function createStaffCard(staff){
     submitBtn.textContent = "GỬI ĐÁNH GIÁ";
   });
   
-  // Khởi chạy hàm tính điểm trung bình từ lúc load trang
   updateStaffRatingAvg(staff.id, card.querySelector(".rating-avg"));
-  
-  // Logic Game
   card.querySelector(".game-trigger").addEventListener("click", () => openGameModal(staff));
   return card;
 }
 
-// Hàm kết nối Supabase lấy tổng lượt đánh giá để tính trung bình
 async function updateStaffRatingAvg(staffId, displayEl) {
+  if (!supabaseClient) return;
   try {
     const { data: reviews, error } = await supabaseClient
       .from('staff_reviews')
@@ -784,11 +775,11 @@ async function updateStaffRatingAvg(staffId, displayEl) {
   }
 }
 
-
 /* ============================================================
    LOGIC BẢNG TIN (SỔ LƯU BÚT & TRẠM TUYỂN DỤNG)
    ============================================================ */
 async function fetchAndRenderFeed(type) {
+  if (!supabaseClient) return;
   const container = document.getElementById(type === "guestbook" ? "guestbookFeed" : "recruitFeed");
   container.innerHTML = "<p style='color:var(--silver); font-style:italic;'>Tàu đang chở dữ liệu về...</p>";
   
@@ -829,8 +820,8 @@ async function fetchAndRenderFeed(type) {
   });
 }
 
-// Xử lý nút Thích
 async function handleLike(table, id, btn) {
+  if (!supabaseClient) return;
   const rCountEl = btn.querySelector(".rcount");
   let currentLikes = parseInt(rCountEl.textContent);
   
@@ -844,9 +835,9 @@ async function handleLike(table, id, btn) {
   }
 }
 
-// Xử lý gửi Form Sổ Lưu Bút
 document.getElementById("guestbookForm").addEventListener("submit", async (e) => {
   e.preventDefault();
+  if (!supabaseClient) { alert("Chưa kết nối được nhà ga dữ liệu, vui lòng thử lại sau!"); return; }
   const name = document.getElementById("gbName").value;
   const msg = document.getElementById("gbMessage").value;
   const btn = e.target.querySelector('.submit-btn');
@@ -866,9 +857,9 @@ document.getElementById("guestbookForm").addEventListener("submit", async (e) =>
   btn.textContent = "GỬI BÀI ĐĂNG"; btn.disabled = false;
 });
 
-// Xử lý gửi Form Trạm Tuyển Dụng
 document.getElementById("recruitForm").addEventListener("submit", async (e) => {
   e.preventDefault();
+  if (!supabaseClient) { alert("Chưa kết nối được nhà ga dữ liệu, vui lòng thử lại sau!"); return; }
   const name = document.getElementById("rcName").value;
   const msg = document.getElementById("rcMessage").value;
   const btn = e.target.querySelector('.submit-btn');
@@ -926,7 +917,6 @@ document.getElementById("backToGameList").addEventListener("click", () => {
   gameModalTitle.textContent = "Playlist Game";
 });
 
-// Chạy game Thời trang
 function launchFashionGame(game){
   gameModalTitle.textContent = game.name;
   gameListScreen.classList.add("hidden");
