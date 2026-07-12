@@ -54,31 +54,31 @@
         /* ============================================================
            BACKGROUND 1: ĐƯỜNG RAY SƯƠNG KHÓI VÀO VÔ CỰC (TRANG 1)
            ============================================================ */
-        #bg-page1 { position: fixed; inset: 0; z-index: -3; overflow: hidden; }
+        #bg-page1 { position: fixed; inset: 0; z-index: -3; overflow: hidden; background-color: var(--bg-abyss); }
         /* Lớp 1: Deep Background */
-        .p1-deep-bg { position: absolute; inset: 0; background-color: var(--bg-abyss); opacity: 0.5; display: flex; justify-content: space-between; }
-        .p1-left-tracks { width: 40%; height: 100%; background: url('https://images.unsplash.com/photo-1505307452600-692348512dd4?auto=format&fit=crop&q=80&w=800') left bottom/cover no-repeat; filter: sepia(0.5) hue-rotate(180deg) brightness(0.3) contrast(1.5); mask-image: linear-gradient(to right, black, transparent); -webkit-mask-image: linear-gradient(to right, black, transparent); }
-        .p1-right-lamp { width: 40%; height: 100%; background: url('https://images.unsplash.com/photo-1519999482648-25049ddd37b1?auto=format&fit=crop&q=80&w=800') right center/cover no-repeat; filter: sepia(0.8) hue-rotate(-30deg) brightness(0.4) contrast(1.2); mask-image: linear-gradient(to left, black, transparent); -webkit-mask-image: linear-gradient(to left, black, transparent); position: relative; }
-        .p1-center-vignette { position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, transparent 20%, #000 60%); }
+        .p1-deep-bg { position: absolute; inset: 0; display: flex; justify-content: space-between; opacity: 1;}
+        .p1-left-tracks { width: 45%; height: 100%; background: url('https://images.unsplash.com/photo-1505307452600-692348512dd4?auto=format&fit=crop&q=80&w=800') left bottom/cover no-repeat; filter: sepia(0.5) hue-rotate(180deg) brightness(0.4) contrast(1.5); mask-image: linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%); -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%); }
+        .p1-right-lamp { width: 45%; height: 100%; background: url('https://images.unsplash.com/photo-1519999482648-25049ddd37b1?auto=format&fit=crop&q=80&w=800') right center/cover no-repeat; filter: sepia(0.8) hue-rotate(-30deg) brightness(0.6) contrast(1.2); mask-image: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%); -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%); position: relative; }
+        .p1-center-vignette { position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.5) 20%, rgba(0,0,0,1) 60%); }
         /* Lớp 2: Volumetric Fog */
-        .p1-fog { position: absolute; inset: -20%; background-image: url('https://images.unsplash.com/photo-1485236715568-ddc5ee6ca227?auto=format&fit=crop&q=80&w=1200'); background-size: cover; opacity: 0.3; filter: grayscale(1) blur(10px); mix-blend-mode: screen; animation: panFog 60s linear infinite alternate; pointer-events: none; }
+        .p1-fog { position: absolute; inset: -20%; background-image: url('https://images.unsplash.com/photo-1485236715568-ddc5ee6ca227?auto=format&fit=crop&q=80&w=1200'); background-size: cover; opacity: 0.4; filter: grayscale(1) blur(10px); mix-blend-mode: screen; animation: panFog 60s linear infinite alternate; pointer-events: none; }
         @keyframes panFog { 0% { transform: translate(0, 5%); } 100% { transform: translate(-10%, -5%); } }
-        /* Lớp 3: Tàn lửa (Tạo bằng JS) */
+        /* Lớp 3: Tàn lửa */
         .ember { position: absolute; width: 3px; height: 3px; background: #FFAA00; border-radius: 50%; box-shadow: 0 0 8px 2px #FF5500; opacity: 0; animation: floatEmber 4s ease-in infinite; pointer-events: none; z-index: -1; }
         @keyframes floatEmber { 0% { transform: translateY(0) scale(1); opacity: 0; } 50% { opacity: 0.6; } 100% { transform: translateY(-100px) scale(0.5); opacity: 0; } }
 
         /* ============================================================
            BACKGROUND 2: SẢNH CHỜ KHÔNG NGƯỜI GIỮA ĐÊM (TRANG 2)
            ============================================================ */
-        #bg-page2 { position: fixed; inset: 0; z-index: -3; overflow: hidden; opacity: 0; transition: opacity 1.5s ease; pointer-events: none; }
+        #bg-page2 { position: fixed; inset: 0; z-index: -3; overflow: hidden; opacity: 0; transition: opacity 1.5s ease; pointer-events: none; background-color: var(--bg-abyss);}
         /* Lớp 1: Deep Background */
-        .p2-deep-bg { position: absolute; inset: 0; background-color: var(--bg-abyss); opacity: 0.4; display: flex; justify-content: space-between; }
-        .p2-left-train { width: 35%; height: 100%; background: url('https://images.unsplash.com/photo-1541883765103-51829e5a32b4?auto=format&fit=crop&q=80&w=800') left center/cover no-repeat; filter: sepia(0.3) brightness(0.25) contrast(1.5); mask-image: linear-gradient(to right, black, transparent); -webkit-mask-image: linear-gradient(to right, black, transparent); }
-        .p2-right-arches { width: 40%; height: 100%; background: url('https://images.unsplash.com/photo-1601058269786-218ba1327150?auto=format&fit=crop&q=80&w=800') right top/cover no-repeat; filter: grayscale(0.5) brightness(0.3) contrast(1.5); mask-image: linear-gradient(to left, black, transparent); -webkit-mask-image: linear-gradient(to left, black, transparent); }
-        .p2-center-abyss { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.7) 0%, rgba(0,0,0,1) 80%); }
+        .p2-deep-bg { position: absolute; inset: 0; display: flex; justify-content: space-between; opacity: 1;}
+        .p2-left-train { width: 40%; height: 100%; background: url('https://images.unsplash.com/photo-1541883765103-51829e5a32b4?auto=format&fit=crop&q=80&w=800') left center/cover no-repeat; filter: sepia(0.3) brightness(0.25) contrast(1.5); mask-image: linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%); -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%); }
+        .p2-right-arches { width: 45%; height: 100%; background: url('https://images.unsplash.com/photo-1601058269786-218ba1327150?auto=format&fit=crop&q=80&w=800') right top/cover no-repeat; filter: grayscale(0.5) brightness(0.3) contrast(1.5); mask-image: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%); -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%); }
+        .p2-center-abyss { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.6) 0%, rgba(0,0,0,1) 80%); }
         /* Lớp 2 & 3: Volumetric Steam & Magic Particles */
-        .p2-steam { position: absolute; bottom: -10%; left: 0; width: 100%; height: 40%; background: radial-gradient(ellipse at center, rgba(150,150,150,0.2) 0%, transparent 70%); filter: blur(30px); animation: steamBreathe 8s ease-in-out infinite alternate; }
-        @keyframes steamBreathe { 0% { transform: scaleY(1); opacity: 0.1; } 100% { transform: scaleY(1.5); opacity: 0.3; } }
+        .p2-steam { position: absolute; bottom: -10%; left: 0; width: 100%; height: 50%; background: radial-gradient(ellipse at center, rgba(150,150,150,0.2) 0%, transparent 70%); filter: blur(30px); animation: steamBreathe 8s ease-in-out infinite alternate; pointer-events: none;}
+        @keyframes steamBreathe { 0% { transform: scaleY(1); opacity: 0.1; } 100% { transform: scaleY(1.5); opacity: 0.4; } }
 
         /* ============================================================
            TRANG 1 — LANDING PAGE
@@ -86,7 +86,7 @@
         #page1 { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 40px 20px; transition: opacity 1.2s ease, filter 1.2s ease; z-index: 2; }
         #page1.leaving { opacity: 0; filter: blur(20px); pointer-events: none; }
         
-        .station-card { position: relative; z-index: 5; width: min(450px, 92vw); padding: 50px 32px 40px; border-radius: 4px; background: rgba(5,5,8,0.8); border: 2px solid #333; box-shadow: 8px 8px 0px rgba(0,0,0,1); display: flex; flex-direction: column; align-items: center; text-align: center; backdrop-filter: blur(5px); }
+        .station-card { position: relative; z-index: 5; width: min(450px, 92vw); padding: 50px 32px 40px; border-radius: 4px; background: rgba(5,5,8,0.8); border: 2px solid #333; box-shadow: 8px 8px 0px rgba(0,0,0,1); display: flex; flex-direction: column; align-items: center; text-align: center; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);}
         
         .avatar-wrap { position: relative; width: 140px; height: 140px; margin-bottom: 30px; display: flex; justify-content: center; align-items: center; }
         .avatar-halo { position: absolute; inset: -10px; border-radius: 50%; border: 1px dashed rgba(221, 170, 51, 0.5); animation: spinHalo 20s linear infinite; }
@@ -100,7 +100,7 @@
         .cat-eye.right { right: 40px; }
         @keyframes catBlink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
 
-        .kicker { font-family: var(--font-kicker); font-weight: 700; letter-spacing: 5px; font-size: 12px; color: var(--silver); text-transform: uppercase; margin-bottom: 12px; text-shadow: 1px 1px 0 #000; }
+        .kicker { font-family: var(--font-kicker); font-weight: 700; letter-spacing: 5px; font-size: 12px; color: var(--silver); text-transform: uppercase; margin-bottom: 12px; text-shadow: 1px 1px 0 #000; cursor: pointer;}
         .heading { font-family: var(--font-heading); font-weight: 900; font-size: clamp(34px, 8vw, 48px); letter-spacing: 3px; color: var(--pearl); text-shadow: 3px 3px 0 #000, 0 0 15px rgba(255,255,255,0.2); margin-bottom: 24px; text-transform: uppercase; line-height: 1.1;}
         .body-text { font-family: var(--font-body); font-weight: 500; font-size: 14.5px; line-height: 1.8; color: #BBB; margin-bottom: 35px; padding: 0 10px; text-shadow: 1px 1px 0 #000;}
         
@@ -108,7 +108,7 @@
         .cta-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 rgba(0,0,0,1), 0 0 25px rgba(255, 223, 115, 0.8); }
         .cta-btn:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0 rgba(0,0,0,1); }
 
-        /* BẢNG THỐNG KÊ (YÊU CẦU MỚI) */
+        /* BẢNG THỐNG KÊ GÓC TRÁI DƯỚI CÙNG */
         .luggage-tag { position: absolute; left: 20px; bottom: 20px; z-index: 10; padding: 16px 20px; border-radius: 4px; background: var(--glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(221,170,51,0.3); font-family: var(--font-kicker); font-size: 13px; color: var(--pearl); line-height: 2; box-shadow: 4px 4px 0 rgba(0,0,0,0.8); }
         .luggage-tag .tag-line { display: flex; align-items: center; gap: 10px; font-weight: 500; text-shadow: 1px 1px 0 #000; } 
         .luggage-tag .icon { color: var(--amber); width: 18px; height: 18px; filter: drop-shadow(0 0 2px var(--amber)); } 
@@ -294,7 +294,6 @@
         
         /* Dropdown Gỗ mun */
         .gramo-select-box { width: 100%; background: #0A0705; border: 1px solid var(--brass); color: var(--silver); padding: 10px; font-size: 13px; font-weight: bold; margin-bottom: 16px; cursor: pointer; appearance: none; position: relative; z-index: 2; box-shadow: inset 2px 2px 5px rgba(0,0,0,1); }
-        /* Mũi tên giả (vì background chevron hơi rắc rối nếu không có URL ảnh, dùng CSS arrow) */
         
         /* Khu vực Đang phát & Sân khấu Mini */
         .g-stage { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; position: relative; z-index: 2; background: rgba(0,0,0,0.5); padding: 10px; border: 1px solid #333; }
@@ -346,10 +345,11 @@
         .modal-box.modal-white .close-btn { color: #1A0F0A; }
         .modal-box.modal-white .close-btn:hover { color: red; }
         
-        /* Fix hiển thị nút details/summary cho admin và user */
-        .modal-box.modal-white details { background: rgba(0,0,0,0.05); border: 2px dashed #1A0F0A; padding: 12px; margin: 12px 0; color: #1A0F0A; }
-        .modal-box.modal-white summary { cursor: pointer; color: #D50000; font-weight: 900; outline: none; font-family:var(--font-kicker); text-transform:uppercase; font-size:13px; letter-spacing:1px;}
-        .modal-box.modal-white details > div { padding-top: 10px; color: #1A0F0A; font-weight: 500; line-height: 1.6; }
+        /* Hiển thị Nút Đóng Mở (Details) cho Admin và User */
+        .modal-box.modal-white details { background: rgba(0,0,0,0.05); border: 2px dashed #1A0F0A; padding: 12px; margin: 12px 0; color: #1A0F0A; display: block; }
+        .modal-box.modal-white details[open] summary { border-bottom: 1px solid rgba(0,0,0,0.2); margin-bottom: 10px; padding-bottom: 5px; }
+        .modal-box.modal-white summary { cursor: pointer; color: #D50000; font-weight: 900; outline: none; font-family:var(--font-kicker); text-transform:uppercase; font-size:13px; letter-spacing:1px; display: block;}
+        .modal-box.modal-white details > div { color: #1A0F0A; font-weight: 500; line-height: 1.6; }
         .modal-box.modal-white ul { padding-left: 24px; margin: 10px 0; font-weight: 500;}
 
         /* Form Feedback Trắng */
@@ -395,7 +395,6 @@
         </div>
         <div class="p1-center-vignette"></div>
         <div class="p1-fog"></div>
-        <!-- JS sẽ gen tàn lửa (ember) ở đây -->
         <div id="emberContainer"></div>
     </div>
 
@@ -414,19 +413,18 @@
         <div class="station-card">
             <div class="avatar-wrap">
                 <div class="avatar-halo"></div>
-                <!-- HỐ ĐEN VÀ MẮT MÈO SÁNG -->
                 <div class="black-hole">
                     <div class="cat-eye left"></div> 
                     <div class="cat-eye right"></div>
                 </div>
             </div>
-            <p class="kicker">CHÀO MỪNG QUÝ KHÁCH ĐẾN VỚI</p>
+            <!-- DOUBLE CLICK VÀO DÒNG CHỮ NÀY ĐỂ MỞ QUYỀN ADMIN -->
+            <p class="kicker" id="secretAdminTrigger" title="Click đúp để mở lối vào Trưởng Ga">CHÀO MỪNG QUÝ KHÁCH ĐẾN VỚI</p>
             <h1 class="heading">NHÀ GA MEOWN</h1>
             <p class="body-text">Ở rìa của thực tại, nơi sương mù không bao giờ tan có một nhà ga nhỏ mang tên Meown. Đến với ga, quý khách không cần mua vé bằng tiền. Chỉ cần bạn bước lên tuyến tàu phù hợp, chọn một nhân viên và bắt đầu trò chuyện, con tàu sẽ tự động lăn bánh.</p>
             <button class="cta-btn" id="ctaGoStation">ĐI ĐẾN NHÀ GA</button>
         </div>
 
-        <!-- BẢNG THỐNG KÊ GÓC TRÁI DƯỚI CÙNG -->
         <div class="luggage-tag">
             <div class="tag-line"><span class="icon-slot" data-icon="hat"></span> <span class="num" id="statStaff">0</span> nhân viên túc trực tại ga.</div>
             <div class="tag-line"><span class="icon-slot" data-icon="ticket_punch"></span> <span class="num" id="statVisits">0</span> hành khách đã ghé ga.</div>
@@ -444,7 +442,6 @@
         </nav>
 
         <div class="content-area">
-            <!-- View: Phòng trưởng ga -->
             <div class="section-view" id="view-stationmaster">
                 <div class="wood-box admin-editable" id="smBoxContainer">
                     <h2 class="embossed-title">ĐÔI CHÚT VỀ TRƯỞNG GA</h2>
@@ -455,21 +452,17 @@
                 </div>
             </div>
 
-            <!-- View: Các chuyến tàu -->
             <div class="section-view hidden" id="view-trains">
                 <div style="display:flex; gap:12px; margin-bottom: 24px;">
                     <button class="admin-only-btn" onclick="openAdminForm('train', 'add')">➕ Thêm Tuyến Tàu Mới</button>
                 </div>
-                
                 <div class="search-bar-basic">
                     <input type="text" id="staffSearch" class="search-input" placeholder="🔍 Tìm tên nhân viên...">
                     <button class="submit-btn" style="width:auto;" id="randomStaffBtn"><span class="icon-slot" data-icon="loop"></span> Gợi ý</button>
                 </div>
-                
                 <div id="trainsList"></div>
             </div>
 
-            <!-- View: Sổ lưu bút -->
             <div class="section-view hidden" id="view-guestbook">
                 <div class="mailbox-panel">
                     <h2 class="embossed-title">SỔ LƯU BÚT</h2>
@@ -491,7 +484,6 @@
                 <div class="feed-container" id="guestbookFeed"></div>
             </div>
 
-            <!-- View: Trạm tuyển dụng -->
             <div class="section-view hidden" id="view-recruitment">
                 <h2 class="embossed-title" style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center;">
                     HỒ SƠ DỰ BỊ
@@ -626,7 +618,7 @@
         const VERIFIED_TICK = `<svg style="width:14px; height:14px; display:inline-block; vertical-align:middle; margin-left:4px;" viewBox="0 0 24 24" fill="#0866FF"><circle cx="12" cy="12" r="10"/><path d="M16.5 8.5l-6 6-3-3" stroke="#fff" stroke-width="2" fill="none"/></svg>`;
         
         let CONFIG = {
-            stationMaster: { avatar: "", name: "Ngọc Tuyết", bio: "Chào mừng đến với nhà ga Meown.", facebook: { url: "", name: "", desc: "" } },
+            stationMaster: { avatar: "", name: "Trưởng Ga", bio: "Chào mừng đến với nhà ga Meown.", facebook: { url: "", name: "", desc: "" } },
             trains: [], staff: [], upcomingBots: [], musicLibrary: [] 
         };
 
@@ -634,7 +626,6 @@
         let localGuestbook = []; let localRecruit = [];
 
         function resizeImage(file, maxSize = 800) { return new Promise((resolve) => { const reader = new FileReader(); reader.onload = (e) => { const img = new Image(); img.onload = () => { const canvas = document.createElement('canvas'); let w = img.width, h = img.height; if(w > maxSize || h > maxSize) { if(w > h) { h = Math.round((h * maxSize) / w); w = maxSize; } else { w = Math.round((w * maxSize) / h); h = maxSize; } } canvas.width = w; canvas.height = h; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, w, h); resolve(canvas.toDataURL('image/jpeg', 0.6)); }; img.src = e.target.result; }; reader.readAsDataURL(file); }); }
-        function fileToBase64(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error); }); }
 
         /* Split-flap Effect (Cơ học) */
         function rollNumber(el, target){ 
@@ -651,8 +642,26 @@
             }, 30);
         }
 
+        /* LỐI VÀO BÍ MẬT CỦA ADMIN */
+        document.getElementById('secretAdminTrigger').addEventListener('dblclick', () => {
+            if (!sessionStorage.getItem('isAdmin')) {
+                let pwd = prompt("LỐI VÀO ẨN CỦA TRƯỞNG GA\nVui lòng nhập mật mã bảo mật:");
+                if(pwd === "bhnt2006") { 
+                    sessionStorage.setItem('isAdmin', 'true'); 
+                    window.location.reload();
+                } else if (pwd !== null) { 
+                    alert("Mật mã không chính xác!"); 
+                }
+            } else {
+                if(confirm("Bạn đang ở chế độ Admin. Bạn có muốn thoát không?")) {
+                    sessionStorage.removeItem('isAdmin');
+                    window.location.reload();
+                }
+            }
+        });
+
         /* ============================================================
-           KHỞI TẠO VÀ LẤY DỮ LIỆU TỪ SUPABASE/LOCAL
+           KHỞI TẠO VÀ LẤY DỮ LIỆU
            ============================================================ */
         document.addEventListener("DOMContentLoaded", async () => {
             loadIcons();
@@ -661,7 +670,6 @@
             if(localFallback) { try { Object.assign(CONFIG, JSON.parse(localFallback)); } catch(e){} }
 
             await fetchStationConfig();
-            // await fetchFeeds(); (Giả lập fetch vì thiếu code setup DB bài viết)
             
             updateStationMasterUI();
             renderTrains();
@@ -698,11 +706,6 @@
         function checkAdminLogin() {
             const urlParams = new URLSearchParams(window.location.search);
             if(urlParams.get('admin') === 'true' || sessionStorage.getItem('isAdmin') === 'true') {
-                if (!sessionStorage.getItem('isAdmin')) {
-                    let pwd = prompt("LỐI VÀO ẨN: Vui lòng nhập mật mã bảo mật của Trưởng Ga:");
-                    if(pwd === "bhnt2006") { sessionStorage.setItem('isAdmin', 'true'); } 
-                    else { alert("Sai mật mã."); window.location.href = window.location.pathname; return; }
-                }
                 isAdminMode = true; 
                 document.body.classList.add("admin-active");
                 document.getElementById("smBoxContainer").addEventListener("click", () => { if(isAdminMode) openAdminForm('sm'); });
@@ -813,7 +816,13 @@
                 document.getElementById("generalModalTitle").textContent = action === 'add' ? `IN THẺ NHÂN VIÊN MỚI` : `CHỈNH SỬA THẺ NHÂN VIÊN`;
                 body.innerHTML = `<div class="form-row"><label>Tên Nhân Viên</label><input type="text" id="aStName" value="${sData.name}"></div><div class="form-row"><label>Ảnh Chân Dung (9:16)</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aStFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Tải ảnh</label><div id="aStPrev" class="img-preview-grid"><img src="${sData.avatar}" onerror="this.style.display='none'"></div></div></div><div class="form-row"><label>Câu Thoại Đặc Trưng (Hook)</label><input type="text" id="aStHook" value="${sData.hook}"></div><div class="form-row"><label>Tags (Cách nhau dấu phẩy)</label><input type="text" id="aStTags" value="${sData.tags.join(', ')}"></div><div class="form-row"><label>HỒ SƠ MẬT (Hiển thị dạng bảng trắng lớn)</label><div class="rt-toolbar"><button type="button" class="rt-btn" onclick="document.execCommand('bold',false,null)"><b>B</b></button><button type="button" class="rt-btn" onclick="document.execCommand('italic',false,null)"><i>I</i></button><button type="button" class="rt-btn" onclick="document.execCommand('insertUnorderedList',false,null)">• List</button><input type="color" class="rt-btn" style="padding:0; width:40px; height:30px;" onchange="document.execCommand('foreColor',false,this.value)"><button type="button" class="rt-btn" onclick="insertToggleHTML()">Thêm Nút Đóng Mở</button></div><div id="aStScenario" class="rt-editor" contenteditable="true">${sData.scenario}</div></div><div class="form-row"><label>LINK TRÒ CHUYỆN</label><input type="text" id="aStChat" value="${sData.chatLink}"></div><button class="submit-btn" id="saveSt">${action==='add'?"IN THẺ":"LƯU HỒ SƠ"}</button>`;
                 loadIcons(); 
-                window.insertToggleHTML = function() { const html = `<details><summary>Nhấn để xem chi tiết</summary><div>Nội dung...</div></details><br>`; document.execCommand('insertHTML', false, html); };
+                
+                // ĐÃ SỬA LỖI NÚT ĐÓNG MỞ (DETAILS)
+                window.insertToggleHTML = function() { 
+                    const html = `<details open><summary>BẤM VÀO ĐÂY ĐỂ ĐỔI TÊN NÚT</summary><div style="padding:10px; border:1px dashed #444; border-radius:4px;">Nhập nội dung hiển thị cho hành khách vào đây...</div></details><br>`; 
+                    document.execCommand('insertHTML', false, html); 
+                };
+                
                 let sB64 = sData.avatar; document.getElementById("aStFile").addEventListener("change", async (e)=>{ sB64 = await resizeImage(e.target.files[0]); document.getElementById("aStPrev").innerHTML=`<img src="${sB64}">`; });
                 document.getElementById("saveSt").addEventListener("click", async () => { 
                     const tags = document.getElementById("aStTags").value.split(',').map(t=>t.trim()).filter(t=>t); 
@@ -844,7 +853,6 @@
                     await saveStationConfigToDB(); renderUpcomingBots(); document.getElementById("generalModal").classList.add("hidden"); 
                 });
             }
-            // (Giữ nguyên logic thêm Playlist & Song như cũ)
         }
 
         document.getElementById("closeGeneralModal").addEventListener("click", () => { document.getElementById("generalModal").classList.add("hidden"); document.getElementById("generalBox").classList.remove("modal-white"); });
@@ -925,7 +933,7 @@
         function createStaffCard(staff, themeClass) {
             const cardWrap = document.createElement("div"); cardWrap.className = `staff-card-container`; 
             if(staff.isHidden && isAdminMode) { cardWrap.classList.add("is-hidden"); }
-            const sClass = "s-" + themeClass; /* Mapping theme to staff class */
+            const sClass = "s-" + themeClass;
             const rData = staff.rating || { sum: 0, count: 0 }; const avgText = rData.count === 0 ? "0.0" : (rData.sum / rData.count).toFixed(1);
             let tagHTML = (staff.tags||[]).map(t=>{ let txt = t.trim().startsWith('#') ? t : '#' + t; return `<span class="c-tag">${txt}</span>` }).join("");
             const scenarioHTML = staff.scenario && staff.scenario.trim() !== "" ? staff.scenario : "<p style='font-style:italic; text-align:center;'>Hồ sơ mật chưa được công bố.</p>";
@@ -953,14 +961,18 @@
             `;
             setTimeout(() => loadIcons(), 15);
             
-            // Xử lý lật thẻ
+            // Xử lý lật thẻ - ĐÃ SỬA LỖI LẬT NGƯỢC
             cardWrap.addEventListener("click", function() { this.classList.toggle("flipped"); });
-            const cardBack = cardWrap.querySelector('.card-back'); cardBack.addEventListener("click", (e) => e.stopPropagation());
+            const cardBack = cardWrap.querySelector('.card-back'); 
+            
+            // Chỉ chặn sự kiện click vào đúng các NÚT để người dùng vẫn lật ngược thẻ lại được
+            cardBack.querySelectorAll('button, a').forEach(el => {
+                el.addEventListener("click", (e) => e.stopPropagation());
+            });
             
             // Bảng trắng Hồ Sơ
             const profileBtn = cardWrap.querySelector('.c-profile-btn');
             profileBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
                 const modal = document.getElementById("generalModal"); const box = document.getElementById("generalBox"); const body = document.getElementById("generalModalBody");
                 box.classList.add("modal-white"); 
                 document.getElementById("generalModalTitle").textContent = `HỒ SƠ: ${staff.name}`;
@@ -971,7 +983,6 @@
             // Bảng Feedback
             const fbBtn = cardWrap.querySelector('.c-fb-btn');
             fbBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
                 const modal = document.getElementById("generalModal"); const box = document.getElementById("generalBox"); const body = document.getElementById("generalModalBody");
                 box.classList.add("modal-white"); 
                 document.getElementById("generalModalTitle").textContent = `ĐÁNH GIÁ: ${staff.name}`;
@@ -1063,7 +1074,6 @@
             miniVinyl.classList.remove("playing"); stylus.classList.remove("playing");
         });
 
-        // (Phần chuyển bài & tạo nhạc không thay đổi logic cốt lõi)
         function loadSong(index){
             if(!curQueue[index]) return; curIndex = index;
             document.getElementById("gramoTitle").textContent = curQueue[index].title; 
