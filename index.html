@@ -636,6 +636,7 @@
         let CONFIG = { stationMaster: { avatar: "", name: "Trưởng Ga", bio: "Chào mừng đến với nhà ga Meown.", facebook: {} }, trains: [], staff: [], upcomingBots: [], musicLibrary: [], lastUpdated: 0 };
         let isAdminMode = false; let activeMusicPl = null;
         let localGuestbook = []; let localRecruit = [];
+        let currentSearch = ""; // Thêm biến search còn thiếu
 
         function resizeImage(file, maxSize = 800) { return new Promise((resolve) => { const reader = new FileReader(); reader.onload = (e) => { const img = new Image(); img.onload = () => { const canvas = document.createElement('canvas'); let w = img.width, h = img.height; if(w > maxSize || h > maxSize) { if(w > h) { h = Math.round((h * maxSize) / w); w = maxSize; } else { w = Math.round((w * maxSize) / h); h = maxSize; } } canvas.width = w; canvas.height = h; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, w, h); resolve(canvas.toDataURL('image/jpeg', 0.6)); }; img.src = e.target.result; }; reader.readAsDataURL(file); }); }
         function fileToBase64(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error); }); }
@@ -669,7 +670,7 @@
                 let pwd = prompt("LỐI VÀO CỦA TRƯỞNG GA\nVui lòng nhập mật mã bảo mật:");
                 if(pwd === "bhnt2006") { 
                     localStorage.setItem('isAdmin', 'true'); 
-                    alert("Đã cấp quyền Tối thượng cho Trưởng ga Ngọc Tuyết!");
+                    alert("Đã cấp quyền Tối thượng cho Trưởng ga Meown!");
                     window.location.reload(); 
                 } else if (pwd !== null) { alert("Mật mã không chính xác!"); }
             } else {
@@ -694,6 +695,15 @@
                 sessionStorage.setItem('has_visited', 'true');
             }
 
+            // Gán sự kiện cho thanh tìm kiếm bị thiếu
+            const staffSearchEl = document.getElementById("staffSearch");
+            if (staffSearchEl) {
+                staffSearchEl.addEventListener("input", (e) => {
+                    currentSearch = e.target.value;
+                    renderTrains();
+                });
+            }
+
             updateStationMasterUI(); renderTrains(); renderUpcomingBots(); renderGramoPlaylists();
             rollNumber(document.getElementById("statStaff"), CONFIG.staff.length || 0); 
             rollNumber(document.getElementById("statVisits"), currentVisits); 
@@ -707,8 +717,12 @@
                 if (data && data.data) { 
                     const dbConfig = typeof data.data === 'string' ? JSON.parse(data.data) : data.data; 
                     if (!CONFIG.lastUpdated || (dbConfig.lastUpdated && dbConfig.lastUpdated > CONFIG.lastUpdated)) {
+                        // BẢO VỆ MUSIC LIBRARY: Nếu DB bị thiếu/trống nhạc do giới hạn dung lượng Supabase, lấy lại từ local
+                        let localMusic = CONFIG.musicLibrary || [];
                         CONFIG = dbConfig;
-                        if (!CONFIG.musicLibrary) CONFIG.musicLibrary = []; 
+                        if (!CONFIG.musicLibrary || CONFIG.musicLibrary.length < localMusic.length) {
+                            CONFIG.musicLibrary = localMusic;
+                        }
                         try { await localforage.setItem("meown_config_backup", CONFIG); } catch(e) {}
                     }
                 }
@@ -809,7 +823,7 @@
                         </div>
                         <div id="aBio" class="rt-editor" contenteditable="true">${CONFIG.stationMaster.bio || ''}</div>
                     </div>
-                    <div class="form-row"><label>Tên hiển thị FB</label><input type="text" id="aFbName" value="${CONFIG.stationMaster.facebook?.name || ''}" placeholder="VD: Ngọc Tuyết"></div>
+                    <div class="form-row"><label>Tên hiển thị FB</label><input type="text" id="aFbName" value="${CONFIG.stationMaster.facebook?.name || ''}" placeholder="VD: Trưởng ga Meown"></div>
                     <div class="form-row"><label>Link Facebook</label><input type="text" id="aFbUrl" value="${CONFIG.stationMaster.facebook?.url || ''}" placeholder="https://facebook.com/..."></div>
                     <button class="submit-btn" id="saveSM">ĐỒNG BỘ LÊN MÁY CHỦ</button>
                 `;
@@ -1139,6 +1153,173 @@
             setTimeout(() => loadIcons(), 10);
         }
 
+        // ============================================================
+        // LOGIC HỘP NHẠC ĐƯỢC BỔ SUNG ĐỂ TRÁNH LỖI VÀ LƯU VĨNH VIỄN
+        // ============================================================
+        let isPlaying = false;
+        let currentSongIndex = -1;
+        
+        document.getElementById("gramoToggle").addEventListener("click", () => {
+            document.getElementById("gramoPanel").classList.remove("hidden-panel");
+        });
+        document.getElementById("gramoClose").addEventListener("click", () => {
+            document.getElementById("gramoPanel").classList.add("hidden-panel");
+        });
+        document.getElementById("btnBackToPL").addEventListener("click", () => {
+            document.getElementById("gramoViewSongs").style.display = "none";
+            document.getElementById("gramoViewPlaylists").style.display = "block";
+            activeMusicPl = null;
+        });
+
+        window.renderGramoPlaylists = function() {
+            const container = document.getElementById("gramoPlaylistContainer");
+            if(!container) return;
+            container.innerHTML = "";
+            if(!CONFIG.musicLibrary || CONFIG.musicLibrary.length === 0) {
+                container.innerHTML = "<p style='color:var(--silver); font-style:italic;'>Chưa có Playlist nào.</p>";
+                return;
+            }
+            CONFIG.musicLibrary.forEach(pl => {
+                const plEl = document.createElement("div");
+                plEl.className = "gramo-pl-item";
+                let adminBtns = isAdminMode ? `
+                    <div style="display:flex; gap:6px;">
+                        <button style="background:transparent; border:none; color:var(--amber); cursor:pointer;" onclick="openAdminForm('playlist', 'edit', '${pl.id}'); event.stopPropagation();">✏️</button>
+                        <button style="background:transparent; border:none; color:#8B0000; cursor:pointer;" onclick="deletePlaylist('${pl.id}', event)">🗑️</button>
+                    </div>
+                ` : "";
+                plEl.innerHTML = `<div><span class="icon-slot" data-icon="disc"></span> ${pl.name} (${pl.songs ? pl.songs.length : 0})</div>${adminBtns}`;
+                plEl.onclick = () => {
+                    activeMusicPl = pl.id;
+                    document.getElementById("gramoViewPlaylists").style.display = "none";
+                    document.getElementById("gramoViewSongs").style.display = "block";
+                    document.getElementById("currentPlNameDisplay").textContent = pl.name;
+                    renderGramoSongs(pl.id);
+                };
+                container.appendChild(plEl);
+            });
+            loadIcons();
+        };
+
+        window.deletePlaylist = async function(plId, e) {
+            e.stopPropagation();
+            if(confirm("XÓA PLAYLIST NÀY?")) {
+                CONFIG.musicLibrary = CONFIG.musicLibrary.filter(p => p.id !== plId);
+                await saveStationConfigToDB();
+                renderGramoPlaylists();
+            }
+        };
+
+        window.renderGramoSongs = function(plId) {
+            const container = document.getElementById("gramoSongList");
+            if(!container) return;
+            container.innerHTML = "";
+            const pl = CONFIG.musicLibrary.find(p => p.id === plId);
+            if(!pl || !pl.songs || pl.songs.length === 0) {
+                container.innerHTML = "<p style='color:var(--silver); font-style:italic;'>Playlist trống.</p>";
+                return;
+            }
+            pl.songs.forEach((song, index) => {
+                const sgEl = document.createElement("div");
+                sgEl.className = "gramo-song-item";
+                let adminBtns = isAdminMode ? `
+                    <div style="display:flex; gap:6px;">
+                        <button style="background:transparent; border:none; color:var(--amber); cursor:pointer;" onclick="openAdminForm('song', 'edit', ${index}); event.stopPropagation();">✏️</button>
+                        <button style="background:transparent; border:none; color:#8B0000; cursor:pointer;" onclick="deleteSong('${pl.id}', ${index}, event)">🗑️</button>
+                    </div>
+                ` : "";
+                sgEl.innerHTML = `<div><span class="icon-slot" data-icon="play"></span> ${song.title}</div>${adminBtns}`;
+                sgEl.onclick = () => {
+                    playSong(pl.id, index);
+                };
+                container.appendChild(sgEl);
+            });
+            loadIcons();
+        };
+
+        window.deleteSong = async function(plId, index, e) {
+            e.stopPropagation();
+            if(confirm("XÓA BÀI HÁT NÀY?")) {
+                const pl = CONFIG.musicLibrary.find(p => p.id === plId);
+                if(pl) {
+                    pl.songs.splice(index, 1);
+                    await saveStationConfigToDB();
+                    renderGramoSongs(plId);
+                }
+            }
+        };
+
+        const audioEl = document.getElementById("gramoAudio");
+        window.playSong = function(plId, index) {
+            const pl = CONFIG.musicLibrary.find(p => p.id === plId);
+            if(!pl || !pl.songs || !pl.songs[index]) return;
+            const song = pl.songs[index];
+            audioEl.src = song.src;
+            audioEl.play();
+            isPlaying = true;
+            currentSongIndex = index;
+            activeMusicPl = plId;
+            
+            document.getElementById("gramoTitle").textContent = song.title;
+            document.getElementById("musicBoxVinyl").classList.add("playing");
+            document.getElementById("musicBoxStylus").classList.add("playing");
+            document.getElementById("gramoToggle").classList.remove("paused");
+            document.getElementById("gramoPlay").innerHTML = '<span class="icon-slot" data-icon="pause"></span>';
+            loadIcons();
+            
+            if(noteInterval) clearInterval(noteInterval);
+            noteInterval = setInterval(spawnNote, 800);
+            
+            const allSongs = document.querySelectorAll(".gramo-song-item");
+            allSongs.forEach(el => el.classList.remove("active"));
+            if(allSongs[index]) allSongs[index].classList.add("active");
+        };
+
+        document.getElementById("gramoPlay").addEventListener("click", () => {
+            if(audioEl.src) {
+                if(isPlaying) {
+                    audioEl.pause();
+                    isPlaying = false;
+                    document.getElementById("musicBoxVinyl").classList.remove("playing");
+                    document.getElementById("musicBoxStylus").classList.remove("playing");
+                    document.getElementById("gramoToggle").classList.add("paused");
+                    document.getElementById("gramoPlay").innerHTML = '<span class="icon-slot" data-icon="play"></span>';
+                    if(noteInterval) clearInterval(noteInterval);
+                } else {
+                    audioEl.play();
+                    isPlaying = true;
+                    document.getElementById("musicBoxVinyl").classList.add("playing");
+                    document.getElementById("musicBoxStylus").classList.add("playing");
+                    document.getElementById("gramoToggle").classList.remove("paused");
+                    document.getElementById("gramoPlay").innerHTML = '<span class="icon-slot" data-icon="pause"></span>';
+                    if(noteInterval) clearInterval(noteInterval);
+                    noteInterval = setInterval(spawnNote, 800);
+                }
+                loadIcons();
+            }
+        });
+
+        document.getElementById("gramoPrev").addEventListener("click", () => {
+            if(activeMusicPl && currentSongIndex > 0) playSong(activeMusicPl, currentSongIndex - 1);
+        });
+        document.getElementById("gramoNext").addEventListener("click", () => {
+            const pl = CONFIG.musicLibrary.find(p => p.id === activeMusicPl);
+            if(pl && currentSongIndex < pl.songs.length - 1) playSong(activeMusicPl, currentSongIndex + 1);
+        });
+        audioEl.addEventListener("ended", () => {
+            const pl = CONFIG.musicLibrary.find(p => p.id === activeMusicPl);
+            if(pl && currentSongIndex < pl.songs.length - 1) {
+                playSong(activeMusicPl, currentSongIndex + 1);
+            } else {
+                isPlaying = false;
+                document.getElementById("musicBoxVinyl").classList.remove("playing");
+                document.getElementById("musicBoxStylus").classList.remove("playing");
+                document.getElementById("gramoToggle").classList.add("paused");
+                document.getElementById("gramoPlay").innerHTML = '<span class="icon-slot" data-icon="play"></span>';
+                if(noteInterval) clearInterval(noteInterval);
+                loadIcons();
+            }
+        });
     </script>
 </body>
 </html>
