@@ -10,7 +10,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,500&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=Libre+Barcode+39+Text&display=swap" rel="stylesheet">
     
+    <!-- Supabase & LocalForage (Chống tràn bộ nhớ cực mạnh) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
 
     <style>
         /* ============================================================
@@ -40,7 +42,7 @@
         .hidden { display: none !important; }
         .icon { width: 1.2em; height: 1.2em; display: inline-block; vertical-align: -0.2em; stroke: currentColor; stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 
-        .crt-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 9999; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03)); background-size: 100% 4px, 6px 100%; opacity: 0.4; }
+        .crt-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 9999; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03)); background-size: 100% 4px, 6px 100%; opacity: 0.35; }
 
         /* ============================================================
            BACKGROUND THEO ĐÚNG ẢNH YÊU CẦU
@@ -55,6 +57,9 @@
         .p1-fog { position: absolute; inset: -20%; background-image: url('https://images.unsplash.com/photo-1485236715568-ddc5ee6ca227?auto=format&fit=crop&q=80&w=1200'); background-size: cover; opacity: 0.15; filter: grayscale(1) blur(5px); mix-blend-mode: screen; animation: panFog 60s linear infinite alternate; pointer-events: none; }
         @keyframes panFog { 0% { transform: translate(0, 5%); } 100% { transform: translate(-10%, -5%); } }
         
+        .ember { position: absolute; width: 3px; height: 3px; background: #FFCC00; border-radius: 50%; box-shadow: 0 0 8px 2px #DDAA33; opacity: 0; animation: floatEmber 4s ease-in infinite; pointer-events: none; z-index: 1; }
+        @keyframes floatEmber { 0% { transform: translateY(0) scale(1); opacity: 0; } 50% { opacity: 0.8; } 100% { transform: translateY(-100px) scale(0.5); opacity: 0; } }
+
         #bg-page2 { 
             opacity: 0; pointer-events: none; position: fixed; inset: 0; z-index: 0; overflow: hidden; 
             background-image: url("ChatGPT Image 15_27_41 12 thg 7, 2026.png"); 
@@ -65,15 +70,22 @@
         .p2-steam { position: absolute; bottom: -10%; left: 0; width: 100%; height: 50%; background: radial-gradient(ellipse at center, rgba(150,150,150,0.1) 0%, transparent 70%); filter: blur(20px); animation: steamBreathe 8s ease-in-out infinite alternate; pointer-events: none;}
         @keyframes steamBreathe { 0% { transform: scaleY(1); opacity: 0.1; } 100% { transform: scaleY(1.5); opacity: 0.3; } }
 
-        .firefly { position: absolute; width: 3px; height: 3px; background: #FFDF73; border-radius: 50%; box-shadow: 0 0 6px 2px #DDAA33; opacity: 0; pointer-events: none; z-index: 1; animation: fireflyBlink 4s ease-in-out infinite alternate, fireflyFloat 25s linear infinite; }
-        @keyframes fireflyBlink { 0% { opacity: 0; transform: scale(0.8); } 50% { opacity: 0.8; transform: scale(1.2); } 100% { opacity: 0; transform: scale(0.8); } }
+        .firefly { position: absolute; width: 2px; height: 2px; background: #FFDF73; border-radius: 50%; box-shadow: 0 0 6px 2px #DDAA33; opacity: 0; pointer-events: none; z-index: 1; animation: fireflyBlink 4s ease-in-out infinite alternate, fireflyFloat 25s linear infinite; }
+        @keyframes fireflyBlink { 0% { opacity: 0; transform: scale(0.5); } 50% { opacity: 0.8; transform: scale(1.2); } 100% { opacity: 0; transform: scale(0.5); } }
         @keyframes fireflyFloat { 0% { transform: translate(0, 0); } 33% { transform: translate(30px, -50px); } 66% { transform: translate(-20px, -100px); } 100% { transform: translate(10px, -150px); } }
 
         .magic-particle { position: absolute; background: #DDAA33; border-radius: 50%; box-shadow: 0 0 8px #FFDF73, 0 0 15px #FFDF73; opacity: 0; animation: floatMagic linear forwards; pointer-events: none; z-index: 10; }
         @keyframes floatMagic { 0% { transform: translateY(0) scale(0.5); opacity: 0; } 20% { opacity: 0.8; } 100% { transform: translateY(-100px) scale(1.5); opacity: 0; } }
 
-        /* BẢNG THỐNG KÊ NHỎ GỌN TRONG SUỐT Ở GÓC TRÁI DƯỚI */
-        .global-tag { position: fixed; left: 10px; bottom: 10px; z-index: 100; padding: 6px 12px; background: transparent; pointer-events: none; font-family: var(--font-kicker); font-size: 11px; color: var(--pearl); line-height: 1.4; transition: 0.5s ease; display: flex; flex-direction: column; gap: 4px; }
+        /* ============================================================
+           BẢNG THỐNG KÊ NHỎ GỌN TRONG SUỐT Ở GÓC TRÁI DƯỚI
+           ============================================================ */
+        .global-tag { 
+            position: fixed; left: 10px; bottom: 10px; z-index: 100; 
+            padding: 6px 12px; background: transparent; pointer-events: none;
+            font-family: var(--font-kicker); font-size: 11px; color: var(--pearl); line-height: 1.4; transition: 0.5s ease; 
+            display: flex; flex-direction: column; gap: 4px;
+        }
         .global-tag .tag-line { display: flex; align-items: center; gap: 6px; font-weight: 500; text-shadow: 1px 1px 2px #000, 0 0 8px #000; } 
         .global-tag .icon { color: var(--amber); width: 14px; height: 14px; filter: drop-shadow(0 0 2px #000); } 
         .global-tag .num { display: inline-block; font-variant-numeric: tabular-nums; color: var(--amber); font-weight: 900; font-size: 13px; min-width: 1.5em; text-shadow: 0 0 5px var(--amber-glow), 1px 1px 2px #000; }
@@ -123,7 +135,7 @@
         .wood-box { background: rgba(10,10,12,0.95); border: 2px solid #222; border-radius: 4px; padding: 24px 28px; box-shadow: 6px 6px 0 rgba(0,0,0,1); margin-bottom: 24px; position: relative; }
         .vintage-gold-title { font-family: var(--font-heading); font-size: 22px; font-weight: 900; letter-spacing: 2px; color: var(--amber); border-bottom: 2px dashed #333; padding-bottom: 12px; margin-bottom: 20px; text-transform: uppercase; text-shadow: 2px 2px 0 #000, 0 0 10px var(--amber-glow); }
 
-        /* QUYỀN ADMIN HIỂN THỊ CỰC MẠNH */
+        /* QUYỀN ADMIN HIỂN THỊ */
         .admin-only-flex { display: none !important; }
         body.admin-active .admin-only-flex { display: flex !important; }
         
@@ -382,7 +394,7 @@
         <div class="p2-steam"></div>
     </div>
     
-    <!-- BẢNG THỐNG KÊ (LUGGAGE TAG) NHỎ GỌN, TRONG SUỐT Ở GÓC TRÁI DƯỚI -->
+    <!-- BẢNG THỐNG KÊ (LUGGAGE TAG) NHỎ GỌN TRONG SUỐT GÓC TRÁI DƯỚI -->
     <div class="global-tag">
         <div class="tag-line"><span class="icon-slot" data-icon="hat"></span> <span class="num" id="statStaff">0</span> nhân viên túc trực tại ga.</div>
         <div class="tag-line"><span class="icon-slot" data-icon="ticket_punch"></span> <span class="num" id="statVisits">0</span> lượt hành khách đã ghé ga.</div>
@@ -421,7 +433,6 @@
             <div class="section-view" id="view-stationmaster">
                 <div class="wood-box">
                     <h2 class="embossed-title vintage-gold-title">GIỚI THIỆU</h2>
-                    <!-- NÚT ADMIN SỬA TRƯỞNG GA -->
                     <div class="admin-only-flex" style="gap:10px; margin-bottom:15px; justify-content:flex-end;">
                         <button class="submit-btn" style="width:auto; padding: 8px 15px;" onclick="openAdminForm('sm')">✏️ SỬA THÔNG TIN TRƯỞNG GA</button>
                     </div>
@@ -467,7 +478,6 @@
                 <h2 class="embossed-title" style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center;">
                     HỒ SƠ DỰ BỊ
                 </h2>
-                <!-- NÚT ADMIN THÊM HỒ SƠ -->
                 <div class="admin-only-flex" style="margin-bottom: 20px;">
                     <button class="submit-btn" style="width:auto; background:var(--amber); color:#000;" onclick="openAdminForm('upcoming', 'add')">➕ THÊM HỒ SƠ DỰ BỊ</button>
                 </div>
@@ -516,7 +526,7 @@
             <div id="gramoPlaylistContainer"></div>
         </div>
 
-        <!-- MÀN HÌNH DANH SÁCH BÀI HÁT -->
+        <!-- MÀN HÌNH DANH SÁCH BÀI HÁT (ẨN MẶC ĐỊNH) -->
         <div id="gramoViewSongs" class="gramo-scroll-area" style="display:none;">
             <div style="display:flex; justify-content:space-between; margin-bottom:10px; align-items:center;">
                 <button class="g-back-btn" id="btnBackToPL">🔙 Quay lại Danh sách</button>
@@ -527,9 +537,11 @@
         </div>
 
         <div class="gramo-player-controls">
-            <button class="g-ctrl-btn" id="gramoPrev"><span class="icon-slot" data-icon="prev"></span></button>
-            <div id="gramoPlayWrap"><button class="g-ctrl-btn" id="gramoPlay"><span class="icon-slot" data-icon="play"></span></button></div>
-            <button class="g-ctrl-btn" id="gramoNext"><span class="icon-slot" data-icon="next"></span></button>
+            <button class="g-ctrl-btn" id="gramoPrev" title="Bài trước"><span class="icon-slot" data-icon="prev"></span></button>
+            <div id="gramoPlayWrap">
+                <button class="g-ctrl-btn" id="gramoPlay" title="Phát/Dừng"><span class="icon-slot" data-icon="play"></span></button>
+            </div>
+            <button class="g-ctrl-btn" id="gramoNext" title="Bài tiếp"><span class="icon-slot" data-icon="next"></span></button>
         </div>
         <audio id="gramoAudio"></audio>
     </div>
@@ -585,7 +597,6 @@
             }
         }
 
-        /* HIỆU ỨNG BỤI HỔ PHÁCH KHI CLICK MENU */
         function burstParticles(e) {
             const container = document.getElementById('bg-page2');
             const rect = e.target.getBoundingClientRect();
@@ -598,7 +609,7 @@
             }
         }
 
-        /* Nốt nhạc lượn vòng quanh đĩa than */
+        /* Nốt nhạc lượn quanh đĩa than */
         let noteInterval;
         function spawnNote() {
             if(!isPlaying) return;
@@ -622,7 +633,7 @@
         const ADMIN_CAT_AVATAR = "ChatGPT_Image_02_56_58_7_thg_7__2026-removebg-preview-removebg-preview.png";
         const VERIFIED_TICK = `<svg style="width:14px; height:14px; display:inline-block; vertical-align:middle; margin-left:4px;" viewBox="0 0 24 24" fill="#0866FF"><circle cx="12" cy="12" r="10"/><path d="M16.5 8.5l-6 6-3-3" stroke="#fff" stroke-width="2" fill="none"/></svg>`;
         
-        let CONFIG = { stationMaster: { avatar: "", name: "Trưởng Ga Meown", bio: "Chào mừng đến với nhà ga Meown.", facebook: {} }, trains: [], staff: [], upcomingBots: [], musicLibrary: [], lastUpdated: 0 };
+        let CONFIG = { stationMaster: { avatar: "", name: "Trưởng Ga", bio: "Chào mừng đến với nhà ga Meown.", facebook: {} }, trains: [], staff: [], upcomingBots: [], musicLibrary: [], lastUpdated: 0 };
         let isAdminMode = false; let activeMusicPl = null;
         let localGuestbook = []; let localRecruit = [];
 
@@ -641,7 +652,6 @@
             }, 30);
         }
 
-        /* KIỂM TRA QUYỀN ADMIN NGAY LÚC ĐẦU */
         function checkAdminLogin() {
             const urlParams = new URLSearchParams(window.location.search);
             if(urlParams.get('admin') === 'true' || localStorage.getItem('isAdmin') === 'true') {
@@ -654,13 +664,12 @@
             }
         }
 
-        /* LỐI VÀO BÍ MẬT CỦA ADMIN (Click Đúp) */
         document.getElementById('secretAdminTrigger').addEventListener('dblclick', () => {
             if (!localStorage.getItem('isAdmin')) {
                 let pwd = prompt("LỐI VÀO CỦA TRƯỞNG GA\nVui lòng nhập mật mã bảo mật:");
                 if(pwd === "bhnt2006") { 
                     localStorage.setItem('isAdmin', 'true'); 
-                    alert("Đã cấp quyền Tối thượng cho Trưởng ga Meown!");
+                    alert("Đã cấp quyền Tối thượng cho Trưởng ga Ngọc Tuyết!");
                     window.location.reload(); 
                 } else if (pwd !== null) { alert("Mật mã không chính xác!"); }
             } else {
@@ -669,15 +678,15 @@
         });
 
         document.addEventListener("DOMContentLoaded", async () => {
+            localforage.config({ name: 'MeownStation' }); 
             loadIcons(); createEmbers(); createFireflies();
             checkAdminLogin(); 
 
-            // CƠ CHẾ SYNC DỮ LIỆU
-            const localFallback = localStorage.getItem("meown_config_backup");
-            if(localFallback) { try { CONFIG = JSON.parse(localFallback); } catch(e){} }
+            // CƠ CHẾ SYNC DỮ LIỆU LOCALFORAGE + SUPABASE
+            let localFallback = await localforage.getItem("meown_config_backup");
+            if(localFallback) { try { CONFIG = typeof localFallback === 'string' ? JSON.parse(localFallback) : localFallback; } catch(e){ CONFIG = localFallback; } }
             await fetchStationConfig();
             
-            /* LƯỢT TRUY CẬP THỰC TẾ LƯU VÀO LOCALSTORAGE */
             let currentVisits = parseInt(localStorage.getItem('meown_real_visits') || '0');
             if (!sessionStorage.getItem('has_visited')) {
                 currentVisits++;
@@ -700,15 +709,16 @@
                     if (!CONFIG.lastUpdated || (dbConfig.lastUpdated && dbConfig.lastUpdated > CONFIG.lastUpdated)) {
                         CONFIG = dbConfig;
                         if (!CONFIG.musicLibrary) CONFIG.musicLibrary = []; 
-                        try { localStorage.setItem("meown_config_backup", JSON.stringify(CONFIG)); } catch(e) {}
+                        try { await localforage.setItem("meown_config_backup", CONFIG); } catch(e) {}
                     }
                 }
             } catch(e) {}
         }
+
         async function saveStationConfigToDB() {
             CONFIG.lastUpdated = Date.now(); 
             if (!CONFIG.musicLibrary) CONFIG.musicLibrary = []; 
-            try { localStorage.setItem("meown_config_backup", JSON.stringify(CONFIG)); } catch(e) {}
+            try { await localforage.setItem("meown_config_backup", CONFIG); } catch(e) {}
             try { 
                 const payload = { stationMaster: CONFIG.stationMaster, trains: CONFIG.trains, staff: CONFIG.staff, upcomingBots: CONFIG.upcomingBots, musicLibrary: CONFIG.musicLibrary, lastUpdated: CONFIG.lastUpdated }; 
                 await supa.from('station_config').upsert([{ id: 1, data: JSON.stringify(payload) }]); 
@@ -759,10 +769,8 @@
         
         document.querySelectorAll(".nav-item").forEach(btn => { 
             btn.addEventListener("click", (e) => { 
-                burstParticles(e); 
-                document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active")); 
-                btn.classList.add("active"); document.querySelectorAll(".section-view").forEach(v => v.classList.add("hidden")); 
-                document.getElementById("view-" + btn.dataset.view).classList.remove("hidden"); 
+                burstParticles(e); document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active")); btn.classList.add("active"); 
+                document.querySelectorAll(".section-view").forEach(v => v.classList.add("hidden")); document.getElementById("view-" + btn.dataset.view).classList.remove("hidden"); 
             }); 
         });
 
@@ -801,7 +809,7 @@
                         </div>
                         <div id="aBio" class="rt-editor" contenteditable="true">${CONFIG.stationMaster.bio || ''}</div>
                     </div>
-                    <div class="form-row"><label>Tên hiển thị FB</label><input type="text" id="aFbName" value="${CONFIG.stationMaster.facebook?.name || ''}" placeholder="VD: Trưởng ga Meown"></div>
+                    <div class="form-row"><label>Tên hiển thị FB</label><input type="text" id="aFbName" value="${CONFIG.stationMaster.facebook?.name || ''}" placeholder="VD: Ngọc Tuyết"></div>
                     <div class="form-row"><label>Link Facebook</label><input type="text" id="aFbUrl" value="${CONFIG.stationMaster.facebook?.url || ''}" placeholder="https://facebook.com/..."></div>
                     <button class="submit-btn" id="saveSM">ĐỒNG BỘ LÊN MÁY CHỦ</button>
                 `;
@@ -904,13 +912,13 @@
                 if(action === 'add') {
                     let plOptions = CONFIG.musicLibrary.map(p => `<option value="${p.id}" ${p.id === activeMusicPl ? 'selected' : ''}>${p.name}</option>`).join('');
                     document.getElementById("generalModalTitle").textContent = "TẢI NHẠC LÊN PLAYLIST";
-                    body.innerHTML = `<div class="form-row"><label>Chọn Playlist</label><select id="aSongPlSelect" style="width:100%; padding:14px; background:#000; color:var(--pearl); border:2px solid #333;">${plOptions}</select></div><div id="songsContainer"><div class="form-row song-row" style="display:flex; flex-direction:column; gap:10px; margin-bottom: 20px; padding-bottom:15px; border-bottom:1px dashed var(--blood);"><input type="text" class="sgName" placeholder="Tên bài hát..."><label class="file-btn" style="width:100%;"><input type="file" accept="audio/*" class="sgFile" style="display:none;"><span class="file-status">Chọn file âm thanh (.mp3)</span></label></div></div><div style="display:flex; gap:10px;"><button class="submit-btn" style="width:auto; padding: 14px; background:#444;" id="addMoreRow">➕</button><button class="submit-btn" id="saveSg" style="flex:1;">ĐỒNG BỘ LÊN ĐÁM MÂY</button></div>`;
+                    body.innerHTML = `<div class="form-row"><label>Chọn Playlist</label><select id="aSongPlSelect" style="width:100%; padding:14px; background:#000; color:var(--pearl); border:2px solid #333;">${plOptions}</select></div><div id="songsContainer"><div class="form-row song-row" style="display:flex; flex-direction:column; gap:10px; margin-bottom: 20px; padding-bottom:15px; border-bottom:1px dashed var(--blood);"><input type="text" class="sgName" placeholder="Tên bài hát..."><label class="file-btn" style="width:100%;"><input type="file" accept="audio/*" class="sgFile" style="display:none;"><span class="file-status">Chọn file âm thanh (.mp3)</span></label></div></div><div style="display:flex; gap:10px;"><button class="submit-btn" style="width:auto; padding: 14px; background:#444;" id="addMoreRow">➕</button><button class="submit-btn" id="saveSg" style="flex:1;">LƯU BÀI HÁT</button></div>`;
                     function attachFileEvent(row) { const fileInput = row.querySelector(".sgFile"); const statusText = row.querySelector(".file-status"); fileInput.addEventListener("change", () => { if(fileInput.files.length > 0) { statusText.textContent = "Đã chọn: " + fileInput.files[0].name; statusText.style.color = "#FFD166"; } }); } attachFileEvent(document.querySelector(".song-row"));
                     document.getElementById("addMoreRow").addEventListener("click", () => { const row = document.createElement("div"); row.className = "form-row song-row"; row.style.cssText = "display:flex; flex-direction:column; gap:10px; margin-bottom: 20px; padding-bottom:15px; border-bottom:1px dashed var(--blood);"; row.innerHTML = `<input type="text" class="sgName" placeholder="Tên bài hát..."><label class="file-btn" style="width:100%;"><input type="file" accept="audio/*" class="sgFile" style="display:none;"><span class="file-status">Chọn file âm thanh</span></label>`; document.getElementById("songsContainer").appendChild(row); attachFileEvent(row); });
                     
                     document.getElementById("saveSg").addEventListener("click", async () => { 
                         const btn = document.getElementById("saveSg");
-                        btn.textContent = "ĐANG TẢI LÊN (VUI LÒNG ĐỢI)..."; btn.style.pointerEvents = 'none';
+                        btn.textContent = "ĐANG XỬ LÝ (CHỜ CHÚT NHA)..."; btn.style.pointerEvents = 'none';
                         try {
                             const targetPlId = document.getElementById("aSongPlSelect").value;
                             const rows = document.querySelectorAll(".song-row"); const newSongs = []; 
@@ -918,27 +926,22 @@
                                 const title = r.querySelector(".sgName").value.trim(); 
                                 const fileInput = r.querySelector(".sgFile"); 
                                 if(title && fileInput.files.length > 0) { 
-                                    const file = fileInput.files[0];
-                                    const fileName = `song_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.\-_]/g, '')}`;
-                                    
-                                    const { data, error } = await supa.storage.from('meown_music').upload(fileName, file);
-                                    if (error) { alert("Lỗi tải bài " + title + ": " + error.message); continue; }
-                                    
-                                    const { data: urlData } = supa.storage.from('meown_music').getPublicUrl(fileName);
-                                    newSongs.push({ title: title, src: urlData.publicUrl }); 
+                                    const base64Audio = await fileToBase64(fileInput.files[0]); 
+                                    newSongs.push({ title: title, src: base64Audio }); 
                                 } 
                             } 
-                            if(newSongs.length === 0) { btn.textContent = "ĐỒNG BỘ LÊN ĐÁM MÂY"; btn.style.pointerEvents = 'auto'; return alert("Chưa chọn file nhạc hoặc tải lên thất bại!"); } 
+                            if(newSongs.length === 0) { throw new Error("Chưa chọn file nhạc hoặc tải lên thất bại!"); } 
                             
                             CONFIG.musicLibrary.forEach(p => { if(p.id === targetPlId) { p.songs.push(...newSongs); } }); 
                             await saveStationConfigToDB(); 
                             if (activeMusicPl === targetPlId) { renderGramoSongs(activeMusicPl); }
                             document.getElementById("generalModal").classList.add("hidden"); 
+                            alert("Đã lưu nhạc thành công!");
                         } catch (err) {
-                            alert("Lỗi kết nối máy chủ Supabase. Vui lòng kiểm tra lại cấu hình Storage.");
+                            alert("Lỗi lưu nhạc. File MP3 của bạn có thể quá nặng để mã hóa.");
                             console.error(err);
                         } finally {
-                            btn.textContent = "ĐỒNG BỘ LÊN ĐÁM MÂY"; btn.style.pointerEvents = 'auto';
+                            btn.textContent = "LƯU BÀI HÁT"; btn.style.pointerEvents = 'auto';
                         }
                     });
                 } else if(action === 'edit') {
@@ -967,7 +970,7 @@
                 let adminCtrls = isAdminMode ? `
                 <div class="admin-action-btn-group" style="position:absolute; top:10px; right:10px; z-index:100; display:flex; gap:6px;">
                     <button style="background:var(--amber); color:#000; padding:6px 12px; border-radius:3px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="openAdminForm('train', 'edit', '${train.id}'); event.stopPropagation();">✏️ SỬA CHUYẾN TÀU</button>
-                    <button style="background:#8B0000; color:#FFF; padding:6px 12px; border-radius:3px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="deleteTrain('${train.id}', event)">🗑️ XÓA CHUYẾN TÀU</button>
+                    <button style="background:#8B0000; color:#FFF; padding:6px 12px; border-radius:3px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="deleteTrain('${train.id}', event)">🗑️ XÓA TÀU</button>
                 </div>` : "";
                 
                 card.innerHTML = `${adminCtrls}<div class="t-door"></div><div class="t-body"><div class="t-plate">${train.name}</div><div class="t-windows-wrap"><div class="t-window"><div class="t-window-text">${train.intro}</div></div><div class="t-window" style="opacity:0.8;"></div></div><div class="t-specs">STAFF.VOL:${staffCount} // ROUTE:${train.id.substring(0,6)}</div></div><div class="t-bellows"></div><div class="t-wheels-area"></div>`;
