@@ -294,7 +294,7 @@
         /* ============================================================
            MÁY HÁT GRAMOPHONE CHIA 2 VIEW
            ============================================================ */
-        .gramo-toggle { position: fixed; right: 24px; bottom: 24px; z-index: 60; width: 60px; height: 60px; border-radius: 50%; background: #000; border: 2px solid var(--brass); box-shadow: 0 0 15px rgba(181, 166, 66, 0.4), 4px 4px 0 rgba(0,0,0,1); display: flex; align-items: center; justify-content: center; color: var(--brass); font-size: 24px; transition: 0.3s; }
+        .gramo-toggle { position: fixed; right: 24px; bottom: 24px; z-index: 60; width: 60px; height: 60px; border-radius: 50%; background: #000; border: 2px solid var(--brass); box-shadow: 0 0 15px rgba(181, 166, 66, 0.4), 4px 4px 0 rgba(0,0,0,1); display: flex; align-items: center; justify-content: center; color: var(--brass); font-size: 24px; transition: 0.3s; cursor: pointer; }
         .gramo-toggle:hover { border-color: #FFF; color: #FFF; box-shadow: 0 0 25px rgba(181, 166, 66, 0.8), 4px 4px 0 rgba(0,0,0,1); transform: scale(1.05); }
         .vinyl-spin { animation: spinVinyl 4s linear infinite; }
         .gramo-toggle.paused .vinyl-spin { animation-play-state: paused; }
@@ -498,12 +498,12 @@
     </section>
 
     <!-- HỘP NHẠC -->
-    <button class="gramo-toggle paused" id="gramoToggle"><span class="vinyl-spin icon-slot" data-icon="disc"></span></button>
+    <button class="gramo-toggle paused" id="gramoToggle" title="Bật/Tắt Hộp Nhạc"><span class="vinyl-spin icon-slot" data-icon="disc"></span></button>
     <div class="gramo-panel-new hidden-panel" id="gramoPanel">
         <div class="gramo-new-header">
             <div class="gramo-new-title">HỘP NHẠC</div>
             <div class="gramo-new-actions">
-                <button id="gramoClose">✕</button>
+                <button id="gramoClose" title="Đóng hộp nhạc">✕</button>
             </div>
         </div>
         
@@ -636,7 +636,7 @@
         let CONFIG = { stationMaster: { avatar: "", name: "Trưởng Ga", bio: "Chào mừng đến với nhà ga Meown.", facebook: {} }, trains: [], staff: [], upcomingBots: [], musicLibrary: [], lastUpdated: 0 };
         let isAdminMode = false; let activeMusicPl = null;
         let localGuestbook = []; let localRecruit = [];
-        let currentSearch = ""; // Thêm biến search còn thiếu
+        let currentSearch = ""; 
 
         function resizeImage(file, maxSize = 800) { return new Promise((resolve) => { const reader = new FileReader(); reader.onload = (e) => { const img = new Image(); img.onload = () => { const canvas = document.createElement('canvas'); let w = img.width, h = img.height; if(w > maxSize || h > maxSize) { if(w > h) { h = Math.round((h * maxSize) / w); w = maxSize; } else { w = Math.round((w * maxSize) / h); h = maxSize; } } canvas.width = w; canvas.height = h; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, w, h); resolve(canvas.toDataURL('image/jpeg', 0.6)); }; img.src = e.target.result; }; reader.readAsDataURL(file); }); }
         function fileToBase64(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error); }); }
@@ -683,7 +683,6 @@
             loadIcons(); createEmbers(); createFireflies();
             checkAdminLogin(); 
 
-            // CƠ CHẾ SYNC DỮ LIỆU LOCALFORAGE + SUPABASE
             let localFallback = await localforage.getItem("meown_config_backup");
             if(localFallback) { try { CONFIG = typeof localFallback === 'string' ? JSON.parse(localFallback) : localFallback; } catch(e){ CONFIG = localFallback; } }
             await fetchStationConfig();
@@ -695,7 +694,6 @@
                 sessionStorage.setItem('has_visited', 'true');
             }
 
-            // Gán sự kiện cho thanh tìm kiếm bị thiếu
             const staffSearchEl = document.getElementById("staffSearch");
             if (staffSearchEl) {
                 staffSearchEl.addEventListener("input", (e) => {
@@ -717,7 +715,6 @@
                 if (data && data.data) { 
                     const dbConfig = typeof data.data === 'string' ? JSON.parse(data.data) : data.data; 
                     if (!CONFIG.lastUpdated || (dbConfig.lastUpdated && dbConfig.lastUpdated > CONFIG.lastUpdated)) {
-                        // BẢO VỆ MUSIC LIBRARY: Nếu DB bị thiếu/trống nhạc do giới hạn dung lượng Supabase, lấy lại từ local
                         let localMusic = CONFIG.musicLibrary || [];
                         CONFIG = dbConfig;
                         if (!CONFIG.musicLibrary || CONFIG.musicLibrary.length < localMusic.length) {
@@ -926,23 +923,84 @@
                 if(action === 'add') {
                     let plOptions = CONFIG.musicLibrary.map(p => `<option value="${p.id}" ${p.id === activeMusicPl ? 'selected' : ''}>${p.name}</option>`).join('');
                     document.getElementById("generalModalTitle").textContent = "TẢI NHẠC LÊN PLAYLIST";
+                    
                     body.innerHTML = `
-                        <div class="form-row"><label>Chọn Playlist</label><select id="aSongPlSelect" style="width:100%; padding:14px; background:#000; color:var(--pearl); border:2px solid #333;">${plOptions}</select></div>
-                        <div id="songsContainer">
-                            <div class="form-row song-row" style="display:flex; flex-direction:column; gap:10px; margin-bottom: 20px; padding-bottom:15px; border-bottom:1px dashed var(--blood);">
-                                <input type="text" class="sgName" placeholder="Tên bài hát...">
-                                <label class="file-btn" style="width:100%;">
-                                    <input type="file" accept="audio/*" class="sgFile" style="display:none;">
-                                    <span class="file-status">Chọn file âm thanh (.mp3)</span>
-                                </label>
-                            </div>
+                        <div class="form-row">
+                            <label>Chọn Playlist</label>
+                            <select id="aSongPlSelect" style="width:100%; padding:14px; background:#000; color:var(--pearl); border:2px solid #333;">${plOptions}</select>
                         </div>
-                        <div style="display:flex; gap:10px;">
-                            <button class="submit-btn" style="width:auto; padding: 14px; background:#444;" id="addMoreRow">➕</button>
+                        <div class="form-row">
+                            <label class="file-btn" style="width:100%; background:var(--amber); color:#000; border-color:#000; padding:16px;">
+                                <input type="file" accept="audio/*" multiple id="masterSongUpload" style="display:none;">
+                                <span class="icon-slot" data-icon="paperclip"></span> CHỌN NHIỀU FILE ÂM THANH CÙNG LÚC
+                            </label>
+                            <p style="font-size:11px; color:var(--silver); font-style:italic; margin-top:8px; text-align:center;">Hệ thống sẽ tự động điền tên cho tất cả các file</p>
+                        </div>
+                        <div id="songsContainer"></div>
+                        <div style="display:flex; gap:10px; margin-top:20px;">
+                            <button class="submit-btn" style="width:auto; padding: 14px; background:#444;" id="addMoreRow" title="Thêm ô trống">➕ TẠO Ô TRỐNG</button>
                             <button class="submit-btn" id="saveSg" style="flex:1;">LƯU BÀI HÁT</button>
                         </div>`;
                     
-                    // SỬ DỤNG EVENT DELEGATION: Giải quyết triệt để lỗi không bắt được sự kiện
+                    loadIcons();
+
+                    // Bắt sự kiện người dùng chọn nhiều file
+                    document.getElementById("masterSongUpload").addEventListener("change", function(e) {
+                        const files = e.target.files;
+                        const container = document.getElementById("songsContainer");
+                        
+                        for (let i = 0; i < files.length; i++) {
+                            const file = files[i];
+                            const row = document.createElement("div");
+                            row.className = "form-row song-row";
+                            row.style.cssText = "display:flex; flex-direction:column; gap:10px; margin-bottom: 20px; padding-bottom:15px; border-bottom:1px dashed var(--blood); position:relative;";
+                            
+                            let cleanName = file.name.replace(/\.[^/.]+$/, ""); // Cắt bỏ đuôi file (.mp3, .wav)
+                            
+                            row.innerHTML = `
+                                <div style="display:flex; align-items:center; gap:10px;">
+                                    <input type="text" class="sgName" value="${cleanName}" placeholder="Tên bài hát..." style="flex:1;">
+                                    <button type="button" class="remove-row-btn" style="background:#8B0000; color:#fff; width:40px; height:40px; font-weight:bold; cursor:pointer; border:2px solid #000; border-radius:2px; font-size:16px;">✕</button>
+                                </div>
+                                <div class="file-status" style="font-size:11px; color:#FFD166; font-weight:bold;">Tệp: ${file.name}</div>
+                            `;
+                            
+                            // Lưu trực tiếp object File vào DOM element
+                            row._attachedFile = file;
+                            
+                            // Nút xóa ô
+                            row.querySelector(".remove-row-btn").onclick = function() { row.remove(); };
+                            
+                            container.appendChild(row);
+                            
+                            // Hiệu ứng chớp sáng để báo hiệu điền tự động thành công
+                            const nameInput = row.querySelector(".sgName");
+                            nameInput.style.transition = "0.3s";
+                            nameInput.style.backgroundColor = "rgba(221, 170, 51, 0.2)";
+                            setTimeout(() => { nameInput.style.backgroundColor = "#000"; }, 500);
+                        }
+                        
+                        // Reset input để có thể chọn lại file cũ nếu muốn
+                        this.value = "";
+                    });
+
+                    // Nút tạo ô trống thêm thủ công
+                    document.getElementById("addMoreRow").addEventListener("click", () => { 
+                        const row = document.createElement("div"); 
+                        row.className = "form-row song-row"; 
+                        row.style.cssText = "display:flex; flex-direction:column; gap:10px; margin-bottom: 20px; padding-bottom:15px; border-bottom:1px dashed var(--blood); position:relative;"; 
+                        row.innerHTML = `
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <input type="text" class="sgName" placeholder="Tên bài hát..." style="flex:1;">
+                                <button type="button" class="remove-row-btn" style="background:#8B0000; color:#fff; width:40px; height:40px; font-weight:bold; cursor:pointer; border:2px solid #000; border-radius:2px; font-size:16px;">✕</button>
+                            </div>
+                            <label class="file-btn" style="width:100%;"><input type="file" accept="audio/*" class="sgFile" style="display:none;"><span class="file-status">Chọn file âm thanh</span></label>`; 
+                        
+                        row.querySelector(".remove-row-btn").onclick = function() { row.remove(); };
+                        document.getElementById("songsContainer").appendChild(row); 
+                    });
+
+                    // Event delegation cho các nút upload riêng lẻ (tạo bằng nút TẠO Ô TRỐNG)
                     document.getElementById("songsContainer").addEventListener("change", function(e) {
                         if(e.target && e.target.classList.contains("sgFile")) {
                             const fileInput = e.target;
@@ -955,12 +1013,9 @@
                                 statusText.textContent = "Đã chọn: " + file.name;
                                 statusText.style.color = "#FFD166";
                                 
-                                // Nếu ô Tên Bài Hát đang trống, tự động điền và tạo hiệu ứng nháy
                                 if(nameInput && nameInput.value.trim() === "") {
-                                    let cleanName = file.name.replace(/\.[^/.]+$/, ""); // Cắt đuôi mở rộng
+                                    let cleanName = file.name.replace(/\.[^/.]+$/, "");
                                     nameInput.value = cleanName;
-                                    
-                                    // Hiệu ứng chớp sáng để báo cho Admin biết đã điền tự động
                                     nameInput.style.transition = "0.3s";
                                     nameInput.style.backgroundColor = "rgba(221, 170, 51, 0.2)";
                                     setTimeout(() => { nameInput.style.backgroundColor = "#000"; }, 500);
@@ -969,37 +1024,35 @@
                         }
                     });
                     
-                    document.getElementById("addMoreRow").addEventListener("click", () => { 
-                        const row = document.createElement("div"); 
-                        row.className = "form-row song-row"; 
-                        row.style.cssText = "display:flex; flex-direction:column; gap:10px; margin-bottom: 20px; padding-bottom:15px; border-bottom:1px dashed var(--blood);"; 
-                        row.innerHTML = `<input type="text" class="sgName" placeholder="Tên bài hát..."><label class="file-btn" style="width:100%;"><input type="file" accept="audio/*" class="sgFile" style="display:none;"><span class="file-status">Chọn file âm thanh</span></label>`; 
-                        document.getElementById("songsContainer").appendChild(row); 
-                    });
-                    
                     document.getElementById("saveSg").addEventListener("click", async () => { 
                         const btn = document.getElementById("saveSg");
                         btn.textContent = "ĐANG XỬ LÝ (CHỜ CHÚT NHA)..."; btn.style.pointerEvents = 'none';
                         try {
                             const targetPlId = document.getElementById("aSongPlSelect").value;
-                            const rows = document.querySelectorAll(".song-row"); const newSongs = []; 
+                            const rows = document.querySelectorAll(".song-row"); 
+                            const newSongs = []; 
+                            
                             for (let r of rows) { 
                                 const title = r.querySelector(".sgName").value.trim(); 
                                 const fileInput = r.querySelector(".sgFile"); 
-                                if(title && fileInput.files.length > 0) { 
-                                    const base64Audio = await fileToBase64(fileInput.files[0]); 
+                                // Lấy file từ Object được attach trực tiếp (multi) hoặc file từ ô input (thủ công)
+                                const file = r._attachedFile || (fileInput && fileInput.files.length > 0 ? fileInput.files[0] : null);
+                                
+                                if(title && file) { 
+                                    const base64Audio = await fileToBase64(file); 
                                     newSongs.push({ title: title, src: base64Audio }); 
                                 } 
                             } 
-                            if(newSongs.length === 0) { throw new Error("Chưa chọn file nhạc hoặc tải lên thất bại!"); } 
+                            
+                            if(newSongs.length === 0) { throw new Error("Chưa có bài nhạc hợp lệ nào để tải lên!"); } 
                             
                             CONFIG.musicLibrary.forEach(p => { if(p.id === targetPlId) { p.songs.push(...newSongs); } }); 
                             await saveStationConfigToDB(); 
                             if (activeMusicPl === targetPlId) { renderGramoSongs(activeMusicPl); }
                             document.getElementById("generalModal").classList.add("hidden"); 
-                            alert("Đã lưu nhạc thành công!");
+                            alert(`Đã lưu thành công ${newSongs.length} bài hát!`);
                         } catch (err) {
-                            alert("Lỗi lưu nhạc. File MP3 của bạn có thể quá nặng để mã hóa.");
+                            alert(err.message || "Lỗi lưu nhạc. File MP3 của bạn có thể quá nặng để mã hóa.");
                             console.error(err);
                         } finally {
                             btn.textContent = "LƯU BÀI HÁT"; btn.style.pointerEvents = 'auto';
@@ -1206,9 +1259,16 @@
         let isPlaying = false;
         let currentSongIndex = -1;
         
+        // BẬT / TẮT HỘP NHẠC BẰNG CHÍNH ICON
         document.getElementById("gramoToggle").addEventListener("click", () => {
-            document.getElementById("gramoPanel").classList.remove("hidden-panel");
+            const panel = document.getElementById("gramoPanel");
+            if (panel.classList.contains("hidden-panel")) {
+                panel.classList.remove("hidden-panel");
+            } else {
+                panel.classList.add("hidden-panel");
+            }
         });
+
         document.getElementById("gramoClose").addEventListener("click", () => {
             document.getElementById("gramoPanel").classList.add("hidden-panel");
         });
