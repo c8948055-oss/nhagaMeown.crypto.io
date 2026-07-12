@@ -927,7 +927,26 @@
                     let plOptions = CONFIG.musicLibrary.map(p => `<option value="${p.id}" ${p.id === activeMusicPl ? 'selected' : ''}>${p.name}</option>`).join('');
                     document.getElementById("generalModalTitle").textContent = "TẢI NHẠC LÊN PLAYLIST";
                     body.innerHTML = `<div class="form-row"><label>Chọn Playlist</label><select id="aSongPlSelect" style="width:100%; padding:14px; background:#000; color:var(--pearl); border:2px solid #333;">${plOptions}</select></div><div id="songsContainer"><div class="form-row song-row" style="display:flex; flex-direction:column; gap:10px; margin-bottom: 20px; padding-bottom:15px; border-bottom:1px dashed var(--blood);"><input type="text" class="sgName" placeholder="Tên bài hát..."><label class="file-btn" style="width:100%;"><input type="file" accept="audio/*" class="sgFile" style="display:none;"><span class="file-status">Chọn file âm thanh (.mp3)</span></label></div></div><div style="display:flex; gap:10px;"><button class="submit-btn" style="width:auto; padding: 14px; background:#444;" id="addMoreRow">➕</button><button class="submit-btn" id="saveSg" style="flex:1;">LƯU BÀI HÁT</button></div>`;
-                    function attachFileEvent(row) { const fileInput = row.querySelector(".sgFile"); const statusText = row.querySelector(".file-status"); fileInput.addEventListener("change", () => { if(fileInput.files.length > 0) { statusText.textContent = "Đã chọn: " + fileInput.files[0].name; statusText.style.color = "#FFD166"; } }); } attachFileEvent(document.querySelector(".song-row"));
+                    
+                    // Logic tự động điền tên file vào ô tên bài hát nằm ở đây
+                    function attachFileEvent(row) { 
+                        const fileInput = row.querySelector(".sgFile"); 
+                        const statusText = row.querySelector(".file-status"); 
+                        const nameInput = row.querySelector(".sgName"); 
+                        fileInput.addEventListener("change", () => { 
+                            if(fileInput.files.length > 0) { 
+                                const file = fileInput.files[0];
+                                statusText.textContent = "Đã chọn: " + file.name; 
+                                statusText.style.color = "#FFD166"; 
+                                // Bỏ đi phần mở rộng (ví dụ .mp3, .wav) và điền vào ô tên
+                                if(!nameInput.value.trim()) {
+                                    nameInput.value = file.name.replace(/\.[^/.]+$/, "");
+                                }
+                            } 
+                        }); 
+                    } 
+                    attachFileEvent(document.querySelector(".song-row"));
+                    
                     document.getElementById("addMoreRow").addEventListener("click", () => { const row = document.createElement("div"); row.className = "form-row song-row"; row.style.cssText = "display:flex; flex-direction:column; gap:10px; margin-bottom: 20px; padding-bottom:15px; border-bottom:1px dashed var(--blood);"; row.innerHTML = `<input type="text" class="sgName" placeholder="Tên bài hát..."><label class="file-btn" style="width:100%;"><input type="file" accept="audio/*" class="sgFile" style="display:none;"><span class="file-status">Chọn file âm thanh</span></label>`; document.getElementById("songsContainer").appendChild(row); attachFileEvent(row); });
                     
                     document.getElementById("saveSg").addEventListener("click", async () => { 
