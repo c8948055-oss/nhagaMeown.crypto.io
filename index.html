@@ -8,7 +8,7 @@
     <link rel="icon" href="ChatGPT_Image_02_56_58_7_thg_7__2026-removebg-preview-removebg-preview.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,500&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=Libre+Barcode+39+Text&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,500&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -23,12 +23,11 @@
             --blood: #7A0A0A; 
             --pearl: #D9D2C5; 
             --silver: #8A8A93; 
-            --glass: rgba(10, 15, 29, 0.5); 
+            --glass: rgba(10, 15, 29, 0.7); 
             --brass: #b5a642;
             --font-kicker: 'Be Vietnam Pro', sans-serif;
             --font-heading: 'Playfair Display', serif;
             --font-body: 'Be Vietnam Pro', sans-serif;
-            --font-barcode: 'Libre Barcode 39 Text', cursive;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -40,37 +39,37 @@
         .hidden { display: none !important; }
         .icon { width: 1.2em; height: 1.2em; display: inline-block; vertical-align: -0.2em; stroke: currentColor; stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 
-        /* VIBE 90s ANIME CRT SCANLINES */
-        .crt-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 9999; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03)); background-size: 100% 4px, 6px 100%; opacity: 0.6; }
+        .crt-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 9999; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03)); background-size: 100% 4px, 6px 100%; opacity: 0.5; }
 
         /* ============================================================
-           BACKGROUND THEO YÊU CẦU MỚI
+           BACKGROUND THEO ĐÚNG ẢNH ĐÃ CHỈ ĐỊNH (SÁNG RÕ HƠN)
            ============================================================ */
-        /* Background Trang 1 */
         #bg-page1 { 
             position: fixed; inset: 0; z-index: -3; overflow: hidden; 
-            background: url('ChatGPT Image 15_07_13 12 thg 7, 2026.png') center/cover no-repeat; 
+            background-image: url("ChatGPT Image 15_07_13 12 thg 7, 2026.png"); 
+            background-position: center; background-size: cover; background-repeat: no-repeat;
             transition: opacity 1.5s ease; 
         }
-        .p1-center-vignette { position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.3) 10%, rgba(0,0,0,0.8) 100%); }
-        .p1-fog { position: absolute; inset: -20%; background-image: url('https://images.unsplash.com/photo-1485236715568-ddc5ee6ca227?auto=format&fit=crop&q=80&w=1200'); background-size: cover; opacity: 0.2; filter: grayscale(1) blur(10px); mix-blend-mode: screen; animation: panFog 60s linear infinite alternate; pointer-events: none; }
+        /* Lớp sương mù cực nhẹ để không che mất ảnh */
+        .p1-center-vignette { position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.6) 100%); }
+        .p1-fog { position: absolute; inset: -20%; background-image: url('https://images.unsplash.com/photo-1485236715568-ddc5ee6ca227?auto=format&fit=crop&q=80&w=1200'); background-size: cover; opacity: 0.15; filter: grayscale(1) blur(5px); mix-blend-mode: screen; animation: panFog 60s linear infinite alternate; pointer-events: none; }
         @keyframes panFog { 0% { transform: translate(0, 5%); } 100% { transform: translate(-10%, -5%); } }
         
         .ember { position: absolute; width: 3px; height: 3px; background: #FFAA00; border-radius: 50%; box-shadow: 0 0 8px 2px #FF5500; opacity: 0; animation: floatEmber 4s ease-in infinite; pointer-events: none; z-index: -1; }
-        @keyframes floatEmber { 0% { transform: translateY(0) scale(1); opacity: 0; } 50% { opacity: 0.6; } 100% { transform: translateY(-100px) scale(0.5); opacity: 0; } }
+        @keyframes floatEmber { 0% { transform: translateY(0) scale(1); opacity: 0; } 50% { opacity: 0.8; } 100% { transform: translateY(-100px) scale(0.5); opacity: 0; } }
 
-        /* Background Trang 2 */
         #bg-page2 { 
             opacity: 0; pointer-events: none; position: fixed; inset: 0; z-index: -3; overflow: hidden; 
-            background: url('ChatGPT Image 15_27_41 12 thg 7, 2026.png') center/cover no-repeat; 
+            background-image: url("ChatGPT Image 15_27_41 12 thg 7, 2026.png"); 
+            background-position: center; background-size: cover; background-repeat: no-repeat;
             transition: opacity 1.5s ease; 
         }
-        .p2-center-abyss { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.9) 100%); }
-        .p2-steam { position: absolute; bottom: -10%; left: 0; width: 100%; height: 50%; background: radial-gradient(ellipse at center, rgba(150,150,150,0.15) 0%, transparent 70%); filter: blur(30px); animation: steamBreathe 8s ease-in-out infinite alternate; pointer-events: none;}
-        @keyframes steamBreathe { 0% { transform: scaleY(1); opacity: 0.1; } 100% { transform: scaleY(1.5); opacity: 0.4; } }
+        .p2-center-abyss { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%); }
+        .p2-steam { position: absolute; bottom: -10%; left: 0; width: 100%; height: 50%; background: radial-gradient(ellipse at center, rgba(150,150,150,0.1) 0%, transparent 70%); filter: blur(20px); animation: steamBreathe 8s ease-in-out infinite alternate; pointer-events: none;}
+        @keyframes steamBreathe { 0% { transform: scaleY(1); opacity: 0.1; } 100% { transform: scaleY(1.5); opacity: 0.3; } }
 
         /* ============================================================
-           BẢNG THỐNG KÊ (CỐ ĐỊNH Ở MỌI TRANG GÓC TRÁI DƯỚI)
+           BẢNG THỐNG KÊ CỐ ĐỊNH (DYNAMIC VISITS)
            ============================================================ */
         .global-tag { position: fixed; left: 20px; bottom: 20px; z-index: 100; padding: 16px 20px; border-radius: 4px; background: var(--glass); backdrop-filter: blur(10px); border: 1px solid rgba(221,170,51,0.3); font-family: var(--font-kicker); font-size: 13px; color: var(--pearl); line-height: 2; box-shadow: 4px 4px 0 rgba(0,0,0,0.8); transition: 0.5s ease; }
         .global-tag .tag-line { display: flex; align-items: center; gap: 10px; font-weight: 500; text-shadow: 1px 1px 0 #000; } 
@@ -96,14 +95,7 @@
         @keyframes catBlink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
 
         .kicker { font-family: var(--font-kicker); font-weight: 700; letter-spacing: 5px; font-size: 12px; color: var(--silver); text-transform: uppercase; margin-bottom: 15px; text-shadow: 1px 1px 0 #000; cursor: pointer;}
-        
-        .heading { 
-            font-family: var(--font-heading); font-weight: 900; font-size: clamp(40px, 10vw, 60px); letter-spacing: 4px; 
-            background: linear-gradient(180deg, #FFFFFF 0%, #FFDF73 40%, #DDAA33 80%, #8B5A00 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0px 6px 0px rgba(0,0,0,1)) drop-shadow(0 0 30px rgba(221, 170, 51, 0.6));
-            margin-bottom: 24px; text-transform: uppercase; line-height: 1.1;
-        }
-
+        .heading { font-family: var(--font-heading); font-weight: 900; font-size: clamp(40px, 10vw, 60px); letter-spacing: 4px; background: linear-gradient(180deg, #FFFFFF 0%, #FFDF73 40%, #DDAA33 80%, #8B5A00 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0px 6px 0px rgba(0,0,0,1)) drop-shadow(0 0 30px rgba(221, 170, 51, 0.6)); margin-bottom: 24px; text-transform: uppercase; line-height: 1.1; }
         .body-text { font-family: var(--font-body); font-weight: 500; font-size: 14.5px; line-height: 1.8; color: #E0E0E0; margin-bottom: 35px; padding: 0 10px; text-shadow: 2px 2px 4px #000;}
         
         .cta-btn { position: relative; padding: 16px 48px; border-radius: 2px; font-family: var(--font-kicker); font-weight: 900; font-size: 15px; letter-spacing: 2px; color: #000; background: linear-gradient(90deg, #DDAA33, #FFDF73, #DDAA33); box-shadow: 4px 4px 0 rgba(0,0,0,1), 0 0 15px rgba(221, 170, 51, 0.5); transition: 0.2s; text-transform: uppercase; border: 2px solid #FFF; }
@@ -138,33 +130,27 @@
         .admin-only-btn:hover { background: var(--amber); color: black; transform: translate(-2px, -2px); box-shadow: 5px 5px 0 rgba(0,0,0,1);}
         .admin-only-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 rgba(0,0,0,1); }
         body.admin-active .admin-only-btn { display: inline-flex; }
-        
         .admin-delete-post { display: none; background: rgba(0,0,0,0.8); color: var(--silver); border: 2px solid #444; padding: 4px 10px; font-size: 11px; cursor: pointer; margin-left: auto; transition: 0.2s; text-transform:uppercase; font-weight: bold;}
         .admin-delete-post:hover { background: #8B0000; color: white; border-color: #8B0000; }
         body.admin-active .admin-delete-post { display: inline-block; }
 
         /* ============================================================
-           THIẾT KẾ THẺ CHUYẾN TÀU (RETRO VINTAGE COLORS)
+           CHUYẾN TÀU (RETRO VINTAGE)
            ============================================================ */
         .search-bar-basic { display: flex; gap: 12px; margin-bottom: 15px; flex-wrap: wrap; }
         .search-input { flex: 1; min-width: 200px; padding: 14px 18px; border-radius: 2px; background: #0A0A0C; border: 2px solid #333; color: var(--pearl); font-size: 14px; font-weight: bold; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8); }
         
         .train-card { position: relative; background: #111; border: 3px solid #222; border-radius: 12px; margin-bottom: 20px; cursor: pointer; transition: 0.3s; box-shadow: 8px 8px 0px rgba(0,0,0,1); display: flex; flex-direction: row; overflow: hidden; min-height: 160px; }
         .train-card:hover { transform: translate(-2px, -2px); box-shadow: 10px 10px 0px rgba(0,0,0,1); }
-        
         .t-door { width: 60px; border-right: 2px solid #000; background: linear-gradient(90deg, rgba(255,255,255,0.05), transparent); display: flex; align-items: center; justify-content: center; position: relative;}
         .t-door::after { content: ''; position: absolute; right: 10px; width: 6px; height: 30px; background: var(--brass); border-radius: 3px; box-shadow: 2px 2px 0 #000; } 
-        
         .t-body { flex: 1; display: flex; flex-direction: column; padding: 15px; position: relative; background: inherit; }
-        
         .t-plate { align-self: flex-start; background: #000; border: 2px solid #555; padding: 4px 12px; color: var(--pearl); font-family: var(--font-kicker); font-weight: 900; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; display: flex; gap: 10px; align-items: center; box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 2px 2px 0 rgba(0,0,0,0.5); position: relative;}
         .t-plate::before, .t-plate::after { content: ''; width: 4px; height: 4px; background: var(--brass); border-radius: 50%; position: absolute; top: 50%; transform: translateY(-50%); }
         .t-plate::before { left: 4px; } .t-plate::after { right: 4px; }
-        
         .t-windows-wrap { display: flex; gap: 15px; margin-top: 15px; flex: 1; }
         .t-window { flex: 1; background: var(--theme-color, #FFF); border: 4px solid #000; border-radius: 4px; box-shadow: inset 0 0 20px rgba(0,0,0,0.7), 0 0 15px var(--theme-color-glow); padding: 10px; overflow: hidden; position: relative;}
         .t-window-text { position: relative; z-index: 2; font-size: 13px; font-weight: bold; color: #FFF; text-shadow: 1px 1px 2px #000; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-        
         .t-bellows { width: 30px; background: repeating-linear-gradient(0deg, #050505, #050505 4px, #1a1a1a 4px, #1a1a1a 8px); border-left: 2px solid #000; }
         .t-wheels-area { position: absolute; bottom: -10px; left: 0; right: 0; height: 20px; background: url('https://www.transparenttextures.com/patterns/stardust.png'); display: flex; justify-content: space-around; opacity: 0.6; z-index: 5;}
         .t-specs { position: absolute; bottom: 8px; right: 20px; font-family: 'Courier New', monospace; font-size: 11px; color: rgba(255,255,255,0.7); font-weight: bold; }
@@ -172,7 +158,6 @@
         .train-accordion { max-height: 0; overflow: hidden; transition: max-height 0.6s ease; margin-bottom: 30px; }
         .train-accordion.open { max-height: 5000px; padding-bottom: 20px; }
         
-        /* BẢNG MÀU RETRO / VINTAGE CHUẨN */
         .theme-09 { background: #3a3226; border-color: #1a1510; --theme-color: #C5A059; --theme-color-glow: rgba(197, 160, 89, 0.4); } /* Vintage Gold */
         .theme-03 { background: #1e2622; border-color: #0c120e; --theme-color: #5C7A68; --theme-color-glow: rgba(92, 122, 104, 0.4); } /* Faded Forest */
         .theme-07 { background: #222633; border-color: #0f121c; --theme-color: #6C7A9C; --theme-color-glow: rgba(108, 122, 156, 0.4); } /* Antique Slate */
@@ -180,10 +165,10 @@
         .theme-77 { background: #332117; border-color: #170d08; --theme-color: #B35D1E; --theme-color-glow: rgba(179, 93, 30, 0.4); } /* Sepia/Copper */
 
         /* ============================================================
-           THIẾT KẾ THẺ NHÂN VIÊN LẬT 3D (DẠNG THẺ STAFF ID CARD)
+           THIẾT KẾ THẺ NHÂN VIÊN VÀ DỰ BỊ (HIỂN THỊ ĐỦ THÔNG TIN)
            ============================================================ */
-        .staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; padding: 16px 0; }
-        .staff-card-container { perspective: 1000px; width: 100%; aspect-ratio: 9/16; min-height: 440px; position: relative; }
+        .staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 24px; padding: 16px 0; }
+        .staff-card-container { perspective: 1000px; width: 100%; min-height: 480px; position: relative; }
         
         .admin-card-controls { position: absolute; top: -35px; left: 0; right: 0; display: none; justify-content: center; gap: 8px; z-index: 20; }
         body.admin-active .admin-card-controls { display: flex; }
@@ -194,7 +179,6 @@
         .staff-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; cursor: pointer; }
         .staff-card-container.flipped .staff-card-inner { transform: rotateY(180deg); }
         
-        /* Khung thẻ chung (ID Badge) */
         .card-front, .card-back { 
             position: absolute; width: 100%; height: 100%; backface-visibility: hidden; 
             background: #151515 url('https://www.transparenttextures.com/patterns/cardboard-flat.png'); 
@@ -205,30 +189,27 @@
 
         .s-theme-09 { --st-color: #C5A059; } .s-theme-03 { --st-color: #5C7A68; } .s-theme-07 { --st-color: #6C7A9C; } .s-theme-44 { --st-color: #9C3D38; } .s-theme-77 { --st-color: #B35D1E; }
 
-        /* MẶT TRƯỚC - ID BADGE */
+        /* MẶT TRƯỚC - THẺ NHÂN VIÊN ĐẢM BẢO HIỂN THỊ ĐỦ THÔNG TIN */
         .card-front { border-color: var(--st-color); border-top: 25px solid var(--st-color); padding: 25px 16px 16px; align-items: center;}
-        
-        /* Lỗ đục thẻ kẹp ID */
         .card-front::before { content: ''; position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 40px; height: 10px; background: #000; border-radius: 10px; border: 1px solid rgba(0,0,0,0.5); box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);}
         
         .c-id-header { font-family: 'Courier New', monospace; font-size: 11px; font-weight: bold; color: var(--silver); margin-bottom: 12px; letter-spacing: 2px; }
-        .card-front .c-image-wrap { width: 100%; aspect-ratio: 1; border: 4px solid #FFF; border-bottom: 15px solid #FFF; background: #FFF; position: relative; box-shadow: 2px 2px 10px rgba(0,0,0,0.8); margin-bottom: 15px; transform: rotate(-2deg);}
+        /* Cố định kích thước ảnh để nhường chỗ cho chữ */
+        .card-front .c-image-wrap { width: 140px; height: 140px; border: 4px solid #FFF; border-bottom: 15px solid #FFF; background: #FFF; position: relative; box-shadow: 2px 2px 10px rgba(0,0,0,0.8); margin-bottom: 15px; transform: rotate(-2deg); flex-shrink: 0;}
         .card-front .c-image-wrap img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.1) sepia(0.2) grayscale(0.1); }
         
         .card-front .c-name { font-family: var(--font-heading); font-size: 22px; font-weight: 900; color: var(--st-color); text-align: center; text-transform: uppercase; letter-spacing: 1px; text-shadow: 1px 1px 0 #000; width: 100%; border-bottom: 1px dashed #444; padding-bottom: 5px; margin-bottom: 10px;}
         
         .c-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 10px; width: 100%;}
-        .c-tag { font-size: 9px; font-weight: bold; padding: 4px 6px; background: rgba(0,0,0,0.8); border: 1px solid var(--st-color); color: var(--st-color); text-transform: uppercase; letter-spacing: 1px; }
+        .c-tag { font-size: 10px; font-weight: bold; padding: 4px 6px; background: rgba(0,0,0,0.8); border: 1px solid var(--st-color); color: var(--st-color); text-transform: uppercase; letter-spacing: 1px; text-shadow: 1px 1px 0 #000;}
         
-        .card-front .c-hook { font-size: 12px; font-style: italic; color: var(--pearl); text-align: center; margin-bottom: auto; line-height: 1.4; text-shadow: 1px 1px 0 #000; }
+        .card-front .c-hook { font-size: 13px; font-style: italic; color: var(--pearl); text-align: center; margin-bottom: auto; line-height: 1.4; text-shadow: 1px 1px 0 #000; width: 100%;}
         
-        .c-barcode { font-family: var(--font-barcode); font-size: 32px; color: var(--silver); margin: 10px 0; text-align: center; width: 100%; height: 35px; overflow: hidden; opacity: 0.7;}
-        
-        .c-rating-badge { background: #000; border: 1px solid var(--st-color); padding: 4px 10px; font-size: 11px; font-weight: 900; color: var(--st-color); box-shadow: 2px 2px 0 rgba(0,0,0,1); align-self: flex-start; margin-top: 5px;}
+        .c-rating-badge { background: #000; border: 1px solid var(--st-color); padding: 4px 10px; font-size: 12px; font-weight: 900; color: var(--st-color); box-shadow: 2px 2px 0 rgba(0,0,0,1); margin-top: 10px;}
         .card-front .c-flip-hint { text-align: center; font-size: 10px; color: var(--silver); animation: pulseHint 2s infinite; font-family: var(--font-kicker); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; margin-top: 10px;}
         @keyframes pulseHint { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; text-shadow: 0 0 5px #FFF;} }
 
-        /* MẶT SAU */
+        /* MẶT SAU THẺ NHÂN VIÊN */
         .card-back { transform: rotateY(180deg); border-color: var(--st-color); border-top: 25px solid var(--st-color); padding: 25px 16px 16px; align-items: center; }
         .card-back::before { content: ''; position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 40px; height: 10px; background: #000; border-radius: 10px; border: 1px solid rgba(0,0,0,0.5); box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);}
         
@@ -239,9 +220,7 @@
         .c-chat-btn { display: block; width: 100%; background: linear-gradient(135deg, var(--st-color), #222); color: #FFF; font-weight: 900; font-family: var(--font-kicker); font-size: 13px; letter-spacing: 1px; text-align: center; padding: 16px; text-decoration: none; transition: 0.2s; margin-top: auto; border: 2px solid #000; box-shadow: 4px 4px 0 rgba(0,0,0,1); text-transform: uppercase; text-shadow: 1px 1px 0 #000;}
         .c-chat-btn:hover { filter: brightness(1.2); transform: translate(-2px, -2px); box-shadow: 6px 6px 0 rgba(0,0,0,1); }
 
-        /* ============================================================
-           SỔ DỰ BỊ (CŨNG THEO MOTIF ID BADGE MẶT TRƯỚC)
-           ============================================================ */
+        /* HỒ SƠ DỰ BỊ THEO ĐÚNG MOTIF THẺ ID */
         .upcoming-empty { text-align: center; padding: 40px 20px; }
         .upcoming-empty p { font-style: italic; color: var(--silver); font-size: 15px; line-height: 1.8; margin-bottom: 20px; }
         .upcoming-empty svg { width: 120px; height: 120px; stroke: var(--brass); opacity: 0.5; margin: 0 auto; display: block; filter: drop-shadow(0 0 5px rgba(181, 166, 66, 0.5)); }
@@ -251,16 +230,17 @@
         
         .up-stamp { position: absolute; top: 15px; left: -10px; background: #D50000; color: #FFF; font-weight: 900; font-size: 12px; padding: 4px 15px; transform: rotate(-15deg); border: 2px solid #FFF; box-shadow: 2px 2px 0 #000, 0 0 10px rgba(213,0,0,0.6); z-index: 5; letter-spacing: 2px; }
         
-        .up-idea-box { background: rgba(0,0,0,0.6); border: 1px solid #444; padding: 10px; font-size: 12px; color: #ccc; line-height: 1.5; width: 100%; height: 80px; overflow-y: auto; margin-top: auto; margin-bottom: 10px; border-radius: 4px; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8);}
+        /* Chứa ý tưởng dài và cuộn được */
+        .up-idea-box { background: rgba(0,0,0,0.6); border: 1px solid #444; padding: 10px; font-size: 12px; color: #ccc; line-height: 1.5; width: 100%; flex: 1; overflow-y: auto; margin-bottom: 10px; border-radius: 4px; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8);}
         .up-idea-box::-webkit-scrollbar { width: 4px; }
         .up-idea-box::-webkit-scrollbar-thumb { background: #666; }
         
-        .up-progress-wrap { width: 100%; border: 2px solid var(--brass); background: #000; padding: 4px; box-shadow: 2px 2px 0 #000; margin-top: 10px;}
+        .up-progress-wrap { width: 100%; border: 2px solid var(--brass); background: #000; padding: 4px; box-shadow: 2px 2px 0 #000; margin-top: auto;}
         .up-progress-bar { height: 8px; background: repeating-linear-gradient(45deg, var(--amber), var(--amber) 10px, #b5a642 10px, #b5a642 20px); width: 0%; transition: 1s; }
         .up-progress-text { font-family: 'Courier New', monospace; font-size: 11px; color: var(--amber); text-align: center; margin-top: 6px; font-weight: bold; }
 
         /* ============================================================
-           SỔ LƯU BÚT & BÀI ĐĂNG
+           CÁC MODAL, FORM VÀ GRAMOPHONE GIỮ NGUYÊN (NHƯNG SỬA CSS)
            ============================================================ */
         .mailbox-panel { background: rgba(10,10,12,0.95); border: 2px solid #222; padding: 30px; position: relative; box-shadow: 8px 8px 0 rgba(0,0,0,1); margin-bottom: 28px; }
         .form-row { margin-bottom: 18px; }
@@ -284,9 +264,7 @@
         .post-time { font-size: 11px; color: var(--silver); font-weight: bold; }
         .post-content { font-size: 14.5px; color: var(--pearl); line-height: 1.6; margin-bottom: 16px; white-space: pre-wrap; font-weight: 500;}
 
-        /* ============================================================
-           MÁY HÁT GRAMOPHONE 
-           ============================================================ */
+        /* Gramophone */
         .gramo-toggle { position: fixed; right: 24px; bottom: 24px; z-index: 60; width: 60px; height: 60px; border-radius: 50%; background: #000; border: 2px solid var(--brass); box-shadow: 0 0 15px rgba(181, 166, 66, 0.4), 4px 4px 0 rgba(0,0,0,1); display: flex; align-items: center; justify-content: center; color: var(--brass); font-size: 24px; transition: 0.3s; }
         .gramo-toggle:hover { border-color: #FFF; color: #FFF; box-shadow: 0 0 25px rgba(181, 166, 66, 0.8), 4px 4px 0 rgba(0,0,0,1); transform: scale(1.05); }
         .vinyl-spin { animation: spinVinyl 4s linear infinite; }
@@ -305,18 +283,14 @@
         .g-stage { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; position: relative; z-index: 2; background: rgba(0,0,0,0.5); padding: 10px; border: 1px solid #333; }
         .mini-vinyl-container { position: relative; width: 44px; height: 44px; flex-shrink: 0; }
         .mini-vinyl { width: 44px; height: 44px; background: #050505; border-radius: 50%; border: 2px solid #111; box-shadow: inset 0 0 0 2px #222, inset 0 0 0 4px #111, inset 0 0 0 6px #222, 0 0 10px rgba(0,0,0,0.8); position: relative; animation: spinVinyl 3s linear infinite; animation-play-state: paused; }
-        .mini-vinyl::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 0deg, transparent 0deg, rgba(255,223,115,0.3) 20deg, transparent 40deg, transparent 180deg, rgba(255,223,115,0.3) 200deg, transparent 220deg); pointer-events: none; mix-blend-mode: screen; } 
         .mini-vinyl.playing { animation-play-state: running; }
         .stylus-arm { position: absolute; top: 0; right: -5px; width: 4px; height: 25px; background: linear-gradient(90deg, #b5a642, #857829); transform-origin: top center; transform: rotate(-30deg); transition: transform 0.5s ease; box-shadow: 2px 2px 2px rgba(0,0,0,0.8); z-index: 2; border-radius: 2px; }
-        .stylus-arm::after { content: ''; position: absolute; bottom: -2px; left: -2px; width: 8px; height: 6px; background: #222; border-radius: 1px; }
         .stylus-arm.playing { transform: rotate(15deg); }
         
         .g-song-info { flex: 1; font-size: 12px; color: var(--silver); font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .g-song-info span { color: var(--amber); font-size: 14px; text-transform: uppercase; }
 
         .gramo-song-list { display: flex; flex-direction: column; gap: 6px; max-height: 150px; overflow-y: auto; padding-right: 4px; position: relative; z-index: 2; margin-bottom: 15px;}
-        .gramo-song-list::-webkit-scrollbar { width: 4px; }
-        .gramo-song-list::-webkit-scrollbar-thumb { background: var(--brass); }
         .gramo-song-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(0,0,0,0.6); border: 1px solid transparent; cursor: pointer; transition: 0.2s; font-size: 12px; font-weight: bold; color: var(--silver); }
         .gramo-song-item:hover, .gramo-song-item.active { border-color: var(--brass); color: #FFF; background: rgba(181, 166, 66, 0.1); }
         
@@ -327,13 +301,9 @@
         
         #gramoPlayWrap { position: relative; border-radius: 50%; }
         #gramoPlay { font-size: 24px; padding: 12px; border-radius: 50%; border-color: var(--brass); color: #FFDF73; position: relative; z-index: 2; }
-        #gramoPlayWrap::before { content: ''; position: absolute; inset: -5px; border-radius: 50%; background: var(--amber-glow); filter: blur(8px); animation: pulseBeat 1s infinite alternate; opacity: 0; transition: 0.3s; }
         #gramoPlayWrap.playing::before { opacity: 1; }
-        @keyframes pulseBeat { 0% { transform: scale(0.9); opacity: 0.5; } 100% { transform: scale(1.2); opacity: 1; } }
 
-        /* ============================================================
-           MODAL CHUNG & BẢNG TRẮNG TO CỦA HỒ SƠ/FEEDBACK
-           ============================================================ */
+        /* Modal Chung */
         .overlay-modal { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.9); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; padding: 20px; }
         .modal-box { width: min(650px, 100%); max-height: 85vh; overflow-y: auto; background: #0A0A0C; border: 3px solid #333; padding: 30px; box-shadow: 10px 10px 0 rgba(0,0,0,1); transition: 0.3s; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 2px dashed #333; padding-bottom: 14px; }
@@ -343,21 +313,18 @@
         .modal-box::-webkit-scrollbar { width: 6px; }
         .modal-box::-webkit-scrollbar-thumb { background: #333; }
 
-        /* BẢNG TRẮNG TO CHO HỒ SƠ CHI TIẾT (VINTAGE PAPER) VÀ FEEDBACK */
         .modal-box.modal-white { background: #F4F1EA; color: #1A0F0A; border: 4px solid #1A0F0A; box-shadow: 12px 12px 0 rgba(0,0,0,1); }
         .modal-box.modal-white .modal-title { color: #1A0F0A; font-weight: 900; border-left: 6px solid #D50000; padding-left: 12px; letter-spacing: 2px; text-shadow: none;}
         .modal-box.modal-white .modal-header { border-bottom: 2px solid #1A0F0A; }
         .modal-box.modal-white .close-btn { color: #1A0F0A; }
         .modal-box.modal-white .close-btn:hover { color: red; }
         
-        /* Hiển thị Nút Đóng Mở (Details) chuẩn để Hành khách thấy rõ chữ */
         .modal-box.modal-white details { background: rgba(0,0,0,0.05); border: 2px dashed #1A0F0A; padding: 12px; margin: 12px 0; color: #1A0F0A; display: block; border-radius: 4px;}
         .modal-box.modal-white details[open] summary { border-bottom: 1px solid rgba(0,0,0,0.2); margin-bottom: 10px; padding-bottom: 5px; }
         .modal-box.modal-white summary { cursor: pointer; color: #D50000; font-weight: 900; outline: none; font-family:var(--font-kicker); text-transform:uppercase; font-size:13px; letter-spacing:1px; display: block;}
         .modal-box.modal-white details > div { color: #1A0F0A; font-weight: 500; line-height: 1.6; }
         .modal-box.modal-white ul { padding-left: 24px; margin: 10px 0; font-weight: 500;}
 
-        /* Form Feedback Trắng */
         .fb-stars { display: flex; gap: 8px; margin-bottom: 20px; justify-content: center; }
         .fb-star { font-size: 40px; color: #ccc; cursor: pointer; transition: 0.2s; text-shadow: 2px 2px 0 rgba(0,0,0,0.2); }
         .fb-star:hover, .fb-star.active { color: var(--amber); text-shadow: 0 0 10px rgba(221,170,51,0.5), 2px 2px 0 rgba(0,0,0,0.5); transform: scale(1.1); }
@@ -367,17 +334,14 @@
         .modal-white .submit-btn { border-color: #1A0F0A; box-shadow: 4px 4px 0 #1A0F0A; }
         .fb-note { font-style: italic; color: #D50000; font-weight: bold; font-size: 12px; text-align: center; margin-bottom: 15px; }
 
-        /* RICH TEXT EDITOR ADMIN */
         .rt-toolbar { display: flex; gap: 6px; padding-bottom: 8px; border-bottom: 2px solid #333; margin-bottom: 8px; flex-wrap: wrap; }
         .rt-btn { background: #000; color: var(--pearl); border: 2px solid #444; padding: 6px 12px; cursor: pointer; font-size: 12px; font-weight: bold; font-family:var(--font-kicker);}
         .rt-btn:hover { border-color: var(--amber); }
         .rt-editor { background: #000; border: 2px solid #333; min-height: 150px; padding: 14px; color: var(--pearl); outline: none; overflow-y: auto; line-height: 1.6; font-size: 14px; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8); }
-        
     </style>
 </head>
 <body>
 
-    <!-- HIỆU ỨNG 90s ANIME CHUNG -->
     <div class="crt-overlay"></div>
 
     <!-- BACKGROUND TRANG 1 -->
@@ -464,9 +428,6 @@
                         <button type="submit" class="submit-btn">ĐĂNG BÀI</button>
                     </form>
                 </div>
-                <div class="sort-bar" style="text-align:right; margin-bottom:20px;">
-                    <select class="search-input" style="width:auto; display:inline-block;" id="gbSortSelect"><option value="newest">Mới nhất</option><option value="popular">Tương tác nhiều</option></select>
-                </div>
                 <div class="feed-container" id="guestbookFeed"></div>
             </div>
 
@@ -543,7 +504,7 @@
         <audio id="gramoAudio"></audio>
     </div>
 
-    <!-- MODAL CHUNG CHO TOÀN BỘ WEB -->
+    <!-- MODAL CHUNG -->
     <div class="overlay-modal hidden" id="generalModal">
         <div class="modal-box" id="generalBox">
             <div class="modal-header">
@@ -555,9 +516,6 @@
     </div>
 
     <script>
-        /* ============================================================
-           BỘ ICON VẼ CHUẨN 
-           ============================================================ */
         const ICONS = {
             user: '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/></svg>',
             ticket: '<svg class="icon" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M7 6v12M17 6v12"/></svg>',
@@ -573,7 +531,6 @@
             next: '<svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"/><rect x="16" y="4" width="3" height="16"/></svg>',
             loop: '<svg class="icon" viewBox="0 0 24 24"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>',
             shuffle: '<svg class="icon" viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>',
-            comment: '<svg class="icon" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>',
             trash: '<svg class="icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>',
             bench: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 14v5m16-5v5M2 14h20M5 10h14v4H5zM8 4v6m8-6v6M6 4h12"/></svg>'
         };
@@ -592,22 +549,14 @@
             }
         }
 
-        /* ============================================================
-           KẾT NỐI SUPABASE
-           ============================================================ */
         const SUPABASE_URL = "https://gmejjxvahnqqrhihahid.supabase.co";
         const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdtZWpqeHZhaG5xcXJoaWhhaGlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM3NTM5OTQsImV4cCI6MjA5OTMyOTk5NH0.Q1uit-9R_Lrs0uM_Azgbn9GGKMoyFl-cFfl3M7IeSMU";
         const supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
         const ADMIN_CAT_AVATAR = "ChatGPT_Image_02_56_58_7_thg_7__2026-removebg-preview-removebg-preview.png";
         const VERIFIED_TICK = `<svg style="width:14px; height:14px; display:inline-block; vertical-align:middle; margin-left:4px;" viewBox="0 0 24 24" fill="#0866FF"><circle cx="12" cy="12" r="10"/><path d="M16.5 8.5l-6 6-3-3" stroke="#fff" stroke-width="2" fill="none"/></svg>`;
         
-        let CONFIG = {
-            stationMaster: { avatar: "", name: "Ngọc Tuyết", bio: "Chào mừng đến với nhà ga Meown.", facebook: { url: "", name: "", desc: "" } },
-            trains: [], staff: [], upcomingBots: [], musicLibrary: [] 
-        };
-
-        let currentSearch = ""; let isAdminMode = false; let activeMusicPl = null;
+        let CONFIG = { stationMaster: { avatar: "", name: "Trưởng Ga", bio: "Chào mừng đến với nhà ga Meown.", facebook: {} }, trains: [], staff: [], upcomingBots: [], musicLibrary: [] };
+        let isAdminMode = false; let activeMusicPl = null;
 
         function resizeImage(file, maxSize = 800) { return new Promise((resolve) => { const reader = new FileReader(); reader.onload = (e) => { const img = new Image(); img.onload = () => { const canvas = document.createElement('canvas'); let w = img.width, h = img.height; if(w > maxSize || h > maxSize) { if(w > h) { h = Math.round((h * maxSize) / w); w = maxSize; } else { w = Math.round((w * maxSize) / h); h = maxSize; } } canvas.width = w; canvas.height = h; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, w, h); resolve(canvas.toDataURL('image/jpeg', 0.6)); }; img.src = e.target.result; }; reader.readAsDataURL(file); }); }
         function fileToBase64(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error); }); }
@@ -628,13 +577,9 @@
         document.getElementById('secretAdminTrigger').addEventListener('dblclick', () => {
             if (!sessionStorage.getItem('isAdmin')) {
                 let pwd = prompt("LỐI VÀO ẨN CỦA TRƯỞNG GA\nVui lòng nhập mật mã bảo mật:");
-                if(pwd === "bhnt2006") { 
-                    sessionStorage.setItem('isAdmin', 'true'); window.location.reload();
-                } else if (pwd !== null) { alert("Mật mã không chính xác!"); }
+                if(pwd === "bhnt2006") { sessionStorage.setItem('isAdmin', 'true'); window.location.reload(); } else if (pwd !== null) { alert("Mật mã không chính xác!"); }
             } else {
-                if(confirm("Bạn đang ở chế độ Admin. Bạn có muốn thoát không?")) {
-                    sessionStorage.removeItem('isAdmin'); window.location.reload();
-                }
+                if(confirm("Bạn đang ở chế độ Admin. Bạn có muốn thoát không?")) { sessionStorage.removeItem('isAdmin'); window.location.reload(); }
             }
         });
 
@@ -642,33 +587,30 @@
             loadIcons(); createEmbers();
             const localFallback = localStorage.getItem("meown_config_backup");
             if(localFallback) { try { Object.assign(CONFIG, JSON.parse(localFallback)); } catch(e){} }
-
             await fetchStationConfig();
             
+            // XỬ LÝ LƯỢT TRUY CẬP THỰC TẾ
+            let currentVisits = parseInt(localStorage.getItem('meown_real_visits') || '0');
+            if (!sessionStorage.getItem('has_visited')) {
+                currentVisits++;
+                localStorage.setItem('meown_real_visits', currentVisits);
+                sessionStorage.setItem('has_visited', 'true');
+            }
+
             updateStationMasterUI(); renderTrains(); renderUpcomingBots(); renderGramoPlaylists();
-            rollNumber(document.getElementById("statStaff"), CONFIG.staff.length || 0); rollNumber(document.getElementById("statVisits"), 324);
+            rollNumber(document.getElementById("statStaff"), CONFIG.staff.length || 0); 
+            rollNumber(document.getElementById("statVisits"), currentVisits); // Đếm thật
             checkAdminLogin();
         });
 
         async function fetchStationConfig() {
             try {
                 const { data } = await supa.from('station_config').select('data').eq('id', 1).single();
-                if (data && data.data) {
-                    const dbConfig = typeof data.data === 'string' ? JSON.parse(data.data) : data.data;
-                    Object.assign(CONFIG, dbConfig);
-                    if (!CONFIG.musicLibrary) CONFIG.musicLibrary = []; 
-                    localStorage.setItem("meown_config_backup", JSON.stringify(CONFIG));
-                }
+                if (data && data.data) { const dbConfig = typeof data.data === 'string' ? JSON.parse(data.data) : data.data; Object.assign(CONFIG, dbConfig); if (!CONFIG.musicLibrary) CONFIG.musicLibrary = []; localStorage.setItem("meown_config_backup", JSON.stringify(CONFIG)); }
             } catch(e) {}
         }
-
         async function saveStationConfigToDB() {
-            try {
-                if (!CONFIG.musicLibrary) CONFIG.musicLibrary = [];
-                localStorage.setItem("meown_config_backup", JSON.stringify(CONFIG));
-                const payload = { stationMaster: CONFIG.stationMaster, trains: CONFIG.trains, staff: CONFIG.staff, upcomingBots: CONFIG.upcomingBots, musicLibrary: CONFIG.musicLibrary };
-                await supa.from('station_config').upsert([{ id: 1, data: JSON.stringify(payload) }]);
-            } catch(e) {}
+            try { if (!CONFIG.musicLibrary) CONFIG.musicLibrary = []; localStorage.setItem("meown_config_backup", JSON.stringify(CONFIG)); const payload = { stationMaster: CONFIG.stationMaster, trains: CONFIG.trains, staff: CONFIG.staff, upcomingBots: CONFIG.upcomingBots, musicLibrary: CONFIG.musicLibrary }; await supa.from('station_config').upsert([{ id: 1, data: JSON.stringify(payload) }]); } catch(e) {}
         }
 
         function checkAdminLogin() {
@@ -676,52 +618,29 @@
             if(urlParams.get('admin') === 'true' || sessionStorage.getItem('isAdmin') === 'true') {
                 isAdminMode = true; document.body.classList.add("admin-active");
                 document.getElementById("smBoxContainer").addEventListener("click", () => { if(isAdminMode) openAdminForm('sm'); });
-                
                 const adminAvatarHtml = `<img src="${ADMIN_CAT_AVATAR}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;">`;
                 const gbWrap = document.getElementById("gbNameWrap"); const rcWrap = document.getElementById("rcNameWrap");
                 if(gbWrap) gbWrap.innerHTML = `<div style="display:inline-flex; align-items:center; gap:6px; color:var(--amber); font-weight:900; margin-bottom:10px;">${adminAvatarHtml} Trưởng ga Meown ${VERIFIED_TICK}</div>`;
                 if(rcWrap) rcWrap.innerHTML = `<div style="display:inline-flex; align-items:center; gap:6px; color:var(--amber); font-weight:900; margin-bottom:10px;">${adminAvatarHtml} Trưởng ga Meown ${VERIFIED_TICK}</div>`;
-
                 const cleanUrl = window.location.href.split('?')[0]; window.history.replaceState({}, document.title, cleanUrl);
                 renderTrains(); renderUpcomingBots(); renderGramoPlaylists();
             }
         }
 
         const page1 = document.getElementById("page1"), page2 = document.getElementById("page2"), bgPage2 = document.getElementById("bg-page2"), bgPage1 = document.getElementById("bg-page1");
-        document.getElementById("ctaGoStation").addEventListener("click", () => { 
-            page1.classList.add("leaving"); 
-            setTimeout(() => { 
-                page1.style.display = "none"; page2.style.display = "block"; bgPage2.style.opacity = "1"; bgPage1.style.opacity = "0";
-                void page2.offsetWidth; page2.classList.add("entering"); 
-            }, 900); 
-        });
-        document.getElementById("btnGoHome").addEventListener("click", () => { 
-            page2.classList.remove("entering"); bgPage2.style.opacity = "0"; bgPage1.style.opacity = "1";
-            setTimeout(() => { page2.style.display = "none"; page1.style.display = "flex"; page1.classList.remove("leaving"); }, 900); 
-        });
-        document.querySelectorAll(".nav-item").forEach(btn => { 
-            btn.addEventListener("click", () => { document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active")); btn.classList.add("active"); document.querySelectorAll(".section-view").forEach(v => v.classList.add("hidden")); document.getElementById("view-" + btn.dataset.view).classList.remove("hidden"); }); 
-        });
+        document.getElementById("ctaGoStation").addEventListener("click", () => { page1.classList.add("leaving"); setTimeout(() => { page1.style.display = "none"; page2.style.display = "block"; bgPage2.style.opacity = "1"; bgPage1.style.opacity = "0"; void page2.offsetWidth; page2.classList.add("entering"); }, 900); });
+        document.getElementById("btnGoHome").addEventListener("click", () => { page2.classList.remove("entering"); bgPage2.style.opacity = "0"; bgPage1.style.opacity = "1"; setTimeout(() => { page2.style.display = "none"; page1.style.display = "flex"; page1.classList.remove("leaving"); }, 900); });
+        document.querySelectorAll(".nav-item").forEach(btn => { btn.addEventListener("click", () => { document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active")); btn.classList.add("active"); document.querySelectorAll(".section-view").forEach(v => v.classList.add("hidden")); document.getElementById("view-" + btn.dataset.view).classList.remove("hidden"); }); });
 
-        function updateStationMasterUI() {
-            document.getElementById("smAvatar").src = CONFIG.stationMaster.avatar || "";
-            document.getElementById("smBio").textContent = CONFIG.stationMaster.bio;
-        }
+        function updateStationMasterUI() { document.getElementById("smAvatar").src = CONFIG.stationMaster.avatar || ""; document.getElementById("smBio").textContent = CONFIG.stationMaster.bio; }
 
-        /* ============================================================
-           BẢNG ADMIN FORMS
-           ============================================================ */
         let trainGenresList = [];
-        function renderTrGenresList() {
-            const listContainer = document.getElementById("aTrGenreList"); if(!listContainer) return;
-            listContainer.innerHTML = trainGenresList.map((g, i) => `<span class="c-tag" style="background:#000; border-color:var(--silver); color:var(--pearl); display:flex; align-items:center; gap:4px;">${g} <span style="cursor:pointer; color:red; font-weight:bold;" onclick="removeTrGenre(${i})">×</span></span>`).join('');
-        }
+        function renderTrGenresList() { const listContainer = document.getElementById("aTrGenreList"); if(!listContainer) return; listContainer.innerHTML = trainGenresList.map((g, i) => `<span class="c-tag" style="background:#000; border-color:var(--silver); color:var(--pearl); display:flex; align-items:center; gap:4px;">${g} <span style="cursor:pointer; color:red; font-weight:bold;" onclick="removeTrGenre(${i})">×</span></span>`).join(''); }
         window.removeTrGenre = function(i) { trainGenresList.splice(i, 1); renderTrGenresList(); };
 
         function openAdminForm(type, action, idOrParentId) {
             document.getElementById("generalBox").classList.remove("modal-white");
             const body = document.getElementById("generalModalBody"); document.getElementById("generalModal").classList.remove("hidden"); body.innerHTML = "";
-            
             if(type === 'sm') {
                 document.getElementById("generalModalTitle").textContent = "CẬP NHẬT TRƯỞNG GA";
                 body.innerHTML = `<div class="form-row"><label>Ảnh Avatar Trưởng Ga</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aAvtFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Chọn ảnh mới</label><div id="aAvtPrev" class="img-preview-grid"><img src="${CONFIG.stationMaster.avatar}"></div></div></div><div class="form-row"><label>Tiểu sử</label><textarea id="aBio" style="height: 120px;">${CONFIG.stationMaster.bio}</textarea></div><button class="submit-btn" id="saveSM">ĐỒNG BỘ LÊN MÁY CHỦ</button>`;
@@ -731,96 +650,47 @@
             else if(type === 'train') {
                 let tData = { name: "", genres: [], intro: "", theme: "theme-09" };
                 if(action === 'edit') { const tr = CONFIG.trains.find(t => t.id === idOrParentId); if(tr) tData = tr; trainGenresList = [...tData.genres]; } else { trainGenresList = []; }
-                
                 document.getElementById("generalModalTitle").textContent = action === 'add' ? "THÊM TUYẾN TÀU MỚI" : "CHỈNH SỬA TUYẾN TÀU";
-                body.innerHTML = `
-                    <div class="form-row"><label>Tên Tuyến Tàu</label><input type="text" id="aTrName" value="${tData.name}"></div>
-                    <div class="form-row"><label>Tags Thể Loại</label><div style="display:flex; gap:8px; margin-bottom:8px;"><input type="text" id="aTrGenreInput" placeholder="Nhập thể loại..."><button type="button" class="admin-only-btn" style="margin:0;" id="btnAddTrGenre">THÊM</button></div><div id="aTrGenreList" style="display:flex; flex-wrap:wrap; gap:8px;"></div></div>
-                    <div class="form-row"><label>Lời giới thiệu</label><textarea id="aTrIntro" style="height:80px;">${tData.intro}</textarea></div>
-                    <div class="form-row"><label>Phong cách (Retro/Vintage)</label>
-                        <select id="aTrTheme">
-                            <option value="theme-09" ${tData.theme==='theme-09'?'selected':''}>Tuyến 09 (Vintage Gold)</option>
-                            <option value="theme-03" ${tData.theme==='theme-03'?'selected':''}>Tuyến 03 (Faded Forest)</option>
-                            <option value="theme-07" ${tData.theme==='theme-07'?'selected':''}>Tuyến 07 (Antique Slate)</option>
-                            <option value="theme-44" ${tData.theme==='theme-44'?'selected':''}>Tuyến 44 (Rusty Red)</option>
-                            <option value="theme-77" ${tData.theme==='theme-77'?'selected':''}>Tuyến 77 (Sepia/Copper)</option>
-                        </select>
-                    </div>
-                    <button class="submit-btn" id="saveTr">${action==='add' ? "TẠO TUYẾN TÀU" : "LƯU THAY ĐỔI"}</button>
-                `;
+                body.innerHTML = `<div class="form-row"><label>Tên Tuyến Tàu</label><input type="text" id="aTrName" value="${tData.name}"></div><div class="form-row"><label>Tags Thể Loại</label><div style="display:flex; gap:8px; margin-bottom:8px;"><input type="text" id="aTrGenreInput" placeholder="Nhập thể loại..."><button type="button" class="admin-only-btn" style="margin:0;" id="btnAddTrGenre">THÊM</button></div><div id="aTrGenreList" style="display:flex; flex-wrap:wrap; gap:8px;"></div></div><div class="form-row"><label>Lời giới thiệu</label><textarea id="aTrIntro" style="height:80px;">${tData.intro}</textarea></div><div class="form-row"><label>Phong cách (Retro/Vintage)</label><select id="aTrTheme"><option value="theme-09" ${tData.theme==='theme-09'?'selected':''}>Tuyến 09 (Vintage Gold)</option><option value="theme-03" ${tData.theme==='theme-03'?'selected':''}>Tuyến 03 (Faded Forest)</option><option value="theme-07" ${tData.theme==='theme-07'?'selected':''}>Tuyến 07 (Antique Slate)</option><option value="theme-44" ${tData.theme==='theme-44'?'selected':''}>Tuyến 44 (Rusty Red)</option><option value="theme-77" ${tData.theme==='theme-77'?'selected':''}>Tuyến 77 (Sepia/Copper)</option></select></div><button class="submit-btn" id="saveTr">${action==='add' ? "TẠO TUYẾN TÀU" : "LƯU THAY ĐỔI"}</button>`;
                 loadIcons(); renderTrGenresList();
                 document.getElementById("btnAddTrGenre").addEventListener("click", () => { const val = document.getElementById("aTrGenreInput").value.trim(); if(val) { trainGenresList.push(val); document.getElementById("aTrGenreInput").value = ""; renderTrGenresList(); } });
-                document.getElementById("saveTr").addEventListener("click", async () => { 
-                    if(action === 'add') { CONFIG.trains.push({ id: "t_"+Date.now(), name: document.getElementById("aTrName").value, genres: trainGenresList, intro: document.getElementById("aTrIntro").value, theme: document.getElementById("aTrTheme").value, createdAt: Date.now() }); } 
-                    else { let tr = CONFIG.trains.find(t => t.id === idOrParentId); tr.name = document.getElementById("aTrName").value; tr.genres = [...trainGenresList]; tr.intro = document.getElementById("aTrIntro").value; tr.theme = document.getElementById("aTrTheme").value; }
-                    await saveStationConfigToDB(); renderTrains(); document.getElementById("generalModal").classList.add("hidden"); 
-                });
+                document.getElementById("saveTr").addEventListener("click", async () => { if(action === 'add') { CONFIG.trains.push({ id: "t_"+Date.now(), name: document.getElementById("aTrName").value, genres: trainGenresList, intro: document.getElementById("aTrIntro").value, theme: document.getElementById("aTrTheme").value, createdAt: Date.now() }); } else { let tr = CONFIG.trains.find(t => t.id === idOrParentId); tr.name = document.getElementById("aTrName").value; tr.genres = [...trainGenresList]; tr.intro = document.getElementById("aTrIntro").value; tr.theme = document.getElementById("aTrTheme").value; } await saveStationConfigToDB(); renderTrains(); document.getElementById("generalModal").classList.add("hidden"); });
             }
             else if(type === 'staff') {
                 let sData = { name: "", avatar: "", hook: "", tags: [], scenario: "", chatLink: "" };
-                let tId = idOrParentId; 
-                if(action === 'edit') { const st = CONFIG.staff.find(s => s.id === idOrParentId); if(st){ sData = st; tId = st.trainId; } }
-                
+                let tId = idOrParentId; if(action === 'edit') { const st = CONFIG.staff.find(s => s.id === idOrParentId); if(st){ sData = st; tId = st.trainId; } }
                 document.getElementById("generalModalTitle").textContent = action === 'add' ? `IN THẺ NHÂN VIÊN MỚI` : `CHỈNH SỬA THẺ NHÂN VIÊN`;
-                body.innerHTML = `<div class="form-row"><label>Tên Nhân Viên</label><input type="text" id="aStName" value="${sData.name}"></div><div class="form-row"><label>Ảnh Chân Dung (9:16)</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aStFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Tải ảnh</label><div id="aStPrev" class="img-preview-grid"><img src="${sData.avatar}" onerror="this.style.display='none'"></div></div></div><div class="form-row"><label>Câu Thoại Đặc Trưng (Hook)</label><input type="text" id="aStHook" value="${sData.hook}"></div><div class="form-row"><label>Tags (Cách nhau dấu phẩy)</label><input type="text" id="aStTags" value="${sData.tags.join(', ')}"></div><div class="form-row"><label>HỒ SƠ MẬT (Hiển thị dạng bảng trắng lớn)</label><div class="rt-toolbar"><button type="button" class="rt-btn" onclick="document.execCommand('bold',false,null)"><b>B</b></button><button type="button" class="rt-btn" onclick="document.execCommand('italic',false,null)"><i>I</i></button><button type="button" class="rt-btn" onclick="document.execCommand('insertUnorderedList',false,null)">• List</button><input type="color" class="rt-btn" style="padding:0; width:40px; height:30px;" onchange="document.execCommand('foreColor',false,this.value)"><button type="button" class="rt-btn" onclick="insertToggleHTML()">Thêm Nút Đóng Mở</button></div><div id="aStScenario" class="rt-editor" contenteditable="true">${sData.scenario}</div></div><div class="form-row"><label>LINK TRÒ CHUYỆN</label><input type="text" id="aStChat" value="${sData.chatLink}"></div><button class="submit-btn" id="saveSt">${action==='add'?"IN THẺ":"LƯU HỒ SƠ"}</button>`;
-                loadIcons(); 
-                window.insertToggleHTML = function() { const html = `<details open><summary>BẤM VÀO ĐÂY ĐỂ ĐỔI TÊN NÚT</summary><div>Nhập nội dung hiển thị cho hành khách vào đây...</div></details><br>`; document.execCommand('insertHTML', false, html); };
+                body.innerHTML = `<div class="form-row"><label>Tên Nhân Viên</label><input type="text" id="aStName" value="${sData.name}"></div><div class="form-row"><label>Ảnh Chân Dung (Vuông)</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aStFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Tải ảnh</label><div id="aStPrev" class="img-preview-grid"><img src="${sData.avatar}" onerror="this.style.display='none'"></div></div></div><div class="form-row"><label>Câu Thoại Đặc Trưng (Hook)</label><input type="text" id="aStHook" value="${sData.hook}"></div><div class="form-row"><label>Tags (Cách nhau dấu phẩy)</label><input type="text" id="aStTags" value="${sData.tags.join(', ')}"></div><div class="form-row"><label>HỒ SƠ MẬT (Hiển thị dạng bảng trắng lớn)</label><div class="rt-toolbar"><button type="button" class="rt-btn" onclick="document.execCommand('bold',false,null)"><b>B</b></button><button type="button" class="rt-btn" onclick="document.execCommand('italic',false,null)"><i>I</i></button><button type="button" class="rt-btn" onclick="document.execCommand('insertUnorderedList',false,null)">• List</button><input type="color" class="rt-btn" style="padding:0; width:40px; height:30px;" onchange="document.execCommand('foreColor',false,this.value)"><button type="button" class="rt-btn" onclick="insertToggleHTML()">Thêm Nút Đóng Mở</button></div><div id="aStScenario" class="rt-editor" contenteditable="true">${sData.scenario}</div></div><div class="form-row"><label>LINK TRÒ CHUYỆN</label><input type="text" id="aStChat" value="${sData.chatLink}"></div><button class="submit-btn" id="saveSt">${action==='add'?"IN THẺ":"LƯU HỒ SƠ"}</button>`;
+                loadIcons(); window.insertToggleHTML = function() { const html = `<details open><summary>BẤM VÀO ĐÂY ĐỂ ĐỔI TÊN NÚT</summary><div>Nhập nội dung hiển thị cho hành khách vào đây...</div></details><br>`; document.execCommand('insertHTML', false, html); };
                 let sB64 = sData.avatar; document.getElementById("aStFile").addEventListener("change", async (e)=>{ sB64 = await resizeImage(e.target.files[0]); document.getElementById("aStPrev").innerHTML=`<img src="${sB64}">`; });
-                document.getElementById("saveSt").addEventListener("click", async () => { 
-                    const tags = document.getElementById("aStTags").value.split(',').map(t=>t.trim()).filter(t=>t); 
-                    if(action === 'add') { CONFIG.staff.push({ id: "s_"+Date.now(), trainId: tId, name: document.getElementById("aStName").value, avatar: sB64, hook: document.getElementById("aStHook").value, tags: tags, scenario: document.getElementById("aStScenario").innerHTML, chatLink: document.getElementById("aStChat").value, createdAt: Date.now(), rating: { sum: 0, count: 0 }, isHidden: false, feedbacks: [] }); } 
-                    else { let st = CONFIG.staff.find(s => s.id === idOrParentId); st.name = document.getElementById("aStName").value; st.avatar = sB64; st.hook = document.getElementById("aStHook").value; st.tags = tags; st.scenario = document.getElementById("aStScenario").innerHTML; st.chatLink = document.getElementById("aStChat").value; }
-                    await saveStationConfigToDB(); renderTrains(); document.getElementById("generalModal").classList.add("hidden"); 
-                });
+                document.getElementById("saveSt").addEventListener("click", async () => { const tags = document.getElementById("aStTags").value.split(',').map(t=>t.trim()).filter(t=>t); if(action === 'add') { CONFIG.staff.push({ id: "s_"+Date.now(), trainId: tId, name: document.getElementById("aStName").value, avatar: sB64, hook: document.getElementById("aStHook").value, tags: tags, scenario: document.getElementById("aStScenario").innerHTML, chatLink: document.getElementById("aStChat").value, createdAt: Date.now(), rating: { sum: 0, count: 0 }, isHidden: false, feedbacks: [] }); } else { let st = CONFIG.staff.find(s => s.id === idOrParentId); st.name = document.getElementById("aStName").value; st.avatar = sB64; st.hook = document.getElementById("aStHook").value; st.tags = tags; st.scenario = document.getElementById("aStScenario").innerHTML; st.chatLink = document.getElementById("aStChat").value; } await saveStationConfigToDB(); renderTrains(); document.getElementById("generalModal").classList.add("hidden"); });
             }
             else if(type === 'upcoming') {
                 let uData = { name: "", avatar: "", idea: "", train: "", tags: [], progress: 10 };
                 if(action === 'edit') { const up = CONFIG.upcomingBots.find(b => b.id === idOrParentId); if(up) uData = up; }
-                
                 document.getElementById("generalModalTitle").textContent = action==='add' ? "THÊM HỒ SƠ DỰ BỊ" : "SỬA HỒ SƠ DỰ BỊ";
-                body.innerHTML = `<div class="form-row"><label>Tên Bot (Dự kiến)</label><input type="text" id="aUpName" value="${uData.name}"></div><div class="form-row"><label>Ảnh Minh Họa</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aUpFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Tải ảnh</label><div id="aUpPrev" class="img-preview-grid"><img src="${uData.avatar}" onerror="this.style.display='none'"></div></div></div><div class="form-row"><label>Ý Tưởng Nhân Vật</label><textarea id="aUpIdea" style="height: 80px;">${uData.idea}</textarea></div><div class="form-row"><label>Tuyến Tàu Dự Kiến</label><input type="text" id="aUpTrain" value="${uData.train}"></div><div class="form-row"><label>Tiến độ (%)</label><input type="number" id="aUpProgress" value="${uData.progress}" min="0" max="100"></div><div class="form-row"><label>Tags Thể Loại</label><input type="text" id="aUpTags" value="${uData.tags.join(', ')}"></div><button class="submit-btn" id="saveUp">LƯU HỒ SƠ</button>`;
+                body.innerHTML = `<div class="form-row"><label>Tên Bot (Dự kiến)</label><input type="text" id="aUpName" value="${uData.name}"></div><div class="form-row"><label>Ảnh Minh Họa</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aUpFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Tải ảnh</label><div id="aUpPrev" class="img-preview-grid"><img src="${uData.avatar}" onerror="this.style.display='none'"></div></div></div><div class="form-row"><label>Ý Tưởng Nhân Vật</label><textarea id="aUpIdea" style="height: 100px;">${uData.idea}</textarea></div><div class="form-row"><label>Tuyến Tàu Dự Kiến</label><input type="text" id="aUpTrain" value="${uData.train}"></div><div class="form-row"><label>Tiến độ (%)</label><input type="number" id="aUpProgress" value="${uData.progress}" min="0" max="100"></div><div class="form-row"><label>Tags Thể Loại</label><input type="text" id="aUpTags" value="${uData.tags.join(', ')}"></div><button class="submit-btn" id="saveUp">LƯU HỒ SƠ</button>`;
                 loadIcons(); let uB64 = uData.avatar; document.getElementById("aUpFile").addEventListener("change", async (e)=>{ uB64 = await resizeImage(e.target.files[0]); document.getElementById("aUpPrev").innerHTML=`<img src="${uB64}">`; });
-                document.getElementById("saveUp").addEventListener("click", async () => { 
-                    const tagsArray = document.getElementById("aUpTags").value.split(',').map(t=>t.trim()).filter(t=>t); 
-                    if(action === 'add') { CONFIG.upcomingBots.push({ id: "u_"+Date.now(), name: document.getElementById("aUpName").value, avatar: uB64, idea: document.getElementById("aUpIdea").value, train: document.getElementById("aUpTrain").value, tags: tagsArray, progress: document.getElementById("aUpProgress").value, isHidden: false }); } 
-                    else { let up = CONFIG.upcomingBots.find(b => b.id === idOrParentId); up.name = document.getElementById("aUpName").value; up.avatar = uB64; up.idea = document.getElementById("aUpIdea").value; up.train = document.getElementById("aUpTrain").value; up.tags = tagsArray; up.progress = document.getElementById("aUpProgress").value; }
-                    await saveStationConfigToDB(); renderUpcomingBots(); document.getElementById("generalModal").classList.add("hidden"); 
-                });
+                document.getElementById("saveUp").addEventListener("click", async () => { const tagsArray = document.getElementById("aUpTags").value.split(',').map(t=>t.trim()).filter(t=>t); if(action === 'add') { CONFIG.upcomingBots.push({ id: "u_"+Date.now(), name: document.getElementById("aUpName").value, avatar: uB64, idea: document.getElementById("aUpIdea").value, train: document.getElementById("aUpTrain").value, tags: tagsArray, progress: document.getElementById("aUpProgress").value, isHidden: false }); } else { let up = CONFIG.upcomingBots.find(b => b.id === idOrParentId); up.name = document.getElementById("aUpName").value; up.avatar = uB64; up.idea = document.getElementById("aUpIdea").value; up.train = document.getElementById("aUpTrain").value; up.tags = tagsArray; up.progress = document.getElementById("aUpProgress").value; } await saveStationConfigToDB(); renderUpcomingBots(); document.getElementById("generalModal").classList.add("hidden"); });
             }
             else if(type === 'playlist') {
                 document.getElementById("generalModalTitle").textContent = "TẠO PLAYLIST MỚI";
                 body.innerHTML = `<div class="form-row"><label>Tên Playlist</label><input type="text" id="aPlName" required></div><button class="submit-btn" id="savePl">TẠO MỚI</button>`;
-                document.getElementById("savePl").addEventListener("click", async () => { 
-                    if (!document.getElementById("aPlName").value.trim()) return alert("Vui lòng nhập tên Playlist!"); 
-                    if(!CONFIG.musicLibrary) CONFIG.musicLibrary = []; 
-                    CONFIG.musicLibrary.push({ id: "pl_"+Date.now(), name: document.getElementById("aPlName").value, songs: [] }); 
-                    await saveStationConfigToDB(); renderGramoPlaylists(); document.getElementById("generalModal").classList.add("hidden"); 
-                });
+                document.getElementById("savePl").addEventListener("click", async () => { if (!document.getElementById("aPlName").value.trim()) return alert("Vui lòng nhập tên Playlist!"); if(!CONFIG.musicLibrary) CONFIG.musicLibrary = []; CONFIG.musicLibrary.push({ id: "pl_"+Date.now(), name: document.getElementById("aPlName").value, songs: [] }); await saveStationConfigToDB(); renderGramoPlaylists(); document.getElementById("generalModal").classList.add("hidden"); });
             }
             else if(type === 'song') {
                 if(!activeMusicPl) return alert("Vui lòng chọn 1 Playlist trước!");
                 document.getElementById("generalModalTitle").textContent = "TẢI NHẠC LÊN PLAYLIST";
                 body.innerHTML = `<div id="songsContainer"><div class="form-row song-row" style="display:flex; flex-direction:column; gap:10px; margin-bottom: 20px; padding-bottom:15px; border-bottom:1px dashed var(--blood);"><input type="text" class="sgName" placeholder="Tên bài hát..."><label class="file-btn" style="width:100%;"><input type="file" accept="audio/*" class="sgFile" style="display:none;"><span class="file-status">Chọn file âm thanh (.mp3)</span></label></div></div><div style="display:flex; gap:10px;"><button class="admin-only-btn" id="addMoreRow" style="margin-bottom:0; flex:1; justify-content:center;">➕ Thêm dòng nhạc</button><button class="submit-btn" id="saveSg" style="flex:1;">ĐỒNG BỘ NHẠC</button></div>`;
-                function attachFileEvent(row) { const fileInput = row.querySelector(".sgFile"); const statusText = row.querySelector(".file-status"); fileInput.addEventListener("change", () => { if(fileInput.files.length > 0) { statusText.textContent = "Đã chọn: " + fileInput.files[0].name; statusText.style.color = "#FFD166"; } }); } 
-                attachFileEvent(document.querySelector(".song-row"));
+                function attachFileEvent(row) { const fileInput = row.querySelector(".sgFile"); const statusText = row.querySelector(".file-status"); fileInput.addEventListener("change", () => { if(fileInput.files.length > 0) { statusText.textContent = "Đã chọn: " + fileInput.files[0].name; statusText.style.color = "#FFD166"; } }); } attachFileEvent(document.querySelector(".song-row"));
                 document.getElementById("addMoreRow").addEventListener("click", () => { const row = document.createElement("div"); row.className = "form-row song-row"; row.style.cssText = "display:flex; flex-direction:column; gap:10px; margin-bottom: 20px; padding-bottom:15px; border-bottom:1px dashed var(--blood);"; row.innerHTML = `<input type="text" class="sgName" placeholder="Tên bài hát..."><label class="file-btn" style="width:100%;"><input type="file" accept="audio/*" class="sgFile" style="display:none;"><span class="file-status">Chọn file âm thanh</span></label>`; document.getElementById("songsContainer").appendChild(row); attachFileEvent(row); });
-                document.getElementById("saveSg").addEventListener("click", async () => { 
-                    const rows = document.querySelectorAll(".song-row"); const newSongs = []; document.getElementById("saveSg").textContent = "ĐANG XỬ LÝ..."; 
-                    for (let r of rows) { 
-                        const title = r.querySelector(".sgName").value.trim(); const fileInput = r.querySelector(".sgFile"); 
-                        if(title && fileInput.files.length > 0) { try { const base64Audio = await fileToBase64(fileInput.files[0]); newSongs.push({ title: title, src: base64Audio }); } catch(e) {} } 
-                    } 
-                    if(newSongs.length === 0) { document.getElementById("saveSg").textContent = "ĐỒNG BỘ NHẠC"; return alert("Chưa nhập đủ thông tin!"); } 
-                    CONFIG.musicLibrary.forEach(p => { if(p.id === activeMusicPl) { p.songs.push(...newSongs); } }); 
-                    await saveStationConfigToDB(); renderGramoSongs(activeMusicPl); document.getElementById("generalModal").classList.add("hidden"); 
-                });
+                document.getElementById("saveSg").addEventListener("click", async () => { const rows = document.querySelectorAll(".song-row"); const newSongs = []; document.getElementById("saveSg").textContent = "ĐANG XỬ LÝ..."; for (let r of rows) { const title = r.querySelector(".sgName").value.trim(); const fileInput = r.querySelector(".sgFile"); if(title && fileInput.files.length > 0) { try { const base64Audio = await fileToBase64(fileInput.files[0]); newSongs.push({ title: title, src: base64Audio }); } catch(e) {} } } if(newSongs.length === 0) { document.getElementById("saveSg").textContent = "ĐỒNG BỘ NHẠC"; return alert("Chưa nhập đủ thông tin!"); } CONFIG.musicLibrary.forEach(p => { if(p.id === activeMusicPl) { p.songs.push(...newSongs); } }); await saveStationConfigToDB(); renderGramoSongs(activeMusicPl); document.getElementById("generalModal").classList.add("hidden"); });
             }
         }
-
         document.getElementById("closeGeneralModal").addEventListener("click", () => { document.getElementById("generalModal").classList.add("hidden"); document.getElementById("generalBox").classList.remove("modal-white"); });
 
         /* ============================================================
-           HIỂN THỊ CHUYẾN TÀU VÀ LÁ BÀI 3D (THẺ ID BADGE)
+           HIỂN THỊ CHUYẾN TÀU VÀ LÁ BÀI 3D (THẺ ID BADGE CHUẨN)
            ============================================================ */
         window.deleteTrain = async function(trainId, event) { event.stopPropagation(); if(confirm("XÓA CHUYẾN TÀU này và dàn nhân sự bên trong?")) { CONFIG.trains = CONFIG.trains.filter(t => t.id !== trainId); CONFIG.staff = CONFIG.staff.filter(s => s.trainId !== trainId); await saveStationConfigToDB(); renderTrains(); } };
         window.toggleHideStaff = async function(staffId, event) { event.stopPropagation(); const st = CONFIG.staff.find(s => s.id === staffId); if(st) { st.isHidden = !st.isHidden; await saveStationConfigToDB(); renderTrains(); } };
@@ -830,25 +700,10 @@
             const wrap = document.getElementById("trainsList"); wrap.innerHTML = ""; const q = currentSearch.toLowerCase();
             for(let train of CONFIG.trains) {
                 const staffCount = CONFIG.staff.filter(s => s.trainId === train.id).length;
-                const card = document.createElement("div"); 
-                card.className = `train-card ${train.theme || 'theme-09'}`; 
-                
+                const card = document.createElement("div"); card.className = `train-card ${train.theme || 'theme-09'}`; 
                 let adminCtrls = isAdminMode ? `<div style="position:absolute; top:10px; right:10px; z-index:10; display:flex; gap:5px;"><button class="admin-card-btn" onclick="openAdminForm('train', 'edit', '${train.id}'); event.stopPropagation();">✏️ Sửa Tàu</button><button class="admin-card-btn del" onclick="deleteTrain('${train.id}', event)"><span class="icon-slot" data-icon="trash"></span></button></div>` : "";
                 
-                card.innerHTML = `
-                    ${adminCtrls}
-                    <div class="t-door"></div>
-                    <div class="t-body">
-                        <div class="t-plate">${train.name}</div>
-                        <div class="t-windows-wrap">
-                            <div class="t-window"><div class="t-window-text">${train.intro}</div></div>
-                            <div class="t-window" style="opacity:0.8;"></div>
-                        </div>
-                        <div class="t-specs">STAFF.VOL:${staffCount} // ROUTE:${train.id.substring(0,6)}</div>
-                    </div>
-                    <div class="t-bellows"></div>
-                    <div class="t-wheels-area"></div>
-                `;
+                card.innerHTML = `${adminCtrls}<div class="t-door"></div><div class="t-body"><div class="t-plate">${train.name}</div><div class="t-windows-wrap"><div class="t-window"><div class="t-window-text">${train.intro}</div></div><div class="t-window" style="opacity:0.8;"></div></div><div class="t-specs">STAFF.VOL:${staffCount} // ROUTE:${train.id.substring(0,6)}</div></div><div class="t-bellows"></div><div class="t-wheels-area"></div>`;
                 
                 const acc = document.createElement("div"); acc.className = "train-accordion";
                 if(isAdminMode) {
@@ -859,7 +714,6 @@
                 
                 let trainStaff = CONFIG.staff.filter(s => s.trainId === train.id && s.name.toLowerCase().includes(q));
                 if(!isAdminMode) trainStaff = trainStaff.filter(s => !s.isHidden);
-                
                 const grid = document.createElement("div"); grid.className = "staff-grid";
                 for(let st of trainStaff) { grid.appendChild(createStaffCard(st, train.theme || 'theme-09')); }
                 if(trainStaff.length === 0) { grid.innerHTML = "<p style='color:var(--silver); padding: 0 16px; font-style:italic;'>Trống.</p>"; }
@@ -870,24 +724,12 @@
         }
 
         window.viewFeedbacks = function(staffId, event) {
-            event.stopPropagation();
-            const st = CONFIG.staff.find(s => s.id === staffId); if(!st) return;
+            event.stopPropagation(); const st = CONFIG.staff.find(s => s.id === staffId); if(!st) return;
             const modal = document.getElementById("generalModal"); const box = document.getElementById("generalBox"); const body = document.getElementById("generalModalBody");
-            box.classList.add("modal-white"); 
-            document.getElementById("generalModalTitle").textContent = `FEEDBACK KHÁCH HÀNG: ${st.name}`;
-            
+            box.classList.add("modal-white"); document.getElementById("generalModalTitle").textContent = `FEEDBACK KHÁCH HÀNG: ${st.name}`;
             let html = "";
             if(!st.feedbacks || st.feedbacks.length === 0) html = "<p>Chưa có đánh giá nào.</p>";
-            else {
-                st.feedbacks.forEach(f => {
-                    let imgs = f.images ? f.images.map(url => `<img src="${url}" style="width:100px; height:100px; object-fit:cover; border:2px solid #000; margin-right:5px;">`).join('') : "";
-                    html += `<div style="border-bottom:2px dashed #000; padding: 15px 0;">
-                        <div style="font-weight:900; color:#D50000; font-size:16px;">${f.name} <span style="color:#b5a642; text-shadow: 1px 1px 0 #000;">${'★'.repeat(f.stars)}${'☆'.repeat(5-f.stars)}</span></div>
-                        <p style="margin: 10px 0; font-weight:500;">${f.text}</p>
-                        <div style="display:flex; flex-wrap:wrap;">${imgs}</div>
-                    </div>`;
-                });
-            }
+            else { st.feedbacks.forEach(f => { let imgs = f.images ? f.images.map(url => `<img src="${url}" style="width:100px; height:100px; object-fit:cover; border:2px solid #000; margin-right:5px;">`).join('') : ""; html += `<div style="border-bottom:2px dashed #000; padding: 15px 0;"><div style="font-weight:900; color:#D50000; font-size:16px;">${f.name} <span style="color:#b5a642; text-shadow: 1px 1px 0 #000;">${'★'.repeat(f.stars)}${'☆'.repeat(5-f.stars)}</span></div><p style="margin: 10px 0; font-weight:500;">${f.text}</p><div style="display:flex; flex-wrap:wrap;">${imgs}</div></div>`; }); }
             body.innerHTML = html; modal.classList.remove("hidden");
         };
 
@@ -911,7 +753,6 @@
                         <div class="c-name">${staff.name}</div>
                         <div class="c-tags">${tagHTML}</div>
                         <div class="c-hook">"${staff.hook}"</div>
-                        <div class="c-barcode">01234567890</div>
                         <div style="display:flex; justify-content:space-between; width:100%; align-items:flex-end;">
                             <div class="c-rating-badge"><span class="icon-slot" data-icon="star"></span> ${avgText}</div>
                             <div class="c-flip-hint">LẬT THẺ ⟳</div>
@@ -932,62 +773,28 @@
             cardBack.querySelectorAll('button, a').forEach(el => { el.addEventListener("click", (e) => e.stopPropagation()); });
             
             const profileBtn = cardWrap.querySelector('.c-profile-btn');
-            profileBtn.addEventListener('click', (e) => {
-                const modal = document.getElementById("generalModal"); const box = document.getElementById("generalBox"); const body = document.getElementById("generalModalBody");
-                box.classList.add("modal-white"); document.getElementById("generalModalTitle").textContent = `HỒ SƠ: ${staff.name}`;
-                body.innerHTML = `<div style="font-size:15px;">${scenarioHTML}</div>`; modal.classList.remove("hidden");
-            });
+            profileBtn.addEventListener('click', (e) => { const modal = document.getElementById("generalModal"); const box = document.getElementById("generalBox"); const body = document.getElementById("generalModalBody"); box.classList.add("modal-white"); document.getElementById("generalModalTitle").textContent = `HỒ SƠ: ${staff.name}`; body.innerHTML = `<div style="font-size:15px;">${scenarioHTML}</div>`; modal.classList.remove("hidden"); });
 
             const fbBtn = cardWrap.querySelector('.c-fb-btn');
             fbBtn.addEventListener('click', (e) => {
-                const modal = document.getElementById("generalModal"); const box = document.getElementById("generalBox"); const body = document.getElementById("generalModalBody");
-                box.classList.add("modal-white"); document.getElementById("generalModalTitle").textContent = `ĐÁNH GIÁ: ${staff.name}`;
-                body.innerHTML = `
-                    <div class="fb-stars" id="fbStarsWrap">${[1,2,3,4,5].map(n=>`<span class="fb-star" data-val="${n}">☆</span>`).join("")}</div>
-                    <div class="fb-note">Feedback này chỉ có trưởng ga mới có thể đọc được</div>
-                    <div class="form-row"><input type="text" id="fbName" placeholder="Tên của bạn..."></div>
-                    <div class="form-row"><textarea id="fbText" placeholder="Để lại lời nhắn cho nhân viên này..." style="height: 100px;"></textarea></div>
-                    <div class="form-row file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" multiple id="fbImg" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Đính kèm ảnh minh chứng</label><div id="fbPreview" class="img-preview-grid"></div></div>
-                    <button class="submit-btn" id="fbSubmit">GỬI LÊN HỆ THỐNG</button>
-                `;
+                const modal = document.getElementById("generalModal"); const box = document.getElementById("generalBox"); const body = document.getElementById("generalModalBody"); box.classList.add("modal-white"); document.getElementById("generalModalTitle").textContent = `ĐÁNH GIÁ: ${staff.name}`;
+                body.innerHTML = `<div class="fb-stars" id="fbStarsWrap">${[1,2,3,4,5].map(n=>`<span class="fb-star" data-val="${n}">☆</span>`).join("")}</div><div class="fb-note">Feedback này chỉ có trưởng ga mới có thể đọc được</div><div class="form-row"><input type="text" id="fbName" placeholder="Tên của bạn..."></div><div class="form-row"><textarea id="fbText" placeholder="Để lại lời nhắn cho nhân viên này..." style="height: 100px;"></textarea></div><div class="form-row file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" multiple id="fbImg" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Đính kèm ảnh minh chứng</label><div id="fbPreview" class="img-preview-grid"></div></div><button class="submit-btn" id="fbSubmit">GỬI LÊN HỆ THỐNG</button>`;
                 loadIcons(); modal.classList.remove("hidden");
-                
-                let curStar = 0; let b64Imgs = [];
-                const stars = body.querySelectorAll('.fb-star');
+                let curStar = 0; let b64Imgs = []; const stars = body.querySelectorAll('.fb-star');
                 stars.forEach(s => { s.addEventListener('click', () => { curStar = +s.dataset.val; stars.forEach(st => { if(+st.dataset.val <= curStar) { st.textContent="★"; st.classList.add("active");} else {st.textContent="☆"; st.classList.remove("active");} }); }); });
-                
-                document.getElementById("fbImg").addEventListener("change", async (ev) => {
-                    for(let f of ev.target.files) { const b64 = await resizeImage(f); b64Imgs.push(b64); document.getElementById("fbPreview").innerHTML += `<img src="${b64}">`; }
-                });
-
-                document.getElementById("fbSubmit").addEventListener("click", async () => {
-                    if(curStar === 0) return alert("Vui lòng chọn số sao!");
-                    if(!staff.feedbacks) staff.feedbacks = [];
-                    staff.feedbacks.push({ stars: curStar, name: document.getElementById("fbName").value || "Ẩn danh", text: document.getElementById("fbText").value, images: b64Imgs, date: Date.now() });
-                    if(!staff.rating) staff.rating = {sum:0, count:0}; staff.rating.sum += curStar; staff.rating.count += 1;
-                    document.getElementById("fbSubmit").textContent = "ĐANG LƯU..."; await saveStationConfigToDB();
-                    modal.classList.add("hidden"); renderTrains(); box.classList.remove("modal-white");
-                });
+                document.getElementById("fbImg").addEventListener("change", async (ev) => { for(let f of ev.target.files) { const b64 = await resizeImage(f); b64Imgs.push(b64); document.getElementById("fbPreview").innerHTML += `<img src="${b64}">`; } });
+                document.getElementById("fbSubmit").addEventListener("click", async () => { if(curStar === 0) return alert("Vui lòng chọn số sao!"); if(!staff.feedbacks) staff.feedbacks = []; staff.feedbacks.push({ stars: curStar, name: document.getElementById("fbName").value || "Ẩn danh", text: document.getElementById("fbText").value, images: b64Imgs, date: Date.now() }); if(!staff.rating) staff.rating = {sum:0, count:0}; staff.rating.sum += curStar; staff.rating.count += 1; document.getElementById("fbSubmit").textContent = "ĐANG LƯU..."; await saveStationConfigToDB(); modal.classList.add("hidden"); renderTrains(); box.classList.remove("modal-white"); });
             });
-
             return cardWrap;
         }
 
-        /* ============================================================
-           SỔ DỰ BỊ (CŨNG THEO MOTIF ID BADGE MẶT TRƯỚC)
-           ============================================================ */
         window.toggleHideUpcoming = async function(botId, event) { event.stopPropagation(); const bot = CONFIG.upcomingBots.find(b => b.id === botId); if(bot) { bot.isHidden = !bot.isHidden; await saveStationConfigToDB(); renderUpcomingBots(); } };
         window.deleteUpcoming = async function(botId, event) { event.stopPropagation(); if(confirm("XÓA HỒ SƠ DỰ BỊ này?")) { CONFIG.upcomingBots = CONFIG.upcomingBots.filter(b => b.id !== botId); await saveStationConfigToDB(); renderUpcomingBots(); } };
 
         function renderUpcomingBots() {
             const grid = document.getElementById("upcomingBotsGrid"); grid.innerHTML = "";
             let upBots = CONFIG.upcomingBots || []; if(!isAdminMode) upBots = upBots.filter(b => !b.isHidden);
-            
-            if(upBots.length === 0) { 
-                grid.innerHTML = `<div class="upcoming-empty"><span class="icon-slot" data-icon="bench"></span><p>Sảnh tuyển dụng hiện đang im lìm... Các tuyến tàu đã đủ người vận hành. Nếu lữ khách muốn đề xuất một nhân viên mới, hãy gửi ý tưởng cho Trưởng ga ở mục Góp ý phía dưới.</p></div>`; 
-                setTimeout(() => loadIcons(), 10); return; 
-            }
-            
+            if(upBots.length === 0) { grid.innerHTML = `<div class="upcoming-empty"><span class="icon-slot" data-icon="bench"></span><p>Sảnh tuyển dụng hiện đang im lìm... Các tuyến tàu đã đủ người vận hành. Nếu lữ khách muốn đề xuất một nhân viên mới, hãy gửi ý tưởng cho Trưởng ga ở mục Góp ý phía dưới.</p></div>`; setTimeout(() => loadIcons(), 10); return; }
             grid.className = "staff-grid";
             upBots.forEach(bot => {
                 const cardWrap = document.createElement("div"); cardWrap.className = "staff-card-container"; 
@@ -1001,10 +808,10 @@
                         <div class="up-card-front">
                             <div class="c-id-header" style="color:#D50000;">PENDING STAFF ID</div>
                             <div class="up-stamp">[ SẮP RA MẮT ]</div>
-                            <div class="c-image-wrap" style="border-color:#333; width:100%; aspect-ratio:1; border:4px solid #444; border-bottom:15px solid #444; background:#444; position:relative; box-shadow:2px 2px 10px rgba(0,0,0,0.8); margin-bottom:15px; transform:rotate(-2deg);"><img src="${bot.avatar}" style="width:100%; height:100%; object-fit:cover; filter:grayscale(1);"></div>
+                            <div class="c-image-wrap" style="border-color:#333; width:140px; height:140px; border:4px solid #444; border-bottom:15px solid #444; background:#444; position:relative; box-shadow:2px 2px 10px rgba(0,0,0,0.8); margin-bottom:15px; transform:rotate(-2deg); flex-shrink: 0;"><img src="${bot.avatar}" style="width:100%; height:100%; object-fit:cover; filter:grayscale(1);"></div>
                             <div class="c-name" style="color:var(--silver); width:100%; border-bottom:1px dashed #444; padding-bottom:5px; margin-bottom:10px; font-family:var(--font-heading); font-size:22px; font-weight:900; text-align:center; text-transform:uppercase;">${bot.name}</div>
-                            <div class="c-hook" style="color:#aaa; font-weight:bold; font-size:12px; margin-bottom:10px;">TUYẾN: ${bot.train}</div>
                             <div class="c-tags" style="display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin-bottom:10px; width:100%;">${tagHTML}</div>
+                            <div class="c-hook" style="color:#aaa; font-weight:bold; font-size:12px; margin-bottom:10px; text-align:center; width:100%;">TUYẾN: ${bot.train}</div>
                             <div class="up-idea-box">${bot.idea}</div>
                             <div class="up-progress-wrap"><div class="up-progress-bar" style="width:${bot.progress}%;"></div><div class="up-progress-text">[ Chuẩn bị... ${bot.progress}% ]</div></div>
                         </div>
@@ -1020,84 +827,28 @@
         const audio = document.getElementById("gramoAudio"), playBtnWrap = document.getElementById("gramoPlayWrap"), playBtn = document.getElementById("gramoPlay"), vinylToggle = document.getElementById("gramoToggle"), miniVinyl = document.getElementById("musicBoxVinyl"), stylus = document.getElementById("musicBoxStylus");
         let isPlaying = false, isLoop = false, isShuffle = false; let curQueue = [], curIndex = 0;
         
-        document.getElementById("gramoLoopBtn").addEventListener("click", function(){ 
-            isLoop = !isLoop; 
-            if(isLoop) { isShuffle = false; document.getElementById("gramoShuffleBtn").style.color = "var(--brass)"; document.getElementById("gramoShuffleBtn").classList.remove("active"); }
-            this.style.color = isLoop ? "#FFF" : "var(--brass)"; this.classList.toggle("active", isLoop); audio.loop = isLoop; 
-        });
-        document.getElementById("gramoShuffleBtn").addEventListener("click", function(){ 
-            isShuffle = !isShuffle; 
-            if(isShuffle) { isLoop = false; document.getElementById("gramoLoopBtn").style.color = "var(--brass)"; document.getElementById("gramoLoopBtn").classList.remove("active"); audio.loop = false; }
-            this.style.color = isShuffle ? "#FFF" : "var(--brass)"; this.classList.toggle("active", isShuffle); 
-        });
+        document.getElementById("gramoLoopBtn").addEventListener("click", function(){ isLoop = !isLoop; if(isLoop) { isShuffle = false; document.getElementById("gramoShuffleBtn").style.color = "var(--brass)"; document.getElementById("gramoShuffleBtn").classList.remove("active"); } this.style.color = isLoop ? "#FFF" : "var(--brass)"; this.classList.toggle("active", isLoop); audio.loop = isLoop; });
+        document.getElementById("gramoShuffleBtn").addEventListener("click", function(){ isShuffle = !isShuffle; if(isShuffle) { isLoop = false; document.getElementById("gramoLoopBtn").style.color = "var(--brass)"; document.getElementById("gramoLoopBtn").classList.remove("active"); audio.loop = false; } this.style.color = isShuffle ? "#FFF" : "var(--brass)"; this.classList.toggle("active", isShuffle); });
 
         playBtn.addEventListener("click", () => { if(!audio.src) return; isPlaying ? audio.pause() : audio.play(); });
-        audio.addEventListener("play", () => { 
-            isPlaying = true; playBtn.innerHTML = '<span class="icon-slot" data-icon="pause"></span>'; loadIcons(); 
-            vinylToggle.classList.remove("paused"); playBtnWrap.classList.add("playing");
-            miniVinyl.classList.add("playing"); stylus.classList.add("playing");
-        });
-        audio.addEventListener("pause", () => { 
-            isPlaying = false; playBtn.innerHTML = '<span class="icon-slot" data-icon="play"></span>'; loadIcons(); 
-            vinylToggle.classList.add("paused"); playBtnWrap.classList.remove("playing");
-            miniVinyl.classList.remove("playing"); stylus.classList.remove("playing");
-        });
+        audio.addEventListener("play", () => { isPlaying = true; playBtn.innerHTML = '<span class="icon-slot" data-icon="pause"></span>'; loadIcons(); vinylToggle.classList.remove("paused"); playBtnWrap.classList.add("playing"); miniVinyl.classList.add("playing"); stylus.classList.add("playing"); });
+        audio.addEventListener("pause", () => { isPlaying = false; playBtn.innerHTML = '<span class="icon-slot" data-icon="play"></span>'; loadIcons(); vinylToggle.classList.add("paused"); playBtnWrap.classList.remove("playing"); miniVinyl.classList.remove("playing"); stylus.classList.remove("playing"); });
         audio.addEventListener("ended", () => { if(!isLoop) document.getElementById("gramoNext").click(); });
 
-        function loadSong(index){
-            if(!curQueue[index]) return; curIndex = index;
-            document.getElementById("gramoTitle").textContent = curQueue[index].title; 
-            audio.src = curQueue[index].src; audio.play().catch(e => console.warn(e));
-            renderGramoSongs(activeMusicPl);
-        }
-
+        function loadSong(index){ if(!curQueue[index]) return; curIndex = index; document.getElementById("gramoTitle").textContent = curQueue[index].title; audio.src = curQueue[index].src; audio.play().catch(e => console.warn(e)); renderGramoSongs(activeMusicPl); }
         document.getElementById("gramoNext").addEventListener("click", () => { if(curQueue.length===0) return; loadSong(isShuffle ? Math.floor(Math.random()*curQueue.length) : (curIndex+1)%curQueue.length); });
         document.getElementById("gramoPrev").addEventListener("click", () => { if(curQueue.length===0) return; loadSong((curIndex-1+curQueue.length)%curQueue.length); });
         document.getElementById("gramoToggle").addEventListener("click", () => document.getElementById("gramoPanel").classList.toggle("hidden-panel"));
         document.getElementById("gramoClose").addEventListener("click", () => document.getElementById("gramoPanel").classList.add("hidden-panel"));
         document.getElementById("gramoReload").addEventListener("click", () => { audio.currentTime=0; });
 
-        window.deleteCurrentPlaylist = async function() {
-            if(!activeMusicPl) return alert("Chọn playlist để xóa!");
-            if(confirm("XÓA TOÀN BỘ PLAYLIST NÀY?")) {
-                CONFIG.musicLibrary = CONFIG.musicLibrary.filter(p => p.id !== activeMusicPl);
-                activeMusicPl = null; await saveStationConfigToDB(); renderGramoPlaylists(); renderGramoSongs(null);
-            }
-        };
+        window.deleteCurrentPlaylist = async function() { if(!activeMusicPl) return alert("Chọn playlist để xóa!"); if(confirm("XÓA TOÀN BỘ PLAYLIST NÀY?")) { CONFIG.musicLibrary = CONFIG.musicLibrary.filter(p => p.id !== activeMusicPl); activeMusicPl = null; await saveStationConfigToDB(); renderGramoPlaylists(); renderGramoSongs(null); } };
+        window.deleteSongFromPlaylist = async function(plId, songIdx, e) { e.stopPropagation(); if(confirm("Xóa bài hát này?")) { const pl = CONFIG.musicLibrary.find(p => p.id === plId); if(pl) { pl.songs.splice(songIdx, 1); await saveStationConfigToDB(); renderGramoSongs(plId); } } };
 
-        window.deleteSongFromPlaylist = async function(plId, songIdx, e) {
-            e.stopPropagation();
-            if(confirm("Xóa bài hát này?")) {
-                const pl = CONFIG.musicLibrary.find(p => p.id === plId);
-                if(pl) { pl.songs.splice(songIdx, 1); await saveStationConfigToDB(); renderGramoSongs(plId); }
-            }
-        };
-
-        function renderGramoPlaylists() {
-            const mSel = document.getElementById("plMainSelect"); mSel.innerHTML = "<option value=''>-- Chọn Playlist --</option>";
-            if (!CONFIG.musicLibrary) CONFIG.musicLibrary = [];
-            CONFIG.musicLibrary.forEach(pl => { const opt = document.createElement("option"); opt.value = pl.id; opt.textContent = pl.name; mSel.appendChild(opt); });
-            
-            let delPlBtnHTML = isAdminMode ? `<button class="admin-only-btn" style="margin:0; padding: 4px 8px; border-color:#8B0000; color:#8B0000;" title="Xóa Playlist hiện tại" onclick="deleteCurrentPlaylist()">✕</button>` : '';
-            document.getElementById("btnDeletePlaylistWrap").innerHTML = delPlBtnHTML;
-        }
-
+        function renderGramoPlaylists() { const mSel = document.getElementById("plMainSelect"); mSel.innerHTML = "<option value=''>-- Chọn Playlist --</option>"; if (!CONFIG.musicLibrary) CONFIG.musicLibrary = []; CONFIG.musicLibrary.forEach(pl => { const opt = document.createElement("option"); opt.value = pl.id; opt.textContent = pl.name; mSel.appendChild(opt); }); let delPlBtnHTML = isAdminMode ? `<button class="admin-only-btn" style="margin:0; padding: 4px 8px; border-color:#8B0000; color:#8B0000;" title="Xóa Playlist hiện tại" onclick="deleteCurrentPlaylist()">✕</button>` : ''; document.getElementById("btnDeletePlaylistWrap").innerHTML = delPlBtnHTML; }
         document.getElementById("plMainSelect").addEventListener("change", (e) => { activeMusicPl = e.target.value; renderGramoSongs(activeMusicPl); });
 
-        function renderGramoSongs(plId) {
-            const list = document.getElementById("gramoSongList"); list.innerHTML = ""; if(!plId) return;
-            const targetPl = CONFIG.musicLibrary.find(p=>p.id===plId); if(!targetPl) return; curQueue = targetPl.songs;
-            targetPl.songs.forEach((s, idx) => {
-                const item = document.createElement("div"); item.className = "gramo-song-item";
-                if(idx === curIndex && document.getElementById("gramoTitle").textContent.includes(s.title)) item.classList.add("active");
-                
-                let adminDelSong = isAdminMode ? `<button title="Xóa bài" style="margin-left:10px; color:#8B0000; font-weight:bold;" onclick="deleteSongFromPlaylist('${plId}', ${idx}, event)">✕</button>` : '';
-                item.innerHTML = `<span style="flex:1;">${s.title}</span> <div><span>🎵</span>${adminDelSong}</div>`;
-                
-                item.onclick = () => loadSong(idx); list.appendChild(item);
-            });
-            setTimeout(() => loadIcons(), 10);
-        }
+        function renderGramoSongs(plId) { const list = document.getElementById("gramoSongList"); list.innerHTML = ""; if(!plId) return; const targetPl = CONFIG.musicLibrary.find(p=>p.id===plId); if(!targetPl) return; curQueue = targetPl.songs; targetPl.songs.forEach((s, idx) => { const item = document.createElement("div"); item.className = "gramo-song-item"; if(idx === curIndex && document.getElementById("gramoTitle").textContent.includes(s.title)) item.classList.add("active"); let adminDelSong = isAdminMode ? `<button title="Xóa bài" style="margin-left:10px; color:#8B0000; font-weight:bold;" onclick="deleteSongFromPlaylist('${plId}', ${idx}, event)">✕</button>` : ''; item.innerHTML = `<span style="flex:1;">${s.title}</span> <div><span>🎵</span>${adminDelSong}</div>`; item.onclick = () => loadSong(idx); list.appendChild(item); }); setTimeout(() => loadIcons(), 10); }
     </script>
 </body>
 </html>
