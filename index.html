@@ -53,8 +53,7 @@
             background-position: center; background-size: cover; background-repeat: no-repeat;
             transition: opacity 1.5s ease; 
         }
-        /* Phủ mờ viền trung tâm để bảng chữ dễ đọc nhưng KHÔNG che khuất ảnh */
-        .p1-center-vignette { position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.2) 20%, rgba(0,0,0,0.85) 100%); }
+        .p1-center-vignette { position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 20%, rgba(0,0,0,0.8) 100%); }
         .p1-fog { position: absolute; inset: -20%; background-image: url('https://images.unsplash.com/photo-1485236715568-ddc5ee6ca227?auto=format&fit=crop&q=80&w=1200'); background-size: cover; opacity: 0.2; filter: grayscale(1) blur(5px); mix-blend-mode: screen; animation: panFog 60s linear infinite alternate; pointer-events: none; }
         @keyframes panFog { 0% { transform: translate(0, 5%); } 100% { transform: translate(-10%, -5%); } }
         
@@ -68,25 +67,30 @@
             background-position: center; background-size: cover; background-repeat: no-repeat;
             transition: opacity 1.5s ease; 
         }
-        .p2-center-abyss { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.9) 100%); }
-        .p2-steam { position: absolute; bottom: -10%; left: 0; width: 100%; height: 50%; background: radial-gradient(ellipse at center, rgba(150,150,150,0.15) 0%, transparent 70%); filter: blur(20px); animation: steamBreathe 8s ease-in-out infinite alternate; pointer-events: none;}
+        .p2-center-abyss { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.9) 100%); }
+        .p2-steam { position: absolute; bottom: -10%; left: 0; width: 100%; height: 50%; background: radial-gradient(ellipse at center, rgba(150,150,150,0.1) 0%, transparent 70%); filter: blur(20px); animation: steamBreathe 8s ease-in-out infinite alternate; pointer-events: none;}
         @keyframes steamBreathe { 0% { transform: scaleY(1); opacity: 0.1; } 100% { transform: scaleY(1.5); opacity: 0.3; } }
 
-        /* ============================================================
-           BẢNG THỐNG KÊ CỐ ĐỊNH (DYNAMIC VISITS)
-           ============================================================ */
-        .global-tag { position: fixed; left: 20px; bottom: 20px; z-index: 100; padding: 16px 20px; border-radius: 4px; background: var(--glass); backdrop-filter: blur(10px); border: 1px solid rgba(221,170,51,0.3); font-family: var(--font-kicker); font-size: 13px; color: var(--pearl); line-height: 2; box-shadow: 4px 4px 0 rgba(0,0,0,0.8); transition: 0.5s ease; }
-        .global-tag .tag-line { display: flex; align-items: center; gap: 10px; font-weight: 500; text-shadow: 1px 1px 0 #000; } 
-        .global-tag .icon { color: var(--amber); width: 18px; height: 18px; filter: drop-shadow(0 0 2px var(--amber)); } 
-        .global-tag .num { display: inline-block; font-variant-numeric: tabular-nums; color: var(--amber); font-weight: 900; font-size: 16px; min-width: 1.5em; text-shadow: 0 0 8px rgba(255, 176, 0, 0.8), 2px 2px 0 #000; }
+        /* Magic Particles (Bụi vàng hổ phách) - Tạo bằng JS */
+        .magic-particle { position: absolute; background: #DDAA33; border-radius: 50%; box-shadow: 0 0 8px #FFDF73, 0 0 15px #FFDF73; opacity: 0; animation: floatMagic linear forwards; pointer-events: none; z-index: 10; }
+        @keyframes floatMagic { 0% { transform: translateY(0) scale(0.5); opacity: 0; } 20% { opacity: 0.8; } 100% { transform: translateY(-100px) scale(1.5); opacity: 0; } }
 
         /* ============================================================
-           TRANG 1 — LANDING PAGE
+           BẢNG THỐNG KÊ CỐ ĐỊNH (TRONG SUỐT HOÀN TOÀN)
+           ============================================================ */
+        .global-tag { position: fixed; left: 20px; bottom: 20px; z-index: 100; padding: 16px 20px; background: transparent; border: none; font-family: var(--font-kicker); font-size: 13px; color: var(--pearl); line-height: 2; transition: 0.5s ease; }
+        .global-tag .tag-line { display: flex; align-items: center; gap: 10px; font-weight: 500; text-shadow: 2px 2px 4px rgba(0,0,0,1), 0 0 10px rgba(0,0,0,1); } 
+        .global-tag .icon { color: var(--amber); width: 20px; height: 20px; filter: drop-shadow(0 0 4px #000); } 
+        .global-tag .num { display: inline-block; font-variant-numeric: tabular-nums; color: var(--amber); font-weight: 900; font-size: 18px; min-width: 1.5em; text-shadow: 0 0 8px rgba(255, 176, 0, 0.8), 2px 2px 4px #000; }
+
+        /* ============================================================
+           TRANG 1 — LANDING PAGE (TRONG SUỐT HOÀN TOÀN)
            ============================================================ */
         #page1 { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 40px 20px; transition: opacity 1.2s ease, filter 1.2s ease; z-index: 10; }
         #page1.leaving { opacity: 0; filter: blur(20px); pointer-events: none; }
         
-        .station-card { position: relative; z-index: 15; width: min(500px, 92vw); padding: 50px 32px 40px; border-radius: 4px; background: rgba(5,5,8,0.75); border: 2px solid #333; box-shadow: 8px 8px 0px rgba(0,0,0,1); display: flex; flex-direction: column; align-items: center; text-align: center; backdrop-filter: blur(8px); }
+        /* Bỏ khung mờ, làm trong suốt hoàn toàn */
+        .station-card { position: relative; z-index: 15; width: min(600px, 92vw); padding: 50px 32px 40px; background: transparent; border: none; box-shadow: none; display: flex; flex-direction: column; align-items: center; text-align: center; }
         
         .avatar-wrap { position: relative; width: 140px; height: 140px; margin-bottom: 30px; display: flex; justify-content: center; align-items: center; }
         .avatar-halo { position: absolute; inset: -10px; border-radius: 50%; border: 1px dashed rgba(221, 170, 51, 0.5); animation: spinHalo 20s linear infinite; }
@@ -98,9 +102,9 @@
         .cat-eye.left { left: 40px; } .cat-eye.right { right: 40px; }
         @keyframes catBlink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
 
-        .kicker { font-family: var(--font-kicker); font-weight: 700; letter-spacing: 5px; font-size: 12px; color: var(--silver); text-transform: uppercase; margin-bottom: 15px; text-shadow: 1px 1px 0 #000; cursor: pointer;}
+        .kicker { font-family: var(--font-kicker); font-weight: 900; letter-spacing: 5px; font-size: 13px; color: var(--silver); text-transform: uppercase; margin-bottom: 15px; text-shadow: 2px 2px 4px #000, 0 0 10px #000; cursor: pointer;}
         .heading { font-family: var(--font-heading); font-weight: 900; font-size: clamp(40px, 10vw, 60px); letter-spacing: 4px; background: linear-gradient(180deg, #FFFFFF 0%, #FFDF73 40%, #DDAA33 80%, #8B5A00 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0px 6px 0px rgba(0,0,0,1)) drop-shadow(0 0 30px rgba(221, 170, 51, 0.6)); margin-bottom: 24px; text-transform: uppercase; line-height: 1.1; }
-        .body-text { font-family: var(--font-body); font-weight: 500; font-size: 14.5px; line-height: 1.8; color: #E0E0E0; margin-bottom: 35px; padding: 0 10px; text-shadow: 2px 2px 4px #000;}
+        .body-text { font-family: var(--font-body); font-weight: 500; font-size: 15px; line-height: 1.8; color: #E0E0E0; margin-bottom: 35px; padding: 0 10px; text-shadow: 2px 2px 4px rgba(0,0,0,1), 0 0 10px rgba(0,0,0,1);}
         
         .cta-btn { position: relative; padding: 16px 48px; border-radius: 2px; font-family: var(--font-kicker); font-weight: 900; font-size: 15px; letter-spacing: 2px; color: #000; background: linear-gradient(90deg, #DDAA33, #FFDF73, #DDAA33); box-shadow: 4px 4px 0 rgba(0,0,0,1), 0 0 15px rgba(221, 170, 51, 0.5); transition: 0.2s; text-transform: uppercase; border: 2px solid #FFF; }
         .cta-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 rgba(0,0,0,1), 0 0 25px rgba(255, 223, 115, 0.8); }
@@ -113,7 +117,7 @@
         #page2.entering { opacity: 1; display: block; }
         .topnav { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 150; display: flex; flex-wrap: nowrap; overflow-x: auto; align-items: center; justify-content: flex-start; gap: 10px; padding: 10px; border-radius: 4px; background: rgba(5, 5, 8, 0.95); border: 2px solid #222; box-shadow: 4px 4px 0 rgba(0,0,0,1); width: max-content; max-width: 96vw; }
         .topnav::-webkit-scrollbar { display: none; }
-        .nav-home, .nav-item { display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; border-radius: 2px; font-family: var(--font-kicker); font-size: 12px; letter-spacing: 1px; white-space: nowrap; transition: 0.2s ease; flex-shrink: 0; text-transform: uppercase; font-weight: 900; border: 2px solid transparent; }
+        .nav-home, .nav-item { display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; border-radius: 2px; font-family: var(--font-kicker); font-size: 12px; letter-spacing: 1px; white-space: nowrap; transition: 0.2s ease; flex-shrink: 0; text-transform: uppercase; font-weight: 900; border: 2px solid transparent; position: relative;}
         .nav-home { border-color: var(--amber); color: var(--amber); background: rgba(0,0,0,0.8); }
         .nav-home:hover { background: var(--amber); color: #000; }
         .nav-item { color: var(--silver); text-shadow: 1px 1px 0 #000; }
@@ -134,6 +138,7 @@
         .admin-only-btn:hover { background: var(--amber); color: black; transform: translate(-2px, -2px); box-shadow: 5px 5px 0 rgba(0,0,0,1);}
         .admin-only-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 rgba(0,0,0,1); }
         body.admin-active .admin-only-btn { display: inline-flex; }
+        
         .admin-delete-post { display: none; background: rgba(0,0,0,0.8); color: var(--silver); border: 2px solid #444; padding: 4px 10px; font-size: 11px; cursor: pointer; margin-left: auto; transition: 0.2s; text-transform:uppercase; font-weight: bold;}
         .admin-delete-post:hover { background: #8B0000; color: white; border-color: #8B0000; }
         body.admin-active .admin-delete-post { display: flex; }
@@ -169,7 +174,7 @@
         .theme-77 { background: #332117; border-color: #170d08; --theme-color: #B35D1E; --theme-color-glow: rgba(179, 93, 30, 0.4); } 
 
         /* ============================================================
-           THIẾT KẾ THẺ NHÂN VIÊN VÀ DỰ BỊ (HIỂN THỊ ĐỦ THÔNG TIN)
+           THIẾT KẾ THẺ NHÂN VIÊN VÀ DỰ BỊ (ID BADGE VẬT LÝ)
            ============================================================ */
         .staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; padding: 16px 0; }
         .staff-card-container { perspective: 1000px; width: 100%; min-height: 480px; position: relative; }
@@ -193,7 +198,7 @@
 
         .s-theme-09 { --st-color: #C5A059; } .s-theme-03 { --st-color: #5C7A68; } .s-theme-07 { --st-color: #6C7A9C; } .s-theme-44 { --st-color: #9C3D38; } .s-theme-77 { --st-color: #B35D1E; }
 
-        /* MẶT TRƯỚC - THẺ NHÂN VIÊN ĐẢM BẢO HIỂN THỊ ĐỦ THÔNG TIN */
+        /* MẶT TRƯỚC - THẺ NHÂN VIÊN */
         .card-front { border-color: var(--st-color); border-top: 25px solid var(--st-color); padding: 25px 16px 16px; align-items: center;}
         .card-front::before { content: ''; position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 40px; height: 10px; background: #000; border-radius: 10px; border: 1px solid rgba(0,0,0,0.5); box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);}
         
@@ -202,10 +207,8 @@
         .card-front .c-image-wrap img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.1) sepia(0.2) grayscale(0.1); }
         
         .card-front .c-name { font-family: var(--font-heading); font-size: 22px; font-weight: 900; color: var(--st-color); text-align: center; text-transform: uppercase; letter-spacing: 1px; text-shadow: 1px 1px 0 #000; width: 100%; border-bottom: 1px dashed #444; padding-bottom: 5px; margin-bottom: 10px;}
-        
         .c-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 10px; width: 100%;}
         .c-tag { font-size: 10px; font-weight: bold; padding: 4px 6px; background: rgba(0,0,0,0.8); border: 1px solid var(--st-color); color: var(--st-color); text-transform: uppercase; letter-spacing: 1px; text-shadow: 1px 1px 0 #000;}
-        
         .card-front .c-hook { font-size: 13px; font-style: italic; color: var(--pearl); text-align: center; margin-bottom: auto; line-height: 1.4; text-shadow: 1px 1px 0 #000; width: 100%;}
         
         .c-rating-badge { background: #000; border: 1px solid var(--st-color); padding: 4px 10px; font-size: 12px; font-weight: 900; color: var(--st-color); box-shadow: 2px 2px 0 rgba(0,0,0,1); margin-top: 10px;}
@@ -223,7 +226,7 @@
         .c-chat-btn { display: block; width: 100%; background: linear-gradient(135deg, var(--st-color), #222); color: #FFF; font-weight: 900; font-family: var(--font-kicker); font-size: 13px; letter-spacing: 1px; text-align: center; padding: 16px; text-decoration: none; transition: 0.2s; margin-top: auto; border: 2px solid #000; box-shadow: 4px 4px 0 rgba(0,0,0,1); text-transform: uppercase; text-shadow: 1px 1px 0 #000;}
         .c-chat-btn:hover { filter: brightness(1.2); transform: translate(-2px, -2px); box-shadow: 6px 6px 0 rgba(0,0,0,1); }
 
-        /* HỒ SƠ DỰ BỊ THEO ĐÚNG MOTIF THẺ ID */
+        /* HỒ SƠ DỰ BỊ THEO MẪU ID BADGE */
         .upcoming-empty { text-align: center; padding: 40px 20px; }
         .upcoming-empty p { font-style: italic; color: var(--silver); font-size: 15px; line-height: 1.8; margin-bottom: 20px; }
         .upcoming-empty svg { width: 120px; height: 120px; stroke: var(--brass); opacity: 0.5; margin: 0 auto; display: block; filter: drop-shadow(0 0 5px rgba(181, 166, 66, 0.5)); }
@@ -363,14 +366,15 @@
         <div class="p2-steam"></div>
     </div>
     
-    <!-- BẢNG THỐNG KÊ (LUGGAGE TAG) CỐ ĐỊNH Ở MỌI TRANG -->
+    <!-- BẢNG THỐNG KÊ (LUGGAGE TAG) CỐ ĐỊNH Ở MỌI TRANG - TRONG SUỐT -->
     <div class="global-tag">
         <div class="tag-line"><span class="icon-slot" data-icon="hat"></span> <span class="num" id="statStaff">0</span> nhân viên túc trực tại ga.</div>
-        <div class="tag-line"><span class="icon-slot" data-icon="ticket_punch"></span> <span class="num" id="statVisits">0</span> hành khách đã ghé ga.</div>
+        <div class="tag-line"><span class="icon-slot" data-icon="ticket_punch"></span> <span class="num" id="statVisits">0</span> lượt hành khách đã ghé ga.</div>
     </div>
 
     <!-- PAGE 1 — CỔNG VÀO -->
     <section id="page1">
+        <!-- Khung trong suốt hoàn toàn -->
         <div class="station-card">
             <div class="avatar-wrap">
                 <div class="avatar-halo"></div>
@@ -380,7 +384,7 @@
                 </div>
             </div>
             <!-- DOUBLE CLICK VÀO DÒNG CHỮ NÀY ĐỂ MỞ QUYỀN ADMIN -->
-            <p class="kicker" id="secretAdminTrigger" title="Click đúp để mở lối vào ẩn">CHÀO MỪNG QUÝ KHÁCH ĐẾN VỚI</p>
+            <p class="kicker" id="secretAdminTrigger" title="Click đúp để mở lối vào ẩn của Trưởng ga">CHÀO MỪNG QUÝ KHÁCH ĐẾN VỚI</p>
             <h1 class="heading">NHÀ GA MEOWN</h1>
             <p class="body-text">Ở rìa của thực tại, nơi sương mù không bao giờ tan có một nhà ga nhỏ mang tên Meown. Đến với ga, quý khách không cần mua vé bằng tiền. Chỉ cần bạn bước lên tuyến tàu phù hợp, chọn một nhân viên và bắt đầu trò chuyện, con tàu sẽ tự động lăn bánh.</p>
             <button class="cta-btn" id="ctaGoStation">ĐI ĐẾN NHÀ GA</button>
@@ -398,6 +402,7 @@
         </nav>
 
         <div class="content-area">
+            <!-- TẤT CẢ CÁC BẢNG CỦA ADMIN -->
             <div class="section-view" id="view-stationmaster">
                 <div class="wood-box admin-editable" id="smBoxContainer">
                     <h2 class="embossed-title">ĐÔI CHÚT VỀ TRƯỞNG GA</h2>
@@ -414,7 +419,7 @@
                 </div>
                 <div class="search-bar-basic">
                     <input type="text" id="staffSearch" class="search-input" placeholder="🔍 Tìm tên nhân viên...">
-                    <button class="submit-btn" style="width:auto;" id="randomStaffBtn"><span class="icon-slot" data-icon="loop"></span> Gợi ý</button>
+                    <button class="submit-btn" style="width:auto;" id="randomStaffBtn"><span class="icon-slot" data-icon="loop"></span> Gợi ý ngẫu nhiên</button>
                 </div>
                 <div id="trainsList"></div>
             </div>
@@ -522,6 +527,9 @@
     </div>
 
     <script>
+        /* ============================================================
+           BỘ ICON
+           ============================================================ */
         const ICONS = {
             user: '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/></svg>',
             ticket: '<svg class="icon" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M7 6v12M17 6v12"/></svg>',
@@ -555,6 +563,30 @@
             }
         }
 
+        /* TẠO HIỆU ỨNG HẠT BỤI MAGIC KHI CLICK VÀO MENU (PAGE 2) */
+        function burstParticles(e) {
+            const container = document.getElementById('bg-page2');
+            const rect = e.target.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+            
+            for(let i=0; i<15; i++) {
+                let p = document.createElement('div');
+                p.className = 'magic-particle';
+                p.style.left = (x + (Math.random() - 0.5) * 80) + 'px';
+                p.style.top = (y + (Math.random() - 0.5) * 80) + 'px';
+                let size = Math.random() * 4 + 2;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
+                container.appendChild(p);
+                setTimeout(() => p.remove(), 3000);
+            }
+        }
+
+        /* ============================================================
+           KẾT NỐI SUPABASE
+           ============================================================ */
         const SUPABASE_URL = "https://gmejjxvahnqqrhihahid.supabase.co";
         const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdtZWpqeHZhaG5xcXJoaWhhaGlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM3NTM5OTQsImV4cCI6MjA5OTMyOTk5NH0.Q1uit-9R_Lrs0uM_Azgbn9GGKMoyFl-cFfl3M7IeSMU";
         const supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -584,7 +616,11 @@
         document.getElementById('secretAdminTrigger').addEventListener('dblclick', () => {
             if (!sessionStorage.getItem('isAdmin')) {
                 let pwd = prompt("LỐI VÀO ẨN CỦA TRƯỞNG GA\nVui lòng nhập mật mã bảo mật:");
-                if(pwd === "bhnt2006") { sessionStorage.setItem('isAdmin', 'true'); window.location.reload(); } else if (pwd !== null) { alert("Mật mã không chính xác!"); }
+                if(pwd === "bhnt2006") { 
+                    sessionStorage.setItem('isAdmin', 'true'); 
+                    alert("Đã cấp quyền Admin thành công!");
+                    window.location.reload(); 
+                } else if (pwd !== null) { alert("Mật mã không chính xác!"); }
             } else {
                 if(confirm("Bạn đang ở chế độ Admin. Bạn có muốn thoát không?")) { sessionStorage.removeItem('isAdmin'); window.location.reload(); }
             }
@@ -596,7 +632,7 @@
             if(localFallback) { try { Object.assign(CONFIG, JSON.parse(localFallback)); } catch(e){} }
             await fetchStationConfig();
             
-            // LƯỢT TRUY CẬP THỰC TẾ
+            // XỬ LÝ LƯỢT TRUY CẬP THỰC TẾ LƯU VÀO LOCALSTORAGE
             let currentVisits = parseInt(localStorage.getItem('meown_real_visits') || '0');
             if (!sessionStorage.getItem('has_visited')) {
                 currentVisits++;
@@ -622,7 +658,6 @@
             try { if (!CONFIG.musicLibrary) CONFIG.musicLibrary = []; localStorage.setItem("meown_config_backup", JSON.stringify(CONFIG)); const payload = { stationMaster: CONFIG.stationMaster, trains: CONFIG.trains, staff: CONFIG.staff, upcomingBots: CONFIG.upcomingBots, musicLibrary: CONFIG.musicLibrary }; await supa.from('station_config').upsert([{ id: 1, data: JSON.stringify(payload) }]); } catch(e) {}
         }
 
-        /* KHÔI PHỤC HÀM TẢI BÀI ĐĂNG (FEED) VÀ HÀM XÓA BÀI CHO ADMIN */
         async function fetchFeeds() {
             try {
                 const { data: gbData } = await supa.from('meown_guestbook').select('*');
@@ -653,14 +688,7 @@
             posts.forEach(post => {
                 const postEl = document.createElement("div"); postEl.className = "post-card";
                 let delBtnHtml = isAdminMode ? `<button class="admin-delete-post" onclick="deletePostFromDB('${type}', ${post.id})"><span class="icon-slot" data-icon="trash"></span> Xóa bài</button>` : "";
-                postEl.innerHTML = `
-                    <div class="post-header">
-                        <div class="post-author">${post.name || post.author || "Khách ẩn danh"}</div>
-                        ${delBtnHtml}
-                    </div>
-                    <div class="post-time">${post.date || new Date().toLocaleString('vi-VN')}</div>
-                    <div class="post-content">${post.text || post.content || ""}</div>
-                `;
+                postEl.innerHTML = `<div class="post-header"><div class="post-author">${post.name || post.author || "Khách ẩn danh"}</div>${delBtnHtml}</div><div class="post-time">${post.date || new Date().toLocaleString('vi-VN')}</div><div class="post-content">${post.text || post.content || ""}</div>`;
                 container.appendChild(postEl);
             });
             loadIcons();
@@ -683,10 +711,22 @@
         const page1 = document.getElementById("page1"), page2 = document.getElementById("page2"), bgPage2 = document.getElementById("bg-page2"), bgPage1 = document.getElementById("bg-page1");
         document.getElementById("ctaGoStation").addEventListener("click", () => { page1.classList.add("leaving"); setTimeout(() => { page1.style.display = "none"; page2.style.display = "block"; bgPage2.style.opacity = "1"; bgPage1.style.opacity = "0"; void page2.offsetWidth; page2.classList.add("entering"); }, 900); });
         document.getElementById("btnGoHome").addEventListener("click", () => { page2.classList.remove("entering"); bgPage2.style.opacity = "0"; bgPage1.style.opacity = "1"; setTimeout(() => { page2.style.display = "none"; page1.style.display = "flex"; page1.classList.remove("leaving"); }, 900); });
-        document.querySelectorAll(".nav-item").forEach(btn => { btn.addEventListener("click", () => { document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active")); btn.classList.add("active"); document.querySelectorAll(".section-view").forEach(v => v.classList.add("hidden")); document.getElementById("view-" + btn.dataset.view).classList.remove("hidden"); }); });
+        
+        document.querySelectorAll(".nav-item").forEach(btn => { 
+            btn.addEventListener("click", (e) => { 
+                burstParticles(e); // Gọi hiệu ứng hạt bụi
+                document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active")); 
+                btn.classList.add("active"); 
+                document.querySelectorAll(".section-view").forEach(v => v.classList.add("hidden")); 
+                document.getElementById("view-" + btn.dataset.view).classList.remove("hidden"); 
+            }); 
+        });
 
         function updateStationMasterUI() { document.getElementById("smAvatar").src = CONFIG.stationMaster.avatar || ""; document.getElementById("smBio").textContent = CONFIG.stationMaster.bio; }
 
+        /* ============================================================
+           BẢNG ADMIN FORMS (CHỈNH SỬA / THÊM / XÓA)
+           ============================================================ */
         let trainGenresList = [];
         function renderTrGenresList() { const listContainer = document.getElementById("aTrGenreList"); if(!listContainer) return; listContainer.innerHTML = trainGenresList.map((g, i) => `<span class="c-tag" style="background:#000; border-color:var(--silver); color:var(--pearl); display:flex; align-items:center; gap:4px;">${g} <span style="cursor:pointer; color:red; font-weight:bold;" onclick="removeTrGenre(${i})">×</span></span>`).join(''); }
         window.removeTrGenre = function(i) { trainGenresList.splice(i, 1); renderTrGenresList(); };
@@ -698,7 +738,7 @@
                 document.getElementById("generalModalTitle").textContent = "CẬP NHẬT TRƯỞNG GA";
                 body.innerHTML = `<div class="form-row"><label>Ảnh Avatar Trưởng Ga</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aAvtFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Chọn ảnh mới</label><div id="aAvtPrev" class="img-preview-grid"><img src="${CONFIG.stationMaster.avatar}"></div></div></div><div class="form-row"><label>Tiểu sử</label><textarea id="aBio" style="height: 120px;">${CONFIG.stationMaster.bio}</textarea></div><button class="submit-btn" id="saveSM">ĐỒNG BỘ LÊN MÁY CHỦ</button>`;
                 loadIcons(); let tempB64 = CONFIG.stationMaster.avatar; document.getElementById("aAvtFile").addEventListener("change", async (e)=>{ tempB64 = await resizeImage(e.target.files[0]); document.getElementById("aAvtPrev").innerHTML=`<img src="${tempB64}">`; });
-                document.getElementById("saveSM").addEventListener("click", async () => { CONFIG.stationMaster.avatar = tempB64; CONFIG.stationMaster.bio = document.getElementById("aBio").value; await saveStationConfigToDB(); updateStationMasterUI(); document.getElementById("generalModal").classList.add("hidden"); });
+                document.getElementById("saveSM").addEventListener("click", async () => { CONFIG.stationMaster.avatar = tempB64; CONFIG.stationMaster.bio = document.getElementById("aBio").value; await saveStationConfigToDB(); updateStationMasterUI(); document.getElementById("generalModal").classList.add("hidden"); alert("Đã lưu Trưởng ga!"); });
             }
             else if(type === 'train') {
                 let tData = { name: "", genres: [], intro: "", theme: "theme-09" };
@@ -707,16 +747,25 @@
                 body.innerHTML = `<div class="form-row"><label>Tên Tuyến Tàu</label><input type="text" id="aTrName" value="${tData.name}"></div><div class="form-row"><label>Tags Thể Loại</label><div style="display:flex; gap:8px; margin-bottom:8px;"><input type="text" id="aTrGenreInput" placeholder="Nhập thể loại..."><button type="button" class="admin-only-btn" style="margin:0;" id="btnAddTrGenre">THÊM</button></div><div id="aTrGenreList" style="display:flex; flex-wrap:wrap; gap:8px;"></div></div><div class="form-row"><label>Lời giới thiệu</label><textarea id="aTrIntro" style="height:80px;">${tData.intro}</textarea></div><div class="form-row"><label>Phong cách (Retro/Vintage)</label><select id="aTrTheme"><option value="theme-09" ${tData.theme==='theme-09'?'selected':''}>Tuyến 09 (Vintage Gold)</option><option value="theme-03" ${tData.theme==='theme-03'?'selected':''}>Tuyến 03 (Faded Forest)</option><option value="theme-07" ${tData.theme==='theme-07'?'selected':''}>Tuyến 07 (Antique Slate)</option><option value="theme-44" ${tData.theme==='theme-44'?'selected':''}>Tuyến 44 (Rusty Red)</option><option value="theme-77" ${tData.theme==='theme-77'?'selected':''}>Tuyến 77 (Sepia/Copper)</option></select></div><button class="submit-btn" id="saveTr">${action==='add' ? "TẠO TUYẾN TÀU" : "LƯU THAY ĐỔI"}</button>`;
                 loadIcons(); renderTrGenresList();
                 document.getElementById("btnAddTrGenre").addEventListener("click", () => { const val = document.getElementById("aTrGenreInput").value.trim(); if(val) { trainGenresList.push(val); document.getElementById("aTrGenreInput").value = ""; renderTrGenresList(); } });
-                document.getElementById("saveTr").addEventListener("click", async () => { if(action === 'add') { CONFIG.trains.push({ id: "t_"+Date.now(), name: document.getElementById("aTrName").value, genres: trainGenresList, intro: document.getElementById("aTrIntro").value, theme: document.getElementById("aTrTheme").value, createdAt: Date.now() }); } else { let tr = CONFIG.trains.find(t => t.id === idOrParentId); tr.name = document.getElementById("aTrName").value; tr.genres = [...trainGenresList]; tr.intro = document.getElementById("aTrIntro").value; tr.theme = document.getElementById("aTrTheme").value; } await saveStationConfigToDB(); renderTrains(); document.getElementById("generalModal").classList.add("hidden"); });
+                document.getElementById("saveTr").addEventListener("click", async () => { 
+                    if(action === 'add') { CONFIG.trains.push({ id: "t_"+Date.now(), name: document.getElementById("aTrName").value, genres: trainGenresList, intro: document.getElementById("aTrIntro").value, theme: document.getElementById("aTrTheme").value, createdAt: Date.now() }); } 
+                    else { let tr = CONFIG.trains.find(t => t.id === idOrParentId); tr.name = document.getElementById("aTrName").value; tr.genres = [...trainGenresList]; tr.intro = document.getElementById("aTrIntro").value; tr.theme = document.getElementById("aTrTheme").value; } 
+                    await saveStationConfigToDB(); renderTrains(); document.getElementById("generalModal").classList.add("hidden"); 
+                });
             }
             else if(type === 'staff') {
                 let sData = { name: "", avatar: "", hook: "", tags: [], scenario: "", chatLink: "" };
                 let tId = idOrParentId; if(action === 'edit') { const st = CONFIG.staff.find(s => s.id === idOrParentId); if(st){ sData = st; tId = st.trainId; } }
                 document.getElementById("generalModalTitle").textContent = action === 'add' ? `IN THẺ NHÂN VIÊN MỚI` : `CHỈNH SỬA THẺ NHÂN VIÊN`;
-                body.innerHTML = `<div class="form-row"><label>Tên Nhân Viên</label><input type="text" id="aStName" value="${sData.name}"></div><div class="form-row"><label>Ảnh Chân Dung</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aStFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Tải ảnh</label><div id="aStPrev" class="img-preview-grid"><img src="${sData.avatar}" onerror="this.style.display='none'"></div></div></div><div class="form-row"><label>Câu Thoại Đặc Trưng (Hook)</label><input type="text" id="aStHook" value="${sData.hook}"></div><div class="form-row"><label>Tags (Cách nhau dấu phẩy)</label><input type="text" id="aStTags" value="${sData.tags.join(', ')}"></div><div class="form-row"><label>HỒ SƠ MẬT (Hiển thị dạng bảng trắng lớn)</label><div class="rt-toolbar"><button type="button" class="rt-btn" onclick="document.execCommand('bold',false,null)"><b>B</b></button><button type="button" class="rt-btn" onclick="document.execCommand('italic',false,null)"><i>I</i></button><button type="button" class="rt-btn" onclick="document.execCommand('insertUnorderedList',false,null)">• List</button><input type="color" class="rt-btn" style="padding:0; width:40px; height:30px;" onchange="document.execCommand('foreColor',false,this.value)"><button type="button" class="rt-btn" onclick="insertToggleHTML()">Thêm Nút Đóng Mở</button></div><div id="aStScenario" class="rt-editor" contenteditable="true">${sData.scenario}</div></div><div class="form-row"><label>LINK TRÒ CHUYỆN</label><input type="text" id="aStChat" value="${sData.chatLink}"></div><button class="submit-btn" id="saveSt">${action==='add'?"IN THẺ":"LƯU HỒ SƠ"}</button>`;
+                body.innerHTML = `<div class="form-row"><label>Tên Nhân Viên</label><input type="text" id="aStName" value="${sData.name}"></div><div class="form-row"><label>Ảnh Chân Dung (Vuông)</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aStFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Tải ảnh</label><div id="aStPrev" class="img-preview-grid"><img src="${sData.avatar}" onerror="this.style.display='none'"></div></div></div><div class="form-row"><label>Câu Thoại Đặc Trưng (Hook)</label><input type="text" id="aStHook" value="${sData.hook}"></div><div class="form-row"><label>Tags (Cách nhau dấu phẩy)</label><input type="text" id="aStTags" value="${sData.tags.join(', ')}"></div><div class="form-row"><label>HỒ SƠ MẬT (Hiển thị dạng bảng trắng lớn)</label><div class="rt-toolbar"><button type="button" class="rt-btn" onclick="document.execCommand('bold',false,null)"><b>B</b></button><button type="button" class="rt-btn" onclick="document.execCommand('italic',false,null)"><i>I</i></button><button type="button" class="rt-btn" onclick="document.execCommand('insertUnorderedList',false,null)">• List</button><input type="color" class="rt-btn" style="padding:0; width:40px; height:30px;" onchange="document.execCommand('foreColor',false,this.value)"><button type="button" class="rt-btn" onclick="insertToggleHTML()">Thêm Nút Đóng Mở</button></div><div id="aStScenario" class="rt-editor" contenteditable="true">${sData.scenario}</div></div><div class="form-row"><label>LINK TRÒ CHUYỆN</label><input type="text" id="aStChat" value="${sData.chatLink}"></div><button class="submit-btn" id="saveSt">${action==='add'?"IN THẺ":"LƯU HỒ SƠ"}</button>`;
                 loadIcons(); window.insertToggleHTML = function() { const html = `<details open><summary>BẤM VÀO ĐÂY ĐỂ ĐỔI TÊN NÚT</summary><div>Nhập nội dung hiển thị cho hành khách vào đây...</div></details><br>`; document.execCommand('insertHTML', false, html); };
                 let sB64 = sData.avatar; document.getElementById("aStFile").addEventListener("change", async (e)=>{ sB64 = await resizeImage(e.target.files[0]); document.getElementById("aStPrev").innerHTML=`<img src="${sB64}">`; });
-                document.getElementById("saveSt").addEventListener("click", async () => { const tags = document.getElementById("aStTags").value.split(',').map(t=>t.trim()).filter(t=>t); if(action === 'add') { CONFIG.staff.push({ id: "s_"+Date.now(), trainId: tId, name: document.getElementById("aStName").value, avatar: sB64, hook: document.getElementById("aStHook").value, tags: tags, scenario: document.getElementById("aStScenario").innerHTML, chatLink: document.getElementById("aStChat").value, createdAt: Date.now(), rating: { sum: 0, count: 0 }, isHidden: false, feedbacks: [] }); } else { let st = CONFIG.staff.find(s => s.id === idOrParentId); st.name = document.getElementById("aStName").value; st.avatar = sB64; st.hook = document.getElementById("aStHook").value; st.tags = tags; st.scenario = document.getElementById("aStScenario").innerHTML; st.chatLink = document.getElementById("aStChat").value; } await saveStationConfigToDB(); renderTrains(); document.getElementById("generalModal").classList.add("hidden"); });
+                document.getElementById("saveSt").addEventListener("click", async () => { 
+                    const tags = document.getElementById("aStTags").value.split(',').map(t=>t.trim()).filter(t=>t); 
+                    if(action === 'add') { CONFIG.staff.push({ id: "s_"+Date.now(), trainId: tId, name: document.getElementById("aStName").value, avatar: sB64, hook: document.getElementById("aStHook").value, tags: tags, scenario: document.getElementById("aStScenario").innerHTML, chatLink: document.getElementById("aStChat").value, createdAt: Date.now(), rating: { sum: 0, count: 0 }, isHidden: false, feedbacks: [] }); } 
+                    else { let st = CONFIG.staff.find(s => s.id === idOrParentId); st.name = document.getElementById("aStName").value; st.avatar = sB64; st.hook = document.getElementById("aStHook").value; st.tags = tags; st.scenario = document.getElementById("aStScenario").innerHTML; st.chatLink = document.getElementById("aStChat").value; } 
+                    await saveStationConfigToDB(); renderTrains(); rollNumber(document.getElementById("statStaff"), CONFIG.staff.length); document.getElementById("generalModal").classList.add("hidden"); 
+                });
             }
             else if(type === 'upcoming') {
                 let uData = { name: "", avatar: "", idea: "", train: "", tags: [], progress: 10 };
@@ -724,7 +773,12 @@
                 document.getElementById("generalModalTitle").textContent = action==='add' ? "THÊM HỒ SƠ DỰ BỊ" : "SỬA HỒ SƠ DỰ BỊ";
                 body.innerHTML = `<div class="form-row"><label>Tên Bot (Dự kiến)</label><input type="text" id="aUpName" value="${uData.name}"></div><div class="form-row"><label>Ảnh Minh Họa</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aUpFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Tải ảnh</label><div id="aUpPrev" class="img-preview-grid"><img src="${uData.avatar}" onerror="this.style.display='none'"></div></div></div><div class="form-row"><label>Ý Tưởng Nhân Vật</label><textarea id="aUpIdea" style="height: 100px;">${uData.idea}</textarea></div><div class="form-row"><label>Tuyến Tàu Dự Kiến</label><input type="text" id="aUpTrain" value="${uData.train}"></div><div class="form-row"><label>Tiến độ (%)</label><input type="number" id="aUpProgress" value="${uData.progress}" min="0" max="100"></div><div class="form-row"><label>Tags Thể Loại</label><input type="text" id="aUpTags" value="${uData.tags.join(', ')}"></div><button class="submit-btn" id="saveUp">LƯU HỒ SƠ</button>`;
                 loadIcons(); let uB64 = uData.avatar; document.getElementById("aUpFile").addEventListener("change", async (e)=>{ uB64 = await resizeImage(e.target.files[0]); document.getElementById("aUpPrev").innerHTML=`<img src="${uB64}">`; });
-                document.getElementById("saveUp").addEventListener("click", async () => { const tagsArray = document.getElementById("aUpTags").value.split(',').map(t=>t.trim()).filter(t=>t); if(action === 'add') { CONFIG.upcomingBots.push({ id: "u_"+Date.now(), name: document.getElementById("aUpName").value, avatar: uB64, idea: document.getElementById("aUpIdea").value, train: document.getElementById("aUpTrain").value, tags: tagsArray, progress: document.getElementById("aUpProgress").value, isHidden: false }); } else { let up = CONFIG.upcomingBots.find(b => b.id === idOrParentId); up.name = document.getElementById("aUpName").value; up.avatar = uB64; up.idea = document.getElementById("aUpIdea").value; up.train = document.getElementById("aUpTrain").value; up.tags = tagsArray; up.progress = document.getElementById("aUpProgress").value; } await saveStationConfigToDB(); renderUpcomingBots(); document.getElementById("generalModal").classList.add("hidden"); });
+                document.getElementById("saveUp").addEventListener("click", async () => { 
+                    const tagsArray = document.getElementById("aUpTags").value.split(',').map(t=>t.trim()).filter(t=>t); 
+                    if(action === 'add') { CONFIG.upcomingBots.push({ id: "u_"+Date.now(), name: document.getElementById("aUpName").value, avatar: uB64, idea: document.getElementById("aUpIdea").value, train: document.getElementById("aUpTrain").value, tags: tagsArray, progress: document.getElementById("aUpProgress").value, isHidden: false }); } 
+                    else { let up = CONFIG.upcomingBots.find(b => b.id === idOrParentId); up.name = document.getElementById("aUpName").value; up.avatar = uB64; up.idea = document.getElementById("aUpIdea").value; up.train = document.getElementById("aUpTrain").value; up.tags = tagsArray; up.progress = document.getElementById("aUpProgress").value; } 
+                    await saveStationConfigToDB(); renderUpcomingBots(); document.getElementById("generalModal").classList.add("hidden"); 
+                });
             }
             else if(type === 'playlist') {
                 document.getElementById("generalModalTitle").textContent = "TẠO PLAYLIST MỚI";
@@ -743,11 +797,11 @@
         document.getElementById("closeGeneralModal").addEventListener("click", () => { document.getElementById("generalModal").classList.add("hidden"); document.getElementById("generalBox").classList.remove("modal-white"); });
 
         /* ============================================================
-           HIỂN THỊ CHUYẾN TÀU VÀ LÁ BÀI 3D (THẺ ID BADGE)
+           HIỂN THỊ CHUYẾN TÀU VÀ LÁ BÀI 3D (THẺ ID BADGE CHUẨN)
            ============================================================ */
         window.deleteTrain = async function(trainId, event) { event.stopPropagation(); if(confirm("XÓA CHUYẾN TÀU này và dàn nhân sự bên trong?")) { CONFIG.trains = CONFIG.trains.filter(t => t.id !== trainId); CONFIG.staff = CONFIG.staff.filter(s => s.trainId !== trainId); await saveStationConfigToDB(); renderTrains(); } };
         window.toggleHideStaff = async function(staffId, event) { event.stopPropagation(); const st = CONFIG.staff.find(s => s.id === staffId); if(st) { st.isHidden = !st.isHidden; await saveStationConfigToDB(); renderTrains(); } };
-        window.deleteStaff = async function(staffId, event) { event.stopPropagation(); if(confirm("XÓA VĨNH VIỄN nhân viên này?")) { CONFIG.staff = CONFIG.staff.filter(s => s.id !== staffId); await saveStationConfigToDB(); renderTrains(); } };
+        window.deleteStaff = async function(staffId, event) { event.stopPropagation(); if(confirm("XÓA VĨNH VIỄN nhân viên này?")) { CONFIG.staff = CONFIG.staff.filter(s => s.id !== staffId); await saveStationConfigToDB(); renderTrains(); rollNumber(document.getElementById("statStaff"), CONFIG.staff.length); } };
 
         function renderTrains(){
             const wrap = document.getElementById("trainsList"); wrap.innerHTML = ""; const q = currentSearch.toLowerCase();
