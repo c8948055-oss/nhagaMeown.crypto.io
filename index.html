@@ -9,14 +9,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,500&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=Libre+Barcode+39+Text&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
         /* ============================================================
-           BIẾN MÀU SẮC CHỦ ĐẠO & 90s ANIME VIBE (RETRO/VINTAGE)
+           BIẾN MÀU SẮC CHỦ ĐẠO & VIBE RETRO / VINTAGE
            ============================================================ */
         :root {
-            --bg-deep: #050508; 
             --bg-abyss: #000000;
             --amber: #DDAA33; 
             --amber-glow: rgba(221, 170, 51, 0.4);
@@ -44,31 +44,29 @@
         .crt-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 9999; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03)); background-size: 100% 4px, 6px 100%; opacity: 0.6; }
 
         /* ============================================================
-           BACKGROUND
+           BACKGROUND THEO YÊU CẦU MỚI
            ============================================================ */
-        /* Background Trang 1: Sử dụng ảnh được chỉ định */
+        /* Background Trang 1 */
         #bg-page1 { 
             position: fixed; inset: 0; z-index: -3; overflow: hidden; 
-            background: url('ChatGPT Image 15_12_30 12 thg 7, 2026.png') center/cover no-repeat; 
+            background: url('ChatGPT Image 15_07_13 12 thg 7, 2026.png') center/cover no-repeat; 
             transition: opacity 1.5s ease; 
         }
-        /* Phủ thêm một lớp sương mù và vùng tối ở giữa để nổi bật chữ */
-        .p1-center-vignette { position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.5) 20%, rgba(0,0,0,0.9) 100%); }
-        .p1-fog { position: absolute; inset: -20%; background-image: url('https://images.unsplash.com/photo-1485236715568-ddc5ee6ca227?auto=format&fit=crop&q=80&w=1200'); background-size: cover; opacity: 0.3; filter: grayscale(1) blur(10px); mix-blend-mode: screen; animation: panFog 60s linear infinite alternate; pointer-events: none; }
+        .p1-center-vignette { position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.3) 10%, rgba(0,0,0,0.8) 100%); }
+        .p1-fog { position: absolute; inset: -20%; background-image: url('https://images.unsplash.com/photo-1485236715568-ddc5ee6ca227?auto=format&fit=crop&q=80&w=1200'); background-size: cover; opacity: 0.2; filter: grayscale(1) blur(10px); mix-blend-mode: screen; animation: panFog 60s linear infinite alternate; pointer-events: none; }
         @keyframes panFog { 0% { transform: translate(0, 5%); } 100% { transform: translate(-10%, -5%); } }
         
         .ember { position: absolute; width: 3px; height: 3px; background: #FFAA00; border-radius: 50%; box-shadow: 0 0 8px 2px #FF5500; opacity: 0; animation: floatEmber 4s ease-in infinite; pointer-events: none; z-index: -1; }
         @keyframes floatEmber { 0% { transform: translateY(0) scale(1); opacity: 0; } 50% { opacity: 0.6; } 100% { transform: translateY(-100px) scale(0.5); opacity: 0; } }
 
         /* Background Trang 2 */
-        #bg-page2 { opacity: 0; pointer-events: none; position: fixed; inset: 0; z-index: -3; overflow: hidden; background-color: var(--bg-abyss); transition: opacity 1.5s ease; }
-        .p2-deep-bg { position: absolute; inset: 0; display: flex; justify-content: space-between; }
-        .p2-left-train { width: 50%; height: 100%; background: url('https://images.unsplash.com/photo-1541883765103-51829e5a32b4?auto=format&fit=crop&q=80&w=800') left center/cover no-repeat; position: relative; filter: sepia(0.3) brightness(0.3) contrast(1.5);}
-        .p2-left-train::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 90%); }
-        .p2-right-arches { width: 50%; height: 100%; background: url('https://images.unsplash.com/photo-1601058269786-218ba1327150?auto=format&fit=crop&q=80&w=800') right top/cover no-repeat; position: relative; filter: grayscale(0.5) brightness(0.4) contrast(1.5);}
-        .p2-right-arches::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to left, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 90%); }
-        .p2-center-abyss { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.5) 0%, rgba(0,0,0,1) 80%); }
-        .p2-steam { position: absolute; bottom: -10%; left: 0; width: 100%; height: 50%; background: radial-gradient(ellipse at center, rgba(150,150,150,0.2) 0%, transparent 70%); filter: blur(30px); animation: steamBreathe 8s ease-in-out infinite alternate; pointer-events: none;}
+        #bg-page2 { 
+            opacity: 0; pointer-events: none; position: fixed; inset: 0; z-index: -3; overflow: hidden; 
+            background: url('ChatGPT Image 15_27_41 12 thg 7, 2026.png') center/cover no-repeat; 
+            transition: opacity 1.5s ease; 
+        }
+        .p2-center-abyss { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.9) 100%); }
+        .p2-steam { position: absolute; bottom: -10%; left: 0; width: 100%; height: 50%; background: radial-gradient(ellipse at center, rgba(150,150,150,0.15) 0%, transparent 70%); filter: blur(30px); animation: steamBreathe 8s ease-in-out infinite alternate; pointer-events: none;}
         @keyframes steamBreathe { 0% { transform: scaleY(1); opacity: 0.1; } 100% { transform: scaleY(1.5); opacity: 0.4; } }
 
         /* ============================================================
@@ -174,7 +172,7 @@
         .train-accordion { max-height: 0; overflow: hidden; transition: max-height 0.6s ease; margin-bottom: 30px; }
         .train-accordion.open { max-height: 5000px; padding-bottom: 20px; }
         
-        /* BẢNG MÀU RETRO / VINTAGE CHỈNH SỬA LẠI */
+        /* BẢNG MÀU RETRO / VINTAGE CHUẨN */
         .theme-09 { background: #3a3226; border-color: #1a1510; --theme-color: #C5A059; --theme-color-glow: rgba(197, 160, 89, 0.4); } /* Vintage Gold */
         .theme-03 { background: #1e2622; border-color: #0c120e; --theme-color: #5C7A68; --theme-color-glow: rgba(92, 122, 104, 0.4); } /* Faded Forest */
         .theme-07 { background: #222633; border-color: #0f121c; --theme-color: #6C7A9C; --theme-color-glow: rgba(108, 122, 156, 0.4); } /* Antique Slate */
@@ -187,7 +185,6 @@
         .staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; padding: 16px 0; }
         .staff-card-container { perspective: 1000px; width: 100%; aspect-ratio: 9/16; min-height: 440px; position: relative; }
         
-        /* Menu Admin nổi lơ lửng, không làm hỏng form thẻ user */
         .admin-card-controls { position: absolute; top: -35px; left: 0; right: 0; display: none; justify-content: center; gap: 8px; z-index: 20; }
         body.admin-active .admin-card-controls { display: flex; }
         .admin-card-btn { background: #000; border: 2px solid var(--silver); padding: 4px 10px; font-size: 11px; color: var(--silver); font-family: var(--font-kicker); font-weight: 900; text-transform:uppercase; cursor:pointer;}
@@ -197,9 +194,10 @@
         .staff-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; cursor: pointer; }
         .staff-card-container.flipped .staff-card-inner { transform: rotateY(180deg); }
         
+        /* Khung thẻ chung (ID Badge) */
         .card-front, .card-back { 
             position: absolute; width: 100%; height: 100%; backface-visibility: hidden; 
-            background: #151515 url('https://www.transparenttextures.com/patterns/cardboard-flat.png'); /* Texture giấy nhám tối */
+            background: #151515 url('https://www.transparenttextures.com/patterns/cardboard-flat.png'); 
             border: 2px solid #333; box-shadow: 6px 6px 0 rgba(0,0,0,1); 
             display: flex; flex-direction: column; overflow: hidden; border-radius: 8px;
         }
@@ -218,9 +216,12 @@
         .card-front .c-image-wrap img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.1) sepia(0.2) grayscale(0.1); }
         
         .card-front .c-name { font-family: var(--font-heading); font-size: 22px; font-weight: 900; color: var(--st-color); text-align: center; text-transform: uppercase; letter-spacing: 1px; text-shadow: 1px 1px 0 #000; width: 100%; border-bottom: 1px dashed #444; padding-bottom: 5px; margin-bottom: 10px;}
+        
+        .c-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 10px; width: 100%;}
+        .c-tag { font-size: 9px; font-weight: bold; padding: 4px 6px; background: rgba(0,0,0,0.8); border: 1px solid var(--st-color); color: var(--st-color); text-transform: uppercase; letter-spacing: 1px; }
+        
         .card-front .c-hook { font-size: 12px; font-style: italic; color: var(--pearl); text-align: center; margin-bottom: auto; line-height: 1.4; text-shadow: 1px 1px 0 #000; }
         
-        /* Barcode Mô Phỏng */
         .c-barcode { font-family: var(--font-barcode); font-size: 32px; color: var(--silver); margin: 10px 0; text-align: center; width: 100%; height: 35px; overflow: hidden; opacity: 0.7;}
         
         .c-rating-badge { background: #000; border: 1px solid var(--st-color); padding: 4px 10px; font-size: 11px; font-weight: 900; color: var(--st-color); box-shadow: 2px 2px 0 rgba(0,0,0,1); align-self: flex-start; margin-top: 5px;}
@@ -228,7 +229,7 @@
         @keyframes pulseHint { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; text-shadow: 0 0 5px #FFF;} }
 
         /* MẶT SAU */
-        .card-back { transform: rotateY(180deg); border-color: var(--st-color); border-top: 25px solid var(--st-color); padding: 25px 16px 16px; }
+        .card-back { transform: rotateY(180deg); border-color: var(--st-color); border-top: 25px solid var(--st-color); padding: 25px 16px 16px; align-items: center; }
         .card-back::before { content: ''; position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 40px; height: 10px; background: #000; border-radius: 10px; border: 1px solid rgba(0,0,0,0.5); box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);}
         
         .c-back-btn { width: 100%; padding: 14px; background: #000; color: var(--pearl); font-family: var(--font-kicker); font-size: 12px; font-weight: 900; letter-spacing: 1px; text-align: center; border: 2px solid var(--st-color); cursor: pointer; transition: 0.2s; margin-bottom: 16px; text-transform: uppercase; box-shadow: 3px 3px 0 rgba(0,0,0,1);}
@@ -237,6 +238,26 @@
         
         .c-chat-btn { display: block; width: 100%; background: linear-gradient(135deg, var(--st-color), #222); color: #FFF; font-weight: 900; font-family: var(--font-kicker); font-size: 13px; letter-spacing: 1px; text-align: center; padding: 16px; text-decoration: none; transition: 0.2s; margin-top: auto; border: 2px solid #000; box-shadow: 4px 4px 0 rgba(0,0,0,1); text-transform: uppercase; text-shadow: 1px 1px 0 #000;}
         .c-chat-btn:hover { filter: brightness(1.2); transform: translate(-2px, -2px); box-shadow: 6px 6px 0 rgba(0,0,0,1); }
+
+        /* ============================================================
+           SỔ DỰ BỊ (CŨNG THEO MOTIF ID BADGE MẶT TRƯỚC)
+           ============================================================ */
+        .upcoming-empty { text-align: center; padding: 40px 20px; }
+        .upcoming-empty p { font-style: italic; color: var(--silver); font-size: 15px; line-height: 1.8; margin-bottom: 20px; }
+        .upcoming-empty svg { width: 120px; height: 120px; stroke: var(--brass); opacity: 0.5; margin: 0 auto; display: block; filter: drop-shadow(0 0 5px rgba(181, 166, 66, 0.5)); }
+
+        .up-card-front { border-color: #555; border-top: 25px solid #444; padding: 25px 16px 16px; align-items: center; position:relative; background: #151515 url('https://www.transparenttextures.com/patterns/cardboard-flat.png'); border-radius: 8px; border-left: 2px solid #333; border-right: 2px solid #333; border-bottom: 2px solid #333; box-shadow: 6px 6px 0 rgba(0,0,0,1); display: flex; flex-direction: column; height: 100%; filter: grayscale(0.8);}
+        .up-card-front::before { content: ''; position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 40px; height: 10px; background: #000; border-radius: 10px; border: 1px solid rgba(0,0,0,0.5); box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);}
+        
+        .up-stamp { position: absolute; top: 15px; left: -10px; background: #D50000; color: #FFF; font-weight: 900; font-size: 12px; padding: 4px 15px; transform: rotate(-15deg); border: 2px solid #FFF; box-shadow: 2px 2px 0 #000, 0 0 10px rgba(213,0,0,0.6); z-index: 5; letter-spacing: 2px; }
+        
+        .up-idea-box { background: rgba(0,0,0,0.6); border: 1px solid #444; padding: 10px; font-size: 12px; color: #ccc; line-height: 1.5; width: 100%; height: 80px; overflow-y: auto; margin-top: auto; margin-bottom: 10px; border-radius: 4px; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8);}
+        .up-idea-box::-webkit-scrollbar { width: 4px; }
+        .up-idea-box::-webkit-scrollbar-thumb { background: #666; }
+        
+        .up-progress-wrap { width: 100%; border: 2px solid var(--brass); background: #000; padding: 4px; box-shadow: 2px 2px 0 #000; margin-top: 10px;}
+        .up-progress-bar { height: 8px; background: repeating-linear-gradient(45deg, var(--amber), var(--amber) 10px, #b5a642 10px, #b5a642 20px); width: 0%; transition: 1s; }
+        .up-progress-text { font-family: 'Courier New', monospace; font-size: 11px; color: var(--amber); text-align: center; margin-top: 6px; font-weight: bold; }
 
         /* ============================================================
            SỔ LƯU BÚT & BÀI ĐĂNG
@@ -264,7 +285,7 @@
         .post-content { font-size: 14.5px; color: var(--pearl); line-height: 1.6; margin-bottom: 16px; white-space: pre-wrap; font-weight: 500;}
 
         /* ============================================================
-           MÁY HÁT GRAMOPHONE (HỘP NHẠC VINTAGE)
+           MÁY HÁT GRAMOPHONE 
            ============================================================ */
         .gramo-toggle { position: fixed; right: 24px; bottom: 24px; z-index: 60; width: 60px; height: 60px; border-radius: 50%; background: #000; border: 2px solid var(--brass); box-shadow: 0 0 15px rgba(181, 166, 66, 0.4), 4px 4px 0 rgba(0,0,0,1); display: flex; align-items: center; justify-content: center; color: var(--brass); font-size: 24px; transition: 0.3s; }
         .gramo-toggle:hover { border-color: #FFF; color: #FFF; box-shadow: 0 0 25px rgba(181, 166, 66, 0.8), 4px 4px 0 rgba(0,0,0,1); transform: scale(1.05); }
@@ -273,8 +294,6 @@
         @keyframes spinVinyl { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         
         .gramo-panel-new { position: fixed; right: 24px; bottom: 96px; z-index: 60; width: 340px; background: linear-gradient(135deg, #1A120E, #0a0705); border: 2px solid var(--brass); padding: 24px; box-shadow: 10px 10px 0 rgba(0,0,0,1), 0 0 30px rgba(0,0,0,0.8); transform-origin: bottom right; transition: transform 0.3s ease, opacity 0.3s ease; font-family: var(--font-kicker); color: var(--pearl); }
-        .gramo-panel-new::before { content: ''; position: absolute; inset: 0; background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'); opacity: 0.2; pointer-events: none; }
-        .gramo-panel-new::after { content: ''; position: absolute; inset: 4px; border: 1px solid rgba(181, 166, 66, 0.3); pointer-events: none; }
         .gramo-panel-new.hidden-panel { transform: scale(0.8); opacity: 0; pointer-events: none; }
         .gramo-new-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px dashed rgba(181, 166, 66, 0.4); padding-bottom: 14px; margin-bottom: 18px; position: relative; z-index: 2;}
         .gramo-new-title { font-family: var(--font-heading); font-size: 20px; font-weight: 900; letter-spacing: 2px; color: #FFDF73; text-shadow: 0 0 10px rgba(221, 170, 51, 0.6), 2px 2px 0 #000; text-transform: uppercase; }
@@ -354,18 +373,6 @@
         .rt-btn:hover { border-color: var(--amber); }
         .rt-editor { background: #000; border: 2px solid #333; min-height: 150px; padding: 14px; color: var(--pearl); outline: none; overflow-y: auto; line-height: 1.6; font-size: 14px; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8); }
         
-        /* ============================================================
-           SỔ DỰ BỊ (UPCOMING)
-           ============================================================ */
-        .upcoming-empty { text-align: center; padding: 40px 20px; }
-        .upcoming-empty p { font-style: italic; color: var(--silver); font-size: 15px; line-height: 1.8; margin-bottom: 20px; }
-        .upcoming-empty svg { width: 120px; height: 120px; stroke: var(--brass); opacity: 0.5; margin: 0 auto; display: block; filter: drop-shadow(0 0 5px rgba(181, 166, 66, 0.5)); }
-
-        .up-card { filter: grayscale(1); border-color: #555; background: #0A0A0C; }
-        .up-stamp { position: absolute; top: 20px; left: -10px; background: #D50000; color: #FFF; font-weight: 900; font-size: 14px; padding: 4px 20px; transform: rotate(-15deg); border: 2px solid #FFF; box-shadow: 2px 2px 0 #000, 0 0 10px rgba(213,0,0,0.6); z-index: 5; letter-spacing: 2px; }
-        .up-progress-wrap { margin-top: auto; border: 2px solid var(--brass); background: #000; padding: 4px; box-shadow: 2px 2px 0 #000; }
-        .up-progress-bar { height: 10px; background: repeating-linear-gradient(45deg, var(--amber), var(--amber) 10px, #b5a642 10px, #b5a642 20px); width: 0%; transition: 1s; }
-        .up-progress-text { font-family: 'Courier New', monospace; font-size: 11px; color: var(--amber); text-align: center; margin-top: 6px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -382,10 +389,6 @@
 
     <!-- BACKGROUND SẢNH CHỜ TRANG 2 -->
     <div id="bg-page2">
-        <div class="p2-deep-bg">
-            <div class="p2-left-train"></div>
-            <div class="p2-right-arches"></div>
-        </div>
         <div class="p2-center-abyss"></div>
         <div class="p2-steam"></div>
     </div>
@@ -600,7 +603,7 @@
         const VERIFIED_TICK = `<svg style="width:14px; height:14px; display:inline-block; vertical-align:middle; margin-left:4px;" viewBox="0 0 24 24" fill="#0866FF"><circle cx="12" cy="12" r="10"/><path d="M16.5 8.5l-6 6-3-3" stroke="#fff" stroke-width="2" fill="none"/></svg>`;
         
         let CONFIG = {
-            stationMaster: { avatar: "", name: "Trưởng Ga", bio: "Chào mừng đến với nhà ga Meown.", facebook: { url: "", name: "", desc: "" } },
+            stationMaster: { avatar: "", name: "Ngọc Tuyết", bio: "Chào mừng đến với nhà ga Meown.", facebook: { url: "", name: "", desc: "" } },
             trains: [], staff: [], upcomingBots: [], musicLibrary: [] 
         };
 
@@ -706,7 +709,7 @@
         }
 
         /* ============================================================
-           BẢNG ADMIN FORMS (ĐÃ KHÔI PHỤC TOÀN BỘ)
+           BẢNG ADMIN FORMS
            ============================================================ */
         let trainGenresList = [];
         function renderTrGenresList() {
@@ -775,7 +778,7 @@
                 if(action === 'edit') { const up = CONFIG.upcomingBots.find(b => b.id === idOrParentId); if(up) uData = up; }
                 
                 document.getElementById("generalModalTitle").textContent = action==='add' ? "THÊM HỒ SƠ DỰ BỊ" : "SỬA HỒ SƠ DỰ BỊ";
-                body.innerHTML = `<div class="form-row"><label>Tên Bot (Dự kiến)</label><input type="text" id="aUpName" value="${uData.name}"></div><div class="form-row"><label>Ảnh Minh Họa</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aUpFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Tải ảnh</label><div id="aUpPrev" class="img-preview-grid"><img src="${uData.avatar}" onerror="this.style.display='none'"></div></div></div><div class="form-row"><label>Ý Tưởng Nhân Vật</label><textarea id="aUpIdea" style="height: 80px;">${uData.idea}</textarea></div><div class="form-row"><label>Tuyến Tàu Dự Kiến</label><input type="text" id="aUpTrain" value="${uData.train}"></div><div class="form-row"><label>Tiến độ (%)</label><input type="number" id="aUpProgress" value="${uData.progress}" min="0" max="100" style="width:100%; padding:14px; background:#000; color:var(--pearl); border:2px solid #333;"></div><div class="form-row"><label>Tags Thể Loại</label><input type="text" id="aUpTags" value="${uData.tags.join(', ')}"></div><button class="submit-btn" id="saveUp">LƯU HỒ SƠ</button>`;
+                body.innerHTML = `<div class="form-row"><label>Tên Bot (Dự kiến)</label><input type="text" id="aUpName" value="${uData.name}"></div><div class="form-row"><label>Ảnh Minh Họa</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aUpFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Tải ảnh</label><div id="aUpPrev" class="img-preview-grid"><img src="${uData.avatar}" onerror="this.style.display='none'"></div></div></div><div class="form-row"><label>Ý Tưởng Nhân Vật</label><textarea id="aUpIdea" style="height: 80px;">${uData.idea}</textarea></div><div class="form-row"><label>Tuyến Tàu Dự Kiến</label><input type="text" id="aUpTrain" value="${uData.train}"></div><div class="form-row"><label>Tiến độ (%)</label><input type="number" id="aUpProgress" value="${uData.progress}" min="0" max="100"></div><div class="form-row"><label>Tags Thể Loại</label><input type="text" id="aUpTags" value="${uData.tags.join(', ')}"></div><button class="submit-btn" id="saveUp">LƯU HỒ SƠ</button>`;
                 loadIcons(); let uB64 = uData.avatar; document.getElementById("aUpFile").addEventListener("change", async (e)=>{ uB64 = await resizeImage(e.target.files[0]); document.getElementById("aUpPrev").innerHTML=`<img src="${uB64}">`; });
                 document.getElementById("saveUp").addEventListener("click", async () => { 
                     const tagsArray = document.getElementById("aUpTags").value.split(',').map(t=>t.trim()).filter(t=>t); 
@@ -784,7 +787,6 @@
                     await saveStationConfigToDB(); renderUpcomingBots(); document.getElementById("generalModal").classList.add("hidden"); 
                 });
             }
-            // ĐÃ PHỤC HỒI FORM PLAYLIST & BÀI HÁT
             else if(type === 'playlist') {
                 document.getElementById("generalModalTitle").textContent = "TẠO PLAYLIST MỚI";
                 body.innerHTML = `<div class="form-row"><label>Tên Playlist</label><input type="text" id="aPlName" required></div><button class="submit-btn" id="savePl">TẠO MỚI</button>`;
@@ -907,9 +909,10 @@
                         <div class="c-id-header">STATION STAFF ID</div>
                         <div class="c-image-wrap"><img src="${staff.avatar}" onerror="this.style.opacity=0"></div>
                         <div class="c-name">${staff.name}</div>
+                        <div class="c-tags">${tagHTML}</div>
                         <div class="c-hook">"${staff.hook}"</div>
                         <div class="c-barcode">01234567890</div>
-                        <div style="display:flex; justify-content:space-between; width:100%; margin-top:10px;">
+                        <div style="display:flex; justify-content:space-between; width:100%; align-items:flex-end;">
                             <div class="c-rating-badge"><span class="icon-slot" data-icon="star"></span> ${avgText}</div>
                             <div class="c-flip-hint">LẬT THẺ ⟳</div>
                         </div>
@@ -924,7 +927,6 @@
             `;
             setTimeout(() => loadIcons(), 15);
             
-            // Xử lý lật thẻ
             cardWrap.addEventListener("click", function() { this.classList.toggle("flipped"); });
             const cardBack = cardWrap.querySelector('.card-back'); 
             cardBack.querySelectorAll('button, a').forEach(el => { el.addEventListener("click", (e) => e.stopPropagation()); });
@@ -972,7 +974,7 @@
         }
 
         /* ============================================================
-           SỔ DỰ BỊ VÀ HIỆU ỨNG EMPTY
+           SỔ DỰ BỊ (CŨNG THEO MOTIF ID BADGE MẶT TRƯỚC)
            ============================================================ */
         window.toggleHideUpcoming = async function(botId, event) { event.stopPropagation(); const bot = CONFIG.upcomingBots.find(b => b.id === botId); if(bot) { bot.isHidden = !bot.isHidden; await saveStationConfigToDB(); renderUpcomingBots(); } };
         window.deleteUpcoming = async function(botId, event) { event.stopPropagation(); if(confirm("XÓA HỒ SƠ DỰ BỊ này?")) { CONFIG.upcomingBots = CONFIG.upcomingBots.filter(b => b.id !== botId); await saveStationConfigToDB(); renderUpcomingBots(); } };
@@ -988,24 +990,26 @@
             
             grid.className = "staff-grid";
             upBots.forEach(bot => {
-                const card = document.createElement("div"); card.className = "staff-card-container up-card"; 
-                if(bot.isHidden && isAdminMode) card.classList.add("is-hidden");
+                const cardWrap = document.createElement("div"); cardWrap.className = "staff-card-container"; 
+                if(bot.isHidden && isAdminMode) cardWrap.classList.add("is-hidden");
                 let tagHTML = (bot.tags||[]).map(t => `<span class="c-tag">${t.trim().startsWith('#')?t.trim():'#'+t.trim()}</span>`).join('');
                 let adminControls = ""; if(isAdminMode) { const hiddenText = bot.isHidden ? '👁️ Hiện' : '👁️ Ẩn'; adminControls = `<div class="admin-card-controls"><button class="admin-card-btn" onclick="openAdminForm('upcoming', 'edit', '${bot.id}')">✏️ Sửa</button><button class="admin-card-btn" onclick="toggleHideUpcoming('${bot.id}', event)">${hiddenText}</button><button class="admin-card-btn del" onclick="deleteUpcoming('${bot.id}', event)"><span class="icon-slot" data-icon="trash"></span></button></div>`; }
                 
-                card.innerHTML = `
+                cardWrap.innerHTML = `
                     ${adminControls}
                     <div class="staff-card-inner">
-                        <div class="card-front" style="border-color:#555;">
+                        <div class="up-card-front">
+                            <div class="c-id-header" style="color:#D50000;">PENDING STAFF ID</div>
                             <div class="up-stamp">[ SẮP RA MẮT ]</div>
-                            <div class="c-name" style="color:var(--silver);">${bot.name}</div>
-                            <div class="c-image-wrap" style="border-color:#333;"><img src="${bot.avatar}"></div>
-                            <div class="c-hook" style="color:#aaa;">Tuyến: ${bot.train}</div>
-                            <div class="c-tags">${tagHTML}</div>
-                            <div class="up-progress-wrap"><div class="up-progress-bar" style="width:${bot.progress}%;"></div><div class="up-progress-text">[ Chuẩn bị lên tàu... ${bot.progress}% ]</div></div>
+                            <div class="c-image-wrap" style="border-color:#333; width:100%; aspect-ratio:1; border:4px solid #444; border-bottom:15px solid #444; background:#444; position:relative; box-shadow:2px 2px 10px rgba(0,0,0,0.8); margin-bottom:15px; transform:rotate(-2deg);"><img src="${bot.avatar}" style="width:100%; height:100%; object-fit:cover; filter:grayscale(1);"></div>
+                            <div class="c-name" style="color:var(--silver); width:100%; border-bottom:1px dashed #444; padding-bottom:5px; margin-bottom:10px; font-family:var(--font-heading); font-size:22px; font-weight:900; text-align:center; text-transform:uppercase;">${bot.name}</div>
+                            <div class="c-hook" style="color:#aaa; font-weight:bold; font-size:12px; margin-bottom:10px;">TUYẾN: ${bot.train}</div>
+                            <div class="c-tags" style="display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin-bottom:10px; width:100%;">${tagHTML}</div>
+                            <div class="up-idea-box">${bot.idea}</div>
+                            <div class="up-progress-wrap"><div class="up-progress-bar" style="width:${bot.progress}%;"></div><div class="up-progress-text">[ Chuẩn bị... ${bot.progress}% ]</div></div>
                         </div>
                     </div>`; 
-                grid.appendChild(card);
+                grid.appendChild(cardWrap);
             });
             setTimeout(() => loadIcons(), 10);
         }
