@@ -251,14 +251,14 @@
         .card-front .c-image-wrap { width: 140px; height: 140px; border: 4px solid #FFF; border-bottom: 15px solid #FFF; background: #FFF; position: relative; box-shadow: 2px 2px 10px rgba(0,0,0,0.8); margin-bottom: 15px; transform: rotate(-2deg); flex-shrink: 0;}
         .card-front .c-image-wrap img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.1) sepia(0.2) grayscale(0.1); }
         
-        .card-front .c-name { font-family: var(--font-heading); font-size: 22px; font-weight: 900; color: #000; text-align: center; text-transform: uppercase; letter-spacing: 1px; text-shadow: 1px 1px 0 rgba(255,255,255,0.7); width: 100%; border-bottom: 1px dashed #444; padding-bottom: 5px; margin-bottom: 10px;}
+        .card-front .c-name { font-family: var(--font-heading); font-size: 22px; font-weight: 900; color: #111; text-align: center; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 1px 0 rgba(255,255,255,0.4); width: 100%; border-bottom: 1px dashed #444; padding-bottom: 5px; margin-bottom: 10px;}
         .c-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 10px; width: 100%;}
         .c-tag { font-size: 10px; font-weight: bold; padding: 4px 6px; background: rgba(0,0,0,0.8); border: 1px solid var(--st-color); color: var(--st-color); text-transform: uppercase; letter-spacing: 1px; text-shadow: 1px 1px 0 #000;}
         .card-front .c-hook { font-size: 13px; font-style: italic; color: var(--pearl); text-align: center; margin-bottom: auto; line-height: 1.4; text-shadow: 1px 1px 0 #000; width: 100%;}
         
         .c-rating-badge { background: #000; border: 1px solid var(--st-color); padding: 4px 10px; font-size: 12px; font-weight: 900; color: var(--st-color); box-shadow: 2px 2px 0 rgba(0,0,0,1); margin-top: 10px;}
-        .card-front .c-flip-hint { text-align: center; font-size: 10px; color: var(--silver); animation: pulseHint 2s infinite; font-family: var(--font-kicker); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; margin-top: 10px;}
-        @keyframes pulseHint { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; text-shadow: 0 0 5px #FFF;} }
+        .card-front .c-flip-hint { text-align: center; font-size: 10px; color: var(--amber); animation: pulseHint 2s infinite; font-family: var(--font-kicker); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; margin-top: 10px; background: rgba(0,0,0,0.8); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--amber); box-shadow: 2px 2px 0 #000;}
+        @keyframes pulseHint { 0%, 100% { opacity: 0.8; } 50% { opacity: 1; box-shadow: 0 0 10px rgba(221,170,51,0.6), 2px 2px 0 #000; } }
 
         /* MẶT SAU THẺ NHÂN VIÊN */
         .card-back { transform: rotateY(180deg); border-color: var(--st-color); border-top: 25px solid var(--st-color); padding: 25px 16px 16px; align-items: center; }
@@ -327,13 +327,13 @@
         /* ============================================================
            MÁY HÁT GRAMOPHONE & SEEKBAR
            ============================================================ */
-        .gramo-toggle { position: fixed; right: 24px; bottom: 24px; z-index: 60; width: 60px; height: 60px; border-radius: 50%; background: #000; border: 2px solid var(--brass); box-shadow: 0 0 15px rgba(181, 166, 66, 0.4), 4px 4px 0 rgba(0,0,0,1); display: flex; align-items: center; justify-content: center; color: var(--brass); font-size: 24px; transition: 0.3s; cursor: pointer; }
+        .gramo-toggle { position: fixed; right: 24px; bottom: 24px; z-index: 2000; width: 60px; height: 60px; border-radius: 50%; background: #000; border: 2px solid var(--brass); box-shadow: 0 0 15px rgba(181, 166, 66, 0.4), 4px 4px 0 rgba(0,0,0,1); display: flex; align-items: center; justify-content: center; color: var(--brass); font-size: 24px; transition: 0.3s; cursor: pointer; }
         .gramo-toggle:hover { border-color: #FFF; color: #FFF; box-shadow: 0 0 25px rgba(181, 166, 66, 0.8), 4px 4px 0 rgba(0,0,0,1); transform: scale(1.05); }
         .vinyl-spin { animation: spinVinyl 4s linear infinite; }
         .gramo-toggle.paused .vinyl-spin { animation-play-state: paused; }
         @keyframes spinVinyl { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         
-        .gramo-panel-new { position: fixed; right: 24px; bottom: 96px; z-index: 60; width: 340px; max-height: 75vh; display: flex; flex-direction: column; background: linear-gradient(135deg, #1A120E, #0a0705); border: 2px solid var(--brass); padding: 20px; box-shadow: 10px 10px 0 rgba(0,0,0,1), 0 0 30px rgba(0,0,0,0.8); transform-origin: bottom right; transition: transform 0.3s ease, opacity 0.3s ease; font-family: var(--font-kicker); color: var(--pearl); }
+        .gramo-panel-new { position: fixed; right: 24px; bottom: 96px; z-index: 2000; width: 340px; max-height: 75vh; display: flex; flex-direction: column; background: linear-gradient(135deg, #1A120E, #0a0705); border: 2px solid var(--brass); padding: 20px; box-shadow: 10px 10px 0 rgba(0,0,0,1), 0 0 30px rgba(0,0,0,0.8); transform-origin: bottom right; transition: transform 0.3s ease, opacity 0.3s ease; font-family: var(--font-kicker); color: var(--pearl); }
         .gramo-panel-new.hidden-panel { transform: scale(0.8); opacity: 0; pointer-events: none; }
         .gramo-new-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px dashed rgba(181, 166, 66, 0.4); padding-bottom: 10px; margin-bottom: 15px; position: relative; z-index: 2; flex-shrink: 0;}
         .gramo-new-title { font-family: var(--font-heading); font-size: 20px; font-weight: 900; letter-spacing: 2px; color: #FFDF73; text-shadow: 0 0 10px rgba(221, 170, 51, 0.6), 2px 2px 0 #000; text-transform: uppercase; }
@@ -634,7 +634,7 @@
             heart_filled: '<svg class="icon" viewBox="0 0 24 24" fill="#D50000" stroke="#D50000" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
             note1: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>',
             note2: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle></svg>',
-            bell: '<svg class="icon" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>'
+            bell: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>'
         };
         function loadIcons() { document.querySelectorAll(".icon-slot").forEach(el => { el.innerHTML = ICONS[el.dataset.icon]||""; }); }
 
@@ -970,6 +970,7 @@
         function renderTrGenresList() { const listContainer = document.getElementById("aTrGenreList"); if(!listContainer) return; listContainer.innerHTML = trainGenresList.map((g, i) => `<span class="c-tag" style="background:#000; border-color:var(--silver); color:var(--pearl); display:flex; align-items:center; gap:4px;">${g} <span style="cursor:pointer; color:red; font-weight:bold;" onclick="removeTrGenre(${i})">×</span></span>`).join(''); }
         window.removeTrGenre = function(i) { trainGenresList.splice(i, 1); renderTrGenresList(); };
         
+        // Render Thư viện ảnh Tạm thời trong lúc Admin chỉnh sửa
         let tempGallery = [];
         function renderTempGallery() {
             const wrap = document.getElementById("aStGalleryPrev");
@@ -1384,7 +1385,7 @@
                     <div class="card-front">
                         <div class="c-id-header">STATION STAFF ID</div>
                         <div class="c-image-wrap"><img src="${staff.avatar}" onerror="this.style.opacity=0"></div>
-                        <div class="c-name" style="color: #000; text-shadow: 1px 1px 0 rgba(255,255,255,0.7);">${staff.name}</div>
+                        <div class="c-name">${staff.name}</div>
                         <div class="c-tags">${tagHTML}</div>
                         <div class="c-hook">"${staff.hook}"</div>
                         <div style="display:flex; justify-content:space-between; width:100%; align-items:flex-end;">
@@ -1500,7 +1501,7 @@
                             <div class="c-id-header" style="color:var(--amber);">PENDING STAFF ID</div>
                             <div class="up-stamp" style="background:var(--amber); color:#000;">[ SẮP RA MẮT ]</div>
                             <div class="c-image-wrap" style="margin: 0 auto 15px auto; border-color:#333; width:140px; height:140px; border:4px solid #444; border-bottom:15px solid #444; background:#444; position:relative; box-shadow:2px 2px 10px rgba(0,0,0,0.8); transform:rotate(-2deg); flex-shrink: 0;"><img src="${bot.avatar}" style="width:100%; height:100%; object-fit:cover; filter:grayscale(1);"></div>
-                            <div class="c-name" style="color:#000; text-shadow: 1px 1px 0 rgba(255,255,255,0.7); width:100%; border-bottom:1px dashed #444; padding-bottom:5px; margin-bottom:10px; font-family:var(--font-heading); font-size:22px; font-weight:900; text-align:center; text-transform:uppercase;">${bot.name}</div>
+                            <div class="c-name" style="color:#111; text-shadow: 0 1px 0 rgba(255,255,255,0.4); width:100%; border-bottom:1px dashed #444; padding-bottom:5px; margin-bottom:10px; font-family:var(--font-heading); font-size:22px; font-weight:900; text-align:center; text-transform:uppercase;">${bot.name}</div>
                             <div class="c-tags" style="display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin-bottom:10px; width:100%;">${tagHTML}</div>
                             <div class="c-hook" style="color:#aaa; font-weight:bold; font-size:12px; margin-bottom:10px; text-align:center; width:100%;">CHUYẾN: ${bot.train}</div>
                             <div class="up-idea-box" style="white-space: pre-wrap;">${bot.idea}</div>
@@ -1523,6 +1524,25 @@
         let isPlaying = false;
         let currentSongIndex = -1;
         
+        // BẬT / TẮT HỘP NHẠC BẰNG CHÍNH ICON
+        document.getElementById("gramoToggle").addEventListener("click", () => {
+            const panel = document.getElementById("gramoPanel");
+            if (panel.classList.contains("hidden-panel")) {
+                panel.classList.remove("hidden-panel");
+            } else {
+                panel.classList.add("hidden-panel");
+            }
+        });
+
+        document.getElementById("gramoClose").addEventListener("click", () => {
+            document.getElementById("gramoPanel").classList.add("hidden-panel");
+        });
+        document.getElementById("btnBackToPL").addEventListener("click", () => {
+            document.getElementById("gramoViewSongs").style.display = "none";
+            document.getElementById("gramoViewPlaylists").style.display = "block";
+            activeMusicPl = null;
+        });
+
         window.renderGramoPlaylists = function() {
             const container = document.getElementById("gramoPlaylistContainer");
             if(!container) return;
