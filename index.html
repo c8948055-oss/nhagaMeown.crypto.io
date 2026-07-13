@@ -180,17 +180,13 @@
         .t-plate { align-self: flex-start; background: #000; border: 2px solid #555; padding: 4px 12px; color: var(--pearl); font-family: var(--font-kicker); font-weight: 900; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; display: flex; gap: 10px; align-items: center; box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 2px 2px 0 rgba(0,0,0,0.5); position: relative;}
         .t-plate::before, .t-plate::after { content: ''; width: 4px; height: 4px; background: var(--brass); border-radius: 50%; position: absolute; top: 50%; transform: translateY(-50%); }
         .t-plate::before { left: 4px; } .t-plate::after { right: 4px; }
-        .t-windows-wrap { display: flex; gap: 15px; margin-top: 15px; flex: 1; align-items: stretch;}
         
-        .t-window { flex: 1; background: var(--theme-color, #FFF); border: 4px solid #000; border-radius: 4px; box-shadow: inset 0 0 20px rgba(0,0,0,0.7), 0 0 15px var(--theme-color-glow); padding: 10px; position: relative; display: flex; flex-direction: column;}
+        .t-windows-wrap { display: flex; gap: 15px; margin-top: 15px; flex: 1; align-items: stretch;}
+        .t-window { background: var(--theme-color, #FFF); border: 4px solid #000; border-radius: 4px; box-shadow: inset 0 0 20px rgba(0,0,0,0.7), 0 0 15px var(--theme-color-glow); padding: 10px; position: relative; display: flex; flex-direction: column;}
         .t-window-text { position: relative; z-index: 2; font-size: 13px; font-weight: bold; color: #FFF; text-shadow: 1px 1px 2px #000; line-height: 1.6; overflow-y: auto; max-height: 110px; padding-right: 5px; white-space: pre-wrap;}
         .t-window-text::-webkit-scrollbar { width: 4px; }
         .t-window-text::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.5); border-radius: 2px;}
-        
-        .t-tags-container { position: relative; z-index: 2; display: flex; flex-wrap: wrap; gap: 6px; align-items: flex-start; align-content: flex-start; height: 100%; overflow-y: auto; max-height: 110px;}
-        .t-tags-container::-webkit-scrollbar { width: 4px; }
-        .t-tags-container::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.5); border-radius: 2px;}
-        .t-genre-tag { font-size: 10px; font-weight: 900; font-family: 'Courier New', monospace; padding: 4px 6px; background: #000; color: var(--theme-color, #FFF); border: 1px solid rgba(255,255,255,0.3); text-transform: uppercase; box-shadow: 2px 2px 0 rgba(0,0,0,0.8);}
+        .t-genre-tag { font-size: 10px; font-weight: 900; font-family: 'Courier New', monospace; padding: 3px 6px; background: rgba(0,0,0,0.8); color: var(--theme-color, #FFF); border: 1px solid rgba(255,255,255,0.4); text-transform: uppercase; box-shadow: 1px 1px 0 rgba(0,0,0,0.8);}
 
         .t-bellows { width: 30px; background: repeating-linear-gradient(0deg, #050505, #050505 4px, #1a1a1a 4px, #1a1a1a 8px); border-left: 2px solid #000; flex-shrink: 0;}
         .t-wheels-area { position: absolute; bottom: -10px; left: 0; right: 0; height: 20px; background: url('https://www.transparenttextures.com/patterns/stardust.png'); display: flex; justify-content: space-around; opacity: 0.6; z-index: 5;}
@@ -245,7 +241,8 @@
         
         .c-rating-badge { background: #000; border: 1px solid var(--st-color); padding: 4px 10px; font-size: 12px; font-weight: 900; color: var(--st-color); box-shadow: 2px 2px 0 rgba(0,0,0,1); margin-top: 10px;}
         .card-front .c-flip-hint { text-align: center; font-size: 10px; color: var(--silver); animation: pulseHint 2s infinite; font-family: var(--font-kicker); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; margin-top: 10px;}
-        
+        @keyframes pulseHint { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; text-shadow: 0 0 5px #FFF;} }
+
         /* MẶT SAU THẺ NHÂN VIÊN */
         .card-back { transform: rotateY(180deg); border-color: var(--st-color); border-top: 25px solid var(--st-color); padding: 25px 16px 16px; align-items: center; }
         .card-back::before { content: ''; position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 40px; height: 10px; background: #000; border-radius: 10px; border: 1px solid rgba(0,0,0,0.5); box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);}
@@ -262,6 +259,26 @@
         .polaroid-frame { background: #FFF; padding: 10px 10px 30px 10px; box-shadow: 4px 4px 10px rgba(0,0,0,0.5); transform: rotate(calc(-3deg + (6deg * var(--rand)))); transition: 0.3s; cursor: pointer; filter: sepia(0.3) contrast(1.1);}
         .polaroid-frame:hover { transform: scale(1.05) rotate(0deg); z-index: 10; filter: sepia(0); box-shadow: 8px 8px 15px rgba(0,0,0,0.7);}
         .polaroid-frame img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border: 1px solid #ddd;}
+
+        /* ============================================================
+           HỒ SƠ DỰ BỊ
+           ============================================================ */
+        .upcoming-empty { text-align: center; padding: 40px 20px; width: 100%; grid-column: 1 / -1; }
+        .upcoming-empty p { font-style: italic; color: var(--silver); font-size: 15px; line-height: 1.8; margin-bottom: 20px; text-shadow: 1px 1px 0 #000;}
+        .upcoming-empty svg { width: 120px; height: 120px; stroke: var(--brass); opacity: 0.5; margin: 0 auto; display: block; filter: drop-shadow(0 0 5px rgba(181, 166, 66, 0.5)); }
+
+        .up-card-front { border-color: #555; border-top: 25px solid #444; padding: 25px 16px 16px; align-items: center; position:relative; background: #151515 url('https://www.transparenttextures.com/patterns/cardboard-flat.png'); border-radius: 8px; border-left: 2px solid #333; border-right: 2px solid #333; border-bottom: 2px solid #333; box-shadow: 6px 6px 0 rgba(0,0,0,1); display: flex; flex-direction: column; height: 100%; filter: grayscale(0.8);}
+        .up-card-front::before { content: ''; position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 40px; height: 10px; background: #000; border-radius: 10px; border: 1px solid rgba(0,0,0,0.5); box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);}
+        
+        .up-stamp { position: absolute; top: 15px; left: -10px; background: #D50000; color: #FFF; font-weight: 900; font-size: 12px; padding: 4px 15px; transform: rotate(-15deg); border: 2px solid #FFF; box-shadow: 2px 2px 0 #000, 0 0 10px rgba(213,0,0,0.6); z-index: 5; letter-spacing: 2px; }
+        
+        .up-idea-box { background: rgba(0,0,0,0.6); border: 1px solid #444; padding: 10px; font-size: 13px; color: #ccc; line-height: 1.6; width: 100%; flex: 1; overflow-y: auto; margin-bottom: 10px; border-radius: 4px; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8); white-space: pre-wrap;}
+        .up-idea-box::-webkit-scrollbar { width: 4px; }
+        .up-idea-box::-webkit-scrollbar-thumb { background: #666; }
+        
+        .up-vote-btn { background: rgba(0,0,0,0.8); border: 1px solid #444; color: var(--pearl); display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.2s; width: 100%; font-family: var(--font-kicker); font-size: 13px; margin-top: auto;}
+        .up-vote-btn:hover { background: rgba(255,255,255,0.1); }
+        .up-vote-btn.voted { border-color: #D50000; color: #D50000; box-shadow: inset 0 0 10px rgba(213,0,0,0.2); }
 
         /* ============================================================
            SỔ LƯU BÚT & BÀI ĐĂNG
@@ -281,7 +298,6 @@
         .img-preview-grid { display: flex; gap: 10px; flex-wrap: wrap; }
         .img-preview-grid img { width: 60px; height: 60px; object-fit: cover; border: 2px solid #333; position: relative;}
         
-        /* Chỉnh sửa UI xóa ảnh thư viện */
         .del-img-btn { position:absolute; top: -5px; right: -5px; background: #8B0000; color:#FFF; width:20px; height:20px; border-radius:50%; border:2px solid #000; font-size:10px; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; }
 
         .feed-container { display: flex; flex-direction: column; gap: 24px; }
@@ -949,7 +965,7 @@
                 
                 document.getElementById("aStGalleryInp").addEventListener("change", async (e) => {
                     for(let f of e.target.files) {
-                        const b64 = await resizeImage(f, 1000); // Kích thước ảnh thư viện có thể lớn hơn chút
+                        const b64 = await resizeImage(f, 1000); 
                         tempGallery.push(b64);
                     }
                     renderTempGallery();
@@ -1192,12 +1208,13 @@
                     <div class="t-body">
                         <div class="t-plate">${train.name}</div>
                         <div class="t-windows-wrap">
-                            <div class="t-window" style="flex: 1.5;">
-                                <div class="t-window-text">${train.intro || ''}</div>
+                            <div class="t-window" style="flex: 1; display: flex; flex-direction: column;">
+                                <div class="t-tags-container" style="display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; padding-bottom:8px; border-bottom: 1px dashed rgba(255,255,255,0.2);">
+                                    ${trainTagsHtml}
+                                </div>
+                                <div class="t-window-text" style="flex:1;">${train.intro || ''}</div>
                             </div>
-                            <div class="t-window" style="background: rgba(0,0,0,0.4); border-color:#222; box-shadow:inset 0 0 10px #000;">
-                                <div class="t-tags-container">${trainTagsHtml}</div>
-                            </div>
+                            <div class="t-window" style="opacity:0.8; flex: 0.3;"></div>
                         </div>
                         <div class="t-specs">STAFF.VOL:${staffCount} // ROUTE:${train.id.substring(0,6)}</div>
                     </div>
@@ -1220,9 +1237,9 @@
                     if (staffSortMode === 'rating') {
                         let rA = a.rating && a.rating.count > 0 ? a.rating.sum / a.rating.count : 0;
                         let rB = b.rating && b.rating.count > 0 ? b.rating.sum / b.rating.count : 0;
-                        if (rB !== rA) return rB - rA; // Nếu số sao khác nhau thì xếp theo sao
+                        if (rB !== rA) return rB - rA; 
                     }
-                    return (b.createdAt || 0) - (a.createdAt || 0); // Mặc định xếp mới nhất lên đầu
+                    return (b.createdAt || 0) - (a.createdAt || 0); 
                 });
 
                 const grid = document.createElement("div"); grid.className = "staff-grid";
@@ -1282,7 +1299,7 @@
                     <div class="card-back">
                         <div class="c-id-header" style="margin-bottom:15px;">BACK OF ID</div>
                         <button class="c-back-btn c-profile-btn">HỒ SƠ MẬT 📜</button>
-                        <button class="c-back-btn c-gallery-btn" style="border-color: #8B0000; color: #8B0000;">KÝ ỨC LƯU TRỮ 🎞️</button>
+                        <button class="c-back-btn c-gallery-btn" style="border-color: var(--amber); color: var(--amber);">KÝ ỨC LƯU TRỮ 🎞️</button>
                         <button class="c-back-btn c-fb-btn">ĐỂ LẠI LỜI NHẮN ✍️</button>
                         <a href="${staff.chatLink || '#'}" target="_blank" class="c-chat-btn">TRÒ CHUYỆN</a>
                     </div>
@@ -1355,7 +1372,12 @@
             // TỰ ĐỘNG SẮP XẾP THEO LƯỢT VOTE GIẢM DẦN
             upBots.sort((a, b) => (b.votes || 0) - (a.votes || 0));
 
-            if(upBots.length === 0) { grid.innerHTML = `<div class="upcoming-empty"><span class="icon-slot" data-icon="bench"></span><p>Sảnh tuyển dụng hiện đang im lìm... Các chuyến tàu đã đủ người vận hành. Nếu lữ khách muốn đề xuất một nhân viên mới, hãy gửi ý tưởng cho Trưởng ga ở mục Góp ý phía dưới.</p></div>`; setTimeout(() => loadIcons(), 10); return; }
+            if(upBots.length === 0) { 
+                grid.className = ""; 
+                grid.innerHTML = `<div class="upcoming-empty"><span class="icon-slot" data-icon="bench"></span><p>Sảnh tuyển dụng hiện đang im lìm... Các chuyến tàu đã đủ người vận hành. Nếu lữ khách muốn đề xuất một nhân viên mới, hãy gửi ý tưởng cho Trưởng ga ở mục Góp ý phía dưới.</p></div>`; 
+                setTimeout(() => loadIcons(), 10); 
+                return; 
+            }
             grid.className = "staff-grid";
             upBots.forEach(bot => {
                 const cardWrap = document.createElement("div"); cardWrap.className = "staff-card-container"; 
@@ -1381,11 +1403,11 @@
                         <div class="up-card-front">
                             <div class="c-id-header" style="color:var(--amber);">PENDING STAFF ID</div>
                             <div class="up-stamp" style="background:var(--amber); color:#000;">[ SẮP RA MẮT ]</div>
-                            <div class="c-image-wrap" style="border-color:#333; width:140px; height:140px; border:4px solid #444; border-bottom:15px solid #444; background:#444; position:relative; box-shadow:2px 2px 10px rgba(0,0,0,0.8); margin-bottom:15px; transform:rotate(-2deg); flex-shrink: 0;"><img src="${bot.avatar}" style="width:100%; height:100%; object-fit:cover; filter:grayscale(1);"></div>
+                            <div class="c-image-wrap" style="margin: 0 auto 15px auto; border-color:#333; width:140px; height:140px; border:4px solid #444; border-bottom:15px solid #444; background:#444; position:relative; box-shadow:2px 2px 10px rgba(0,0,0,0.8); transform:rotate(-2deg); flex-shrink: 0;"><img src="${bot.avatar}" style="width:100%; height:100%; object-fit:cover; filter:grayscale(1);"></div>
                             <div class="c-name" style="color:var(--silver); width:100%; border-bottom:1px dashed #444; padding-bottom:5px; margin-bottom:10px; font-family:var(--font-heading); font-size:22px; font-weight:900; text-align:center; text-transform:uppercase;">${bot.name}</div>
                             <div class="c-tags" style="display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin-bottom:10px; width:100%;">${tagHTML}</div>
                             <div class="c-hook" style="color:#aaa; font-weight:bold; font-size:12px; margin-bottom:10px; text-align:center; width:100%;">CHUYẾN: ${bot.train}</div>
-                            <div class="up-idea-box">${bot.idea}</div>
+                            <div class="up-idea-box" style="white-space: pre-wrap;">${bot.idea}</div>
                             
                             <button class="up-vote-btn ${voteClass}" onclick="voteUpcoming('${bot.id}', event)">
                                 <span class="icon-slot" data-icon="${heartIcon}"></span> 
