@@ -265,7 +265,7 @@
             border-bottom: 1px dashed #444; 
             padding-bottom: 8px; 
             margin-bottom: 12px;
-            background: linear-gradient(180deg, #FFFFFF 0%, var(--st-color, var(--amber)) 45%, #222222 100%);
+            background: linear-gradient(180deg, #FFFFFF 0%, var(--st-color, var(--amber)) 60%, #333333 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.9)) drop-shadow(-1px -1px 1px rgba(255,255,255,0.2));
@@ -277,7 +277,7 @@
         
         .c-rating-badge { background: #000; border: 1px solid var(--st-color); padding: 4px 10px; font-size: 12px; font-weight: 900; color: var(--st-color); box-shadow: 2px 2px 0 rgba(0,0,0,1); margin-top: 10px;}
         
-        .card-front .c-flip-hint { text-align: center; font-size: 10px; color: var(--amber); animation: pulseHint 2s infinite; font-family: var(--font-kicker); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; margin-top: 10px; background: #000; padding: 6px 12px; border-radius: 4px; border: 1px solid var(--amber); box-shadow: 2px 2px 0 #000;}
+        .card-front .c-flip-hint { text-align: center; font-size: 10px; color: var(--amber); animation: pulseHint 2s infinite; font-family: var(--font-kicker); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; margin-top: 10px; background: rgba(0,0,0,0.8); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--amber); box-shadow: 2px 2px 0 #000;}
         @keyframes pulseHint { 0%, 100% { opacity: 0.8; } 50% { opacity: 1; box-shadow: 0 0 15px rgba(221,170,51,0.8), 2px 2px 0 #000; } }
 
         /* MẶT SAU THẺ NHÂN VIÊN */
@@ -300,6 +300,10 @@
         /* ============================================================
            HỒ SƠ DỰ BỊ
            ============================================================ */
+        .upcoming-empty { text-align: center; padding: 40px 20px; width: 100%; grid-column: 1 / -1; display:flex; flex-direction:column; align-items:center;}
+        .upcoming-empty p { font-style: italic; color: var(--silver); font-size: 15px; line-height: 1.8; margin-bottom: 20px; text-shadow: 1px 1px 0 #000; max-width: 600px; text-align: center;}
+        .upcoming-empty svg { width: 120px; height: 120px; stroke: var(--brass); opacity: 0.5; margin: 0 auto 20px auto; display: block; filter: drop-shadow(0 0 5px rgba(181, 166, 66, 0.5)); }
+
         .up-card-front { border-color: #555; border-top: 25px solid #444; padding: 25px 16px 16px; align-items: center; position:relative; background: #151515 url('https://www.transparenttextures.com/patterns/cardboard-flat.png'); border-radius: 8px; border-left: 2px solid #333; border-right: 2px solid #333; border-bottom: 2px solid #333; box-shadow: 6px 6px 0 rgba(0,0,0,1); display: flex; flex-direction: column; height: 100%; filter: grayscale(0.8); --st-color: var(--amber);}
         .up-card-front::before { content: ''; position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 40px; height: 10px; background: #000; border-radius: 10px; border: 1px solid rgba(0,0,0,0.5); box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);}
         
@@ -312,11 +316,6 @@
         .up-vote-btn { background: rgba(0,0,0,0.8); border: 1px solid #444; color: var(--pearl); display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.2s; width: 100%; font-family: var(--font-kicker); font-size: 13px; margin-top: auto;}
         .up-vote-btn:hover { background: rgba(255,255,255,0.1); }
         .up-vote-btn.voted { border-color: #D50000; color: #D50000; box-shadow: inset 0 0 10px rgba(213,0,0,0.2); }
-
-        /* Căn giữa ô Trống khi Sảnh tuyển dụng không có ai */
-        .upcoming-empty { text-align: center; padding: 40px 20px; width: 100%; grid-column: 1 / -1; display:flex; flex-direction:column; align-items:center;}
-        .upcoming-empty p { font-style: italic; color: var(--silver); font-size: 15px; line-height: 1.8; margin-bottom: 20px; text-shadow: 1px 1px 0 #000; max-width: 600px; text-align: center;}
-        .upcoming-empty svg { width: 120px; height: 120px; stroke: var(--brass); opacity: 0.5; margin: 0 auto 20px auto; display: block; filter: drop-shadow(0 0 5px rgba(181, 166, 66, 0.5)); }
 
         /* ============================================================
            SỔ LƯU BÚT & BÀI ĐĂNG
@@ -431,11 +430,23 @@
         .rt-btn { background: #000; color: var(--pearl); border: 2px solid #444; padding: 6px 12px; cursor: pointer; font-size: 12px; font-weight: bold; font-family:var(--font-kicker);}
         .rt-btn:hover { border-color: var(--amber); }
         .rt-editor { background: #000; border: 2px solid #333; min-height: 150px; padding: 14px; color: var(--pearl); outline: none; overflow-y: auto; line-height: 1.6; font-size: 14px; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8); }
+
+        /* LIGHTBOX ẢNH */
+        .lightbox { position: fixed; inset: 0; z-index: 99999; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; opacity: 1; transition: opacity 0.3s ease; cursor: zoom-out; }
+        .lightbox.hidden { opacity: 0; pointer-events: none; }
+        .lightbox img { max-width: 90vw; max-height: 90vh; border: 4px solid #FFF; box-shadow: 0 0 30px rgba(0,0,0,1); border-radius: 4px; object-fit: contain; cursor: default; }
+        .lightbox-close { position: absolute; top: 30px; right: 40px; color: #FFF; font-size: 50px; font-weight: bold; cursor: pointer; text-shadow: 0 0 10px #000; }
     </style>
 </head>
 <body>
 
     <div class="crt-overlay"></div>
+
+    <!-- LIGHTBOX -->
+    <div id="imageLightbox" class="lightbox hidden" onclick="this.classList.add('hidden')">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightboxImg" src="" onclick="event.stopPropagation()">
+    </div>
 
     <!-- BACKGROUND TRANG 1 -->
     <div id="bg-page1">
@@ -703,6 +714,13 @@
             setTimeout(() => note.remove(), 2500);
         }
 
+        // TÍNH NĂNG XEM ẢNH TO (LIGHTBOX)
+        window.openLightbox = function(src, e) {
+            if(e) e.stopPropagation();
+            document.getElementById("lightboxImg").src = src;
+            document.getElementById("imageLightbox").classList.remove("hidden");
+        };
+
         const SUPABASE_URL = "https://gmejjxvahnqqrhihahid.supabase.co";
         const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdtZWpqeHZhaG5xcXJoaWhhaGlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM3NTM5OTQsImV4cCI6MjA5OTMyOTk5NH0.Q1uit-9R_Lrs0uM_Azgbn9GGKMoyFl-cFfl3M7IeSMU";
         const supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -954,7 +972,6 @@
                 }
             } catch(e) {
                 console.error("Lỗi đồng bộ Supabase:", e);
-                alert("Lưu ý: Không thể đồng bộ hệ thống lên Đám mây do dữ liệu quá lớn, nhưng mọi thứ đã được LƯU AN TOÀN TRÊN MÁY BẠN!");
             }
         }
 
@@ -963,6 +980,49 @@
             renderFeed("guestbook"); renderFeed("recruit");
             updateNotifications();
         }
+
+        // TÍCH HỢP TÍNH NĂNG GỬI BÀI VIẾT (SỔ LƯU BÚT VÀ TUYỂN DỤNG)
+        let gbB64Imgs = [];
+        document.getElementById("gbFileInp").addEventListener("change", async (ev) => {
+            for(let f of ev.target.files) {
+                const b64 = await resizeImage(f, 1000); gbB64Imgs.push(b64);
+                document.getElementById("gbPreview").innerHTML += `<img src="${b64}" onclick="openLightbox(this.src, event)" style="cursor:zoom-in;">`;
+            }
+        });
+        document.getElementById("guestbookForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector("button"); btn.textContent = "ĐANG GỬI..."; btn.style.pointerEvents = "none";
+            const post = { name: document.getElementById("gbName").value || "Khách", author: document.getElementById("gbName").value || "Khách", text: document.getElementById("gbMessage").value, content: document.getElementById("gbMessage").value, images: JSON.stringify(gbB64Imgs), date: Date.now() };
+            try {
+                const { data, error } = await supa.from('meown_guestbook').insert([post]).select();
+                if(data && data.length > 0) localGuestbook.unshift(data[0]);
+                renderFeed("guestbook");
+                e.target.reset(); document.getElementById("gbPreview").innerHTML = ""; gbB64Imgs = [];
+                alert("Đã gửi vào Sổ lưu bút!");
+            } catch(err) { console.error(err); alert("Lỗi khi đăng bài!"); }
+            btn.textContent = "ĐĂNG BÀI"; btn.style.pointerEvents = "auto";
+        });
+
+        let rcB64Imgs = [];
+        document.getElementById("rcFileInp").addEventListener("change", async (ev) => {
+            for(let f of ev.target.files) {
+                const b64 = await resizeImage(f, 1000); rcB64Imgs.push(b64);
+                document.getElementById("rcPreview").innerHTML += `<img src="${b64}" onclick="openLightbox(this.src, event)" style="cursor:zoom-in;">`;
+            }
+        });
+        document.getElementById("recruitForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector("button"); btn.textContent = "ĐANG GỬI..."; btn.style.pointerEvents = "none";
+            const post = { name: document.getElementById("rcName").value || "Khách", author: document.getElementById("rcName").value || "Khách", text: document.getElementById("rcMessage").value, content: document.getElementById("rcMessage").value, images: JSON.stringify(rcB64Imgs), date: Date.now() };
+            try {
+                const { data, error } = await supa.from('meown_recruit').insert([post]).select();
+                if(data && data.length > 0) localRecruit.unshift(data[0]);
+                renderFeed("recruit");
+                e.target.reset(); document.getElementById("rcPreview").innerHTML = ""; rcB64Imgs = [];
+                alert("Đã gửi Ý tưởng!");
+            } catch(err) { console.error(err); alert("Lỗi khi đăng bài!"); }
+            btn.textContent = "GỬI LÊN HỆ THỐNG"; btn.style.pointerEvents = "auto";
+        });
 
         window.openAdminPost = function(type, id) { openAdminForm('post', 'edit', {type, id}); };
         window.deletePostFromDB = async function(type, id) {
@@ -988,10 +1048,23 @@
             container.innerHTML = ""; let posts = type === "guestbook" ? localGuestbook : localRecruit;
             if(!posts || posts.length === 0) { container.innerHTML = "<p style='color:var(--silver); font-style:italic;'>Chưa có bài đăng nào.</p>"; return; }
             
+            posts.sort((a,b) => (new Date(b.date || b.created_at).getTime()) - (new Date(a.date || a.created_at).getTime()));
+            
             posts.forEach(post => {
                 const postEl = document.createElement("div"); postEl.className = "post-card";
                 let adminBtns = isAdminMode ? `<div class="admin-action-bar"><button class="admin-edit-post" onclick="openAdminPost('${type}', ${post.id})"><span class="icon-slot" data-icon="loop"></span> Sửa</button><button class="admin-delete-post" onclick="deletePostFromDB('${type}', ${post.id})"><span class="icon-slot" data-icon="trash"></span> Xóa</button></div>` : "";
-                postEl.innerHTML = `<div class="post-header"><div class="post-author">${post.name || post.author || "Khách ẩn danh"}</div>${adminBtns}</div><div class="post-time">${post.date || new Date().toLocaleString('vi-VN')}</div><div class="post-content">${post.text || post.content || ""}</div>`;
+                
+                let imgsHtml = "";
+                if(post.images) {
+                    try {
+                        let parsedImgs = typeof post.images === 'string' ? JSON.parse(post.images) : post.images;
+                        if(parsedImgs.length > 0) {
+                            imgsHtml = `<div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:15px;">` + parsedImgs.map(src => `<img src="${src}" style="width:120px; height:120px; object-fit:cover; border:2px solid #333; cursor:zoom-in; border-radius:4px;" onclick="openLightbox(this.src, event)">`).join('') + `</div>`;
+                        }
+                    } catch(e) {}
+                }
+                
+                postEl.innerHTML = `<div class="post-header"><div class="post-author">${post.name || post.author || "Khách ẩn danh"}</div>${adminBtns}</div><div class="post-time">${new Date(post.date || post.created_at).toLocaleString('vi-VN')}</div><div class="post-content">${post.text || post.content || ""}</div>${imgsHtml}`;
                 container.appendChild(postEl);
             });
             loadIcons();
@@ -1026,7 +1099,6 @@
         function renderTrGenresList() { const listContainer = document.getElementById("aTrGenreList"); if(!listContainer) return; listContainer.innerHTML = trainGenresList.map((g, i) => `<span class="c-tag" style="background:#000; border-color:var(--silver); color:var(--pearl); display:flex; align-items:center; gap:4px;">${g} <span style="cursor:pointer; color:red; font-weight:bold;" onclick="removeTrGenre(${i})">×</span></span>`).join(''); }
         window.removeTrGenre = function(i) { trainGenresList.splice(i, 1); renderTrGenresList(); };
         
-        // Render Thư viện ảnh Tạm thời trong lúc Admin chỉnh sửa
         let tempGallery = [];
         function renderTempGallery() {
             const wrap = document.getElementById("aStGalleryPrev");
@@ -1035,7 +1107,7 @@
             tempGallery.forEach((b64, idx) => {
                 let div = document.createElement("div");
                 div.style.position = "relative";
-                div.innerHTML = `<img src="${b64}"><div class="del-img-btn" onclick="removeTempGalleryImg(${idx})">✕</div>`;
+                div.innerHTML = `<img src="${b64}" style="cursor:zoom-in;" onclick="openLightbox(this.src, event)"><div class="del-img-btn" onclick="removeTempGalleryImg(${idx})">✕</div>`;
                 wrap.appendChild(div);
             });
         }
@@ -1092,7 +1164,7 @@
                 document.getElementById("generalModalTitle").textContent = action === 'add' ? `IN THẺ NHÂN VIÊN MỚI` : `CHỈNH SỬA THẺ NHÂN VIÊN`;
                 body.innerHTML = `
                     <div class="form-row"><label>Tên Nhân Viên</label><input type="text" id="aStName" value="${sData.name || ''}"></div>
-                    <div class="form-row"><label>Ảnh Chân Dung (Vuông)</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aStFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Tải ảnh</label><div id="aStPrev" class="img-preview-grid"><img src="${sData.avatar || ''}" onerror="this.style.display='none'"></div></div></div>
+                    <div class="form-row"><label>Ảnh Chân Dung (Vuông)</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aStFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Tải ảnh</label><div id="aStPrev" class="img-preview-grid"><img src="${sData.avatar || ''}" onerror="this.style.display='none'" onclick="openLightbox(this.src, event)" style="cursor:zoom-in;"></div></div></div>
                     <div class="form-row"><label>Câu Thoại Đặc Trưng (Hook)</label><input type="text" id="aStHook" value="${sData.hook || ''}"></div>
                     <div class="form-row"><label>Tags (Cách nhau dấu phẩy)</label><input type="text" id="aStTags" value="${tagsStr}"></div>
                     <div class="form-row"><label>HỒ SƠ MẬT (Hiển thị dạng bảng trắng lớn)</label>
@@ -1138,7 +1210,7 @@
                 if(action === 'edit') { const up = CONFIG.upcomingBots.find(b => b.id === idOrParentId); if(up) uData = up; }
                 let upTagsStr = (uData.tags || []).join(', ');
                 document.getElementById("generalModalTitle").textContent = action==='add' ? "THÊM HỒ SƠ DỰ BỊ" : "SỬA HỒ SƠ DỰ BỊ";
-                body.innerHTML = `<div class="form-row"><label>Tên Bot (Dự kiến)</label><input type="text" id="aUpName" value="${uData.name || ''}"></div><div class="form-row"><label>Ảnh Minh Họa</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aUpFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Tải ảnh</label><div id="aUpPrev" class="img-preview-grid"><img src="${uData.avatar || ''}" onerror="this.style.display='none'"></div></div></div><div class="form-row"><label>Ý Tưởng Nhân Vật</label><textarea id="aUpIdea" style="height: 100px;">${uData.idea || ''}</textarea></div><div class="form-row"><label>Chuyến Tàu Dự Kiến</label><input type="text" id="aUpTrain" value="${uData.train || ''}"></div><div class="form-row"><label>Tiến độ (%)</label><input type="number" id="aUpProgress" value="${uData.progress}" min="0" max="100"></div><div class="form-row"><label>Tags Thể Loại</label><input type="text" id="aUpTags" value="${upTagsStr}"></div><button class="submit-btn" id="saveUp">LƯU HỒ SƠ</button>`;
+                body.innerHTML = `<div class="form-row"><label>Tên Bot (Dự kiến)</label><input type="text" id="aUpName" value="${uData.name || ''}"></div><div class="form-row"><label>Ảnh Minh Họa</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aUpFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Tải ảnh</label><div id="aUpPrev" class="img-preview-grid"><img src="${uData.avatar || ''}" onerror="this.style.display='none'" onclick="openLightbox(this.src, event)" style="cursor:zoom-in;"></div></div></div><div class="form-row"><label>Ý Tưởng Nhân Vật</label><textarea id="aUpIdea" style="height: 100px;">${uData.idea || ''}</textarea></div><div class="form-row"><label>Chuyến Tàu Dự Kiến</label><input type="text" id="aUpTrain" value="${uData.train || ''}"></div><div class="form-row"><label>Tiến độ (%)</label><input type="number" id="aUpProgress" value="${uData.progress}" min="0" max="100"></div><div class="form-row"><label>Tags Thể Loại</label><input type="text" id="aUpTags" value="${upTagsStr}"></div><button class="submit-btn" id="saveUp">LƯU HỒ SƠ</button>`;
                 loadIcons(); let uB64 = uData.avatar; document.getElementById("aUpFile").addEventListener("change", async (e)=>{ uB64 = await resizeImage(e.target.files[0]); document.getElementById("aUpPrev").innerHTML=`<img src="${uB64}">`; document.getElementById("aUpPrev").querySelector('img').style.display='block';});
                 document.getElementById("saveUp").addEventListener("click", async () => { 
                     const tagsArray = document.getElementById("aUpTags").value.split(',').map(t=>t.trim()).filter(t=>t); 
@@ -1275,12 +1347,22 @@
                     
                     document.getElementById("saveSg").addEventListener("click", async () => { 
                         const btn = document.getElementById("saveSg");
-                        btn.textContent = "ĐANG XỬ LÝ (CHỜ CHÚT NHA)..."; btn.style.pointerEvents = 'none';
+                        btn.style.pointerEvents = 'none';
                         try {
                             const targetPlId = document.getElementById("aSongPlSelect").value;
                             const rows = document.querySelectorAll(".song-row"); 
                             const newSongs = []; 
+                            let totalToProcess = 0;
                             
+                            for (let r of rows) {
+                                const title = r.querySelector(".sgName").value.trim();
+                                const fileInput = r.querySelector(".sgFile");
+                                const file = r._attachedFile || (fileInput && fileInput.files.length > 0 ? fileInput.files[0] : null);
+                                if(title && file) totalToProcess++;
+                            }
+                            if(totalToProcess === 0) throw new Error("Chưa có bài nhạc hợp lệ nào để tải lên!");
+                            
+                            let processed = 0;
                             for (let r of rows) { 
                                 const title = r.querySelector(".sgName").value.trim(); 
                                 const fileInput = r.querySelector(".sgFile"); 
@@ -1288,21 +1370,27 @@
                                 
                                 if(title && file) { 
                                     if(file.size > 10 * 1024 * 1024) {
-                                        alert(`Bài hát "${file.name}" quá lớn (>10MB). Vui lòng nén lại hoặc bỏ qua để tránh sập bộ nhớ!`);
+                                        alert(`Bài hát "${file.name}" quá lớn (>10MB). Đã bỏ qua!`);
                                         r.querySelector(".file-status").textContent = "Lỗi: File quá nặng!";
                                         r.querySelector(".file-status").style.color = "#8B0000";
                                         continue; 
                                     }
+                                    processed++;
+                                    btn.textContent = `ĐANG MÃ HÓA (${processed}/${totalToProcess})...`;
+                                    await new Promise(resolve => setTimeout(resolve, 50)); 
+                                    
                                     const base64Audio = await fileToBase64(file); 
                                     newSongs.push({ title: title, src: base64Audio }); 
                                     r._attachedFile = null; 
                                 } 
                             } 
                             
-                            if(newSongs.length === 0) { throw new Error("Chưa có bài nhạc hợp lệ nào để tải lên!"); } 
-                            
+                            btn.textContent = "ĐANG LƯU DỮ LIỆU...";
+                            await new Promise(resolve => setTimeout(resolve, 50));
+
                             CONFIG.musicLibrary.forEach(p => { if(p.id === targetPlId) { p.songs.push(...newSongs); } }); 
                             await saveStationConfigToDB(false); 
+                            
                             if (activeMusicPl === targetPlId) { renderGramoSongs(activeMusicPl); }
                             document.getElementById("generalModal").classList.add("hidden"); 
                             alert(`Đã lưu thành công ${newSongs.length} bài hát!`);
@@ -1414,7 +1502,7 @@
             let html = "";
             if(!st.feedbacks || st.feedbacks.length === 0) html = "<p>Chưa có đánh giá nào.</p>";
             else { st.feedbacks.forEach((f, index) => { 
-                let imgs = f.images ? f.images.map(url => `<img src="${url}" style="width:100px; height:100px; object-fit:cover; border:2px solid #000; margin-right:5px;">`).join('') : ""; 
+                let imgs = f.images ? f.images.map(url => `<img src="${url}" style="width:100px; height:100px; object-fit:cover; border:2px solid #000; margin-right:5px; cursor:zoom-in;" onclick="openLightbox(this.src, event)">`).join('') : ""; 
                 let delFbBtn = isAdminMode ? `<button style="background:#8B0000; color:#FFF; padding:6px 10px; font-weight:bold; border:2px solid #000; cursor:pointer; border-radius:3px;" onclick="deleteFeedback('${staffId}', ${index}, event)">🗑️ XÓA FB</button>` : '';
                 html += `<div style="border-bottom:2px dashed #000; padding: 15px 0;"><div style="display:flex; justify-content:space-between; align-items:center;"><div style="font-weight:900; color:#D50000; font-size:16px;">${f.name} <span style="color:#b5a642; text-shadow: 1px 1px 0 #000;">${'★'.repeat(f.stars)}${'☆'.repeat(5-f.stars)}</span></div>${delFbBtn}</div><p style="margin: 10px 0; font-weight:500;">${f.text}</p><div style="display:flex; flex-wrap:wrap;">${imgs}</div></div>`; 
             }); }
@@ -1480,7 +1568,7 @@
                 } else {
                     let imagesHtml = staff.gallery.map(imgBase64 => `
                         <div class="polaroid-frame" style="--rand: ${Math.random()};">
-                            <img src="${imgBase64}">
+                            <img src="${imgBase64}" style="cursor:zoom-in;" onclick="openLightbox(this.src, event)">
                         </div>
                     `).join('');
                     body.innerHTML = `<div class="gallery-grid">${imagesHtml}</div>`;
