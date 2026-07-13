@@ -251,14 +251,16 @@
         .card-front .c-image-wrap { width: 140px; height: 140px; border: 4px solid #FFF; border-bottom: 15px solid #FFF; background: #FFF; position: relative; box-shadow: 2px 2px 10px rgba(0,0,0,0.8); margin-bottom: 15px; transform: rotate(-2deg); flex-shrink: 0;}
         .card-front .c-image-wrap img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.1) sepia(0.2) grayscale(0.1); }
         
-        .card-front .c-name { font-family: var(--font-heading); font-size: 22px; font-weight: 900; color: #000; text-align: center; text-transform: uppercase; letter-spacing: 1px; text-shadow: 1px 1px 0 rgba(255,255,255,0.7); width: 100%; border-bottom: 1px dashed #444; padding-bottom: 5px; margin-bottom: 10px;}
+        /* ĐÃ SỬA: Tên nhân viên chuyển sang màu Vàng Amber, đổ bóng đen rõ nét */
+        .card-front .c-name { font-family: var(--font-heading); font-size: 22px; font-weight: 900; color: var(--amber); text-align: center; text-transform: uppercase; letter-spacing: 1px; text-shadow: 2px 2px 0 #000; width: 100%; border-bottom: 1px dashed #444; padding-bottom: 5px; margin-bottom: 10px;}
         .c-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 10px; width: 100%;}
         .c-tag { font-size: 10px; font-weight: bold; padding: 4px 6px; background: rgba(0,0,0,0.8); border: 1px solid var(--st-color); color: var(--st-color); text-transform: uppercase; letter-spacing: 1px; text-shadow: 1px 1px 0 #000;}
         .card-front .c-hook { font-size: 13px; font-style: italic; color: var(--pearl); text-align: center; margin-bottom: auto; line-height: 1.4; text-shadow: 1px 1px 0 #000; width: 100%;}
         
         .c-rating-badge { background: #000; border: 1px solid var(--st-color); padding: 4px 10px; font-size: 12px; font-weight: 900; color: var(--st-color); box-shadow: 2px 2px 0 rgba(0,0,0,1); margin-top: 10px;}
-        .card-front .c-flip-hint { text-align: center; font-size: 10px; color: var(--silver); animation: pulseHint 2s infinite; font-family: var(--font-kicker); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; margin-top: 10px;}
-        @keyframes pulseHint { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; text-shadow: 0 0 5px #FFF;} }
+        /* ĐÃ SỬA: Lật thẻ chuyển sang màu Vàng Amber cho nổi bật */
+        .card-front .c-flip-hint { text-align: center; font-size: 10px; color: var(--amber); animation: pulseHint 2s infinite; font-family: var(--font-kicker); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; margin-top: 10px; text-shadow: 1px 1px 0 #000;}
+        @keyframes pulseHint { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; text-shadow: 0 0 5px var(--amber);} }
 
         /* MẶT SAU THẺ NHÂN VIÊN */
         .card-back { transform: rotateY(180deg); border-color: var(--st-color); border-top: 25px solid var(--st-color); padding: 25px 16px 16px; align-items: center; }
@@ -772,6 +774,14 @@
                 }
             });
 
+            // BỔ SUNG LỆNH BẬT/TẮT HỘP NHẠC
+            document.getElementById("gramoToggle").addEventListener("click", () => {
+                document.getElementById("gramoPanel").classList.toggle("hidden-panel");
+            });
+            document.getElementById("gramoClose").addEventListener("click", () => {
+                document.getElementById("gramoPanel").classList.add("hidden-panel");
+            });
+
             updateStationMasterUI(); renderTrains(); renderUpcomingBots(); renderGramoPlaylists();
             rollNumber(document.getElementById("statStaff"), CONFIG.staff.length || 0); 
             rollNumber(document.getElementById("statVisits"), currentVisits); 
@@ -958,7 +968,7 @@
             if(CONFIG.stationMaster.facebook && CONFIG.stationMaster.facebook.url) {
                 fbHTML = `<a href="${CONFIG.stationMaster.facebook.url}" target="_blank" class="fb-link-box" title="${CONFIG.stationMaster.facebook.name}"><span class="icon-slot" data-icon="facebook"></span><span>${CONFIG.stationMaster.facebook.name}</span></a>`;
             }
-            document.getElementById("smBio").innerHTML = (CONFIG.stationMaster.bio || "Chưa có thông tin."); 
+            document.getElementById("smBio").innerHTML = (CONFIG.stationMaster.bio || "Chưa có thông tương."); 
             fbWrap.innerHTML = fbHTML;
             loadIcons();
         }
@@ -1384,7 +1394,7 @@
                     <div class="card-front">
                         <div class="c-id-header">STATION STAFF ID</div>
                         <div class="c-image-wrap"><img src="${staff.avatar}" onerror="this.style.opacity=0"></div>
-                        <div class="c-name" style="color: #000; text-shadow: 1px 1px 0 rgba(255,255,255,0.7);">${staff.name}</div>
+                        <div class="c-name" style="color: var(--amber); text-shadow: 2px 2px 0 #000;">${staff.name}</div>
                         <div class="c-tags">${tagHTML}</div>
                         <div class="c-hook">"${staff.hook}"</div>
                         <div style="display:flex; justify-content:space-between; width:100%; align-items:flex-end;">
@@ -1500,7 +1510,7 @@
                             <div class="c-id-header" style="color:var(--amber);">PENDING STAFF ID</div>
                             <div class="up-stamp" style="background:var(--amber); color:#000;">[ SẮP RA MẮT ]</div>
                             <div class="c-image-wrap" style="margin: 0 auto 15px auto; border-color:#333; width:140px; height:140px; border:4px solid #444; border-bottom:15px solid #444; background:#444; position:relative; box-shadow:2px 2px 10px rgba(0,0,0,0.8); transform:rotate(-2deg); flex-shrink: 0;"><img src="${bot.avatar}" style="width:100%; height:100%; object-fit:cover; filter:grayscale(1);"></div>
-                            <div class="c-name" style="color:#000; text-shadow: 1px 1px 0 rgba(255,255,255,0.7); width:100%; border-bottom:1px dashed #444; padding-bottom:5px; margin-bottom:10px; font-family:var(--font-heading); font-size:22px; font-weight:900; text-align:center; text-transform:uppercase;">${bot.name}</div>
+                            <div class="c-name" style="color: var(--amber); text-shadow: 2px 2px 0 #000; width:100%; border-bottom:1px dashed #444; padding-bottom:5px; margin-bottom:10px; font-family:var(--font-heading); font-size:22px; font-weight:900; text-align:center; text-transform:uppercase;">${bot.name}</div>
                             <div class="c-tags" style="display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin-bottom:10px; width:100%;">${tagHTML}</div>
                             <div class="c-hook" style="color:#aaa; font-weight:bold; font-size:12px; margin-bottom:10px; text-align:center; width:100%;">CHUYẾN: ${bot.train}</div>
                             <div class="up-idea-box" style="white-space: pre-wrap;">${bot.idea}</div>
