@@ -168,21 +168,31 @@
         /* ============================================================
            CHUYẾN TÀU (RETRO VINTAGE)
            ============================================================ */
-        .search-bar-basic { display: flex; gap: 12px; margin-bottom: 15px; flex-wrap: wrap; }
+        .search-bar-basic { display: flex; gap: 12px; margin-bottom: 15px; flex-wrap: wrap; align-items: center;}
         .search-input { flex: 1; min-width: 200px; padding: 14px 18px; border-radius: 2px; background: #0A0A0C; border: 2px solid #333; color: var(--pearl); font-size: 14px; font-weight: bold; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8); }
+        .sort-select { width: 160px; padding: 14px; border-radius: 2px; background: #0A0A0C; border: 2px solid #333; color: var(--amber); font-size: 13px; font-weight: bold; cursor: pointer; font-family: var(--font-kicker); text-transform: uppercase;}
         
         .train-card { position: relative; background: #111; border: 3px solid #222; border-radius: 12px; margin-bottom: 20px; cursor: pointer; transition: 0.3s; box-shadow: 8px 8px 0px rgba(0,0,0,1); display: flex; flex-direction: row; overflow: hidden; min-height: 160px; }
         .train-card:hover { transform: translate(-2px, -2px); box-shadow: 10px 10px 0px rgba(0,0,0,1); }
-        .t-door { width: 60px; border-right: 2px solid #000; background: linear-gradient(90deg, rgba(255,255,255,0.05), transparent); display: flex; align-items: center; justify-content: center; position: relative;}
+        .t-door { width: 60px; border-right: 2px solid #000; background: linear-gradient(90deg, rgba(255,255,255,0.05), transparent); display: flex; align-items: center; justify-content: center; position: relative; flex-shrink: 0;}
         .t-door::after { content: ''; position: absolute; right: 10px; width: 6px; height: 30px; background: var(--brass); border-radius: 3px; box-shadow: 2px 2px 0 #000; } 
-        .t-body { flex: 1; display: flex; flex-direction: column; padding: 15px; position: relative; background: inherit; }
+        .t-body { flex: 1; display: flex; flex-direction: column; padding: 15px; position: relative; background: inherit; overflow:hidden;}
         .t-plate { align-self: flex-start; background: #000; border: 2px solid #555; padding: 4px 12px; color: var(--pearl); font-family: var(--font-kicker); font-weight: 900; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; display: flex; gap: 10px; align-items: center; box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 2px 2px 0 rgba(0,0,0,0.5); position: relative;}
         .t-plate::before, .t-plate::after { content: ''; width: 4px; height: 4px; background: var(--brass); border-radius: 50%; position: absolute; top: 50%; transform: translateY(-50%); }
         .t-plate::before { left: 4px; } .t-plate::after { right: 4px; }
-        .t-windows-wrap { display: flex; gap: 15px; margin-top: 15px; flex: 1; }
-        .t-window { flex: 1; background: var(--theme-color, #FFF); border: 4px solid #000; border-radius: 4px; box-shadow: inset 0 0 20px rgba(0,0,0,0.7), 0 0 15px var(--theme-color-glow); padding: 10px; overflow: hidden; position: relative;}
-        .t-window-text { position: relative; z-index: 2; font-size: 13px; font-weight: bold; color: #FFF; text-shadow: 1px 1px 2px #000; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-        .t-bellows { width: 30px; background: repeating-linear-gradient(0deg, #050505, #050505 4px, #1a1a1a 4px, #1a1a1a 8px); border-left: 2px solid #000; }
+        .t-windows-wrap { display: flex; gap: 15px; margin-top: 15px; flex: 1; align-items: stretch;}
+        
+        .t-window { flex: 1; background: var(--theme-color, #FFF); border: 4px solid #000; border-radius: 4px; box-shadow: inset 0 0 20px rgba(0,0,0,0.7), 0 0 15px var(--theme-color-glow); padding: 10px; position: relative; display: flex; flex-direction: column;}
+        .t-window-text { position: relative; z-index: 2; font-size: 13px; font-weight: bold; color: #FFF; text-shadow: 1px 1px 2px #000; line-height: 1.6; overflow-y: auto; max-height: 110px; padding-right: 5px; white-space: pre-wrap;}
+        .t-window-text::-webkit-scrollbar { width: 4px; }
+        .t-window-text::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.5); border-radius: 2px;}
+        
+        .t-tags-container { position: relative; z-index: 2; display: flex; flex-wrap: wrap; gap: 6px; align-items: flex-start; align-content: flex-start; height: 100%; overflow-y: auto; max-height: 110px;}
+        .t-tags-container::-webkit-scrollbar { width: 4px; }
+        .t-tags-container::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.5); border-radius: 2px;}
+        .t-genre-tag { font-size: 10px; font-weight: 900; font-family: 'Courier New', monospace; padding: 4px 6px; background: #000; color: var(--theme-color, #FFF); border: 1px solid rgba(255,255,255,0.3); text-transform: uppercase; box-shadow: 2px 2px 0 rgba(0,0,0,0.8);}
+
+        .t-bellows { width: 30px; background: repeating-linear-gradient(0deg, #050505, #050505 4px, #1a1a1a 4px, #1a1a1a 8px); border-left: 2px solid #000; flex-shrink: 0;}
         .t-wheels-area { position: absolute; bottom: -10px; left: 0; right: 0; height: 20px; background: url('https://www.transparenttextures.com/patterns/stardust.png'); display: flex; justify-content: space-around; opacity: 0.6; z-index: 5;}
         .t-specs { position: absolute; bottom: 8px; right: 20px; font-family: 'Courier New', monospace; font-size: 11px; color: rgba(255,255,255,0.7); font-weight: bold; }
 
@@ -199,7 +209,7 @@
            THIẾT KẾ THẺ NHÂN VIÊN VÀ DỰ BỊ (ID BADGE VẬT LÝ)
            ============================================================ */
         .staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 24px; padding: 16px 0; margin-top: 15px;}
-        .staff-card-container { perspective: 1000px; width: 100%; min-height: 480px; position: relative; }
+        .staff-card-container { perspective: 1000px; width: 100%; min-height: 520px; position: relative; }
         
         .admin-card-controls { position: absolute; top: -35px; left: 0; right: 0; display: none; justify-content: center; gap: 8px; z-index: 20; }
         body.admin-active .admin-card-controls { display: flex; }
@@ -235,36 +245,23 @@
         
         .c-rating-badge { background: #000; border: 1px solid var(--st-color); padding: 4px 10px; font-size: 12px; font-weight: 900; color: var(--st-color); box-shadow: 2px 2px 0 rgba(0,0,0,1); margin-top: 10px;}
         .card-front .c-flip-hint { text-align: center; font-size: 10px; color: var(--silver); animation: pulseHint 2s infinite; font-family: var(--font-kicker); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; margin-top: 10px;}
-        @keyframes pulseHint { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; text-shadow: 0 0 5px #FFF;} }
-
+        
         /* MẶT SAU THẺ NHÂN VIÊN */
         .card-back { transform: rotateY(180deg); border-color: var(--st-color); border-top: 25px solid var(--st-color); padding: 25px 16px 16px; align-items: center; }
         .card-back::before { content: ''; position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 40px; height: 10px; background: #000; border-radius: 10px; border: 1px solid rgba(0,0,0,0.5); box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);}
         
-        .c-back-btn { width: 100%; padding: 14px; background: #000; color: var(--pearl); font-family: var(--font-kicker); font-size: 12px; font-weight: 900; letter-spacing: 1px; text-align: center; border: 2px solid var(--st-color); cursor: pointer; transition: 0.2s; margin-bottom: 16px; text-transform: uppercase; box-shadow: 3px 3px 0 rgba(0,0,0,1);}
+        .c-back-btn { width: 100%; padding: 14px; background: #000; color: var(--pearl); font-family: var(--font-kicker); font-size: 12px; font-weight: 900; letter-spacing: 1px; text-align: center; border: 2px solid var(--st-color); cursor: pointer; transition: 0.2s; margin-bottom: 12px; text-transform: uppercase; box-shadow: 3px 3px 0 rgba(0,0,0,1);}
         .c-back-btn:hover { background: var(--st-color); color: #000; transform: translate(-2px,-2px); box-shadow: 5px 5px 0 rgba(0,0,0,1); }
         .c-back-btn:active { transform: translate(2px,2px); box-shadow: 0 0 0 rgba(0,0,0,1); }
         
         .c-chat-btn { display: block; width: 100%; background: linear-gradient(135deg, var(--st-color), #222); color: #FFF; font-weight: 900; font-family: var(--font-kicker); font-size: 13px; letter-spacing: 1px; text-align: center; padding: 16px; text-decoration: none; transition: 0.2s; margin-top: auto; border: 2px solid #000; box-shadow: 4px 4px 0 rgba(0,0,0,1); text-transform: uppercase; text-shadow: 1px 1px 0 #000;}
         .c-chat-btn:hover { filter: brightness(1.2); transform: translate(-2px, -2px); box-shadow: 6px 6px 0 rgba(0,0,0,1); }
 
-        /* HỒ SƠ DỰ BỊ */
-        .upcoming-empty { text-align: center; padding: 40px 20px; }
-        .upcoming-empty p { font-style: italic; color: var(--silver); font-size: 15px; line-height: 1.8; margin-bottom: 20px; text-shadow: 1px 1px 0 #000;}
-        .upcoming-empty svg { width: 120px; height: 120px; stroke: var(--brass); opacity: 0.5; margin: 0 auto; display: block; filter: drop-shadow(0 0 5px rgba(181, 166, 66, 0.5)); }
-
-        .up-card-front { border-color: #555; border-top: 25px solid #444; padding: 25px 16px 16px; align-items: center; position:relative; background: #151515 url('https://www.transparenttextures.com/patterns/cardboard-flat.png'); border-radius: 8px; border-left: 2px solid #333; border-right: 2px solid #333; border-bottom: 2px solid #333; box-shadow: 6px 6px 0 rgba(0,0,0,1); display: flex; flex-direction: column; height: 100%; filter: grayscale(0.8);}
-        .up-card-front::before { content: ''; position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 40px; height: 10px; background: #000; border-radius: 10px; border: 1px solid rgba(0,0,0,0.5); box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);}
-        
-        .up-stamp { position: absolute; top: 15px; left: -10px; background: #D50000; color: #FFF; font-weight: 900; font-size: 12px; padding: 4px 15px; transform: rotate(-15deg); border: 2px solid #FFF; box-shadow: 2px 2px 0 #000, 0 0 10px rgba(213,0,0,0.6); z-index: 5; letter-spacing: 2px; }
-        
-        .up-idea-box { background: rgba(0,0,0,0.6); border: 1px solid #444; padding: 10px; font-size: 13px; color: #ccc; line-height: 1.6; width: 100%; flex: 1; overflow-y: auto; margin-bottom: 10px; border-radius: 4px; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8);}
-        .up-idea-box::-webkit-scrollbar { width: 4px; }
-        .up-idea-box::-webkit-scrollbar-thumb { background: #666; }
-        
-        .up-vote-btn { background: rgba(0,0,0,0.8); border: 1px solid #444; color: var(--pearl); display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.2s; width: 100%; font-family: var(--font-kicker); font-size: 13px; margin-top: auto;}
-        .up-vote-btn:hover { background: rgba(255,255,255,0.1); }
-        .up-vote-btn.voted { border-color: #D50000; color: #D50000; box-shadow: inset 0 0 10px rgba(213,0,0,0.2); }
+        /* KÝ ỨC BỎ QUÊN (THƯ VIỆN ẢNH NHÂN VIÊN) */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; padding: 20px 0;}
+        .polaroid-frame { background: #FFF; padding: 10px 10px 30px 10px; box-shadow: 4px 4px 10px rgba(0,0,0,0.5); transform: rotate(calc(-3deg + (6deg * var(--rand)))); transition: 0.3s; cursor: pointer; filter: sepia(0.3) contrast(1.1);}
+        .polaroid-frame:hover { transform: scale(1.05) rotate(0deg); z-index: 10; filter: sepia(0); box-shadow: 8px 8px 15px rgba(0,0,0,0.7);}
+        .polaroid-frame img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border: 1px solid #ddd;}
 
         /* ============================================================
            SỔ LƯU BÚT & BÀI ĐĂNG
@@ -282,7 +279,10 @@
         .file-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border: 2px dashed #444; background: #000; color: var(--silver); cursor: pointer; font-size: 12px; font-weight: 900; width: 100%; text-transform: uppercase; letter-spacing: 1px;}
         .file-btn:hover { border-color: var(--pearl); color: var(--pearl); }
         .img-preview-grid { display: flex; gap: 10px; flex-wrap: wrap; }
-        .img-preview-grid img { width: 60px; height: 60px; object-fit: cover; border: 2px solid #333; }
+        .img-preview-grid img { width: 60px; height: 60px; object-fit: cover; border: 2px solid #333; position: relative;}
+        
+        /* Chỉnh sửa UI xóa ảnh thư viện */
+        .del-img-btn { position:absolute; top: -5px; right: -5px; background: #8B0000; color:#FFF; width:20px; height:20px; border-radius:50%; border:2px solid #000; font-size:10px; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; }
 
         .feed-container { display: flex; flex-direction: column; gap: 24px; }
         .post-card { background: rgba(10,10,12,0.95); border: 2px solid #222; padding: 20px; box-shadow: 6px 6px 0 rgba(0,0,0,1); position: relative;}
@@ -292,7 +292,7 @@
         .post-content { font-size: 14.5px; color: var(--pearl); line-height: 1.6; margin-bottom: 16px; white-space: pre-wrap; font-weight: 500;}
 
         /* ============================================================
-           MÁY HÁT GRAMOPHONE CHIA 2 VIEW
+           MÁY HÁT GRAMOPHONE & SEEKBAR
            ============================================================ */
         .gramo-toggle { position: fixed; right: 24px; bottom: 24px; z-index: 60; width: 60px; height: 60px; border-radius: 50%; background: #000; border: 2px solid var(--brass); box-shadow: 0 0 15px rgba(181, 166, 66, 0.4), 4px 4px 0 rgba(0,0,0,1); display: flex; align-items: center; justify-content: center; color: var(--brass); font-size: 24px; transition: 0.3s; cursor: pointer; }
         .gramo-toggle:hover { border-color: #FFF; color: #FFF; box-shadow: 0 0 25px rgba(181, 166, 66, 0.8), 4px 4px 0 rgba(0,0,0,1); transform: scale(1.05); }
@@ -327,16 +327,18 @@
         .g-back-btn { background: transparent; border: none; color: var(--amber); cursor: pointer; font-size: 11px; font-family: var(--font-kicker); font-weight: bold; text-transform: uppercase; transition: 0.2s; }
         .g-back-btn:hover { color: #FFF; }
 
-        .gramo-player-controls { display: flex; justify-content: center; gap: 20px; align-items: center; padding-top: 15px; border-top: 2px dashed rgba(181, 166, 66, 0.4); position: relative; z-index: 2; flex-shrink: 0;}
+        /* SEEKBAR & PLAYER CONTROLS */
+        .gramo-progress-container { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-family: 'Courier New', monospace; font-size: 10px; color: var(--brass); border-top: 1px dashed rgba(181, 166, 66, 0.4); padding-top: 10px;}
+        .seek-slider { flex: 1; -webkit-appearance: none; appearance: none; background: #222; height: 4px; outline: none; border-radius: 2px; cursor: pointer;}
+        .seek-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--amber); cursor: pointer; box-shadow: 0 0 5px #000; border: 2px solid #000;}
+        
+        .gramo-player-controls { display: flex; justify-content: center; gap: 20px; align-items: center; padding-top: 15px; position: relative; z-index: 2; flex-shrink: 0;}
         .g-ctrl-btn { font-size: 18px; color: var(--brass); transition: 0.2s; display: flex; align-items: center; justify-content: center; background: #111; border: 2px solid #000; border-radius: 4px; padding: 8px; box-shadow: inset 1px 1px 0 rgba(255,255,255,0.1), 2px 2px 0 rgba(0,0,0,1); }
         .g-ctrl-btn:hover, .g-ctrl-btn.active { color: #FFF; border-color: var(--brass); transform: translate(-1px, -1px); box-shadow: 3px 3px 0 rgba(0,0,0,1); }
         .g-ctrl-btn:active { transform: translate(1px, 1px); box-shadow: 0 0 0 rgba(0,0,0,1); }
         
         #gramoPlayWrap { position: relative; border-radius: 50%; }
         #gramoPlay { font-size: 24px; padding: 12px; border-radius: 50%; border-color: var(--brass); color: #FFDF73; position: relative; z-index: 2; }
-
-        .floating-note { position: fixed; color: #DDAA33; pointer-events: none; opacity: 0; z-index: 55; filter: drop-shadow(0 0 5px #DDAA33); animation: floatAroundNote 3s ease-in forwards; }
-        @keyframes floatAroundNote { 0% { transform: translate(0, 0) scale(0.5) rotate(0deg); opacity: 0; } 20% { opacity: 0.8; } 50% { transform: translate(calc(30px * var(--x)), -30px) scale(1) rotate(calc(45deg * var(--x))); opacity: 0.8; } 100% { transform: translate(calc(60px * var(--x)), -80px) scale(1.2) rotate(calc(90deg * var(--x))); opacity: 0; } }
 
         /* ============================================================
            MODAL CHUNG & BẢNG TRẮNG TO CỦA HỒ SƠ/FEEDBACK
@@ -450,6 +452,10 @@
                 </div>
                 <div class="search-bar-basic">
                     <input type="text" id="staffSearch" class="search-input" placeholder="🔍 Tìm tên nhân viên...">
+                    <select id="staffSortSelect" class="sort-select">
+                        <option value="newest">Mới nhất</option>
+                        <option value="rating">Đánh giá cao nhất</option>
+                    </select>
                 </div>
                 <div id="trainsList"></div>
             </div>
@@ -535,6 +541,13 @@
             <div id="currentPlNameDisplay" style="font-size:11px; color:var(--amber); margin-bottom:10px; font-weight:bold; text-transform:uppercase;"></div>
             <div id="gramoSongList"></div>
         </div>
+        
+        <!-- THANH SEEKBAR MỚI THÊM -->
+        <div class="gramo-progress-container">
+            <span id="currTime">0:00</span>
+            <input type="range" id="seekSlider" class="seek-slider" value="0" min="0" max="100" step="1">
+            <span id="totalTime">0:00</span>
+        </div>
 
         <div class="gramo-player-controls">
             <button class="g-ctrl-btn" id="gramoPrev" title="Bài trước"><span class="icon-slot" data-icon="prev"></span></button>
@@ -586,7 +599,6 @@
             for(let i=0; i<30; i++) { let ember = document.createElement('div'); ember.className = 'ember'; ember.style.left = Math.random() * 100 + 'vw'; ember.style.top = (Math.random() * 50 + 50) + 'vh'; ember.style.animationDelay = Math.random() * 5 + 's'; ember.style.animationDuration = (Math.random() * 2 + 3) + 's'; container.appendChild(ember); }
         }
 
-        /* ĐOM ĐÓM TRANG 2 LƠ LỬNG */
         function createFireflies() {
             const container = document.getElementById('bg-page2');
             for(let i=0; i<60; i++) {
@@ -609,7 +621,6 @@
             }
         }
 
-        /* Nốt nhạc lượn quanh đĩa than */
         let noteInterval;
         function spawnNote() {
             if(!isPlaying) return;
@@ -699,6 +710,13 @@
                     renderTrains();
                 });
             }
+            
+            const staffSortSelect = document.getElementById("staffSortSelect");
+            if (staffSortSelect) {
+                staffSortSelect.addEventListener("change", () => {
+                    renderTrains();
+                });
+            }
 
             updateStationMasterUI(); renderTrains(); renderUpcomingBots(); renderGramoPlaylists();
             rollNumber(document.getElementById("statStaff"), CONFIG.staff.length || 0); 
@@ -707,7 +725,7 @@
             await fetchFeeds(); 
         });
 
-        // TÁCH DÒNG DATABASE: Khắc phục triệt để lỗi Out Of Memory
+        // TÁCH DÒNG DATABASE
         async function fetchStationConfig() {
             try {
                 const { data: mainData } = await supa.from('station_config').select('data').eq('id', 1).single();
@@ -719,12 +737,11 @@
                     }
                 }
 
-                // Dữ liệu Nhạc được lưu ở ID 2 để không gánh bộ nhớ cùng Text
                 const { data: musicData } = await supa.from('station_config').select('data').eq('id', 2).single();
                 if (musicData && musicData.data) {
                     CONFIG.musicLibrary = typeof musicData.data === 'string' ? JSON.parse(musicData.data) : musicData.data;
                 } else if (dbConfig.musicLibrary) {
-                    CONFIG.musicLibrary = dbConfig.musicLibrary; // Tương thích dữ liệu cũ
+                    CONFIG.musicLibrary = dbConfig.musicLibrary; 
                 }
 
                 let localMain = await localforage.getItem("meown_config_backup");
@@ -741,7 +758,6 @@
             } catch(e) {}
         }
 
-        // BIẾN THỂ LƯU DATA MỚI: Tách luồng lưu để mượt mà vĩnh viễn
         async function saveStationConfigToDB(skipMusicSync = false) {
             CONFIG.lastUpdated = Date.now(); 
             if (!CONFIG.musicLibrary) CONFIG.musicLibrary = []; 
@@ -762,7 +778,6 @@
             try { 
                 await supa.from('station_config').upsert([{ id: 1, data: JSON.stringify(mainPayload) }]); 
                 
-                // Chỉ stringify chuỗi nhạc khổng lồ khi thực sự thao tác liên quan tới nhạc
                 if(!skipMusicSync) {
                     const musicPayload = JSON.stringify(CONFIG.musicLibrary);
                     await supa.from('station_config').upsert([{ id: 2, data: musicPayload }]);
@@ -839,6 +854,21 @@
         let trainGenresList = [];
         function renderTrGenresList() { const listContainer = document.getElementById("aTrGenreList"); if(!listContainer) return; listContainer.innerHTML = trainGenresList.map((g, i) => `<span class="c-tag" style="background:#000; border-color:var(--silver); color:var(--pearl); display:flex; align-items:center; gap:4px;">${g} <span style="cursor:pointer; color:red; font-weight:bold;" onclick="removeTrGenre(${i})">×</span></span>`).join(''); }
         window.removeTrGenre = function(i) { trainGenresList.splice(i, 1); renderTrGenresList(); };
+        
+        // Render Thư viện ảnh Tạm thời trong lúc Admin chỉnh sửa
+        let tempGallery = [];
+        function renderTempGallery() {
+            const wrap = document.getElementById("aStGalleryPrev");
+            if(!wrap) return;
+            wrap.innerHTML = "";
+            tempGallery.forEach((b64, idx) => {
+                let div = document.createElement("div");
+                div.style.position = "relative";
+                div.innerHTML = `<img src="${b64}"><div class="del-img-btn" onclick="removeTempGalleryImg(${idx})">✕</div>`;
+                wrap.appendChild(div);
+            });
+        }
+        window.removeTempGalleryImg = function(idx) { tempGallery.splice(idx, 1); renderTempGallery(); };
 
         window.openAdminForm = function(type, action, idOrParentId) {
             document.getElementById("generalBox").classList.remove("modal-white");
@@ -883,9 +913,11 @@
                 });
             }
             else if(type === 'staff') {
-                let sData = { name: "", avatar: "", hook: "", tags: [], scenario: "", chatLink: "" };
+                let sData = { name: "", avatar: "", hook: "", tags: [], scenario: "", chatLink: "", gallery: [] };
                 let tId = idOrParentId; if(action === 'edit') { const st = CONFIG.staff.find(s => s.id === idOrParentId); if(st){ sData = st; tId = st.trainId; } }
                 let tagsStr = (sData.tags || []).join(', ');
+                tempGallery = [...(sData.gallery || [])];
+                
                 document.getElementById("generalModalTitle").textContent = action === 'add' ? `IN THẺ NHÂN VIÊN MỚI` : `CHỈNH SỬA THẺ NHÂN VIÊN`;
                 body.innerHTML = `
                     <div class="form-row"><label>Tên Nhân Viên</label><input type="text" id="aStName" value="${sData.name || ''}"></div>
@@ -902,16 +934,31 @@
                         </div>
                         <div id="aStScenario" class="rt-editor" contenteditable="true">${sData.scenario || ''}</div>
                     </div>
+                    <div class="form-row file-upload-wrapper">
+                        <label>Thư viện ảnh Ký ức (Mặt sau thẻ)</label>
+                        <label class="file-btn"><input type="file" accept="image/*" multiple id="aStGalleryInp" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> ĐĂNG NHIỀU ẢNH CÙNG LÚC</label>
+                        <div id="aStGalleryPrev" class="img-preview-grid"></div>
+                    </div>
                     <div class="form-row"><label>LINK TRÒ CHUYỆN</label><input type="text" id="aStChat" value="${sData.chatLink || ''}"></div>
                     <button class="submit-btn" id="saveSt">${action==='add'?"IN THẺ":"LƯU HỒ SƠ"}</button>
                 `;
-                loadIcons(); 
+                loadIcons(); renderTempGallery();
                 window.insertToggleHTML = function() { const html = `<details open><summary>BẤM VÀO ĐÂY ĐỂ ĐỔI TÊN NÚT</summary><div style="color:#000;">Nhập nội dung hiển thị cho hành khách vào đây...</div></details><br>`; document.execCommand('insertHTML', false, html); };
-                let sB64 = sData.avatar; document.getElementById("aStFile").addEventListener("change", async (e)=>{ sB64 = await resizeImage(e.target.files[0]); document.getElementById("aStPrev").innerHTML=`<img src="${sB64}">`; document.getElementById("aStPrev").querySelector('img').style.display='block'; });
+                let sB64 = sData.avatar; 
+                document.getElementById("aStFile").addEventListener("change", async (e)=>{ sB64 = await resizeImage(e.target.files[0]); document.getElementById("aStPrev").innerHTML=`<img src="${sB64}">`; document.getElementById("aStPrev").querySelector('img').style.display='block'; });
+                
+                document.getElementById("aStGalleryInp").addEventListener("change", async (e) => {
+                    for(let f of e.target.files) {
+                        const b64 = await resizeImage(f, 1000); // Kích thước ảnh thư viện có thể lớn hơn chút
+                        tempGallery.push(b64);
+                    }
+                    renderTempGallery();
+                });
+
                 document.getElementById("saveSt").addEventListener("click", async () => { 
                     const tags = document.getElementById("aStTags").value.split(',').map(t=>t.trim()).filter(t=>t); 
-                    if(action === 'add') { CONFIG.staff.push({ id: "s_"+Date.now(), trainId: tId, name: document.getElementById("aStName").value, avatar: sB64, hook: document.getElementById("aStHook").value, tags: tags, scenario: document.getElementById("aStScenario").innerHTML, chatLink: document.getElementById("aStChat").value, createdAt: Date.now(), rating: { sum: 0, count: 0 }, isHidden: false, feedbacks: [] }); } 
-                    else { let st = CONFIG.staff.find(s => s.id === idOrParentId); st.name = document.getElementById("aStName").value; st.avatar = sB64; st.hook = document.getElementById("aStHook").value; st.tags = tags; st.scenario = document.getElementById("aStScenario").innerHTML; st.chatLink = document.getElementById("aStChat").value; } 
+                    if(action === 'add') { CONFIG.staff.push({ id: "s_"+Date.now(), trainId: tId, name: document.getElementById("aStName").value, avatar: sB64, hook: document.getElementById("aStHook").value, tags: tags, scenario: document.getElementById("aStScenario").innerHTML, chatLink: document.getElementById("aStChat").value, gallery: tempGallery, createdAt: Date.now(), rating: { sum: 0, count: 0 }, isHidden: false, feedbacks: [] }); } 
+                    else { let st = CONFIG.staff.find(s => s.id === idOrParentId); st.name = document.getElementById("aStName").value; st.avatar = sB64; st.hook = document.getElementById("aStHook").value; st.tags = tags; st.scenario = document.getElementById("aStScenario").innerHTML; st.chatLink = document.getElementById("aStChat").value; st.gallery = tempGallery; } 
                     await saveStationConfigToDB(true); renderTrains(); rollNumber(document.getElementById("statStaff"), CONFIG.staff.length); document.getElementById("generalModal").classList.add("hidden"); 
                 });
             }
@@ -928,6 +975,20 @@
                     else { let up = CONFIG.upcomingBots.find(b => b.id === idOrParentId); up.name = document.getElementById("aUpName").value; up.avatar = uB64; up.idea = document.getElementById("aUpIdea").value; up.train = document.getElementById("aUpTrain").value; up.tags = tagsArray; up.progress = document.getElementById("aUpProgress").value; } 
                     await saveStationConfigToDB(true); renderUpcomingBots(); document.getElementById("generalModal").classList.add("hidden"); 
                 });
+            }
+            else if(type === 'post') {
+                const table = idOrParentId.type; const postId = idOrParentId.id;
+                let targetPost = (table === 'guestbook' ? localGuestbook : localRecruit).find(p => p.id === postId);
+                if(!targetPost) return;
+                document.getElementById("generalModalTitle").textContent = "CHỈNH SỬA BÀI ĐĂNG";
+                body.innerHTML = `<div class="form-row"><label>Tên tác giả</label><input type="text" id="aPostName" value="${targetPost.name || targetPost.author || ''}"></div><div class="form-row"><label>Nội dung</label><textarea id="aPostText" style="height:120px;">${targetPost.text || targetPost.content || ''}</textarea></div><button class="submit-btn" id="savePostBtn">LƯU BÀI VIẾT</button>`;
+                document.getElementById("savePostBtn").onclick = async () => {
+                    targetPost.name = document.getElementById("aPostName").value; targetPost.author = targetPost.name;
+                    targetPost.text = document.getElementById("aPostText").value; targetPost.content = targetPost.text;
+                    const dbTable = table === 'guestbook' ? 'meown_guestbook' : 'meown_recruit';
+                    try { await supa.from(dbTable).update({ name: targetPost.name, author: targetPost.author, text: targetPost.text, content: targetPost.content }).eq('id', postId); } catch(e) {}
+                    renderFeed(table); document.getElementById("generalModal").classList.add("hidden");
+                };
             }
             else if(type === 'playlist') {
                 if(action === 'add') {
@@ -1055,7 +1116,6 @@
                                 const file = r._attachedFile || (fileInput && fileInput.files.length > 0 ? fileInput.files[0] : null);
                                 
                                 if(title && file) { 
-                                    // Chốt chặn dung lượng chống tràn RAM
                                     if(file.size > 10 * 1024 * 1024) {
                                         alert(`Bài hát "${file.name}" quá lớn (>10MB). Vui lòng nén lại hoặc bỏ qua để tránh sập bộ nhớ!`);
                                         r.querySelector(".file-status").textContent = "Lỗi: File quá nặng!";
@@ -1064,7 +1124,7 @@
                                     }
                                     const base64Audio = await fileToBase64(file); 
                                     newSongs.push({ title: title, src: base64Audio }); 
-                                    r._attachedFile = null; // Giải phóng RAM tức thì sau khi đọc file
+                                    r._attachedFile = null; 
                                 } 
                             } 
                             
@@ -1100,7 +1160,20 @@
 
         function renderTrains(){
             const wrap = document.getElementById("trainsList"); wrap.innerHTML = ""; const q = currentSearch.toLowerCase();
-            for(let train of CONFIG.trains) {
+            
+            // SẮP XẾP CHUYẾN TÀU THEO NHÂN VIÊN MỚI NHẤT
+            let sortedTrains = [...CONFIG.trains].sort((a, b) => {
+                let aStaff = CONFIG.staff.filter(s => s.trainId === a.id);
+                let bStaff = CONFIG.staff.filter(s => s.trainId === b.id);
+                let aMax = aStaff.length ? Math.max(...aStaff.map(s => s.createdAt || 0)) : (a.createdAt || 0);
+                let bMax = bStaff.length ? Math.max(...bStaff.map(s => s.createdAt || 0)) : (b.createdAt || 0);
+                return bMax - aMax;
+            });
+
+            // Lấy chế độ sắp xếp nhân viên từ dropdown
+            let staffSortMode = document.getElementById("staffSortSelect") ? document.getElementById("staffSortSelect").value : 'newest';
+
+            for(let train of sortedTrains) {
                 const staffCount = CONFIG.staff.filter(s => s.trainId === train.id).length;
                 const card = document.createElement("div"); card.className = `train-card ${train.theme || 'theme-09'}`; 
                 
@@ -1110,7 +1183,27 @@
                     <button style="background:#8B0000; color:#FFF; padding:6px 12px; border-radius:3px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="deleteTrain('${train.id}', event)">🗑️ XÓA TÀU</button>
                 </div>` : "";
                 
-                card.innerHTML = `${adminCtrls}<div class="t-door"></div><div class="t-body"><div class="t-plate">${train.name}</div><div class="t-windows-wrap"><div class="t-window"><div class="t-window-text">${train.intro}</div></div><div class="t-window" style="opacity:0.8;"></div></div><div class="t-specs">STAFF.VOL:${staffCount} // ROUTE:${train.id.substring(0,6)}</div></div><div class="t-bellows"></div><div class="t-wheels-area"></div>`;
+                // Nâng cấp: Hiển thị toàn bộ lời giới thiệu và Tags thể loại vào cửa sổ tàu
+                let trainTagsHtml = (train.genres || []).map(g => `<span class="t-genre-tag">${g}</span>`).join('');
+                
+                card.innerHTML = `
+                    ${adminCtrls}
+                    <div class="t-door"></div>
+                    <div class="t-body">
+                        <div class="t-plate">${train.name}</div>
+                        <div class="t-windows-wrap">
+                            <div class="t-window" style="flex: 1.5;">
+                                <div class="t-window-text">${train.intro || ''}</div>
+                            </div>
+                            <div class="t-window" style="background: rgba(0,0,0,0.4); border-color:#222; box-shadow:inset 0 0 10px #000;">
+                                <div class="t-tags-container">${trainTagsHtml}</div>
+                            </div>
+                        </div>
+                        <div class="t-specs">STAFF.VOL:${staffCount} // ROUTE:${train.id.substring(0,6)}</div>
+                    </div>
+                    <div class="t-bellows"></div>
+                    <div class="t-wheels-area"></div>
+                `;
                 
                 const acc = document.createElement("div"); acc.className = "train-accordion";
                 if(isAdminMode) {
@@ -1121,6 +1214,17 @@
                 
                 let trainStaff = CONFIG.staff.filter(s => s.trainId === train.id && s.name.toLowerCase().includes(q));
                 if(!isAdminMode) trainStaff = trainStaff.filter(s => !s.isHidden);
+                
+                // Logic SẮP XẾP NHÂN VIÊN
+                trainStaff.sort((a, b) => {
+                    if (staffSortMode === 'rating') {
+                        let rA = a.rating && a.rating.count > 0 ? a.rating.sum / a.rating.count : 0;
+                        let rB = b.rating && b.rating.count > 0 ? b.rating.sum / b.rating.count : 0;
+                        if (rB !== rA) return rB - rA; // Nếu số sao khác nhau thì xếp theo sao
+                    }
+                    return (b.createdAt || 0) - (a.createdAt || 0); // Mặc định xếp mới nhất lên đầu
+                });
+
                 const grid = document.createElement("div"); grid.className = "staff-grid";
                 for(let st of trainStaff) { grid.appendChild(createStaffCard(st, train.theme || 'theme-09')); }
                 if(trainStaff.length === 0) { grid.innerHTML = "<p style='color:var(--silver); padding: 0 16px; font-style:italic;'>Trống.</p>"; }
@@ -1176,8 +1280,9 @@
                         </div>
                     </div>
                     <div class="card-back">
-                        <div class="c-id-header" style="margin-bottom:20px;">BACK OF ID</div>
+                        <div class="c-id-header" style="margin-bottom:15px;">BACK OF ID</div>
                         <button class="c-back-btn c-profile-btn">HỒ SƠ MẬT 📜</button>
+                        <button class="c-back-btn c-gallery-btn" style="border-color: #8B0000; color: #8B0000;">KÝ ỨC LƯU TRỮ 🎞️</button>
                         <button class="c-back-btn c-fb-btn">ĐỂ LẠI LỜI NHẮN ✍️</button>
                         <a href="${staff.chatLink || '#'}" target="_blank" class="c-chat-btn">TRÒ CHUYỆN</a>
                     </div>
@@ -1191,6 +1296,24 @@
             
             const profileBtn = cardWrap.querySelector('.c-profile-btn');
             profileBtn.addEventListener('click', (e) => { const modal = document.getElementById("generalModal"); const box = document.getElementById("generalBox"); const body = document.getElementById("generalModalBody"); box.classList.add("modal-white"); document.getElementById("generalModalTitle").textContent = `HỒ SƠ: ${staff.name}`; body.innerHTML = `<div style="font-size:15px; color:#000;">${scenarioHTML}</div>`; modal.classList.remove("hidden"); });
+
+            const galleryBtn = cardWrap.querySelector('.c-gallery-btn');
+            galleryBtn.addEventListener('click', (e) => {
+                const modal = document.getElementById("generalModal"); const box = document.getElementById("generalBox"); const body = document.getElementById("generalModalBody"); box.classList.add("modal-white"); 
+                document.getElementById("generalModalTitle").textContent = `KÝ ỨC LƯU TRỮ: ${staff.name}`; 
+                
+                if(!staff.gallery || staff.gallery.length === 0) {
+                    body.innerHTML = `<p style="text-align:center; font-style:italic; color:#8A8A93; padding: 40px 0;">Nhân viên này chưa có bức ảnh lưu niệm nào.</p>`;
+                } else {
+                    let imagesHtml = staff.gallery.map(imgBase64 => `
+                        <div class="polaroid-frame" style="--rand: ${Math.random()};">
+                            <img src="${imgBase64}">
+                        </div>
+                    `).join('');
+                    body.innerHTML = `<div class="gallery-grid">${imagesHtml}</div>`;
+                }
+                modal.classList.remove("hidden"); 
+            });
 
             const fbBtn = cardWrap.querySelector('.c-fb-btn');
             fbBtn.addEventListener('click', (e) => {
@@ -1380,6 +1503,32 @@
         };
 
         const audioEl = document.getElementById("gramoAudio");
+        const seekSlider = document.getElementById("seekSlider");
+        const currTimeEl = document.getElementById("currTime");
+        const totalTimeEl = document.getElementById("totalTime");
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            const m = Math.floor(seconds / 60);
+            const s = Math.floor(seconds % 60);
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        audioEl.addEventListener("loadedmetadata", () => {
+            seekSlider.max = Math.floor(audioEl.duration);
+            totalTimeEl.textContent = formatTime(audioEl.duration);
+        });
+
+        audioEl.addEventListener("timeupdate", () => {
+            seekSlider.value = Math.floor(audioEl.currentTime);
+            currTimeEl.textContent = formatTime(audioEl.currentTime);
+        });
+
+        seekSlider.addEventListener("input", () => {
+            audioEl.currentTime = seekSlider.value;
+            currTimeEl.textContent = formatTime(seekSlider.value);
+        });
+
         window.playSong = function(plId, index) {
             const pl = CONFIG.musicLibrary.find(p => p.id === plId);
             if(!pl || !pl.songs || !pl.songs[index]) return;
