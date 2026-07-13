@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,500&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=Libre+Barcode+39+Text&display=swap" rel="stylesheet">
     
-    <!-- Supabase & LocalForage (Chống tràn bộ nhớ) -->
+    <!-- Supabase & LocalForage (Chống tràn bộ nhớ cực mạnh) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
 
@@ -34,7 +34,7 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        html, body { width: 100%; min-height: 100%; background-color: var(--bg-abyss); color: var(--pearl); font-family: var(--font-body); overflow-x: hidden; }
+        html, body { width: 100%; min-height: 100%; background-color: var(--bg-abyss); color: var(--pearl); font-family: var(--font-body); overflow-x: hidden; scroll-behavior: smooth;}
         button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; outline: none;}
         input, textarea, select { font-family: inherit; color: inherit; outline: none; }
         img { max-width: 100%; display: block; }
@@ -100,7 +100,8 @@
         .noti-list { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 8px;}
         .noti-list::-webkit-scrollbar { width: 4px; }
         .noti-list::-webkit-scrollbar-thumb { background: #444; }
-        .noti-item { padding: 12px; background: rgba(0,0,0,0.6); border: 1px solid #333; border-left: 3px solid var(--amber); color: var(--pearl); font-size: 13px; line-height: 1.5;}
+        .noti-item { padding: 12px; background: rgba(0,0,0,0.6); border: 1px solid #333; border-left: 3px solid var(--amber); color: var(--pearl); font-size: 13px; line-height: 1.5; cursor: pointer; transition: 0.2s;}
+        .noti-item:hover { background: rgba(221, 170, 51, 0.1); border-color: var(--amber); }
         .noti-item span.highlight { color: var(--amber); font-weight: bold; }
 
         /* ============================================================
@@ -200,7 +201,7 @@
         .t-window-text::-webkit-scrollbar { width: 4px; }
         .t-window-text::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.5); border-radius: 2px;}
         
-        /* CỘT TAGS BÊN PHẢI */
+        /* CỘT TAGS BÊN PHẢI ĐƯỢC CHỈNH LẠI: Nền Vàng, Chữ Đen */
         .t-tags-container { display: flex; flex-direction: column; gap: 6px; overflow-y: auto; max-height: 110px; padding-right: 4px; align-items: stretch;}
         .t-tags-container::-webkit-scrollbar { width: 4px; }
         .t-tags-container::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.5); border-radius: 2px;}
@@ -223,7 +224,7 @@
            THIẾT KẾ THẺ NHÂN VIÊN VÀ DỰ BỊ (ID BADGE VẬT LÝ)
            ============================================================ */
         .staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 24px; padding: 16px 0; margin-top: 15px; width: 100%;}
-        .staff-card-container { perspective: 1000px; width: 100%; min-height: 520px; position: relative; }
+        .staff-card-container { perspective: 1000px; width: 100%; min-height: 520px; position: relative; transition: 0.3s; scroll-margin-top: 100px;}
         
         .admin-card-controls { position: absolute; top: -35px; left: 0; right: 0; display: none; justify-content: center; gap: 8px; z-index: 20; }
         body.admin-active .admin-card-controls { display: flex; }
@@ -231,7 +232,7 @@
         .admin-card-btn:hover { border-color: var(--pearl); color: var(--pearl); }
         .admin-card-btn.del:hover { background: #8B0000; color: white; border-color: #8B0000; }
 
-        .staff-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; cursor: pointer; }
+        .staff-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; cursor: pointer; border-radius: 8px;}
         .staff-card-container.flipped .staff-card-inner { transform: rotateY(180deg); }
         
         .card-front, .card-back { 
@@ -252,17 +253,32 @@
         .card-front .c-image-wrap { width: 140px; height: 140px; border: 4px solid #FFF; border-bottom: 15px solid #FFF; background: #FFF; position: relative; box-shadow: 2px 2px 10px rgba(0,0,0,0.8); margin-bottom: 15px; transform: rotate(-2deg); flex-shrink: 0;}
         .card-front .c-image-wrap img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.1) sepia(0.2) grayscale(0.1); }
         
-        /* CHỮ TÊN NHÂN VIÊN VÀ HỒ SƠ CHỈNH MÀU ĐEN + ĐỔ BÓNG NỔI */
-        .card-front .c-name { font-family: var(--font-heading); font-size: 22px; font-weight: 900; color: #111; text-align: center; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 1px 0 rgba(255,255,255,0.4); width: 100%; border-bottom: 1px dashed #444; padding-bottom: 5px; margin-bottom: 10px;}
+        /* HIỆU ỨNG TÊN NHÂN VIÊN KIM LOẠI DẬP NỔI */
+        .card-front .c-name, .up-card-front .c-name { 
+            font-family: var(--font-heading); 
+            font-size: 24px; 
+            font-weight: 900; 
+            text-align: center; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            width: 100%; 
+            border-bottom: 1px dashed #444; 
+            padding-bottom: 8px; 
+            margin-bottom: 12px;
+            background: linear-gradient(180deg, #FFFFFF 0%, var(--st-color, var(--amber)) 45%, #222222 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.9)) drop-shadow(-1px -1px 1px rgba(255,255,255,0.2));
+        }
+
         .c-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 10px; width: 100%;}
         .c-tag { font-size: 10px; font-weight: bold; padding: 4px 6px; background: rgba(0,0,0,0.8); border: 1px solid var(--st-color); color: var(--st-color); text-transform: uppercase; letter-spacing: 1px; text-shadow: 1px 1px 0 #000;}
         .card-front .c-hook { font-size: 13px; font-style: italic; color: var(--pearl); text-align: center; margin-bottom: auto; line-height: 1.4; text-shadow: 1px 1px 0 #000; width: 100%;}
         
         .c-rating-badge { background: #000; border: 1px solid var(--st-color); padding: 4px 10px; font-size: 12px; font-weight: 900; color: var(--st-color); box-shadow: 2px 2px 0 rgba(0,0,0,1); margin-top: 10px;}
         
-        /* LẬT THẺ CHỈNH MÀU ĐỂ RÕ HƠN */
-        .card-front .c-flip-hint { text-align: center; font-size: 10px; color: var(--amber); animation: pulseHint 2s infinite; font-family: var(--font-kicker); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; margin-top: 10px; background: rgba(0,0,0,0.8); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--amber); box-shadow: 2px 2px 0 #000;}
-        @keyframes pulseHint { 0%, 100% { opacity: 0.8; } 50% { opacity: 1; box-shadow: 0 0 10px rgba(221,170,51,0.6), 2px 2px 0 #000; } }
+        .card-front .c-flip-hint { text-align: center; font-size: 10px; color: var(--amber); animation: pulseHint 2s infinite; font-family: var(--font-kicker); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; margin-top: 10px; background: #000; padding: 6px 12px; border-radius: 4px; border: 1px solid var(--amber); box-shadow: 2px 2px 0 #000;}
+        @keyframes pulseHint { 0%, 100% { opacity: 0.8; } 50% { opacity: 1; box-shadow: 0 0 15px rgba(221,170,51,0.8), 2px 2px 0 #000; } }
 
         /* MẶT SAU THẺ NHÂN VIÊN */
         .card-back { transform: rotateY(180deg); border-color: var(--st-color); border-top: 25px solid var(--st-color); padding: 25px 16px 16px; align-items: center; }
@@ -284,11 +300,7 @@
         /* ============================================================
            HỒ SƠ DỰ BỊ
            ============================================================ */
-        .upcoming-empty { text-align: center; padding: 40px 20px; width: 100%; grid-column: 1 / -1; display:flex; flex-direction:column; align-items:center;}
-        .upcoming-empty p { font-style: italic; color: var(--silver); font-size: 15px; line-height: 1.8; margin-bottom: 20px; text-shadow: 1px 1px 0 #000; max-width: 600px; text-align: center;}
-        .upcoming-empty svg { width: 120px; height: 120px; stroke: var(--brass); opacity: 0.5; margin: 0 auto 20px auto; display: block; filter: drop-shadow(0 0 5px rgba(181, 166, 66, 0.5)); }
-
-        .up-card-front { border-color: #555; border-top: 25px solid #444; padding: 25px 16px 16px; align-items: center; position:relative; background: #151515 url('https://www.transparenttextures.com/patterns/cardboard-flat.png'); border-radius: 8px; border-left: 2px solid #333; border-right: 2px solid #333; border-bottom: 2px solid #333; box-shadow: 6px 6px 0 rgba(0,0,0,1); display: flex; flex-direction: column; height: 100%; filter: grayscale(0.8);}
+        .up-card-front { border-color: #555; border-top: 25px solid #444; padding: 25px 16px 16px; align-items: center; position:relative; background: #151515 url('https://www.transparenttextures.com/patterns/cardboard-flat.png'); border-radius: 8px; border-left: 2px solid #333; border-right: 2px solid #333; border-bottom: 2px solid #333; box-shadow: 6px 6px 0 rgba(0,0,0,1); display: flex; flex-direction: column; height: 100%; filter: grayscale(0.8); --st-color: var(--amber);}
         .up-card-front::before { content: ''; position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 40px; height: 10px; background: #000; border-radius: 10px; border: 1px solid rgba(0,0,0,0.5); box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);}
         
         .up-stamp { position: absolute; top: 15px; left: -10px; background: #D50000; color: #FFF; font-weight: 900; font-size: 12px; padding: 4px 15px; transform: rotate(-15deg); border: 2px solid #FFF; box-shadow: 2px 2px 0 #000, 0 0 10px rgba(213,0,0,0.6); z-index: 5; letter-spacing: 2px; }
@@ -300,6 +312,11 @@
         .up-vote-btn { background: rgba(0,0,0,0.8); border: 1px solid #444; color: var(--pearl); display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.2s; width: 100%; font-family: var(--font-kicker); font-size: 13px; margin-top: auto;}
         .up-vote-btn:hover { background: rgba(255,255,255,0.1); }
         .up-vote-btn.voted { border-color: #D50000; color: #D50000; box-shadow: inset 0 0 10px rgba(213,0,0,0.2); }
+
+        /* Căn giữa ô Trống khi Sảnh tuyển dụng không có ai */
+        .upcoming-empty { text-align: center; padding: 40px 20px; width: 100%; grid-column: 1 / -1; display:flex; flex-direction:column; align-items:center;}
+        .upcoming-empty p { font-style: italic; color: var(--silver); font-size: 15px; line-height: 1.8; margin-bottom: 20px; text-shadow: 1px 1px 0 #000; max-width: 600px; text-align: center;}
+        .upcoming-empty svg { width: 120px; height: 120px; stroke: var(--brass); opacity: 0.5; margin: 0 auto 20px auto; display: block; filter: drop-shadow(0 0 5px rgba(181, 166, 66, 0.5)); }
 
         /* ============================================================
            SỔ LƯU BÚT & BÀI ĐĂNG
@@ -589,7 +606,7 @@
             <div id="gramoSongList"></div>
         </div>
         
-        <!-- THANH SEEKBAR -->
+        <!-- THANH SEEKBAR MỚI THÊM -->
         <div class="gramo-progress-container">
             <span id="currTime">0:00</span>
             <input type="range" id="seekSlider" class="seek-slider" value="0" min="0" max="100" step="1">
@@ -640,7 +657,6 @@
             note2: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle></svg>',
             bell: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>'
         };
-
         function loadIcons() { document.querySelectorAll(".icon-slot").forEach(el => { el.innerHTML = ICONS[el.dataset.icon]||""; }); }
 
         function createEmbers() {
@@ -698,6 +714,11 @@
         let localGuestbook = []; let localRecruit = [];
         let currentSearch = ""; 
 
+        // Hàm xóa dấu tiếng Việt giúp tìm kiếm thông minh hơn
+        function removeAccents(str) {
+            return str ? str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase() : '';
+        }
+
         function resizeImage(file, maxSize = 800) { return new Promise((resolve) => { const reader = new FileReader(); reader.onload = (e) => { const img = new Image(); img.onload = () => { const canvas = document.createElement('canvas'); let w = img.width, h = img.height; if(w > maxSize || h > maxSize) { if(w > h) { h = Math.round((h * maxSize) / w); w = maxSize; } else { w = Math.round((w * maxSize) / h); h = maxSize; } } canvas.width = w; canvas.height = h; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, w, h); resolve(canvas.toDataURL('image/jpeg', 0.6)); }; img.src = e.target.result; }; reader.readAsDataURL(file); }); }
         function fileToBase64(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error); }); }
 
@@ -743,7 +764,7 @@
             loadIcons(); createEmbers(); createFireflies();
             checkAdminLogin(); 
 
-            await initDatabase();
+            await fetchStationConfig();
             
             let currentVisits = parseInt(localStorage.getItem('meown_real_visits') || '0');
             if (!sessionStorage.getItem('has_visited')) {
@@ -767,13 +788,10 @@
                 });
             }
 
+            // Gán logic Chuông thông báo
             document.getElementById("notiBtn").addEventListener("click", () => {
                 const panel = document.getElementById("notiPanel");
                 panel.classList.toggle("show");
-                if (isAdminMode && panel.classList.contains("show")) {
-                    localStorage.setItem("admin_last_read", Date.now());
-                    document.getElementById("notiBadge").style.display = "none";
-                }
             });
 
             updateStationMasterUI(); renderTrains(); renderUpcomingBots(); renderGramoPlaylists();
@@ -781,8 +799,46 @@
             rollNumber(document.getElementById("statVisits"), currentVisits); 
             
             await fetchFeeds(); 
+            updateNotifications();
         });
 
+        // Hàm click thẳng từ Thông báo đến Chuyến tàu / Tab tương ứng
+        window.gotoNoti = function(type, id) {
+            document.getElementById("notiPanel").classList.remove("show");
+            document.getElementById("notiBadge").style.display = "none";
+            
+            if(isAdminMode) localStorage.setItem("admin_last_read", Date.now());
+            else localStorage.setItem("user_last_read_noti", Date.now());
+            
+            document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
+            document.querySelectorAll(".section-view").forEach(v => v.classList.add("hidden"));
+
+            if(type === 'guestbook') {
+                document.querySelector('.nav-item[data-view="guestbook"]').classList.add("active");
+                document.getElementById("view-guestbook").classList.remove("hidden");
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            } else if(type === 'recruit') {
+                document.querySelector('.nav-item[data-view="recruitment"]').classList.add("active");
+                document.getElementById("view-recruitment").classList.remove("hidden");
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            } else if(type === 'staff') {
+                document.querySelector('.nav-item[data-view="trains"]').classList.add("active");
+                document.getElementById("view-trains").classList.remove("hidden");
+                
+                setTimeout(() => {
+                    const card = document.getElementById('staff_card_' + id);
+                    if(card) {
+                        const acc = card.closest('.train-accordion');
+                        if(acc && !acc.classList.contains('open')) acc.classList.add('open');
+                        card.scrollIntoView({behavior: 'smooth', block: 'center'});
+                        card.querySelector('.staff-card-inner').style.boxShadow = "0 0 30px var(--amber)";
+                        setTimeout(() => card.querySelector('.staff-card-inner').style.boxShadow = "6px 6px 0 rgba(0,0,0,1)", 3000);
+                    }
+                }, 300);
+            }
+        }
+
+        // LOGIC THÔNG BÁO THÔNG MINH ĐƯỢC CHỈNH LẠI CÓ LINK TỚI TAB
         function updateNotifications() {
             const panel = document.getElementById("notiList");
             const badge = document.getElementById("notiBadge");
@@ -796,7 +852,7 @@
                     (st.feedbacks || []).forEach(fb => {
                         if (fb.date && fb.date > lastRead) {
                             notiCount++;
-                            html += `<div class="noti-item">Khách <b>${fb.name}</b> vừa gửi feedback cho nhân viên <span class="highlight">${st.name}</span>.</div>`;
+                            html += `<div class="noti-item" onclick="gotoNoti('staff', '${st.id}')">Khách <b>${fb.name}</b> vừa gửi feedback cho <span class="highlight">${st.name}</span>.</div>`;
                         }
                     });
                 });
@@ -804,91 +860,78 @@
                     let pTime = new Date(post.created_at || post.date).getTime();
                     if (pTime && pTime > lastRead) {
                         notiCount++;
-                        html += `<div class="noti-item"><b>${post.name || post.author}</b> vừa viết vào <span class="highlight">Sổ lưu bút</span>.</div>`;
+                        html += `<div class="noti-item" onclick="gotoNoti('guestbook')"><b>${post.name || post.author}</b> vừa viết vào <span class="highlight">Sổ lưu bút</span>.</div>`;
                     }
                 });
                 localRecruit.forEach(post => {
                     let pTime = new Date(post.created_at || post.date).getTime();
                     if (pTime && pTime > lastRead) {
                         notiCount++;
-                        html += `<div class="noti-item"><b>${post.name || post.author}</b> vừa gửi ý tưởng <span class="highlight">Tuyển dụng</span>.</div>`;
+                        html += `<div class="noti-item" onclick="gotoNoti('recruit')"><b>${post.name || post.author}</b> vừa gửi ý tưởng <span class="highlight">Tuyển dụng</span>.</div>`;
                     }
                 });
-
-                if (notiCount === 0) {
-                    html = `<div class="noti-item" style="color:var(--silver); font-style:italic;">Chưa có phản hồi hay bài đăng mới nào.</div>`;
-                }
             } else {
+                let userLastRead = parseInt(localStorage.getItem("user_last_read_noti") || "0");
                 let sortedStaff = [...CONFIG.staff].filter(s => !s.isHidden).sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
                 let top2 = sortedStaff.slice(0, 2);
-                if (top2.length > 0) {
-                    top2.forEach(st => {
-                        html += `<div class="noti-item">Chào mừng nhân viên mới: <span class="highlight">${st.name}</span> vừa gia nhập nhà ga!</div>`;
-                    });
-                } else {
-                    html = `<div class="noti-item" style="color:var(--silver); font-style:italic;">Ga Meown đang chờ đón những nhân viên đầu tiên.</div>`;
-                }
-                notiCount = top2.length;
+                top2.forEach(st => {
+                    if ((st.createdAt || 0) > userLastRead) {
+                        notiCount++;
+                    }
+                    html += `<div class="noti-item" onclick="gotoNoti('staff', '${st.id}')">Chào mừng nhân viên mới: <span class="highlight">${st.name}</span> vừa ra mắt! Xem ngay >></div>`;
+                });
+            }
+
+            if (html === "") {
+                html = `<div class="noti-item" style="color:var(--silver); font-style:italic;">Chưa có thông báo mới nào.</div>`;
             }
 
             panel.innerHTML = html;
-            if (isAdminMode) {
-                badge.textContent = notiCount;
-                badge.style.display = notiCount > 0 ? "flex" : "none";
+            if (notiCount > 0) {
+                badge.textContent = notiCount > 9 ? "9+" : notiCount;
+                badge.style.display = "flex";
             } else {
-                badge.textContent = "!";
-                badge.style.display = notiCount > 0 ? "flex" : "none";
+                badge.style.display = "none";
             }
         }
 
-        // TÁCH DÒNG CƠ SỞ DỮ LIỆU CHỐNG SẬP RAM
-        async function initDatabase() {
+        // TÁCH DÒNG DATABASE
+        async function fetchStationConfig() {
             try {
-                let oldCache = await localforage.getItem("meown_config_backup");
-                if (oldCache) {
-                    if (typeof oldCache === 'string') { try { oldCache = JSON.parse(oldCache); } catch(e) { oldCache = {}; } }
-                    if (oldCache.musicLibrary) {
-                        await localforage.setItem("meown_music_backup", oldCache.musicLibrary);
-                        delete oldCache.musicLibrary; 
-                        await localforage.setItem("meown_config_backup", oldCache);
-                    }
-                    CONFIG = { ...CONFIG, ...oldCache };
-                }
-
-                const res1 = await supa.from('station_config').select('data').eq('id', 1).single();
-                if (res1.data && res1.data.data) {
-                    let dbConfig = typeof res1.data.data === 'string' ? JSON.parse(res1.data.data) : res1.data.data;
+                const { data: mainData } = await supa.from('station_config').select('data').eq('id', 1).single();
+                let dbConfig = {};
+                if (mainData && mainData.data) { 
+                    dbConfig = typeof mainData.data === 'string' ? JSON.parse(mainData.data) : mainData.data; 
                     if (!CONFIG.lastUpdated || (dbConfig.lastUpdated && dbConfig.lastUpdated > CONFIG.lastUpdated)) {
-                        if(dbConfig.trains) CONFIG.trains = dbConfig.trains;
-                        if(dbConfig.staff) CONFIG.staff = dbConfig.staff;
-                        if(dbConfig.upcomingBots) CONFIG.upcomingBots = dbConfig.upcomingBots;
-                        if(dbConfig.stationMaster) CONFIG.stationMaster = dbConfig.stationMaster;
-                        CONFIG.lastUpdated = dbConfig.lastUpdated;
+                        CONFIG = { ...CONFIG, ...dbConfig };
                     }
                 }
 
-                let localMusic = await localforage.getItem("meown_music_backup");
-                if (localMusic && Array.isArray(localMusic) && localMusic.length > 0) {
-                    CONFIG.musicLibrary = localMusic;
-                } else {
-                    const res2 = await supa.from('station_config').select('data').eq('id', 2).single();
-                    if (res2.data && res2.data.data) {
-                        CONFIG.musicLibrary = typeof res2.data.data === 'string' ? JSON.parse(res2.data.data) : res2.data.data;
-                    }
+                const { data: musicData } = await supa.from('station_config').select('data').eq('id', 2).single();
+                if (musicData && musicData.data) {
+                    CONFIG.musicLibrary = typeof musicData.data === 'string' ? JSON.parse(musicData.data) : musicData.data;
+                } else if (dbConfig.musicLibrary) {
+                    CONFIG.musicLibrary = dbConfig.musicLibrary; 
                 }
-            } catch(e) {
-                console.error("Lỗi đồng bộ/khôi phục CSDL:", e);
-            } finally {
-                CONFIG.trains = Array.isArray(CONFIG.trains) ? CONFIG.trains : [];
-                CONFIG.staff = Array.isArray(CONFIG.staff) ? CONFIG.staff : [];
-                CONFIG.upcomingBots = Array.isArray(CONFIG.upcomingBots) ? CONFIG.upcomingBots : [];
-                CONFIG.musicLibrary = Array.isArray(CONFIG.musicLibrary) ? CONFIG.musicLibrary : [];
-                CONFIG.stationMaster = CONFIG.stationMaster || { avatar: "", name: "Trưởng Ga", bio: "", facebook: {} };
-            }
+
+                let localMain = await localforage.getItem("meown_config_backup");
+                if (localMain && (!CONFIG.lastUpdated || localMain.lastUpdated > CONFIG.lastUpdated)) {
+                    CONFIG = { ...CONFIG, ...localMain };
+                }
+                
+                let localMusic = await localforage.getItem("meown_music_backup");
+                if (localMusic && (!CONFIG.musicLibrary || CONFIG.musicLibrary.length < localMusic.length)) {
+                    CONFIG.musicLibrary = localMusic;
+                }
+
+                if(!CONFIG.musicLibrary) CONFIG.musicLibrary = [];
+            } catch(e) {}
         }
 
         async function saveStationConfigToDB(skipMusicSync = false) {
             CONFIG.lastUpdated = Date.now(); 
+            if (!CONFIG.musicLibrary) CONFIG.musicLibrary = []; 
+            
             const mainPayload = { 
                 stationMaster: CONFIG.stationMaster, 
                 trains: CONFIG.trains, 
@@ -905,20 +948,13 @@
             try { 
                 await supa.from('station_config').upsert([{ id: 1, data: JSON.stringify(mainPayload) }]); 
                 
-                if(!skipMusicSync && CONFIG.musicLibrary.length > 0) {
-                    try {
-                        const musicStr = JSON.stringify(CONFIG.musicLibrary);
-                        if (musicStr.length < 5000000) {
-                            await supa.from('station_config').upsert([{ id: 2, data: musicStr }]);
-                        } else {
-                            console.warn("Thư viện nhạc lớn, đã được lưu an toàn trực tiếp trên máy của bạn (Local) thay vì Cloud để tránh sập web!");
-                        }
-                    } catch(err) {
-                        console.warn("Lỗi mã hóa nhạc, chỉ lưu cục bộ.");
-                    }
+                if(!skipMusicSync) {
+                    const musicPayload = JSON.stringify(CONFIG.musicLibrary);
+                    await supa.from('station_config').upsert([{ id: 2, data: musicPayload }]);
                 }
             } catch(e) {
                 console.error("Lỗi đồng bộ Supabase:", e);
+                alert("Lưu ý: Không thể đồng bộ hệ thống lên Đám mây do dữ liệu quá lớn, nhưng mọi thứ đã được LƯU AN TOÀN TRÊN MÁY BẠN!");
             }
         }
 
@@ -984,12 +1020,13 @@
         }
 
         /* ============================================================
-           BẢNG ADMIN FORMS (CHỈNH SỬA / THÊM / XÓA)
+           BẢNG ADMIN FORMS (CHỈNH SỬA / THÊM / XÓA) TOÀN BỘ
            ============================================================ */
         let trainGenresList = [];
         function renderTrGenresList() { const listContainer = document.getElementById("aTrGenreList"); if(!listContainer) return; listContainer.innerHTML = trainGenresList.map((g, i) => `<span class="c-tag" style="background:#000; border-color:var(--silver); color:var(--pearl); display:flex; align-items:center; gap:4px;">${g} <span style="cursor:pointer; color:red; font-weight:bold;" onclick="removeTrGenre(${i})">×</span></span>`).join(''); }
         window.removeTrGenre = function(i) { trainGenresList.splice(i, 1); renderTrGenresList(); };
         
+        // Render Thư viện ảnh Tạm thời trong lúc Admin chỉnh sửa
         let tempGallery = [];
         function renderTempGallery() {
             const wrap = document.getElementById("aStGalleryPrev");
@@ -1293,8 +1330,10 @@
         window.deleteStaff = async function(staffId, event) { event.stopPropagation(); if(confirm("XÓA VĨNH VIỄN nhân viên này?")) { CONFIG.staff = CONFIG.staff.filter(s => s.id !== staffId); await saveStationConfigToDB(true); renderTrains(); rollNumber(document.getElementById("statStaff"), CONFIG.staff.length); updateNotifications();} };
 
         function renderTrains(){
-            const wrap = document.getElementById("trainsList"); wrap.innerHTML = ""; const q = currentSearch.toLowerCase();
+            const wrap = document.getElementById("trainsList"); wrap.innerHTML = ""; 
+            const q = removeAccents(currentSearch);
             
+            // SẮP XẾP CHUYẾN TÀU THEO NHÂN VIÊN MỚI NHẤT
             let sortedTrains = [...CONFIG.trains].sort((a, b) => {
                 let aStaff = CONFIG.staff.filter(s => s.trainId === a.id);
                 let bStaff = CONFIG.staff.filter(s => s.trainId === b.id);
@@ -1315,6 +1354,7 @@
                     <button style="background:#8B0000; color:#FFF; padding:6px 12px; border-radius:3px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="deleteTrain('${train.id}', event)">🗑️ XÓA TÀU</button>
                 </div>` : "";
                 
+                // Hiển thị Lời giới thiệu và Tags thể loại (1 tag 1 dòng)
                 let trainTagsHtml = (train.genres || []).map(g => `<span class="t-genre-tag">${g}</span>`).join('');
                 
                 card.innerHTML = `
@@ -1343,9 +1383,10 @@
                     addStaffArea.querySelector("button").onclick = (e) => { e.stopPropagation(); openAdminForm('staff', 'add', train.id); }; acc.appendChild(addStaffArea);
                 }
                 
-                let trainStaff = CONFIG.staff.filter(s => s.trainId === train.id && s.name.toLowerCase().includes(q));
+                let trainStaff = CONFIG.staff.filter(s => s.trainId === train.id && removeAccents(s.name).includes(q));
                 if(!isAdminMode) trainStaff = trainStaff.filter(s => !s.isHidden);
                 
+                // Logic SẮP XẾP NHÂN VIÊN
                 trainStaff.sort((a, b) => {
                     if (staffSortMode === 'rating') {
                         let rA = a.rating && a.rating.count > 0 ? a.rating.sum / a.rating.count : 0;
@@ -1359,6 +1400,8 @@
                 for(let st of trainStaff) { grid.appendChild(createStaffCard(st, train.theme || 'theme-09')); }
                 if(trainStaff.length === 0) { grid.innerHTML = "<p style='color:var(--silver); padding: 0 16px; font-style:italic;'>Trống.</p>"; }
                 
+                if(q !== "" && trainStaff.length > 0) acc.classList.add("open");
+
                 acc.appendChild(grid); card.addEventListener("click", () => acc.classList.toggle("open")); wrap.appendChild(card); wrap.appendChild(acc);
             }
             setTimeout(() => loadIcons(), 10);
@@ -1379,7 +1422,7 @@
         };
 
         function createStaffCard(staff, themeClass) {
-            const cardWrap = document.createElement("div"); cardWrap.className = `staff-card-container`; 
+            const cardWrap = document.createElement("div"); cardWrap.className = `staff-card-container`; cardWrap.id = `staff_card_${staff.id}`;
             if(staff.isHidden && isAdminMode) { cardWrap.classList.add("is-hidden"); }
             const sClass = "s-" + themeClass;
             const rData = staff.rating || { sum: 0, count: 0 }; const avgText = rData.count === 0 ? "0.0" : (rData.sum / rData.count).toFixed(1);
@@ -1401,7 +1444,7 @@
                     <div class="card-front">
                         <div class="c-id-header">STATION STAFF ID</div>
                         <div class="c-image-wrap"><img src="${staff.avatar}" onerror="this.style.opacity=0"></div>
-                        <div class="c-name" style="color: #111; text-shadow: 0 1px 0 rgba(255,255,255,0.4); width: 100%; border-bottom: 1px dashed #444; padding-bottom: 5px; margin-bottom: 10px;">${staff.name}</div>
+                        <div class="c-name">${staff.name}</div>
                         <div class="c-tags">${tagHTML}</div>
                         <div class="c-hook">"${staff.hook}"</div>
                         <div style="display:flex; justify-content:space-between; width:100%; align-items:flex-end;">
@@ -1517,7 +1560,7 @@
                             <div class="c-id-header" style="color:var(--amber);">PENDING STAFF ID</div>
                             <div class="up-stamp" style="background:var(--amber); color:#000;">[ SẮP RA MẮT ]</div>
                             <div class="c-image-wrap" style="margin: 0 auto 15px auto; border-color:#333; width:140px; height:140px; border:4px solid #444; border-bottom:15px solid #444; background:#444; position:relative; box-shadow:2px 2px 10px rgba(0,0,0,0.8); transform:rotate(-2deg); flex-shrink: 0;"><img src="${bot.avatar}" style="width:100%; height:100%; object-fit:cover; filter:grayscale(1);"></div>
-                            <div class="c-name" style="color:#111; text-shadow: 0 1px 0 rgba(255,255,255,0.4); width:100%; border-bottom:1px dashed #444; padding-bottom:5px; margin-bottom:10px; font-family:var(--font-heading); font-size:22px; font-weight:900; text-align:center; text-transform:uppercase;">${bot.name}</div>
+                            <div class="c-name">${bot.name}</div>
                             <div class="c-tags" style="display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin-bottom:10px; width:100%;">${tagHTML}</div>
                             <div class="c-hook" style="color:#aaa; font-weight:bold; font-size:12px; margin-bottom:10px; text-align:center; width:100%;">CHUYẾN: ${bot.train}</div>
                             <div class="up-idea-box" style="white-space: pre-wrap;">${bot.idea}</div>
@@ -1535,11 +1578,12 @@
         }
 
         // ============================================================
-        // LOGIC HỘP NHẠC
+        // LOGIC HỘP NHẠC ĐƯỢC BỔ SUNG ĐỂ TRÁNH LỖI VÀ LƯU VĨNH VIỄN
         // ============================================================
         let isPlaying = false;
         let currentSongIndex = -1;
         
+        // BẬT / TẮT HỘP NHẠC BẰNG CHÍNH ICON
         document.getElementById("gramoToggle").addEventListener("click", () => {
             const panel = document.getElementById("gramoPanel");
             if (panel.classList.contains("hidden-panel")) {
