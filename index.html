@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,500&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=Libre+Barcode+39+Text&display=swap" rel="stylesheet">
     
-    <!-- Supabase & LocalForage (Chống tràn bộ nhớ cực mạnh) -->
+    <!-- Supabase & LocalForage (Chống tràn bộ nhớ) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
 
@@ -93,6 +93,7 @@
         .noti-btn { position: fixed; top: 16px; right: 20px; z-index: 200; background: rgba(5,5,8,0.95); border: 2px solid #222; border-radius: 4px; padding: 10px; color: var(--amber); cursor: pointer; box-shadow: 4px 4px 0 rgba(0,0,0,1); transition: 0.2s;}
         .noti-btn:hover { background: var(--amber); color: #000; }
         .noti-badge { position: absolute; top: -5px; right: -5px; background: #D50000; color: #FFF; font-size: 10px; font-weight: bold; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #000; box-shadow: 1px 1px 0 #000;}
+        
         .noti-panel { position: fixed; top: 65px; right: 20px; z-index: 199; width: 320px; max-height: 400px; background: rgba(10,10,12,0.95); border: 2px solid #222; box-shadow: 6px 6px 0 rgba(0,0,0,1); display: none; flex-direction: column; opacity: 0; transform: translateY(-10px); transition: 0.3s;}
         .noti-panel.show { display: flex; opacity: 1; transform: translateY(0); }
         .noti-header { padding: 14px; border-bottom: 2px dashed #333; font-family: var(--font-heading); font-weight: 900; color: var(--amber); font-size: 16px; text-transform: uppercase; letter-spacing: 1px;}
@@ -251,12 +252,15 @@
         .card-front .c-image-wrap { width: 140px; height: 140px; border: 4px solid #FFF; border-bottom: 15px solid #FFF; background: #FFF; position: relative; box-shadow: 2px 2px 10px rgba(0,0,0,0.8); margin-bottom: 15px; transform: rotate(-2deg); flex-shrink: 0;}
         .card-front .c-image-wrap img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.1) sepia(0.2) grayscale(0.1); }
         
+        /* CHỮ TÊN NHÂN VIÊN VÀ HỒ SƠ CHỈNH MÀU ĐEN + ĐỔ BÓNG NỔI */
         .card-front .c-name { font-family: var(--font-heading); font-size: 22px; font-weight: 900; color: #111; text-align: center; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 1px 0 rgba(255,255,255,0.4); width: 100%; border-bottom: 1px dashed #444; padding-bottom: 5px; margin-bottom: 10px;}
         .c-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 10px; width: 100%;}
         .c-tag { font-size: 10px; font-weight: bold; padding: 4px 6px; background: rgba(0,0,0,0.8); border: 1px solid var(--st-color); color: var(--st-color); text-transform: uppercase; letter-spacing: 1px; text-shadow: 1px 1px 0 #000;}
         .card-front .c-hook { font-size: 13px; font-style: italic; color: var(--pearl); text-align: center; margin-bottom: auto; line-height: 1.4; text-shadow: 1px 1px 0 #000; width: 100%;}
         
         .c-rating-badge { background: #000; border: 1px solid var(--st-color); padding: 4px 10px; font-size: 12px; font-weight: 900; color: var(--st-color); box-shadow: 2px 2px 0 rgba(0,0,0,1); margin-top: 10px;}
+        
+        /* LẬT THẺ CHỈNH MÀU ĐỂ RÕ HƠN */
         .card-front .c-flip-hint { text-align: center; font-size: 10px; color: var(--amber); animation: pulseHint 2s infinite; font-family: var(--font-kicker); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; margin-top: 10px; background: rgba(0,0,0,0.8); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--amber); box-shadow: 2px 2px 0 #000;}
         @keyframes pulseHint { 0%, 100% { opacity: 0.8; } 50% { opacity: 1; box-shadow: 0 0 10px rgba(221,170,51,0.6), 2px 2px 0 #000; } }
 
@@ -585,7 +589,7 @@
             <div id="gramoSongList"></div>
         </div>
         
-        <!-- THANH SEEKBAR MỚI THÊM -->
+        <!-- THANH SEEKBAR -->
         <div class="gramo-progress-container">
             <span id="currTime">0:00</span>
             <input type="range" id="seekSlider" class="seek-slider" value="0" min="0" max="100" step="1">
@@ -636,6 +640,7 @@
             note2: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle></svg>',
             bell: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>'
         };
+
         function loadIcons() { document.querySelectorAll(".icon-slot").forEach(el => { el.innerHTML = ICONS[el.dataset.icon]||""; }); }
 
         function createEmbers() {
@@ -738,7 +743,7 @@
             loadIcons(); createEmbers(); createFireflies();
             checkAdminLogin(); 
 
-            await fetchStationConfig();
+            await initDatabase();
             
             let currentVisits = parseInt(localStorage.getItem('meown_real_visits') || '0');
             if (!sessionStorage.getItem('has_visited')) {
@@ -762,7 +767,6 @@
                 });
             }
 
-            // Gán logic Chuông thông báo
             document.getElementById("notiBtn").addEventListener("click", () => {
                 const panel = document.getElementById("notiPanel");
                 panel.classList.toggle("show");
@@ -777,10 +781,8 @@
             rollNumber(document.getElementById("statVisits"), currentVisits); 
             
             await fetchFeeds(); 
-            updateNotifications();
         });
 
-        // LOGIC THÔNG BÁO THÔNG MINH
         function updateNotifications() {
             const panel = document.getElementById("notiList");
             const badge = document.getElementById("notiBadge");
@@ -839,43 +841,54 @@
             }
         }
 
-        // TÁCH DÒNG DATABASE
-        async function fetchStationConfig() {
+        // TÁCH DÒNG CƠ SỞ DỮ LIỆU CHỐNG SẬP RAM
+        async function initDatabase() {
             try {
-                const { data: mainData } = await supa.from('station_config').select('data').eq('id', 1).single();
-                let dbConfig = {};
-                if (mainData && mainData.data) { 
-                    dbConfig = typeof mainData.data === 'string' ? JSON.parse(mainData.data) : mainData.data; 
+                let oldCache = await localforage.getItem("meown_config_backup");
+                if (oldCache) {
+                    if (typeof oldCache === 'string') { try { oldCache = JSON.parse(oldCache); } catch(e) { oldCache = {}; } }
+                    if (oldCache.musicLibrary) {
+                        await localforage.setItem("meown_music_backup", oldCache.musicLibrary);
+                        delete oldCache.musicLibrary; 
+                        await localforage.setItem("meown_config_backup", oldCache);
+                    }
+                    CONFIG = { ...CONFIG, ...oldCache };
+                }
+
+                const res1 = await supa.from('station_config').select('data').eq('id', 1).single();
+                if (res1.data && res1.data.data) {
+                    let dbConfig = typeof res1.data.data === 'string' ? JSON.parse(res1.data.data) : res1.data.data;
                     if (!CONFIG.lastUpdated || (dbConfig.lastUpdated && dbConfig.lastUpdated > CONFIG.lastUpdated)) {
-                        CONFIG = { ...CONFIG, ...dbConfig };
+                        if(dbConfig.trains) CONFIG.trains = dbConfig.trains;
+                        if(dbConfig.staff) CONFIG.staff = dbConfig.staff;
+                        if(dbConfig.upcomingBots) CONFIG.upcomingBots = dbConfig.upcomingBots;
+                        if(dbConfig.stationMaster) CONFIG.stationMaster = dbConfig.stationMaster;
+                        CONFIG.lastUpdated = dbConfig.lastUpdated;
                     }
                 }
 
-                const { data: musicData } = await supa.from('station_config').select('data').eq('id', 2).single();
-                if (musicData && musicData.data) {
-                    CONFIG.musicLibrary = typeof musicData.data === 'string' ? JSON.parse(musicData.data) : musicData.data;
-                } else if (dbConfig.musicLibrary) {
-                    CONFIG.musicLibrary = dbConfig.musicLibrary; 
-                }
-
-                let localMain = await localforage.getItem("meown_config_backup");
-                if (localMain && (!CONFIG.lastUpdated || localMain.lastUpdated > CONFIG.lastUpdated)) {
-                    CONFIG = { ...CONFIG, ...localMain };
-                }
-                
                 let localMusic = await localforage.getItem("meown_music_backup");
-                if (localMusic && (!CONFIG.musicLibrary || CONFIG.musicLibrary.length < localMusic.length)) {
+                if (localMusic && Array.isArray(localMusic) && localMusic.length > 0) {
                     CONFIG.musicLibrary = localMusic;
+                } else {
+                    const res2 = await supa.from('station_config').select('data').eq('id', 2).single();
+                    if (res2.data && res2.data.data) {
+                        CONFIG.musicLibrary = typeof res2.data.data === 'string' ? JSON.parse(res2.data.data) : res2.data.data;
+                    }
                 }
-
-                if(!CONFIG.musicLibrary) CONFIG.musicLibrary = [];
-            } catch(e) {}
+            } catch(e) {
+                console.error("Lỗi đồng bộ/khôi phục CSDL:", e);
+            } finally {
+                CONFIG.trains = Array.isArray(CONFIG.trains) ? CONFIG.trains : [];
+                CONFIG.staff = Array.isArray(CONFIG.staff) ? CONFIG.staff : [];
+                CONFIG.upcomingBots = Array.isArray(CONFIG.upcomingBots) ? CONFIG.upcomingBots : [];
+                CONFIG.musicLibrary = Array.isArray(CONFIG.musicLibrary) ? CONFIG.musicLibrary : [];
+                CONFIG.stationMaster = CONFIG.stationMaster || { avatar: "", name: "Trưởng Ga", bio: "", facebook: {} };
+            }
         }
 
         async function saveStationConfigToDB(skipMusicSync = false) {
             CONFIG.lastUpdated = Date.now(); 
-            if (!CONFIG.musicLibrary) CONFIG.musicLibrary = []; 
-            
             const mainPayload = { 
                 stationMaster: CONFIG.stationMaster, 
                 trains: CONFIG.trains, 
@@ -892,13 +905,20 @@
             try { 
                 await supa.from('station_config').upsert([{ id: 1, data: JSON.stringify(mainPayload) }]); 
                 
-                if(!skipMusicSync) {
-                    const musicPayload = JSON.stringify(CONFIG.musicLibrary);
-                    await supa.from('station_config').upsert([{ id: 2, data: musicPayload }]);
+                if(!skipMusicSync && CONFIG.musicLibrary.length > 0) {
+                    try {
+                        const musicStr = JSON.stringify(CONFIG.musicLibrary);
+                        if (musicStr.length < 5000000) {
+                            await supa.from('station_config').upsert([{ id: 2, data: musicStr }]);
+                        } else {
+                            console.warn("Thư viện nhạc lớn, đã được lưu an toàn trực tiếp trên máy của bạn (Local) thay vì Cloud để tránh sập web!");
+                        }
+                    } catch(err) {
+                        console.warn("Lỗi mã hóa nhạc, chỉ lưu cục bộ.");
+                    }
                 }
             } catch(e) {
                 console.error("Lỗi đồng bộ Supabase:", e);
-                alert("Lưu ý: Không thể đồng bộ hệ thống lên Đám mây do dữ liệu quá lớn, nhưng mọi thứ đã được LƯU AN TOÀN TRÊN MÁY BẠN!");
             }
         }
 
@@ -964,13 +984,12 @@
         }
 
         /* ============================================================
-           BẢNG ADMIN FORMS (CHỈNH SỬA / THÊM / XÓA) TOÀN BỘ
+           BẢNG ADMIN FORMS (CHỈNH SỬA / THÊM / XÓA)
            ============================================================ */
         let trainGenresList = [];
         function renderTrGenresList() { const listContainer = document.getElementById("aTrGenreList"); if(!listContainer) return; listContainer.innerHTML = trainGenresList.map((g, i) => `<span class="c-tag" style="background:#000; border-color:var(--silver); color:var(--pearl); display:flex; align-items:center; gap:4px;">${g} <span style="cursor:pointer; color:red; font-weight:bold;" onclick="removeTrGenre(${i})">×</span></span>`).join(''); }
         window.removeTrGenre = function(i) { trainGenresList.splice(i, 1); renderTrGenresList(); };
         
-        // Render Thư viện ảnh Tạm thời trong lúc Admin chỉnh sửa
         let tempGallery = [];
         function renderTempGallery() {
             const wrap = document.getElementById("aStGalleryPrev");
@@ -1276,7 +1295,6 @@
         function renderTrains(){
             const wrap = document.getElementById("trainsList"); wrap.innerHTML = ""; const q = currentSearch.toLowerCase();
             
-            // SẮP XẾP CHUYẾN TÀU THEO NHÂN VIÊN MỚI NHẤT
             let sortedTrains = [...CONFIG.trains].sort((a, b) => {
                 let aStaff = CONFIG.staff.filter(s => s.trainId === a.id);
                 let bStaff = CONFIG.staff.filter(s => s.trainId === b.id);
@@ -1297,7 +1315,6 @@
                     <button style="background:#8B0000; color:#FFF; padding:6px 12px; border-radius:3px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="deleteTrain('${train.id}', event)">🗑️ XÓA TÀU</button>
                 </div>` : "";
                 
-                // Hiển thị Lời giới thiệu và Tags thể loại (1 tag 1 dòng)
                 let trainTagsHtml = (train.genres || []).map(g => `<span class="t-genre-tag">${g}</span>`).join('');
                 
                 card.innerHTML = `
@@ -1329,7 +1346,6 @@
                 let trainStaff = CONFIG.staff.filter(s => s.trainId === train.id && s.name.toLowerCase().includes(q));
                 if(!isAdminMode) trainStaff = trainStaff.filter(s => !s.isHidden);
                 
-                // Logic SẮP XẾP NHÂN VIÊN
                 trainStaff.sort((a, b) => {
                     if (staffSortMode === 'rating') {
                         let rA = a.rating && a.rating.count > 0 ? a.rating.sum / a.rating.count : 0;
@@ -1385,7 +1401,7 @@
                     <div class="card-front">
                         <div class="c-id-header">STATION STAFF ID</div>
                         <div class="c-image-wrap"><img src="${staff.avatar}" onerror="this.style.opacity=0"></div>
-                        <div class="c-name">${staff.name}</div>
+                        <div class="c-name" style="color: #111; text-shadow: 0 1px 0 rgba(255,255,255,0.4); width: 100%; border-bottom: 1px dashed #444; padding-bottom: 5px; margin-bottom: 10px;">${staff.name}</div>
                         <div class="c-tags">${tagHTML}</div>
                         <div class="c-hook">"${staff.hook}"</div>
                         <div style="display:flex; justify-content:space-between; width:100%; align-items:flex-end;">
@@ -1519,12 +1535,11 @@
         }
 
         // ============================================================
-        // LOGIC HỘP NHẠC ĐƯỢC BỔ SUNG ĐỂ TRÁNH LỖI VÀ LƯU VĨNH VIỄN
+        // LOGIC HỘP NHẠC
         // ============================================================
         let isPlaying = false;
         let currentSongIndex = -1;
         
-        // BẬT / TẮT HỘP NHẠC BẰNG CHÍNH ICON
         document.getElementById("gramoToggle").addEventListener("click", () => {
             const panel = document.getElementById("gramoPanel");
             if (panel.classList.contains("hidden-panel")) {
