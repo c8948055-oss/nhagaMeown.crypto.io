@@ -725,7 +725,8 @@
         const ADMIN_CAT_AVATAR = "ChatGPT_Image_02_56_58_7_thg_7__2026-removebg-preview-removebg-preview.png";
         const VERIFIED_TICK = `<svg style="width:14px; height:14px; display:inline-block; vertical-align:middle; margin-left:4px;" viewBox="0 0 24 24" fill="#0866FF"><circle cx="12" cy="12" r="10"/><path d="M16.5 8.5l-6 6-3-3" stroke="#fff" stroke-width="2" fill="none"/></svg>`;
         
-        let CONFIG = { stationMaster: { avatar: "", name: "Trưởng Ga", bio: "Chào mừng đến với nhà ga Meown.", facebook: {} }, trains: [], staff: [], upcomingBots: [], musicLibrary: [], lastUpdated: 0 };
+        /* CẬP NHẬT BIẾN CONFIG: THÊM musicLastUpdated ĐỂ CHỐNG MẤT NHẠC */
+        let CONFIG = { stationMaster: { avatar: "", name: "Trưởng Ga", bio: "Chào mừng đến với nhà ga Meown.", facebook: {} }, trains: [], staff: [], upcomingBots: [], musicLibrary: [], lastUpdated: 0, musicLastUpdated: 0 };
         let isAdminMode = false; let activeMusicPl = null;
         let localGuestbook = []; let localRecruit = [];
         let currentSearch = ""; 
@@ -911,41 +912,69 @@
             }
         }
 
-        // TÁCH DÒNG DATABASE
+        // =========================================================================
+        // HÀM FETCH DỮ LIỆU ĐƯỢC VIẾT LẠI HOÀN TOÀN ĐỂ FIX LỖI MẤT BÀI HÁT
+        // =========================================================================
         async function fetchStationConfig() {
             try {
+                // 1. Kéo dữ liệu cấu hình chính từ máy chủ Supabase
                 const { data: mainData } = await supa.from('station_config').select('data').eq('id', 1).single();
                 let dbConfig = {};
                 if (mainData && mainData.data) { 
                     dbConfig = typeof mainData.data === 'string' ? JSON.parse(mainData.data) : mainData.data; 
-                    if (!CONFIG.lastUpdated || (dbConfig.lastUpdated && dbConfig.lastUpdated > CONFIG.lastUpdated)) {
-                        CONFIG = { ...CONFIG, ...dbConfig };
-                    }
                 }
 
+                // 2. Kéo dữ liệu THƯ VIỆN NHẠC từ máy chủ Supabase
+                let dbMusic = [];
                 const { data: musicData } = await supa.from('station_config').select('data').eq('id', 2).single();
                 if (musicData && musicData.data) {
-                    CONFIG.musicLibrary = typeof musicData.data === 'string' ? JSON.parse(musicData.data) : musicData.data;
+                    dbMusic = typeof musicData.data === 'string' ? JSON.parse(musicData.data) : musicData.data;
                 } else if (dbConfig.musicLibrary) {
-                    CONFIG.musicLibrary = dbConfig.musicLibrary; 
+                    dbMusic = dbConfig.musicLibrary; 
                 }
 
-                let localMain = await localforage.getItem("meown_config_backup");
-                if (localMain && (!CONFIG.lastUpdated || localMain.lastUpdated > CONFIG.lastUpdated)) {
-                    CONFIG = { ...CONFIG, ...localMain };
-                }
-                
+                // 3. Kéo dữ liệu từ bộ nhớ đệm an toàn (LocalForage) của trình duyệt
+                let localMain = await localforage.getItem("meown_config_backup") || {};
                 let localMusic = await localforage.getItem("meown_music_backup");
-                if (localMusic && (!CONFIG.musicLibrary || CONFIG.musicLibrary.length < localMusic.length)) {
-                    CONFIG.musicLibrary = localMusic;
+
+                // ĐỒNG BỘ CẤU HÌNH CHÍNH
+                let dbTime = dbConfig.lastUpdated || 0;
+                let localTime = localMain.lastUpdated || 0;
+                if (localTime > dbTime) {
+                    CONFIG = { ...CONFIG, ...localMain };
+                } else {
+                    CONFIG = { ...CONFIG, ...dbConfig };
                 }
 
-                if(!CONFIG.musicLibrary) CONFIG.musicLibrary = [];
-            } catch(e) {}
+                // ĐỒNG BỘ RIÊNG CHO NHẠC (CHỐNG MẤT DỮ LIỆU KHI SUPABASE TỪ CHỐI FILE NẶNG)
+                let dbSongCount = 0;
+                if(dbMusic && Array.isArray(dbMusic)) dbMusic.forEach(pl => dbSongCount += (pl.songs ? pl.songs.length : 0));
+                
+                let localSongCount = 0;
+                if(localMusic && Array.isArray(localMusic)) localMusic.forEach(pl => localSongCount += (pl.songs ? pl.songs.length : 0));
+
+                let dbMusicTime = dbConfig.musicLastUpdated || 0;
+                let localMusicTime = localMain.musicLastUpdated || 0;
+
+                // NẾU LUỒNG LƯU LOCAL TỐT HƠN LUỒNG LƯU DB (CẬP NHẬT MỚI HƠN HOẶC NHIỀU BÀI HÁT HƠN) -> GHI ĐÈ LẤY LOCAL
+                if (localMusic && Array.isArray(localMusic) && (localMusicTime > dbMusicTime || localSongCount > dbSongCount || localMusic.length > dbMusic.length)) {
+                    CONFIG.musicLibrary = localMusic;
+                } else {
+                    CONFIG.musicLibrary = dbMusic || [];
+                }
+
+                if(!CONFIG.musicLibrary || !Array.isArray(CONFIG.musicLibrary)) CONFIG.musicLibrary = [];
+            } catch(e) {
+                console.warn("Lỗi đồng bộ dữ liệu hệ thống:", e);
+            }
         }
 
+        // =========================================================================
+        // HÀM SAVE DỮ LIỆU ĐƯỢC CẬP NHẬT THEO THỜI GIAN THỰC CỦA NHẠC
+        // =========================================================================
         async function saveStationConfigToDB(skipMusicSync = false) {
             CONFIG.lastUpdated = Date.now(); 
+            if (!skipMusicSync) CONFIG.musicLastUpdated = Date.now();
             if (!CONFIG.musicLibrary) CONFIG.musicLibrary = []; 
             
             const mainPayload = { 
@@ -953,14 +982,17 @@
                 trains: CONFIG.trains, 
                 staff: CONFIG.staff, 
                 upcomingBots: CONFIG.upcomingBots, 
-                lastUpdated: CONFIG.lastUpdated 
+                lastUpdated: CONFIG.lastUpdated,
+                musicLastUpdated: CONFIG.musicLastUpdated // Gắn thẻ thời gian vào gói tin chính
             };
             
+            // LUÔN LUÔN LƯU VÀO TRÌNH DUYỆT ĐỂ LÀM BẢO HIỂM
             try { 
                 await localforage.setItem("meown_config_backup", mainPayload); 
                 if(!skipMusicSync) await localforage.setItem("meown_music_backup", CONFIG.musicLibrary);
             } catch(e) { console.warn("Lỗi lưu LocalForage:", e); }
 
+            // ĐẨY LÊN DB
             try { 
                 await supa.from('station_config').upsert([{ id: 1, data: JSON.stringify(mainPayload) }]); 
                 
@@ -969,7 +1001,7 @@
                     await supa.from('station_config').upsert([{ id: 2, data: musicPayload }]);
                 }
             } catch(e) {
-                console.error("Lỗi đồng bộ Supabase:", e);
+                console.error("Lỗi đồng bộ Supabase (Có thể do file quá nặng):", e);
             }
         }
 
