@@ -171,7 +171,6 @@
         #smBio ul { padding-left: 20px; margin: 10px 0; }
         #smBio details { background: rgba(0,0,0,0.5); border: 1px dashed var(--amber); padding: 12px; margin: 12px 0; border-radius: 4px; color: var(--pearl); }
         #smBio details[open] summary { border-bottom: 1px solid rgba(255,255,255,0.2); margin-bottom: 10px; padding-bottom: 5px; }
-        /* ĐÃ SỬA LẠI ĐỒNG BỘ MÀU PEARL VÀ ĐỘ DÀY 500 CHUẨN VỚI TEXT Ở NGOÀI */
         #smBio summary { cursor: pointer; color: var(--pearl); font-weight: 500; outline: none; font-family: inherit; text-transform: none; font-size: 15px; display: block; }
         #smBio details > div { padding-top: 10px; }
         
@@ -202,7 +201,6 @@
         .t-window-text::-webkit-scrollbar { width: 4px; }
         .t-window-text::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.5); border-radius: 2px;}
         
-        /* CỘT TAGS BÊN PHẢI ĐƯỢC CHỈNH LẠI: Nền Vàng, Chữ Đen */
         .t-tags-container { display: flex; flex-direction: column; gap: 6px; overflow-y: auto; max-height: 110px; padding-right: 4px; align-items: stretch;}
         .t-tags-container::-webkit-scrollbar { width: 4px; }
         .t-tags-container::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.5); border-radius: 2px;}
@@ -755,7 +753,8 @@
                         canvas.width = w; canvas.height = h; 
                         const ctx = canvas.getContext('2d'); 
                         ctx.drawImage(img, 0, 0, w, h); 
-                        resolve(canvas.toDataURL('image/jpeg', 0.5)); 
+                        // Bóp dung lượng xuống 40% để chống tràn bộ nhớ tuyệt đối
+                        resolve(canvas.toDataURL('image/jpeg', 0.4)); 
                     }; 
                     img.src = e.target.result; 
                 }; 
@@ -1032,7 +1031,19 @@
         }
 
         async function fetchFeeds() {
-            try { const { data: gbData } = await supa.from('meown_guestbook').select('*'); if(gbData) localGuestbook = gbData; const { data: rcData } = await supa.from('meown_recruit').select('*'); if(rcData) localRecruit = rcData; } catch(e) {}
+            // Lấy Sổ lưu bút: Thử kéo từ Supabase trước, nếu lỗi thì tự móc dự phòng ở trình duyệt ra
+            try { 
+                const { data: gbData, error: gbErr } = await supa.from('meown_guestbook').select('*'); 
+                if(gbData && gbData.length > 0) localGuestbook = gbData; 
+                else { const gbBackup = await localforage.getItem("meown_gb_backup"); if(gbBackup) localGuestbook = gbBackup; }
+                
+                const { data: rcData, error: rcErr } = await supa.from('meown_recruit').select('*'); 
+                if(rcData && rcData.length > 0) localRecruit = rcData; 
+                else { const rcBackup = await localforage.getItem("meown_rc_backup"); if(rcBackup) localRecruit = rcBackup; }
+            } catch(e) {
+                const gbB = await localforage.getItem("meown_gb_backup"); if(gbB) localGuestbook = gbB;
+                const rcB = await localforage.getItem("meown_rc_backup"); if(rcB) localRecruit = rcB;
+            }
             renderFeed("guestbook"); renderFeed("recruit");
             updateNotifications();
         }
@@ -1048,16 +1059,22 @@
             }
             document.getElementById("gbPreview").querySelector('p')?.remove();
         });
+
         document.getElementById("guestbookForm").addEventListener("submit", async (e) => {
             e.preventDefault();
             const btn = e.target.querySelector("button"); btn.textContent = "ĐANG GỬI..."; btn.style.pointerEvents = "none";
-            const post = { name: document.getElementById("gbName").value || "Khách", author: document.getElementById("gbName").value || "Khách", text: document.getElementById("gbMessage").value, content: document.getElementById("gbMessage").value, images: JSON.stringify(gbB64Imgs), date: Date.now() };
+            const post = { id: Date.now(), name: document.getElementById("gbName").value || "Khách", author: document.getElementById("gbName").value || "Khách", text: document.getElementById("gbMessage").value, content: document.getElementById("gbMessage").value, images: JSON.stringify(gbB64Imgs), date: Date.now(), created_at: new Date().toISOString() };
             try {
-                const { data, error } = await supa.from('meown_guestbook').insert([post]).select();
-                if(data && data.length > 0) localGuestbook.unshift(data[0]);
+                // ÉP HIỂN THỊ LÊN GIAO DIỆN NGAY LẬP TỨC (OPTIMISTIC UI)
+                localGuestbook.unshift(post);
                 renderFeed("guestbook");
+                await localforage.setItem('meown_gb_backup', localGuestbook); // Lưu dự phòng
+
+                // Gửi ngầm lên Supabase, nếu nó lỗi thì ít nhất giao diện vẫn chạy bình thường
+                supa.from('meown_guestbook').insert([post]).then(({error}) => { if(error) console.warn("Lỗi máy chủ:", error); });
+
                 e.target.reset(); document.getElementById("gbPreview").innerHTML = ""; gbB64Imgs = [];
-                alert("Đã gửi vào Sổ lưu bút!");
+                alert("Đã gửi vào Sổ lưu bút thành công!");
             } catch(err) { console.error(err); alert("Lỗi khi đăng bài!"); }
             btn.textContent = "ĐĂNG BÀI"; btn.style.pointerEvents = "auto";
         });
@@ -1072,16 +1089,22 @@
             }
             document.getElementById("rcPreview").querySelector('p')?.remove();
         });
+
         document.getElementById("recruitForm").addEventListener("submit", async (e) => {
             e.preventDefault();
             const btn = e.target.querySelector("button"); btn.textContent = "ĐANG GỬI..."; btn.style.pointerEvents = "none";
-            const post = { name: document.getElementById("rcName").value || "Khách", author: document.getElementById("rcName").value || "Khách", text: document.getElementById("rcMessage").value, content: document.getElementById("rcMessage").value, images: JSON.stringify(rcB64Imgs), date: Date.now() };
+            const post = { id: Date.now(), name: document.getElementById("rcName").value || "Khách", author: document.getElementById("rcName").value || "Khách", text: document.getElementById("rcMessage").value, content: document.getElementById("rcMessage").value, images: JSON.stringify(rcB64Imgs), date: Date.now(), created_at: new Date().toISOString() };
             try {
-                const { data, error } = await supa.from('meown_recruit').insert([post]).select();
-                if(data && data.length > 0) localRecruit.unshift(data[0]);
+                // ÉP HIỂN THỊ LÊN GIAO DIỆN NGAY LẬP TỨC (OPTIMISTIC UI)
+                localRecruit.unshift(post);
                 renderFeed("recruit");
+                await localforage.setItem('meown_rc_backup', localRecruit); // Lưu dự phòng
+
+                // Gửi ngầm lên Supabase
+                supa.from('meown_recruit').insert([post]).then(({error}) => { if(error) console.warn("Lỗi máy chủ:", error); });
+
                 e.target.reset(); document.getElementById("rcPreview").innerHTML = ""; rcB64Imgs = [];
-                alert("Đã gửi Ý tưởng!");
+                alert("Đã gửi Ý tưởng thành công!");
             } catch(err) { console.error(err); alert("Lỗi khi đăng bài!"); }
             btn.textContent = "GỬI LÊN HỆ THỐNG"; btn.style.pointerEvents = "auto";
         });
@@ -1090,7 +1113,7 @@
         window.deletePostFromDB = async function(type, id) {
             if(!confirm("Xóa bài đăng này vĩnh viễn?")) return;
             const table = type === "guestbook" ? "meown_guestbook" : "meown_recruit";
-            try { await supa.from(table).delete().eq('id', id); if(type === "guestbook") { localGuestbook = localGuestbook.filter(p => p.id !== id); renderFeed("guestbook"); } else { localRecruit = localRecruit.filter(p => p.id !== id); renderFeed("recruit"); } } catch(e){}
+            try { await supa.from(table).delete().eq('id', id); if(type === "guestbook") { localGuestbook = localGuestbook.filter(p => p.id !== id); await localforage.setItem('meown_gb_backup', localGuestbook); renderFeed("guestbook"); } else { localRecruit = localRecruit.filter(p => p.id !== id); await localforage.setItem('meown_rc_backup', localRecruit); renderFeed("recruit"); } } catch(e){}
         };
         window.deleteFeedback = async function(staffId, fbIndex, e) {
             e.stopPropagation();
@@ -1149,8 +1172,15 @@
             if(CONFIG.stationMaster.facebook && CONFIG.stationMaster.facebook.url) {
                 fbHTML = `<a href="${CONFIG.stationMaster.facebook.url}" target="_blank" class="fb-link-box" title="${CONFIG.stationMaster.facebook.name}"><span class="icon-slot" data-icon="facebook"></span><span>${CONFIG.stationMaster.facebook.name}</span></a>`;
             }
-            let safeBio = (CONFIG.stationMaster.bio || "Chưa có thông tin.").replace(/<details open>/g, "<details>");
-            document.getElementById("smBio").innerHTML = safeBio; 
+            
+            document.getElementById("smBio").innerHTML = (CONFIG.stationMaster.bio || "Chưa có thông tin."); 
+            
+            // XÓA TRIỆT ĐỂ THUỘC TÍNH OPEN BẰNG JAVASCRIPT TRƯỚC KHI HIỂN THỊ
+            document.querySelectorAll("#smBio details").forEach(d => {
+                d.removeAttribute("open");
+                d.open = false;
+            });
+
             fbWrap.innerHTML = fbHTML;
             loadIcons();
         }
