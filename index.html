@@ -391,6 +391,30 @@
         .lightbox img { max-width: 90vw; max-height: 90vh; border: 4px solid #FFF; box-shadow: 0 0 30px rgba(0,0,0,1); border-radius: 4px; object-fit: contain; cursor: default; }
         .lightbox-close { position: absolute; top: 30px; right: 40px; color: #FFF; font-size: 50px; font-weight: bold; cursor: pointer; text-shadow: 0 0 10px #000; }
         
+        /* CSS NÚT GỢI Ý TÊN */
+        .suggest-btn {
+            background: rgba(221, 170, 51, 0.15);
+            color: var(--amber);
+            border: 1px solid var(--amber);
+            padding: 3px 10px;
+            font-size: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: auto;
+            text-transform: uppercase;
+            font-family: var(--font-kicker);
+            font-weight: bold;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .suggest-btn:hover {
+            background: var(--amber);
+            color: #000;
+            box-shadow: 0 0 10px var(--amber-glow);
+        }
+        
         /* ============================================================
            MÁY HÁT GRAMOPHONE & SEEKBAR
            ============================================================ */
@@ -581,7 +605,10 @@
                     <h2 class="embossed-title">SỔ LƯU BÚT</h2>
                     <form id="guestbookForm">
                         <div id="gbNameWrap">
-                            <div class="form-row"><label>Tên của bạn</label><input type="text" id="gbName" placeholder="Nhập tên..." required></div>
+                            <div class="form-row">
+                                <label style="display:flex; align-items:center;">Tên của bạn <button type="button" class="suggest-btn" onclick="suggestName('gbName')">🎲 Gợi ý</button></label>
+                                <input type="text" id="gbName" placeholder="Nhập tên..." required>
+                            </div>
                         </div>
                         <div class="form-row file-upload-wrapper">
                             <label class="file-btn"><input type="file" accept="image/*" multiple id="gbFileInp" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Đăng ảnh đính kèm</label>
@@ -607,7 +634,12 @@
                 <div class="mailbox-panel">
                     <h2 class="embossed-title">GỬI Ý TƯỞNG CỦA BẠN</h2>
                     <form id="recruitForm">
-                        <div id="rcNameWrap"><div class="form-row"><label>Tên / Bút danh</label><input type="text" id="rcName" placeholder="Nhập tên..." required></div></div>
+                        <div id="rcNameWrap">
+                            <div class="form-row">
+                                <label style="display:flex; align-items:center;">Tên / Bút danh <button type="button" class="suggest-btn" onclick="suggestName('rcName')">🎲 Gợi ý</button></label>
+                                <input type="text" id="rcName" placeholder="Nhập tên..." required>
+                            </div>
+                        </div>
                         <div class="form-row file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" multiple id="rcFileInp" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Ảnh ý tưởng (Nếu có)</label><div id="rcPreview" class="img-preview-grid"></div></div>
                         <div class="form-row"><label>Mô tả chi tiết</label><textarea id="rcMessage" placeholder="Miêu tả bối cảnh..." required style="height: 100px;"></textarea></div>
                         <button type="submit" class="submit-btn">GỬI LÊN HỆ THỐNG</button>
@@ -683,6 +715,51 @@
     </div>
 
     <script>
+        // ============================================================
+        // HỆ THỐNG GỢI Ý ĐẶT TÊN GENZ VÀ BÍ ẨN (ĐẢM BẢO KHÔNG TRÙNG)
+        // ============================================================
+        const BASE_NAME_POOL = [
+            "Lữ Khách Không Đầu", "Kẻ Gõ Cửa Đêm Đông", "Hành Khách Không Tên", "Tiếng Thì Thầm Khe Cửa", "Bóng Người Trên Đường Ray", "Giọng Nói Từ Vách Ngăn",
+            "Hành Khách Bất Tử", "Chiến Thần Lách Luật", "Tấm Chiếu Mới Trải", "Đại Ca Hướng Nội", "Kiếp Nạn Thứ N", "Ghệ yêu dấu",
+            "Đốn tim chàng ở chốn thiên đàng", "Cay đỏ bi khi em bỏ đi", "Mắt lim dim búng chim crush", "Khóc ướt mi ngày anh bước đi", "Người tình bên gối mỗi tối nhớ anh",
+            "Đinh trên đường tàu", "Xinh và khó tán", "Hâm và vô tư", "Người lì hợp tính", "Xinh và nhiều tiền", "Người ồn bất tỉnh",
+            "Si tình nên không nản", "Làm ồn sẽ tỉnh", "Người xinh vì tài", "Người tình khó giấu", "Hài và nhiều tiền", "Bóng ma bên cửa sổ", "Người lạ từng quen"
+        ];
+
+        window.suggestName = function(inputId) {
+            let usedNames = JSON.parse(localStorage.getItem('meown_used_names') || '[]');
+            
+            let newName = "";
+            let attempts = 0;
+            
+            do {
+                // Ưu tiên chọn các tên chưa xuất hiện lần nào
+                let availableNames = BASE_NAME_POOL.filter(n => !usedNames.includes(n));
+                
+                if (availableNames.length > 0) {
+                    newName = availableNames[Math.floor(Math.random() * availableNames.length)];
+                } else {
+                    // Nếu xui rủi dùng sạch sẽ kho tên (hiếm), sẽ bốc 1 tên cũ và random gắn ID đuôi để luôn độc nhất
+                    let base = BASE_NAME_POOL[Math.floor(Math.random() * BASE_NAME_POOL.length)];
+                    newName = base + " #" + Math.floor(Math.random() * 10000);
+                }
+                attempts++;
+            } while (usedNames.includes(newName) && attempts < 100);
+
+            // Ghi nhớ tên này để không bao giờ bị gợi ý lại cho ai nữa
+            usedNames.push(newName);
+            localStorage.setItem('meown_used_names', JSON.stringify(usedNames));
+
+            // Bắn tên đó ra Input
+            const inputEl = document.getElementById(inputId);
+            if(inputEl) {
+                inputEl.value = newName;
+                inputEl.style.transition = "0.3s"; 
+                inputEl.style.backgroundColor = "rgba(221, 170, 51, 0.3)"; 
+                setTimeout(() => { inputEl.style.backgroundColor = "#000"; }, 500);
+            }
+        };
+
         // GẮN CHẶT CÁC HÀM XỬ LÝ LÊN CAO NHẤT ĐỂ KHÔNG BAO GIỜ BỊ LỖI MẤT HÀM DO BẤM NHẦM
         window.tempCmtImgs = {}; 
 
