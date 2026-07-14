@@ -305,7 +305,7 @@
         .up-vote-btn.voted { border-color: #D50000; color: #D50000; box-shadow: inset 0 0 10px rgba(213,0,0,0.2); }
 
         /* ============================================================
-           SỔ LƯU BÚT & BÀI ĐĂNG + CSS TƯƠNG TÁC NGANG
+           SỔ LƯU BÚT & BÀI ĐĂNG + CSS TƯƠNG TÁC NGANG HOÀN TOÀN
            ============================================================ */
         .mailbox-panel { background: rgba(10,10,12,0.95); border: 2px solid #222; padding: 30px; position: relative; box-shadow: 8px 8px 0 rgba(0,0,0,1); margin-bottom: 28px; }
         .form-row { margin-bottom: 18px; }
@@ -330,21 +330,15 @@
         .post-time { font-size: 11px; color: var(--silver); font-weight: bold; }
         .post-content { font-size: 14.5px; color: var(--pearl); line-height: 1.6; margin-bottom: 16px; white-space: pre-wrap; font-weight: 500;}
 
-        /* CSS Tương tác (HÀNG NGANG) & Bình luận */
-        .reaction-container { position: relative; display: flex; align-items: center; gap: 15px; border-top: 1px dashed #333; border-bottom: 1px dashed #333; padding: 10px 0; margin-bottom: 15px; margin-top: 15px;}
-        .react-btn { background: none; border: none; color: var(--silver); display: flex; align-items: center; gap: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 12px; font-family: var(--font-kicker); text-transform: uppercase; padding: 5px 10px; border-radius: 4px;}
-        .react-btn:hover { color: var(--amber); background: rgba(221, 170, 51, 0.1); }
-        .react-btn-wrapper { position: relative; display: inline-flex; }
+        /* CSS MỚI: Tương tác (HÀNG NGANG CHUẨN) */
+        .reaction-container { display: flex; align-items: center; gap: 8px; border-top: 1px dashed #333; border-bottom: 1px dashed #333; padding: 12px 0; margin: 15px 0; flex-wrap: wrap; }
         
-        .react-popover { 
-            position: absolute; bottom: 100%; left: 0; background: #111; border: 1px solid #444; border-radius: 30px; 
-            padding: 5px 15px; display: flex; flex-direction: row; gap: 12px; opacity: 0; pointer-events: none; transition: 0.2s; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.8); z-index: 100; margin-bottom: 10px;
-        }
-        .react-btn-wrapper:hover .react-popover { opacity: 1; pointer-events: auto; transform: translateY(-5px); }
-        .emoji-btn { font-size: 24px; cursor: pointer; transition: 0.2s; background: none; border: none; padding: 0; margin: 0; outline: none;}
-        .emoji-btn:hover { transform: scale(1.3) translateY(-3px); }
-        .reaction-counts { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--silver); margin-left: auto; font-weight:bold; }
+        .emoji-btn { font-size: 16px; cursor: pointer; transition: 0.2s; background: rgba(0,0,0,0.4); border: 1px solid #444; outline: none; padding: 6px 12px; border-radius: 20px; display: flex; align-items: center; gap: 6px; color: var(--silver); font-weight: bold; font-family: var(--font-kicker); }
+        .emoji-btn:hover { background: rgba(221, 170, 51, 0.1); border-color: var(--amber); color: var(--pearl); transform: translateY(-2px); }
+        .emoji-btn.active { background: rgba(221, 170, 51, 0.2); border-color: var(--amber); color: var(--amber); box-shadow: 0 2px 8px rgba(221, 170, 51, 0.2); }
+        
+        .react-btn { margin-left: auto; background: none; border: 1px solid transparent; color: var(--silver); display: flex; align-items: center; gap: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 12px; font-family: var(--font-kicker); text-transform: uppercase; padding: 6px 12px; border-radius: 4px; }
+        .react-btn:hover { color: var(--amber); background: rgba(221, 170, 51, 0.1); }
         
         .comments-section { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 4px; border: 1px solid #222; }
         .comment-item { display: flex; gap: 12px; margin-bottom: 15px; border-bottom: 1px solid #1a1a1a; padding-bottom: 12px; }
@@ -511,7 +505,6 @@
                     <div class="cat-eye right"></div>
                 </div>
             </div>
-            <!-- DOUBLE CLICK VÀO DÒNG CHỮ NÀY ĐỂ MỞ QUYỀN ADMIN -->
             <p class="kicker" id="secretAdminTrigger" title="Click đúp để mở lối vào ẩn của Trưởng ga">CHÀO MỪNG QUÝ KHÁCH ĐẾN VỚI</p>
             <h1 class="heading">NHÀ GA MEOWN</h1>
             <p class="body-text">Ở rìa của thực tại, nơi sương mù không bao giờ tan có một nhà ga nhỏ mang tên Meown. Đến với ga, quý khách không cần mua vé bằng tiền. Chỉ cần bạn bước lên chuyến tàu phù hợp, chọn một nhân viên và bắt đầu trò chuyện, con tàu sẽ tự động lăn bánh.</p>
@@ -667,6 +660,81 @@
     </div>
 
     <script>
+        // GẮN CHẶT CÁC HÀM XỬ LÝ LÊN CAO NHẤT ĐỂ KHÔNG BAO GIỜ BỊ LỖI MẤT HÀM DO BẤM NHẦM
+        window.tempCmtImgs = {}; 
+
+        window.reactPost = async function(type, postIdStr, reactionType) {
+            const postList = type === 'guestbook' ? localGuestbook : localRecruit;
+            // Dùng String() để đọ cho khớp tuyệt đối, không bị lỗi nhận diện
+            const post = postList.find(p => String(p.id) === String(postIdStr));
+            if(!post) return;
+
+            const votedKey = `reacted_${type}_${postIdStr}`;
+            const oldReact = localStorage.getItem(votedKey);
+
+            if(!post.reactions) post.reactions = {like:0, love:0, haha:0, sad:0, angry:0};
+            if(typeof post.reactions === 'string') { try { post.reactions = JSON.parse(post.reactions); } catch(e) { post.reactions = {like:0, love:0, haha:0, sad:0, angry:0}; } }
+
+            if(oldReact) { post.reactions[oldReact] = Math.max(0, post.reactions[oldReact] - 1); }
+            if(oldReact !== reactionType) {
+                post.reactions[reactionType] = (post.reactions[reactionType] || 0) + 1;
+                localStorage.setItem(votedKey, reactionType);
+            } else { localStorage.removeItem(votedKey); }
+
+            if(typeof post.reactions !== 'string') post.reactions = JSON.stringify(post.reactions);
+
+            renderFeed(type);
+            await localforage.setItem(type === 'guestbook' ? 'meown_gb_backup' : 'meown_rc_backup', postList);
+            supa.from(type === 'guestbook' ? 'meown_guestbook' : 'meown_recruit').update({reactions: post.reactions}).eq('id', postIdStr).then(({error})=> {if(error) console.warn(error);});
+        };
+
+        window.handleCmtImg = async function(e, postId) {
+            if(!window.tempCmtImgs[postId]) window.tempCmtImgs[postId] = [];
+            const files = e.target.files;
+            if(files.length > 3) { alert("Chỉ đính kèm tối đa 3 ảnh/bình luận nhé!"); e.target.value = ""; return; }
+            const prev = document.getElementById(`cmt-prev-${postId}`);
+            prev.innerHTML = "<span style='font-size:11px; color:var(--amber); font-weight:bold;'>Đang xử lý ảnh...</span>";
+            for(let f of files) { const b64 = await resizeImage(f, 400); window.tempCmtImgs[postId].push(b64); }
+            renderCmtPrev(postId);
+        };
+
+        window.renderCmtPrev = function(postId) {
+            const prev = document.getElementById(`cmt-prev-${postId}`);
+            if(!window.tempCmtImgs[postId]) return;
+            prev.innerHTML = window.tempCmtImgs[postId].map((img, i) => `<div style="position:relative; display:inline-block;"><img src="${img}"><div class="del-img-btn" onclick="removeCmtImg('${postId}', ${i})">✕</div></div>`).join('');
+        };
+
+        window.removeCmtImg = function(postId, i) { window.tempCmtImgs[postId].splice(i, 1); renderCmtPrev(postId); };
+
+        window.sendComment = async function(type, postIdStr) {
+            const textInp = document.getElementById(`cmt-text-${postIdStr}`);
+            if (!textInp) return;
+            const text = textInp.value.trim();
+            
+            const imgArr = window.tempCmtImgs[postIdStr] || [];
+            if(!text && imgArr.length === 0) return alert("Nhập nội dung hoặc chọn ảnh để bình luận nhé!");
+
+            const postList = type === 'guestbook' ? localGuestbook : localRecruit;
+            const post = postList.find(p => String(p.id) === String(postIdStr));
+            if(!post) return alert("Hệ thống đơ, xin load lại trang!");
+
+            let cmtArr = [];
+            if(post.comments) { if(typeof post.comments === 'string') { try { cmtArr = JSON.parse(post.comments); } catch(e){} } else { cmtArr = post.comments; } }
+            
+            const nameInp = document.getElementById(`cmt-name-${postIdStr}`);
+            const authorName = nameInp ? (nameInp.value || "Khách") : "Trưởng ga Meown";
+
+            cmtArr.push({ id: Date.now(), name: authorName, text: text, images: [...imgArr], date: Date.now() });
+            post.comments = JSON.stringify(cmtArr);
+
+            window.tempCmtImgs[postIdStr] = [];
+            textInp.value = "";
+            renderFeed(type);
+
+            await localforage.setItem(type === 'guestbook' ? 'meown_gb_backup' : 'meown_rc_backup', postList);
+            supa.from(type === 'guestbook' ? 'meown_guestbook' : 'meown_recruit').update({comments: post.comments}).eq('id', postIdStr).then(({error})=> {if(error) console.warn(error);});
+        };
+
         const ICONS = {
             user: '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/></svg>',
             ticket: '<svg class="icon" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M7 6v12M17 6v12"/></svg>',
@@ -688,7 +756,6 @@
             note1: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>',
             note2: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle></svg>',
             bell: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>',
-            like: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>',
             comment: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>'
         };
         function loadIcons() { document.querySelectorAll(".icon-slot").forEach(el => { el.innerHTML = ICONS[el.dataset.icon]||""; }); }
@@ -753,8 +820,6 @@
         let isAdminMode = false; let activeMusicPl = null;
         let localGuestbook = []; let localRecruit = [];
         let currentSearch = ""; 
-
-        window.tempCmtImgs = {}; 
 
         function removeAccents(str) { return str ? str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase() : ''; }
 
@@ -934,78 +999,6 @@
             renderFeed("guestbook"); renderFeed("recruit"); updateNotifications();
         }
 
-        // ===================== XỬ LÝ POST / REACT / COMMENT =======================
-        window.reactPost = async function(type, postId, reactionType) {
-            const postList = type === 'guestbook' ? localGuestbook : localRecruit;
-            const post = postList.find(p => p.id === postId);
-            if(!post) return;
-
-            const votedKey = `reacted_${type}_${postId}`;
-            const oldReact = localStorage.getItem(votedKey);
-
-            if(!post.reactions) post.reactions = {like:0, love:0, haha:0, sad:0, angry:0};
-            if(typeof post.reactions === 'string') { try { post.reactions = JSON.parse(post.reactions); } catch(e) { post.reactions = {like:0, love:0, haha:0, sad:0, angry:0}; } }
-
-            if(oldReact) { post.reactions[oldReact] = Math.max(0, post.reactions[oldReact] - 1); }
-            if(oldReact !== reactionType) {
-                post.reactions[reactionType] = (post.reactions[reactionType] || 0) + 1;
-                localStorage.setItem(votedKey, reactionType);
-            } else { localStorage.removeItem(votedKey); }
-
-            if(typeof post.reactions !== 'string') post.reactions = JSON.stringify(post.reactions);
-
-            renderFeed(type);
-            await localforage.setItem(type === 'guestbook' ? 'meown_gb_backup' : 'meown_rc_backup', postList);
-            supa.from(type === 'guestbook' ? 'meown_guestbook' : 'meown_recruit').update({reactions: post.reactions}).eq('id', postId).then(({error})=> {if(error) console.warn(error);});
-        };
-
-        window.handleCmtImg = async function(e, postId) {
-            if(!window.tempCmtImgs[postId]) window.tempCmtImgs[postId] = [];
-            const files = e.target.files;
-            if(files.length > 3) { alert("Chỉ đính kèm tối đa 3 ảnh/bình luận nhé!"); e.target.value = ""; return; }
-            const prev = document.getElementById(`cmt-prev-${postId}`);
-            prev.innerHTML = "<span style='font-size:11px; color:var(--amber); font-weight:bold;'>Đang xử lý ảnh...</span>";
-            for(let f of files) {
-                const b64 = await resizeImage(f, 400); 
-                window.tempCmtImgs[postId].push(b64);
-            }
-            renderCmtPrev(postId);
-        };
-
-        window.renderCmtPrev = function(postId) {
-            const prev = document.getElementById(`cmt-prev-${postId}`);
-            if(!window.tempCmtImgs[postId]) return;
-            prev.innerHTML = window.tempCmtImgs[postId].map((img, i) => `<div style="position:relative; display:inline-block;"><img src="${img}"><div class="del-img-btn" onclick="removeCmtImg(${postId}, ${i})">✕</div></div>`).join('');
-        };
-
-        window.removeCmtImg = function(postId, i) { window.tempCmtImgs[postId].splice(i, 1); renderCmtPrev(postId); };
-
-        window.sendComment = async function(type, postId) {
-            const textInp = document.getElementById(`cmt-text-${postId}`);
-            const text = textInp.value.trim();
-            if(!text && (!window.tempCmtImgs[postId] || window.tempCmtImgs[postId].length === 0)) return alert("Nhập nội dung hoặc ảnh để bình luận nhé!");
-
-            const postList = type === 'guestbook' ? localGuestbook : localRecruit;
-            const post = postList.find(p => p.id === postId);
-            if(!post) return;
-
-            let cmtArr = [];
-            if(post.comments) { if(typeof post.comments === 'string') { try { cmtArr = JSON.parse(post.comments); } catch(e){} } else { cmtArr = post.comments; } }
-            
-            const nameInp = document.getElementById(`cmt-name-${postId}`);
-            const authorName = nameInp ? (nameInp.value || "Khách") : "Trưởng ga Meown";
-
-            cmtArr.push({ id: Date.now(), name: authorName, text: text, images: window.tempCmtImgs[postId] ? [...window.tempCmtImgs[postId]] : [], date: Date.now() });
-            post.comments = JSON.stringify(cmtArr);
-
-            window.tempCmtImgs[postId] = [];
-            if(textInp) textInp.value = "";
-            renderFeed(type);
-
-            await localforage.setItem(type === 'guestbook' ? 'meown_gb_backup' : 'meown_rc_backup', postList);
-            supa.from(type === 'guestbook' ? 'meown_guestbook' : 'meown_recruit').update({comments: post.comments}).eq('id', postId).then(({error})=> {if(error) console.warn(error);});
-        };
-
         let gbB64Imgs = [];
         document.getElementById("gbFileInp").addEventListener("change", async (ev) => {
             if(ev.target.files.length > 5) { alert("Để ga không bị quá tải, chỉ tải tối đa 5 ảnh một lần thôi nha!"); ev.target.value = ""; return; }
@@ -1071,20 +1064,11 @@
                 
                 let reactObj = {like:0, love:0, haha:0, sad:0, angry:0};
                 if(post.reactions) { if(typeof post.reactions === 'string') try { reactObj = JSON.parse(post.reactions); } catch(e) {} else reactObj = post.reactions; }
-                let totalReacts = reactObj.like + reactObj.love + reactObj.haha + reactObj.sad + reactObj.angry;
                 
                 let cmtArr = [];
                 if(post.comments) { if(typeof post.comments === 'string') try { cmtArr = JSON.parse(post.comments); } catch(e) {} else cmtArr = post.comments; }
 
                 let myReact = localStorage.getItem(`reacted_${type}_${post.id}`);
-                let reactLabelMap = {like: 'THÍCH', love: 'YÊU THÍCH', haha: 'HAHA', sad: 'BUỒN', angry: 'PHẪN NỘ'};
-                let reactIconMap = {like: '👍', love: '❤️', haha: '😆', sad: '😢', angry: '😡'};
-                
-                let reactBtnLabel = myReact ? reactLabelMap[myReact] : "THÍCH";
-                let reactBtnColor = myReact ? 'color: var(--amber); background: rgba(221, 170, 51, 0.1); border: 1px solid var(--amber);' : 'border: 1px solid transparent;';
-                let reactBtnIcon = myReact ? reactIconMap[myReact] : '<span class="icon-slot" data-icon="like"></span>';
-
-                let reactsHtml = totalReacts > 0 ? `<div class="reaction-counts">${totalReacts} Cảm xúc</div>` : '';
 
                 let commentsHtml = cmtArr.map(c => `
                     <div class="comment-item">
@@ -1106,22 +1090,15 @@
                     ${imgsHtml}
                     
                     <div class="reaction-container">
-                        <div class="react-btn-wrapper">
-                            <button class="react-btn" style="${reactBtnColor}" onclick="reactPost('${type}', ${post.id}, '${myReact ? myReact : 'like'}')">
-                                ${reactBtnIcon} <span style="margin-left:4px;">${reactBtnLabel}</span>
-                            </button>
-                            <div class="react-popover">
-                                <button class="emoji-btn" onclick="reactPost('${type}', ${post.id}, 'like')" title="Thích">👍</button>
-                                <button class="emoji-btn" onclick="reactPost('${type}', ${post.id}, 'love')" title="Yêu thích">❤️</button>
-                                <button class="emoji-btn" onclick="reactPost('${type}', ${post.id}, 'haha')" title="Haha">😆</button>
-                                <button class="emoji-btn" onclick="reactPost('${type}', ${post.id}, 'sad')" title="Buồn">😢</button>
-                                <button class="emoji-btn" onclick="reactPost('${type}', ${post.id}, 'angry')" title="Phẫn nộ">😡</button>
-                            </div>
-                        </div>
-                        <button class="react-btn" style="border:1px solid transparent;" onclick="document.getElementById('cmt-input-wrap-${post.id}').style.display='flex'; document.getElementById('cmt-text-${post.id}').focus();">
-                            <span class="icon-slot" data-icon="comment"></span> <span style="margin-left:4px;">BÌNH LUẬN (${cmtArr.length})</span>
+                        <button class="emoji-btn ${myReact === 'like' ? 'active' : ''}" onclick="reactPost('${type}', '${post.id}', 'like')" title="Thích">👍 <span class="count">${reactObj.like > 0 ? reactObj.like : ''}</span></button>
+                        <button class="emoji-btn ${myReact === 'love' ? 'active' : ''}" onclick="reactPost('${type}', '${post.id}', 'love')" title="Yêu thích">❤️ <span class="count">${reactObj.love > 0 ? reactObj.love : ''}</span></button>
+                        <button class="emoji-btn ${myReact === 'haha' ? 'active' : ''}" onclick="reactPost('${type}', '${post.id}', 'haha')" title="Haha">😆 <span class="count">${reactObj.haha > 0 ? reactObj.haha : ''}</span></button>
+                        <button class="emoji-btn ${myReact === 'sad' ? 'active' : ''}" onclick="reactPost('${type}', '${post.id}', 'sad')" title="Buồn">😢 <span class="count">${reactObj.sad > 0 ? reactObj.sad : ''}</span></button>
+                        <button class="emoji-btn ${myReact === 'angry' ? 'active' : ''}" onclick="reactPost('${type}', '${post.id}', 'angry')" title="Phẫn nộ">😡 <span class="count">${reactObj.angry > 0 ? reactObj.angry : ''}</span></button>
+
+                        <button class="react-btn" onclick="document.getElementById('cmt-section-${post.id}').style.display='block'; document.getElementById('cmt-text-${post.id}').focus();">
+                            <span class="icon-slot" data-icon="comment"></span> BÌNH LUẬN (${cmtArr.length})
                         </button>
-                        ${reactsHtml}
                     </div>
 
                     <div class="comments-section" id="cmt-section-${post.id}" style="display: ${cmtArr.length > 0 ? 'block' : 'none'};">
@@ -1129,12 +1106,12 @@
                         <div class="comment-input-area" id="cmt-input-wrap-${post.id}">
                             <div class="cmt-row">
                                 ${nameInputHtml}
-                                <input type="text" id="cmt-text-${post.id}" class="cmt-input" placeholder="Viết bình luận..." onkeypress="if(event.key==='Enter') sendComment('${type}', ${post.id})">
+                                <input type="text" id="cmt-text-${post.id}" class="cmt-input" placeholder="Viết bình luận..." onkeypress="if(event.key==='Enter') sendComment('${type}', '${post.id}')">
                                 <label class="cmt-file-btn" title="Đính kèm ảnh">
-                                    <input type="file" accept="image/*" multiple style="display:none;" onchange="handleCmtImg(event, ${post.id})">
+                                    <input type="file" accept="image/*" multiple style="display:none;" onchange="handleCmtImg(event, '${post.id}')">
                                     <span class="icon-slot" data-icon="paperclip"></span>
                                 </label>
-                                <button class="cmt-submit" onclick="sendComment('${type}', ${post.id})">GỬI</button>
+                                <button class="cmt-submit" onclick="sendComment('${type}', '${post.id}')">GỬI</button>
                             </div>
                             <div class="cmt-preview" id="cmt-prev-${post.id}"></div>
                         </div>
