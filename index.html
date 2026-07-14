@@ -171,7 +171,8 @@
         #smBio ul { padding-left: 20px; margin: 10px 0; }
         #smBio details { background: rgba(0,0,0,0.5); border: 1px dashed var(--amber); padding: 12px; margin: 12px 0; border-radius: 4px; color: var(--pearl); }
         #smBio details[open] summary { border-bottom: 1px solid rgba(255,255,255,0.2); margin-bottom: 10px; padding-bottom: 5px; }
-        #smBio summary { cursor: pointer; color: var(--amber); font-weight: bold; outline: none; font-family: inherit; text-transform: none; font-size: 15px; display: block; }
+        /* ĐÃ SỬA LẠI ĐỒNG BỘ MÀU PEARL VÀ ĐỘ DÀY 500 CHUẨN VỚI TEXT Ở NGOÀI */
+        #smBio summary { cursor: pointer; color: var(--pearl); font-weight: 500; outline: none; font-family: inherit; text-transform: none; font-size: 15px; display: block; }
         #smBio details > div { padding-top: 10px; }
         
         .fb-link-box { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 60px; height: 60px; background: rgba(221, 170, 51, 0.1); border: 2px solid var(--amber); border-radius: 4px; text-decoration: none; color: var(--amber); transition: 0.2s; margin-top: 10px; box-shadow: 3px 3px 0 rgba(0,0,0,1); }
@@ -411,7 +412,10 @@
         
         .modal-box.modal-white details { background: rgba(0,0,0,0.05); border: 2px dashed #1A0F0A; padding: 12px; margin: 12px 0; color: #1A0F0A; display: block; border-radius: 4px;}
         .modal-box.modal-white details[open] summary { border-bottom: 1px solid rgba(0,0,0,0.2); margin-bottom: 10px; padding-bottom: 5px; }
-        .modal-box.modal-white summary { cursor: pointer; color: #8B0000; font-weight: bold; outline: none; font-family: inherit; text-transform: none; font-size: 15px; display: block;}
+        
+        /* ĐÃ SỬA: ĐỒNG BỘ NÚT BẢNG TRẮNG CÙNG ĐỘ DÀY (500) NHƯ CHỮ BÌNH THƯỜNG */
+        .modal-box.modal-white summary { cursor: pointer; color: inherit; font-weight: 500; outline: none; font-family: inherit; text-transform: none; font-size: 15px; display: block;}
+        
         .modal-box.modal-white details > div { color: #1A0F0A; font-weight: 500; line-height: 1.6; }
         .modal-box.modal-white ul { padding-left: 24px; margin: 10px 0; font-weight: 500;}
 
@@ -1284,7 +1288,7 @@
                     body.innerHTML = `
                         <div class="form-row">
                             <label>Chọn Playlist</label>
-                            <select id="aSongPlSelect" style="width:100%; padding:14px; background:#000; color:var(--pearl); border:2px solid #333 বিদেশে">${plOptions}</select>
+                            <select id="aSongPlSelect" style="width:100%; padding:14px; background:#000; color:var(--pearl); border:2px solid #333;">${plOptions}</select>
                         </div>
                         <div class="form-row">
                             <label class="file-btn" style="width:100%; background:var(--amber); color:#000; border-color:#000; padding:16px;">
