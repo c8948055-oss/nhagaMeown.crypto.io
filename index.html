@@ -740,7 +740,29 @@
             return str ? str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase() : '';
         }
 
-        function resizeImage(file, maxSize = 800) { return new Promise((resolve) => { const reader = new FileReader(); reader.onload = (e) => { const img = new Image(); img.onload = () => { const canvas = document.createElement('canvas'); let w = img.width, h = img.height; if(w > maxSize || h > maxSize) { if(w > h) { h = Math.round((h * maxSize) / w); w = maxSize; } else { w = Math.round((w * maxSize) / h); h = maxSize; } } canvas.width = w; canvas.height = h; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, w, h); resolve(canvas.toDataURL('image/jpeg', 0.6)); }; img.src = e.target.result; }; reader.readAsDataURL(file); }); }
+        function resizeImage(file, maxSize = 600) { 
+            return new Promise((resolve) => { 
+                const reader = new FileReader(); 
+                reader.onload = (e) => { 
+                    const img = new Image(); 
+                    img.onload = () => { 
+                        const canvas = document.createElement('canvas'); 
+                        let w = img.width, h = img.height; 
+                        if(w > maxSize || h > maxSize) { 
+                            if(w > h) { h = Math.round((h * maxSize) / w); w = maxSize; } 
+                            else { w = Math.round((w * maxSize) / h); h = maxSize; } 
+                        } 
+                        canvas.width = w; canvas.height = h; 
+                        const ctx = canvas.getContext('2d'); 
+                        ctx.drawImage(img, 0, 0, w, h); 
+                        resolve(canvas.toDataURL('image/jpeg', 0.5)); 
+                    }; 
+                    img.src = e.target.result; 
+                }; 
+                reader.readAsDataURL(file); 
+            }); 
+        }
+
         function fileToBase64(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error); }); }
 
         function rollNumber(el, target){ 
@@ -787,10 +809,10 @@
 
             await fetchStationConfig();
             
-            let currentVisits = parseInt(localStorage.getItem('meown_real_visits') || '0');
+            let currentVisits = parseInt(localStorage.getItem('meown_visits_reset') || '0');
             if (!sessionStorage.getItem('has_visited')) {
                 currentVisits++;
-                localStorage.setItem('meown_real_visits', currentVisits);
+                localStorage.setItem('meown_visits_reset', currentVisits);
                 sessionStorage.setItem('has_visited', 'true');
             }
 
@@ -1018,10 +1040,13 @@
         // TÍCH HỢP TÍNH NĂNG GỬI BÀI VIẾT (SỔ LƯU BÚT VÀ TUYỂN DỤNG)
         let gbB64Imgs = [];
         document.getElementById("gbFileInp").addEventListener("change", async (ev) => {
+            if(ev.target.files.length > 5) { alert("Để ga không bị quá tải, chỉ tải tối đa 5 ảnh một lần thôi nha!"); ev.target.value = ""; return; }
+            document.getElementById("gbPreview").innerHTML = "<p style='color:var(--amber); font-size:12px;'>Đang xử lý ảnh, đợi chút xíu...</p>";
             for(let f of ev.target.files) {
-                const b64 = await resizeImage(f, 1000); gbB64Imgs.push(b64);
+                const b64 = await resizeImage(f, 600); gbB64Imgs.push(b64);
                 document.getElementById("gbPreview").innerHTML += `<img src="${b64}" onclick="openLightbox(this.src, event)" style="cursor:zoom-in;">`;
             }
+            document.getElementById("gbPreview").querySelector('p')?.remove();
         });
         document.getElementById("guestbookForm").addEventListener("submit", async (e) => {
             e.preventDefault();
@@ -1039,10 +1064,13 @@
 
         let rcB64Imgs = [];
         document.getElementById("rcFileInp").addEventListener("change", async (ev) => {
+            if(ev.target.files.length > 5) { alert("Để ga không bị quá tải, chỉ tải tối đa 5 ảnh một lần thôi nha!"); ev.target.value = ""; return; }
+            document.getElementById("rcPreview").innerHTML = "<p style='color:var(--amber); font-size:12px;'>Đang xử lý ảnh, đợi chút xíu...</p>";
             for(let f of ev.target.files) {
-                const b64 = await resizeImage(f, 1000); rcB64Imgs.push(b64);
+                const b64 = await resizeImage(f, 600); rcB64Imgs.push(b64);
                 document.getElementById("rcPreview").innerHTML += `<img src="${b64}" onclick="openLightbox(this.src, event)" style="cursor:zoom-in;">`;
             }
+            document.getElementById("rcPreview").querySelector('p')?.remove();
         });
         document.getElementById("recruitForm").addEventListener("submit", async (e) => {
             e.preventDefault();
@@ -1121,7 +1149,8 @@
             if(CONFIG.stationMaster.facebook && CONFIG.stationMaster.facebook.url) {
                 fbHTML = `<a href="${CONFIG.stationMaster.facebook.url}" target="_blank" class="fb-link-box" title="${CONFIG.stationMaster.facebook.name}"><span class="icon-slot" data-icon="facebook"></span><span>${CONFIG.stationMaster.facebook.name}</span></a>`;
             }
-            document.getElementById("smBio").innerHTML = (CONFIG.stationMaster.bio || "Chưa có thông tin."); 
+            let safeBio = (CONFIG.stationMaster.bio || "Chưa có thông tin.").replace(/<details open>/g, "<details>");
+            document.getElementById("smBio").innerHTML = safeBio; 
             fbWrap.innerHTML = fbHTML;
             loadIcons();
         }
@@ -1169,7 +1198,7 @@
                     <button class="submit-btn" id="saveSM">ĐỒNG BỘ LÊN MÁY CHỦ</button>
                 `;
                 loadIcons(); 
-                window.insertToggleHTML = function() { const html = `<details open><summary>Bấm vào đây để đổi tên nút</summary><div style="color:var(--pearl);">Nhập nội dung hiển thị cho hành khách vào đây...</div></details><br>`; document.execCommand('insertHTML', false, html); };
+                window.insertToggleHTML = function() { const html = `<details><summary>Bấm vào đây để đổi tên nút</summary><div style="color:var(--pearl);">Nhập nội dung hiển thị cho hành khách vào đây...</div></details><br>`; document.execCommand('insertHTML', false, html); };
                 document.getElementById("saveSM").addEventListener("click", async () => { 
                     CONFIG.stationMaster.bio = document.getElementById("aBio").innerHTML; 
                     CONFIG.stationMaster.facebook = { name: document.getElementById("aFbName").value, url: document.getElementById("aFbUrl").value };
@@ -1220,7 +1249,7 @@
                     <button class="submit-btn" id="saveSt">${action==='add'?"IN THẺ":"LƯU HỒ SƠ"}</button>
                 `;
                 loadIcons(); renderTempGallery();
-                window.insertToggleHTML = function() { const html = `<details open><summary>Bấm vào đây để đổi tên nút</summary><div style="color:#000;">Nhập nội dung hiển thị cho hành khách vào đây...</div></details><br>`; document.execCommand('insertHTML', false, html); };
+                window.insertToggleHTML = function() { const html = `<details><summary>Bấm vào đây để đổi tên nút</summary><div style="color:#000;">Nhập nội dung hiển thị cho hành khách vào đây...</div></details><br>`; document.execCommand('insertHTML', false, html); };
                 let sB64 = sData.avatar; 
                 document.getElementById("aStFile").addEventListener("change", async (e)=>{ sB64 = await resizeImage(e.target.files[0]); document.getElementById("aStPrev").innerHTML=`<img src="${sB64}">`; document.getElementById("aStPrev").querySelector('img').style.display='block'; });
                 
@@ -1779,6 +1808,10 @@
                 container.innerHTML = "<p style='color:var(--silver); font-style:italic;'>Playlist trống.</p>";
                 return;
             }
+            
+            // Sắp xếp bài hát theo bảng chữ cái A-Z
+            pl.songs.sort((a, b) => a.title.localeCompare(b.title, 'vi'));
+
             pl.songs.forEach((song, index) => {
                 const sgEl = document.createElement("div");
                 sgEl.className = "gramo-song-item";
