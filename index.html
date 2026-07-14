@@ -252,7 +252,6 @@
         .card-front .c-image-wrap { width: 140px; height: 140px; border: 4px solid #FFF; border-bottom: 15px solid #FFF; background: #FFF; position: relative; box-shadow: 2px 2px 10px rgba(0,0,0,0.8); margin-bottom: 15px; transform: rotate(-2deg); flex-shrink: 0;}
         .card-front .c-image-wrap img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.1) sepia(0.2) grayscale(0.1); }
         
-        /* HIỆU ỨNG TÊN NHÂN VIÊN VÀ DỰ BỊ */
         .card-front .c-name, .up-card-front .c-name { 
             font-family: var(--font-heading); font-size: 24px; font-weight: 900; text-align: center; text-transform: uppercase; 
             letter-spacing: 2px; width: 100%; border-bottom: 1px dashed #444; padding-bottom: 8px; margin-bottom: 12px;
@@ -306,7 +305,7 @@
         .up-vote-btn.voted { border-color: #D50000; color: #D50000; box-shadow: inset 0 0 10px rgba(213,0,0,0.2); }
 
         /* ============================================================
-           SỔ LƯU BÚT & BÀI ĐĂNG (CẬP NHẬT TƯƠNG TÁC + BÌNH LUẬN)
+           SỔ LƯU BÚT & BÀI ĐĂNG + CSS TƯƠNG TÁC NGANG
            ============================================================ */
         .mailbox-panel { background: rgba(10,10,12,0.95); border: 2px solid #222; padding: 30px; position: relative; box-shadow: 8px 8px 0 rgba(0,0,0,1); margin-bottom: 28px; }
         .form-row { margin-bottom: 18px; }
@@ -331,15 +330,20 @@
         .post-time { font-size: 11px; color: var(--silver); font-weight: bold; }
         .post-content { font-size: 14.5px; color: var(--pearl); line-height: 1.6; margin-bottom: 16px; white-space: pre-wrap; font-weight: 500;}
 
-        /* CSS Tương tác (Like, Love...) & Bình luận */
+        /* CSS Tương tác (HÀNG NGANG) & Bình luận */
         .reaction-container { position: relative; display: flex; align-items: center; gap: 15px; border-top: 1px dashed #333; border-bottom: 1px dashed #333; padding: 10px 0; margin-bottom: 15px; margin-top: 15px;}
         .react-btn { background: none; border: none; color: var(--silver); display: flex; align-items: center; gap: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 12px; font-family: var(--font-kicker); text-transform: uppercase; padding: 5px 10px; border-radius: 4px;}
         .react-btn:hover { color: var(--amber); background: rgba(221, 170, 51, 0.1); }
-        .react-popover { position: absolute; bottom: 100%; left: 0; background: #000; border: 2px solid #333; border-radius: 30px; padding: 6px 12px; display: flex; gap: 12px; opacity: 0; pointer-events: none; transition: 0.2s; transform: translateY(10px); z-index: 10; box-shadow: 0 5px 15px rgba(0,0,0,0.8); }
-        .react-btn-wrapper { position: relative; display: inline-flex;}
+        .react-btn-wrapper { position: relative; display: inline-flex; }
+        
+        .react-popover { 
+            position: absolute; bottom: 100%; left: 0; background: #111; border: 1px solid #444; border-radius: 30px; 
+            padding: 5px 15px; display: flex; flex-direction: row; gap: 12px; opacity: 0; pointer-events: none; transition: 0.2s; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.8); z-index: 100; margin-bottom: 10px;
+        }
         .react-btn-wrapper:hover .react-popover { opacity: 1; pointer-events: auto; transform: translateY(-5px); }
-        .emoji-btn { font-size: 22px; cursor: pointer; transition: 0.2s; background: none; border: none; outline: none; padding: 0;}
-        .emoji-btn:hover { transform: scale(1.4) translateY(-3px); }
+        .emoji-btn { font-size: 24px; cursor: pointer; transition: 0.2s; background: none; border: none; padding: 0; margin: 0; outline: none;}
+        .emoji-btn:hover { transform: scale(1.3) translateY(-3px); }
         .reaction-counts { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--silver); margin-left: auto; font-weight:bold; }
         
         .comments-section { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 4px; border: 1px solid #222; }
@@ -433,10 +437,7 @@
         
         .modal-box.modal-white details { background: rgba(0,0,0,0.05); border: 2px dashed #1A0F0A; padding: 12px; margin: 12px 0; color: #1A0F0A; display: block; border-radius: 4px;}
         .modal-box.modal-white details[open] summary { border-bottom: 1px solid rgba(0,0,0,0.2); margin-bottom: 10px; padding-bottom: 5px; }
-        
-        /* ĐÃ SỬA: ĐỒNG BỘ NÚT BẢNG TRẮNG CÙNG ĐỘ DÀY (500) NHƯ CHỮ BÌNH THƯỜNG */
         .modal-box.modal-white summary { cursor: pointer; color: inherit; font-weight: 500; outline: none; font-family: inherit; text-transform: none; font-size: 15px; display: block;}
-        
         .modal-box.modal-white details > div { color: #1A0F0A; font-weight: 500; line-height: 1.6; }
         .modal-box.modal-white ul { padding-left: 24px; margin: 10px 0; font-weight: 500;}
 
@@ -666,80 +667,6 @@
     </div>
 
     <script>
-        // GẮN CHẶT CÁC HÀM XỬ LÝ (Tương tác, Comment, Nhạc) LÊN CAO NHẤT ĐỂ KHÔNG BAO GIỜ BỊ LỖI MẤT HÀM
-        window.tempCmtImgs = {}; // Mảng tạm lưu ảnh comment
-
-        window.reactPost = async function(type, postId, reactionType) {
-            const postList = type === 'guestbook' ? localGuestbook : localRecruit;
-            const post = postList.find(p => p.id === postId);
-            if(!post) return;
-
-            const votedKey = `reacted_${type}_${postId}`;
-            const oldReact = localStorage.getItem(votedKey);
-
-            if(!post.reactions) post.reactions = {like:0, love:0, haha:0, sad:0, angry:0};
-            if(typeof post.reactions === 'string') { try { post.reactions = JSON.parse(post.reactions); } catch(e) { post.reactions = {like:0, love:0, haha:0, sad:0, angry:0}; } }
-
-            if(oldReact) { post.reactions[oldReact] = Math.max(0, post.reactions[oldReact] - 1); }
-            if(oldReact !== reactionType) {
-                post.reactions[reactionType] = (post.reactions[reactionType] || 0) + 1;
-                localStorage.setItem(votedKey, reactionType);
-            } else { localStorage.removeItem(votedKey); }
-
-            if(typeof post.reactions !== 'string') post.reactions = JSON.stringify(post.reactions);
-
-            renderFeed(type);
-            await localforage.setItem(type === 'guestbook' ? 'meown_gb_backup' : 'meown_rc_backup', postList);
-            supa.from(type === 'guestbook' ? 'meown_guestbook' : 'meown_recruit').update({reactions: post.reactions}).eq('id', postId).then(({error})=> {if(error) console.warn(error);});
-        };
-
-        window.handleCmtImg = async function(e, postId) {
-            if(!window.tempCmtImgs[postId]) window.tempCmtImgs[postId] = [];
-            const files = e.target.files;
-            if(files.length > 3) { alert("Chỉ đính kèm tối đa 3 ảnh/bình luận nhé!"); e.target.value = ""; return; }
-            const prev = document.getElementById(`cmt-prev-${postId}`);
-            prev.innerHTML = "<span style='font-size:11px; color:var(--amber); font-weight:bold;'>Đang xử lý ảnh...</span>";
-            for(let f of files) {
-                const b64 = await resizeImage(f, 400); 
-                window.tempCmtImgs[postId].push(b64);
-            }
-            renderCmtPrev(postId);
-        };
-
-        window.renderCmtPrev = function(postId) {
-            const prev = document.getElementById(`cmt-prev-${postId}`);
-            if(!window.tempCmtImgs[postId]) return;
-            prev.innerHTML = window.tempCmtImgs[postId].map((img, i) => `<div style="position:relative; display:inline-block;"><img src="${img}"><div class="del-img-btn" onclick="removeCmtImg(${postId}, ${i})">✕</div></div>`).join('');
-        };
-
-        window.removeCmtImg = function(postId, i) { window.tempCmtImgs[postId].splice(i, 1); renderCmtPrev(postId); };
-
-        window.sendComment = async function(type, postId) {
-            const textInp = document.getElementById(`cmt-text-${postId}`);
-            const text = textInp.value.trim();
-            if(!text && (!window.tempCmtImgs[postId] || window.tempCmtImgs[postId].length === 0)) return alert("Nhập nội dung hoặc ảnh để bình luận nhé!");
-
-            const postList = type === 'guestbook' ? localGuestbook : localRecruit;
-            const post = postList.find(p => p.id === postId);
-            if(!post) return;
-
-            let cmtArr = [];
-            if(post.comments) { if(typeof post.comments === 'string') { try { cmtArr = JSON.parse(post.comments); } catch(e){} } else { cmtArr = post.comments; } }
-            
-            const nameInp = document.getElementById(`cmt-name-${postId}`);
-            const authorName = nameInp ? (nameInp.value || "Khách") : "Trưởng ga Meown";
-
-            cmtArr.push({ id: Date.now(), name: authorName, text: text, images: window.tempCmtImgs[postId] ? [...window.tempCmtImgs[postId]] : [], date: Date.now() });
-            post.comments = JSON.stringify(cmtArr);
-
-            window.tempCmtImgs[postId] = [];
-            if(textInp) textInp.value = "";
-            renderFeed(type);
-
-            await localforage.setItem(type === 'guestbook' ? 'meown_gb_backup' : 'meown_rc_backup', postList);
-            supa.from(type === 'guestbook' ? 'meown_guestbook' : 'meown_recruit').update({comments: post.comments}).eq('id', postId).then(({error})=> {if(error) console.warn(error);});
-        };
-
         const ICONS = {
             user: '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/></svg>',
             ticket: '<svg class="icon" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M7 6v12M17 6v12"/></svg>',
@@ -826,6 +753,8 @@
         let isAdminMode = false; let activeMusicPl = null;
         let localGuestbook = []; let localRecruit = [];
         let currentSearch = ""; 
+
+        window.tempCmtImgs = {}; 
 
         function removeAccents(str) { return str ? str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase() : ''; }
 
@@ -1005,6 +934,78 @@
             renderFeed("guestbook"); renderFeed("recruit"); updateNotifications();
         }
 
+        // ===================== XỬ LÝ POST / REACT / COMMENT =======================
+        window.reactPost = async function(type, postId, reactionType) {
+            const postList = type === 'guestbook' ? localGuestbook : localRecruit;
+            const post = postList.find(p => p.id === postId);
+            if(!post) return;
+
+            const votedKey = `reacted_${type}_${postId}`;
+            const oldReact = localStorage.getItem(votedKey);
+
+            if(!post.reactions) post.reactions = {like:0, love:0, haha:0, sad:0, angry:0};
+            if(typeof post.reactions === 'string') { try { post.reactions = JSON.parse(post.reactions); } catch(e) { post.reactions = {like:0, love:0, haha:0, sad:0, angry:0}; } }
+
+            if(oldReact) { post.reactions[oldReact] = Math.max(0, post.reactions[oldReact] - 1); }
+            if(oldReact !== reactionType) {
+                post.reactions[reactionType] = (post.reactions[reactionType] || 0) + 1;
+                localStorage.setItem(votedKey, reactionType);
+            } else { localStorage.removeItem(votedKey); }
+
+            if(typeof post.reactions !== 'string') post.reactions = JSON.stringify(post.reactions);
+
+            renderFeed(type);
+            await localforage.setItem(type === 'guestbook' ? 'meown_gb_backup' : 'meown_rc_backup', postList);
+            supa.from(type === 'guestbook' ? 'meown_guestbook' : 'meown_recruit').update({reactions: post.reactions}).eq('id', postId).then(({error})=> {if(error) console.warn(error);});
+        };
+
+        window.handleCmtImg = async function(e, postId) {
+            if(!window.tempCmtImgs[postId]) window.tempCmtImgs[postId] = [];
+            const files = e.target.files;
+            if(files.length > 3) { alert("Chỉ đính kèm tối đa 3 ảnh/bình luận nhé!"); e.target.value = ""; return; }
+            const prev = document.getElementById(`cmt-prev-${postId}`);
+            prev.innerHTML = "<span style='font-size:11px; color:var(--amber); font-weight:bold;'>Đang xử lý ảnh...</span>";
+            for(let f of files) {
+                const b64 = await resizeImage(f, 400); 
+                window.tempCmtImgs[postId].push(b64);
+            }
+            renderCmtPrev(postId);
+        };
+
+        window.renderCmtPrev = function(postId) {
+            const prev = document.getElementById(`cmt-prev-${postId}`);
+            if(!window.tempCmtImgs[postId]) return;
+            prev.innerHTML = window.tempCmtImgs[postId].map((img, i) => `<div style="position:relative; display:inline-block;"><img src="${img}"><div class="del-img-btn" onclick="removeCmtImg(${postId}, ${i})">✕</div></div>`).join('');
+        };
+
+        window.removeCmtImg = function(postId, i) { window.tempCmtImgs[postId].splice(i, 1); renderCmtPrev(postId); };
+
+        window.sendComment = async function(type, postId) {
+            const textInp = document.getElementById(`cmt-text-${postId}`);
+            const text = textInp.value.trim();
+            if(!text && (!window.tempCmtImgs[postId] || window.tempCmtImgs[postId].length === 0)) return alert("Nhập nội dung hoặc ảnh để bình luận nhé!");
+
+            const postList = type === 'guestbook' ? localGuestbook : localRecruit;
+            const post = postList.find(p => p.id === postId);
+            if(!post) return;
+
+            let cmtArr = [];
+            if(post.comments) { if(typeof post.comments === 'string') { try { cmtArr = JSON.parse(post.comments); } catch(e){} } else { cmtArr = post.comments; } }
+            
+            const nameInp = document.getElementById(`cmt-name-${postId}`);
+            const authorName = nameInp ? (nameInp.value || "Khách") : "Trưởng ga Meown";
+
+            cmtArr.push({ id: Date.now(), name: authorName, text: text, images: window.tempCmtImgs[postId] ? [...window.tempCmtImgs[postId]] : [], date: Date.now() });
+            post.comments = JSON.stringify(cmtArr);
+
+            window.tempCmtImgs[postId] = [];
+            if(textInp) textInp.value = "";
+            renderFeed(type);
+
+            await localforage.setItem(type === 'guestbook' ? 'meown_gb_backup' : 'meown_rc_backup', postList);
+            supa.from(type === 'guestbook' ? 'meown_guestbook' : 'meown_recruit').update({comments: post.comments}).eq('id', postId).then(({error})=> {if(error) console.warn(error);});
+        };
+
         let gbB64Imgs = [];
         document.getElementById("gbFileInp").addEventListener("change", async (ev) => {
             if(ev.target.files.length > 5) { alert("Để ga không bị quá tải, chỉ tải tối đa 5 ảnh một lần thôi nha!"); ev.target.value = ""; return; }
@@ -1014,8 +1015,7 @@
         });
 
         document.getElementById("guestbookForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const btn = e.target.querySelector("button"); btn.textContent = "ĐANG GỬI..."; btn.style.pointerEvents = "none";
+            e.preventDefault(); const btn = e.target.querySelector("button"); btn.textContent = "ĐANG GỬI..."; btn.style.pointerEvents = "none";
             try {
                 const gbNameEl = document.getElementById("gbName");
                 const authorName = gbNameEl ? (gbNameEl.value || "Khách") : "Trưởng ga Meown";
@@ -1036,8 +1036,7 @@
         });
 
         document.getElementById("recruitForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const btn = e.target.querySelector("button"); btn.textContent = "ĐANG GỬI..."; btn.style.pointerEvents = "none";
+            e.preventDefault(); const btn = e.target.querySelector("button"); btn.textContent = "ĐANG GỬI..."; btn.style.pointerEvents = "none";
             try {
                 const rcNameEl = document.getElementById("rcName");
                 const authorName = rcNameEl ? (rcNameEl.value || "Khách") : "Trưởng ga Meown";
@@ -1163,8 +1162,8 @@
             let fbHTML = '';
             if(CONFIG.stationMaster.facebook && CONFIG.stationMaster.facebook.url) { fbHTML = `<a href="${CONFIG.stationMaster.facebook.url}" target="_blank" class="fb-link-box" title="${CONFIG.stationMaster.facebook.name}"><span class="icon-slot" data-icon="facebook"></span><span>${CONFIG.stationMaster.facebook.name}</span></a>`; }
             
-            document.getElementById("smBio").innerHTML = (CONFIG.stationMaster.bio || "Chưa có thông tin."); 
-            document.querySelectorAll("#smBio details").forEach(d => { d.removeAttribute("open"); d.open = false; });
+            let safeBio = (CONFIG.stationMaster.bio || "Chưa có thông tin.").replace(/<details open>/gi, "<details>");
+            document.getElementById("smBio").innerHTML = safeBio; 
             fbWrap.innerHTML = fbHTML; loadIcons();
         }
 
@@ -1188,7 +1187,7 @@
             const body = document.getElementById("generalModalBody"); document.getElementById("generalModal").classList.remove("hidden"); body.innerHTML = "";
             
             if(type === 'sm') {
-                document.getElementById("generalModalTitle").textContent = "CẬP TRƯỞNG GA";
+                document.getElementById("generalModalTitle").textContent = "CẬP NHẬT TRƯỞNG GA";
                 body.innerHTML = `
                     <div class="form-row"><label>Lời giới thiệu / Tiểu sử</label>
                         <div class="rt-toolbar">
