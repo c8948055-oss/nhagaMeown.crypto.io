@@ -363,6 +363,35 @@
         .cmt-preview img { width: 60px; height: 60px; object-fit: cover; border: 2px solid #444; position: relative; }
 
         /* ============================================================
+           CSS HIỆU ỨNG NỔI BẬT CHO TRƯỞNG GA (POST & COMMENT)
+           ============================================================ */
+        .post-card.admin-post {
+            background: rgba(221, 170, 51, 0.08);
+            border: 2px solid var(--amber);
+            box-shadow: 0 0 15px rgba(221, 170, 51, 0.15), 6px 6px 0 rgba(0,0,0,1);
+        }
+        
+        .comment-item.admin-comment {
+            background: rgba(221, 170, 51, 0.1);
+            border: 1px solid rgba(221, 170, 51, 0.3);
+            border-left: 3px solid var(--amber);
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .comment-item.admin-comment:last-child {
+            margin-bottom: 0;
+        }
+
+        /* LIGHTBOX ẢNH */
+        .lightbox { position: fixed; inset: 0; z-index: 99999; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; opacity: 1; transition: opacity 0.3s ease; cursor: zoom-out; }
+        .lightbox.hidden { opacity: 0; pointer-events: none; }
+        .lightbox img { max-width: 90vw; max-height: 90vh; border: 4px solid #FFF; box-shadow: 0 0 30px rgba(0,0,0,1); border-radius: 4px; object-fit: contain; cursor: default; }
+        .lightbox-close { position: absolute; top: 30px; right: 40px; color: #FFF; font-size: 50px; font-weight: bold; cursor: pointer; text-shadow: 0 0 10px #000; }
+        
+        /* ============================================================
            MÁY HÁT GRAMOPHONE & SEEKBAR
            ============================================================ */
         .gramo-toggle { position: fixed; right: 24px; bottom: 24px; z-index: 2000; width: 60px; height: 60px; border-radius: 50%; background: #000; border: 2px solid var(--brass); box-shadow: 0 0 15px rgba(181, 166, 66, 0.4), 4px 4px 0 rgba(0,0,0,1); display: flex; align-items: center; justify-content: center; color: var(--brass); font-size: 24px; transition: 0.3s; cursor: pointer; }
@@ -448,12 +477,6 @@
         .rt-btn { background: #000; color: var(--pearl); border: 2px solid #444; padding: 6px 12px; cursor: pointer; font-size: 12px; font-weight: bold; font-family:var(--font-kicker);}
         .rt-btn:hover { border-color: var(--amber); }
         .rt-editor { background: #000; border: 2px solid #333; min-height: 150px; padding: 14px; color: var(--pearl); outline: none; overflow-y: auto; line-height: 1.6; font-size: 14px; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8); }
-
-        /* LIGHTBOX ẢNH */
-        .lightbox { position: fixed; inset: 0; z-index: 99999; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; opacity: 1; transition: opacity 0.3s ease; cursor: zoom-out; }
-        .lightbox.hidden { opacity: 0; pointer-events: none; }
-        .lightbox img { max-width: 90vw; max-height: 90vh; border: 4px solid #FFF; box-shadow: 0 0 30px rgba(0,0,0,1); border-radius: 4px; object-fit: contain; cursor: default; }
-        .lightbox-close { position: absolute; top: 30px; right: 40px; color: #FFF; font-size: 50px; font-weight: bold; cursor: pointer; text-shadow: 0 0 10px #000; }
     </style>
 </head>
 <body>
@@ -866,8 +889,8 @@
                 isAdminMode = true; document.body.classList.add("admin-active");
                 const adminAvatarHtml = `<img src="${ADMIN_CAT_AVATAR}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;">`;
                 const gbWrap = document.getElementById("gbNameWrap"); const rcWrap = document.getElementById("rcNameWrap");
-                if(gbWrap) { gbWrap.innerHTML = `<div style="display:inline-flex; align-items:center; gap:6px; color:var(--amber); font-weight:900; margin-bottom:10px;">${adminAvatarHtml} Trưởng ga Meown ${VERIFIED_TICK}</div>`; }
-                if(rcWrap) { rcWrap.innerHTML = `<div style="display:inline-flex; align-items:center; gap:6px; color:var(--amber); font-weight:900; margin-bottom:10px;">${adminAvatarHtml} Trưởng ga Meown ${VERIFIED_TICK}</div>`; }
+                if(gbWrap) { gbWrap.innerHTML = `<div style="display:inline-flex; align-items:center; gap:6px; color:var(--amber); font-weight:900; margin-bottom:10px;">${adminAvatarHtml} TRƯỞNG GA MEOWN ${VERIFIED_TICK}</div>`; }
+                if(rcWrap) { rcWrap.innerHTML = `<div style="display:inline-flex; align-items:center; gap:6px; color:var(--amber); font-weight:900; margin-bottom:10px;">${adminAvatarHtml} TRƯỞNG GA MEOWN ${VERIFIED_TICK}</div>`; }
                 const cleanUrl = window.location.href.split('?')[0]; window.history.replaceState({}, document.title, cleanUrl);
             }
         }
@@ -1056,7 +1079,12 @@
             posts.sort((a,b) => (new Date(b.date || b.created_at).getTime()) - (new Date(a.date || a.created_at).getTime()));
             
             posts.forEach(post => {
-                const postEl = document.createElement("div"); postEl.className = "post-card";
+                const postEl = document.createElement("div"); 
+                
+                // KIỂM TRA POST CỦA ADMIN
+                let isAdminPost = (post.name === "Trưởng ga Meown" || post.author === "Trưởng ga Meown");
+                postEl.className = isAdminPost ? "post-card admin-post" : "post-card";
+                
                 let adminBtns = isAdminMode ? `<div class="admin-action-bar"><button class="admin-edit-post" onclick="openAdminPost('${type}', ${post.id})"><span class="icon-slot" data-icon="loop"></span> Sửa</button><button class="admin-delete-post" onclick="deletePostFromDB('${type}', ${post.id})"><span class="icon-slot" data-icon="trash"></span> Xóa</button></div>` : "";
                 
                 let imgsHtml = "";
@@ -1070,21 +1098,38 @@
 
                 let myReact = localStorage.getItem(`reacted_${type}_${post.id}`);
 
-                let commentsHtml = cmtArr.map(c => `
-                    <div class="comment-item">
-                        <div class="comment-avatar">${c.name.charAt(0).toUpperCase()}</div>
+                // KIỂM TRA COMMENT CỦA ADMIN
+                let commentsHtml = cmtArr.map(c => {
+                    let isAdminCmt = (c.name === "Trưởng ga Meown");
+                    let cmtClass = isAdminCmt ? "comment-item admin-comment" : "comment-item";
+                    
+                    let cmtAvatarHtml = isAdminCmt 
+                        ? `<img src="${ADMIN_CAT_AVATAR}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">` 
+                        : c.name.charAt(0).toUpperCase();
+                    
+                    let cmtNameHtml = isAdminCmt 
+                        ? `<span style="color:var(--amber);">TRƯỞNG GA MEOWN</span> ${VERIFIED_TICK} <span style="font-weight:normal; font-size:10px; color:#666; margin-left:6px;">- ${new Date(c.date).toLocaleString('vi-VN')}</span>`
+                        : `${c.name} <span style="font-weight:normal; font-size:10px; color:#666; margin-left:6px;">- ${new Date(c.date).toLocaleString('vi-VN')}</span>`;
+
+                    return `
+                    <div class="${cmtClass}">
+                        <div class="comment-avatar" style="${isAdminCmt ? 'border-color:var(--amber);' : ''}">${cmtAvatarHtml}</div>
                         <div class="comment-body">
-                            <div class="comment-name">${c.name} <span style="font-weight:normal; font-size:10px; color:#666;">- ${new Date(c.date).toLocaleString('vi-VN')}</span></div>
+                            <div class="comment-name">${cmtNameHtml}</div>
                             <div class="comment-text">${c.text}</div>
                             ${c.images && c.images.length > 0 ? `<div class="comment-imgs">${c.images.map(img => `<img src="${img}" onclick="openLightbox(this.src, event)">`).join('')}</div>` : ''}
                         </div>
                     </div>
-                `).join('');
+                `}).join('');
 
                 let nameInputHtml = isAdminMode ? `<input type="hidden" id="cmt-name-${post.id}" value="Trưởng ga Meown"><div style="display:flex; align-items:center; justify-content:center; background:#111; border:2px solid #333; padding:0 12px; font-weight:900; color:var(--amber); border-radius:4px;"><img src="${ADMIN_CAT_AVATAR}" style="width:16px;height:16px;border-radius:50%;margin-right:4px;"> ADMIN</div>` : `<input type="text" id="cmt-name-${post.id}" class="cmt-input" placeholder="Tên của bạn..." style="flex:0 0 120px;">`;
 
+                let postAuthorHtml = isAdminPost 
+                    ? `<img src="${ADMIN_CAT_AVATAR}" style="width:26px; height:26px; border-radius:50%; object-fit:cover;"> <span style="color:var(--amber);">TRƯỞNG GA MEOWN</span> ${VERIFIED_TICK}`
+                    : (post.name || post.author || "Khách ẩn danh");
+
                 postEl.innerHTML = `
-                    <div class="post-header"><div class="post-author">${post.name || post.author || "Khách ẩn danh"}</div>${adminBtns}</div>
+                    <div class="post-header"><div class="post-author">${postAuthorHtml}</div>${adminBtns}</div>
                     <div class="post-time">${new Date(post.date || post.created_at).toLocaleString('vi-VN')}</div>
                     <div class="post-content">${post.text || post.content || ""}</div>
                     ${imgsHtml}
@@ -1139,7 +1184,9 @@
             let fbHTML = '';
             if(CONFIG.stationMaster.facebook && CONFIG.stationMaster.facebook.url) { fbHTML = `<a href="${CONFIG.stationMaster.facebook.url}" target="_blank" class="fb-link-box" title="${CONFIG.stationMaster.facebook.name}"><span class="icon-slot" data-icon="facebook"></span><span>${CONFIG.stationMaster.facebook.name}</span></a>`; }
             
-            let safeBio = (CONFIG.stationMaster.bio || "Chưa có thông tin.").replace(/<details open>/gi, "<details>");
+            // Loại bỏ hoàn toàn thuộc tính open của thẻ details để nó tự động đóng 
+            let safeBio = (CONFIG.stationMaster.bio || "Chưa có thông tin.").replace(/<details\b[^>]*>/gi, match => match.replace(/\bopen(=['"]?[^>]*['"]?)?\b/gi, ''));
+            
             document.getElementById("smBio").innerHTML = safeBio; 
             fbWrap.innerHTML = fbHTML; loadIcons();
         }
