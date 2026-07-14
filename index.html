@@ -445,7 +445,7 @@
         .gramo-scroll-area::-webkit-scrollbar { width: 4px; }
         .gramo-scroll-area::-webkit-scrollbar-thumb { background: var(--brass); }
 
-        .gramo-pl-item, .gramo-song-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(0,0,0,0.6); margin-bottom: 6px; cursor: pointer; color: var(--silver); font-size: 12px; font-weight: bold; border: 1px solid transparent; transition: 0.2s; }
+        .gramo-pl-item, .gramo-song-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(0,0,0,0.6); margin-bottom: 6px; cursor: pointer; color: var(--silver); font-size: 12px; font-weight: bold; border: 1px transparent; transition: 0.2s; }
         .gramo-pl-item:hover, .gramo-song-item:hover, .gramo-song-item.active { border-color: var(--brass); color: #FFF; background: rgba(181, 166, 66, 0.1); }
         
         .g-back-btn { background: transparent; border: none; color: var(--amber); cursor: pointer; font-size: 11px; font-family: var(--font-kicker); font-weight: bold; text-transform: uppercase; transition: 0.2s; }
@@ -946,6 +946,8 @@
             }); 
         }
 
+        function fileToBase64(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error); }); }
+
         function rollNumber(el, target){ 
             const chars = "0123456789"; let iteration = 0; const startStr = "0".repeat(target.toString().length);
             let interval = setInterval(() => {
@@ -1065,6 +1067,20 @@
 
                 if (localMusic && Array.isArray(localMusic) && (localMusicTime > dbMusicTime || localSongCount > dbSongCount || localMusic.length > dbMusic.length)) { CONFIG.musicLibrary = localMusic; } else { CONFIG.musicLibrary = dbMusic || []; }
                 if(!CONFIG.musicLibrary || !Array.isArray(CONFIG.musicLibrary)) CONFIG.musicLibrary = [];
+                
+                // DETOX: QUÉT VÀ TIÊU HỦY RÁC BASE64 CŨ TRONG BỘ NHỚ
+                if (CONFIG.musicLibrary) {
+                    CONFIG.musicLibrary.forEach(pl => {
+                        if (pl.songs) {
+                            pl.songs.forEach(s => {
+                                // Nếu phát hiện chuỗi src quá dài (Base64), xóa sổ ngay lập tức để cứu RAM
+                                if (s.src && s.src.length > 1000) { 
+                                    delete s.src; 
+                                }
+                            });
+                        }
+                    });
+                }
             } catch(e) { console.warn("Lỗi đồng bộ dữ liệu hệ thống:", e); }
         }
 
@@ -1072,13 +1088,29 @@
             CONFIG.lastUpdated = Date.now(); 
             if (!skipMusicSync) CONFIG.musicLastUpdated = Date.now();
             if (!CONFIG.musicLibrary) CONFIG.musicLibrary = []; 
+            
+            // LỌC KÉP: Trích xuất nhạc gọn nhẹ trước khi đẩy lên DB/Cache
+            const safeMusicLibrary = CONFIG.musicLibrary.map(pl => ({
+                id: pl.id,
+                name: pl.name,
+                songs: (pl.songs || []).map(s => {
+                    let cleanSong = { title: s.title };
+                    if (s.id) cleanSong.id = s.id;
+                    // Bỏ rơi hoàn toàn thuộc tính 'src' (thủ phạm gây tràn RAM)
+                    return cleanSong;
+                })
+            }));
+
             const mainPayload = { stationMaster: CONFIG.stationMaster, trains: CONFIG.trains, staff: CONFIG.staff, upcomingBots: CONFIG.upcomingBots, lastUpdated: CONFIG.lastUpdated, musicLastUpdated: CONFIG.musicLastUpdated };
             
-            try { await localforage.setItem("meown_config_backup", mainPayload); if(!skipMusicSync) await localforage.setItem("meown_music_backup", CONFIG.musicLibrary); } catch(e) {}
+            try { 
+                await localforage.setItem("meown_config_backup", mainPayload); 
+                if(!skipMusicSync) await localforage.setItem("meown_music_backup", safeMusicLibrary); 
+            } catch(e) {}
             try { 
                 await supa.from('station_config').upsert([{ id: 1, data: JSON.stringify(mainPayload) }]); 
                 if(!skipMusicSync) {
-                    const { error } = await supa.from('station_config').upsert([{ id: 2, data: JSON.stringify(CONFIG.musicLibrary) }]);
+                    const { error } = await supa.from('station_config').upsert([{ id: 2, data: JSON.stringify(safeMusicLibrary) }]);
                     if(error && error.message && error.message.includes('payload')) { console.warn("Nhạc đang được đồng bộ tại bộ nhớ đệm."); }
                 }
             } catch(e) {}
@@ -1419,7 +1451,7 @@
                                 <input type="file" accept="audio/*" multiple id="masterSongUpload" style="display:none;">
                                 <span class="icon-slot" data-icon="paperclip"></span> CHỌN NHIỀU FILE ÂM THANH CÙNG LÚC
                             </label>
-                            <p style="font-size:11px; color:var(--silver); font-style:italic; margin-top:8px; text-align:center;">Hệ thống tự động đồng bộ tên cho tất cả các file</p>
+                            <p style="font-size:11px; color:var(--silver); font-style:italic; margin-top:8px; text-align:center;">Hệ thống sẽ tự động điền tên cho tất cả các file</p>
                         </div>
                         <div id="songsContainer"></div>
                         <div style="display:flex; gap:10px; margin-top:20px;">
