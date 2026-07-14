@@ -946,8 +946,6 @@
             }); 
         }
 
-        function fileToBase64(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error); }); }
-
         function rollNumber(el, target){ 
             const chars = "0123456789"; let iteration = 0; const startStr = "0".repeat(target.toString().length);
             let interval = setInterval(() => {
@@ -1081,7 +1079,7 @@
                 await supa.from('station_config').upsert([{ id: 1, data: JSON.stringify(mainPayload) }]); 
                 if(!skipMusicSync) {
                     const { error } = await supa.from('station_config').upsert([{ id: 2, data: JSON.stringify(CONFIG.musicLibrary) }]);
-                    if(error && error.message && error.message.includes('payload')) { console.warn("Nhạc quá nặng với DB, đã tự động lưu trữ độc lập tại máy cá nhân."); }
+                    if(error && error.message && error.message.includes('payload')) { console.warn("Nhạc đang được đồng bộ tại bộ nhớ đệm."); }
                 }
             } catch(e) {}
         }
@@ -1421,7 +1419,7 @@
                                 <input type="file" accept="audio/*" multiple id="masterSongUpload" style="display:none;">
                                 <span class="icon-slot" data-icon="paperclip"></span> CHỌN NHIỀU FILE ÂM THANH CÙNG LÚC
                             </label>
-                            <p style="font-size:11px; color:var(--silver); font-style:italic; margin-top:8px; text-align:center;">Hệ thống sẽ tự động điền tên cho tất cả các file</p>
+                            <p style="font-size:11px; color:var(--silver); font-style:italic; margin-top:8px; text-align:center;">Hệ thống tự động đồng bộ tên cho tất cả các file</p>
                         </div>
                         <div id="songsContainer"></div>
                         <div style="display:flex; gap:10px; margin-top:20px;">
@@ -1473,18 +1471,26 @@
                                 const title = r.querySelector(".sgName").value.trim(); const fileInput = r.querySelector(".sgFile"); 
                                 const file = r._attachedFile || (fileInput && fileInput.files.length > 0 ? fileInput.files[0] : null);
                                 if(title && file) { 
-                                    if(file.size > 5 * 1024 * 1024) { alert(`Bài hát "${file.name}" quá lớn (>5MB). Loại bỏ khỏi danh sách tải lên để chống sập ga!`); r.querySelector(".file-status").textContent = "Lỗi: File quá nặng!"; r.querySelector(".file-status").style.color = "#8B0000"; continue; }
-                                    processed++; btn.textContent = `ĐANG MÃ HÓA (${processed}/${totalToProcess})...`; await new Promise(resolve => setTimeout(resolve, 100)); 
-                                    const base64Audio = await fileToBase64(file); 
-                                    CONFIG.musicLibrary.forEach(p => { if(p.id === targetPlId) { p.songs.push({ title: title, src: base64Audio }); } }); 
+                                    processed++; btn.textContent = `ĐANG XỬ LÝ (${processed}/${totalToProcess})...`; 
+                                    
+                                    // LƯU RAW TRỰC TIẾP VÀO BỘ NHỚ TRÌNH DUYỆT (KHÔNG QUA BASE64)
+                                    const songFileId = "audio_" + Date.now() + "_" + Math.floor(Math.random() * 1000);
+                                    await localforage.setItem(songFileId, file);
+                                    
+                                    CONFIG.musicLibrary.forEach(p => { 
+                                        if(p.id === targetPlId) { 
+                                            p.songs.push({ title: title, id: songFileId }); // CHỈ LƯU ID
+                                        } 
+                                    }); 
                                     r._attachedFile = null; if(fileInput) fileInput.value = ""; 
                                 } 
                             } 
                             
-                            btn.textContent = "ĐANG LƯU VÀO MÁY CHỦ..."; await new Promise(resolve => setTimeout(resolve, 100));
+                            btn.textContent = "ĐANG LƯU VÀO MÁY CHỦ..."; 
                             await saveStationConfigToDB(false); 
                             if (activeMusicPl === targetPlId) { renderGramoSongs(activeMusicPl); }
-                            document.getElementById("generalModal").classList.add("hidden"); alert(`Đã tải nhạc vào máy nội bộ thành công!`);
+                            document.getElementById("generalModal").classList.add("hidden"); 
+                            alert(`Đã thêm ${processed} bài hát thành công!\n(Dữ liệu nhạc gốc được lưu an toàn trực tiếp trên máy của Trưởng ga, tránh sập hệ thống.)`);
                         } catch (err) { alert(err.message || "Lỗi lưu nhạc. Định dạng không hợp lệ."); } finally { btn.textContent = "LƯU BÀI HÁT"; btn.style.pointerEvents = 'auto'; }
                     });
                 } else if(action === 'edit') {
@@ -1712,6 +1718,7 @@
         // ============================================================
         let isPlaying = false;
         let currentSongIndex = -1;
+        let currentAudioUrl = null; // Quản lý bộ nhớ tránh Memory Leak
         
         document.getElementById("gramoToggle").addEventListener("click", () => {
             const panel = document.getElementById("gramoPanel");
@@ -1736,7 +1743,21 @@
             loadIcons();
         };
 
-        window.deletePlaylist = async function(plId, e) { e.stopPropagation(); if(confirm("XÓA PLAYLIST NÀY?")) { CONFIG.musicLibrary = CONFIG.musicLibrary.filter(p => p.id !== plId); await saveStationConfigToDB(false); renderGramoPlaylists(); } };
+        window.deletePlaylist = async function(plId, e) { 
+            e.stopPropagation(); 
+            if(confirm("XÓA PLAYLIST NÀY?")) { 
+                const pl = CONFIG.musicLibrary.find(p => p.id === plId);
+                // Dọn dẹp sạch sẽ các file nhạc trong LocalForage để trống ổ đĩa
+                if (pl && pl.songs) {
+                    for (let song of pl.songs) {
+                        if (song.id) await localforage.removeItem(song.id);
+                    }
+                }
+                CONFIG.musicLibrary = CONFIG.musicLibrary.filter(p => p.id !== plId); 
+                await saveStationConfigToDB(false); 
+                renderGramoPlaylists(); 
+            } 
+        };
 
         window.renderGramoSongs = function(plId) {
             const container = document.getElementById("gramoSongList");
@@ -1756,7 +1777,19 @@
             loadIcons();
         };
 
-        window.deleteSong = async function(plId, index, e) { e.stopPropagation(); if(confirm("XÓA BÀI HÁT NÀY?")) { const pl = CONFIG.musicLibrary.find(p => p.id === plId); if(pl) { pl.songs.splice(index, 1); await saveStationConfigToDB(false); renderGramoSongs(plId); } } };
+        window.deleteSong = async function(plId, index, e) { 
+            e.stopPropagation(); 
+            if(confirm("XÓA BÀI HÁT NÀY?")) { 
+                const pl = CONFIG.musicLibrary.find(p => p.id === plId); 
+                if(pl) { 
+                    const song = pl.songs[index];
+                    if (song.id) await localforage.removeItem(song.id); // Dọn dẹp ổ đĩa
+                    pl.songs.splice(index, 1); 
+                    await saveStationConfigToDB(false); 
+                    renderGramoSongs(plId); 
+                } 
+            } 
+        };
 
         const audioEl = document.getElementById("gramoAudio");
         const seekSlider = document.getElementById("seekSlider");
@@ -1769,11 +1802,36 @@
         audioEl.addEventListener("timeupdate", () => { seekSlider.value = Math.floor(audioEl.currentTime); currTimeEl.textContent = formatTime(audioEl.currentTime); });
         seekSlider.addEventListener("input", () => { audioEl.currentTime = seekSlider.value; currTimeEl.textContent = formatTime(seekSlider.value); });
 
-        window.playSong = function(plId, index) {
+        window.playSong = async function(plId, index) {
             const pl = CONFIG.musicLibrary.find(p => p.id === plId);
             if(!pl || !pl.songs || !pl.songs[index]) return;
             const song = pl.songs[index];
-            audioEl.src = song.src; audioEl.play(); isPlaying = true; currentSongIndex = index; activeMusicPl = plId;
+            
+            // Xóa Audio URL cũ để tránh Memory Leak
+            if (currentAudioUrl) {
+                URL.revokeObjectURL(currentAudioUrl);
+                currentAudioUrl = null;
+            }
+
+            let audioUrl = song.src; // Tương thích ngược với các file base64 cũ (nếu còn)
+            if (song.id) {
+                try {
+                    const blob = await localforage.getItem(song.id);
+                    if (blob) {
+                        audioUrl = URL.createObjectURL(blob);
+                        currentAudioUrl = audioUrl;
+                    } else {
+                        alert("Hệ thống không tìm thấy file nhạc gốc trên máy này! Vui lòng nhờ admin tải lại file.");
+                        return;
+                    }
+                } catch (e) {
+                    console.error("Lỗi tải nhạc:", e);
+                }
+            }
+
+            audioEl.src = audioUrl; 
+            audioEl.play().catch(e => console.error("Auto-play bị chặn bởi trình duyệt:", e)); 
+            isPlaying = true; currentSongIndex = index; activeMusicPl = plId;
             
             document.getElementById("gramoTitle").textContent = song.title;
             document.getElementById("musicBoxVinyl").classList.add("playing"); document.getElementById("musicBoxStylus").classList.add("playing"); document.getElementById("gramoToggle").classList.remove("paused"); document.getElementById("gramoPlay").innerHTML = '<span class="icon-slot" data-icon="pause"></span>';
