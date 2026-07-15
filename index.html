@@ -479,6 +479,24 @@
         #gramoPlayWrap { position: relative; border-radius: 50%; }
         #gramoPlay { font-size: 24px; padding: 12px; border-radius: 50%; border-color: var(--brass); color: #FFDF73; position: relative; z-index: 2; }
 
+        /* NỐT NHẠC BAY LƠ LỬNG NÉT 1 MẢNH */
+        .floating-note {
+            position: fixed;
+            width: 16px;
+            height: 16px;
+            color: var(--amber); /* Nét vẽ 1 màu vàng */
+            pointer-events: none;
+            z-index: 9999;
+            animation: floatNote 2s ease-out forwards;
+            opacity: 0;
+            filter: drop-shadow(0 0 4px var(--amber-glow));
+        }
+        @keyframes floatNote {
+            0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; transform: translateY(-15px) scale(1) rotate(calc(var(--dir) * 20deg)); }
+            100% { transform: translateY(-80px) scale(1.3) rotate(calc(var(--dir) * 50deg)); opacity: 0; }
+        }
+
         /* ============================================================
            MODAL CHUNG & BẢNG TRẮNG TO CỦA HỒ SƠ/FEEDBACK
            ============================================================ */
@@ -978,21 +996,45 @@
             }
         }
 
+        // TẠO NỐT NHẠC BAY
         let noteInterval;
         function spawnNote() {
             if(!isPlaying) return;
+            
+            const icons = ['note1', 'note2'];
+            
+            // 1. Nốt bay từ đĩa than nhỏ (Góc trái bên trong hộp nhạc)
+            const panel = document.getElementById("gramoPanel");
+            if(!panel.classList.contains("hidden-panel")) {
+                const miniVinyl = document.getElementById("musicBoxVinyl");
+                if(miniVinyl) {
+                    const mRect = miniVinyl.getBoundingClientRect();
+                    if(mRect.width > 0) {
+                        const mNote = document.createElement("div");
+                        mNote.className = "floating-note icon-slot";
+                        mNote.dataset.icon = icons[Math.floor(Math.random() * icons.length)];
+                        mNote.style.setProperty('--dir', (Math.random() * 2 - 1).toFixed(2));
+                        mNote.style.left = (mRect.left + mRect.width / 2 - 8 + (Math.random() * 10 - 5)) + "px";
+                        mNote.style.top = (mRect.top) + "px";
+                        document.body.appendChild(mNote);
+                        setTimeout(() => mNote.remove(), 2000);
+                    }
+                }
+            }
+
+            // 2. Nốt bay từ nút bật/tắt đĩa nhạc tròn bên ngoài góc phải
             const gramo = document.getElementById("gramoToggle");
             const rect = gramo.getBoundingClientRect();
             const note = document.createElement("div");
             note.className = "floating-note icon-slot";
-            const icons = ['note1', 'note2'];
             note.dataset.icon = icons[Math.floor(Math.random() * icons.length)];
-            note.style.setProperty('--x', (Math.random() * 2 - 1));
-            note.style.left = (rect.left + rect.width / 2 - 10) + "px";
-            note.style.top = (rect.top) + "px";
+            note.style.setProperty('--dir', (Math.random() * 2 - 1).toFixed(2));
+            note.style.left = (rect.left + rect.width / 2 - 8 + (Math.random() * 20 - 10)) + "px";
+            note.style.top = (rect.top + 10) + "px";
             document.body.appendChild(note);
+            
             loadIcons();
-            setTimeout(() => note.remove(), 2500);
+            setTimeout(() => note.remove(), 2000);
         }
 
         window.openLightbox = function(src, e) {
@@ -1037,7 +1079,6 @@
             }); 
         }
 
-        // HÀM CHUYỂN NHẠC SANG BASE64 ĐỂ ĐỒNG BỘ MÁY CHỦ
         function fileToBase64(file) { 
             return new Promise((resolve, reject) => { 
                 const reader = new FileReader(); 
@@ -1153,7 +1194,6 @@
 
         async function fetchStationConfig() {
             try {
-                // Tải giao diện trước để web siêu mượt
                 const { data: mainData } = await supa.from('station_config').select('data').eq('id', 1).single();
                 let dbConfig = {}; if (mainData && mainData.data) { dbConfig = typeof mainData.data === 'string' ? JSON.parse(mainData.data) : mainData.data; }
 
@@ -1161,9 +1201,7 @@
                 let dbTime = dbConfig.lastUpdated || 0; let localTime = localMain.lastUpdated || 0;
                 if (localTime > dbTime) { CONFIG = { ...CONFIG, ...localMain }; } else { CONFIG = { ...CONFIG, ...dbConfig }; }
 
-                // TẢI NHẠC NGẦM (Không chờ await để không chặn giao diện)
                 fetchMusicConfig();
-
             } catch(e) { console.warn("Lỗi đồng bộ dữ liệu hệ thống:", e); }
         }
 
@@ -1277,7 +1315,6 @@
             posts.forEach(post => {
                 const postEl = document.createElement("div"); 
                 
-                // KIỂM TRA POST CỦA ADMIN
                 let isAdminPost = (post.name === "Trưởng ga Meown" || post.author === "Trưởng ga Meown");
                 postEl.className = isAdminPost ? "post-card admin-post" : "post-card";
                 
@@ -1294,7 +1331,6 @@
 
                 let myReact = localStorage.getItem(`reacted_${type}_${post.id}`);
 
-                // KIỂM TRA COMMENT CỦA ADMIN
                 let commentsHtml = cmtArr.map(c => {
                     let isAdminCmt = (c.name === "Trưởng ga Meown");
                     let cmtClass = isAdminCmt ? "comment-item admin-comment" : "comment-item";
@@ -1933,7 +1969,7 @@
         }
 
         // ============================================================
-        // LOGIC HỘP NHẠC TỐI ƯU HÓA URL.CREATEOBJECTURL
+        // LOGIC HỘP NHẠC TỐI ƯU HÓA
         // ============================================================
         let isPlaying = false;
         let currentSongIndex = -1;
@@ -2016,25 +2052,21 @@
             if(!pl || !pl.songs || !pl.songs[index]) return;
             const song = pl.songs[index];
 
-            // Reset UI sang trạng thái chờ
             document.getElementById("gramoTitle").textContent = "Đang kết nối đĩa than...";
             totalTimeEl.textContent = "0:00";
             currTimeEl.textContent = "0:00";
             
-            // Xóa Blob URL cũ để dọn rác RAM
             if (audioEl.src && audioEl.src.startsWith('blob:')) {
                 URL.revokeObjectURL(audioEl.src);
             }
 
             try {
                 if (song.src && song.src.startsWith('data:')) {
-                    // Chuyển Base64 thành Blob URL ngay lúc nhấn Play -> Chống lag DOM tuyệt đối
                     const res = await fetch(song.src);
                     const blob = await res.blob();
                     audioEl.src = URL.createObjectURL(blob);
                 } else {
-                    // Fallback lỗi của code cũ 
-                    alert("Bài hát này bị lưu lỗi do bản cập nhật hệ thống trước. Bà vui lòng xóa bài này đi và tải lại nhé!");
+                    alert("Bài hát này bị rỗng dữ liệu, vui lòng xóa đi và tải lại nhé!");
                     document.getElementById("gramoTitle").textContent = "File bị lỗi";
                     return;
                 }
