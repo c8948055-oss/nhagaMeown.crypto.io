@@ -730,7 +730,7 @@
 
     <script>
         // ============================================================
-        // GLOBAL KHÁCH XEM ALBUM
+        // GLOBAL KHÁCH XEM ALBUM & MỞ KHÓA
         // ============================================================
         window.currentViewingAlbums = [];
         window.currentViewingStaffName = "";
@@ -741,7 +741,7 @@
             window.currentViewingAlbums.forEach((alb, idx) => {
                 html += `
                     <div class="album-folder" onclick="viewClientAlbum(${idx})">
-                        <div class="album-folder-icon">📁</div>
+                        <div class="album-folder-icon">${alb.isLocked ? '🔒' : '📁'}</div>
                         <div class="album-name">${alb.name}</div>
                         <div class="album-count">${alb.images ? alb.images.length : 0} Ký ức</div>
                     </div>
@@ -753,6 +753,18 @@
 
         window.viewClientAlbum = function(idx) {
             const alb = window.currentViewingAlbums[idx];
+            
+            // KIỂM TRA MỞ KHÓA ALBUM
+            if (alb.isLocked && !alb.unlocked) {
+                let answer = prompt("🔒 ALBUM NÀY ĐÃ BỊ KHÓA!\nCâu hỏi từ Trưởng ga:\n" + alb.question);
+                if (answer !== null && answer.trim() !== "") {
+                    alert("Mở khóa thành công!");
+                    alb.unlocked = true; 
+                } else {
+                    return; 
+                }
+            }
+
             const body = document.getElementById("generalModalBody");
             document.getElementById("generalModalTitle").textContent = `ALBUM: ${alb.name}`; 
             let html = `<button class="g-back-btn" style="margin-bottom: 15px; color: #8B0000; font-size: 12px; border: 1px solid #8B0000; padding: 4px 8px; border-radius:4px;" onclick="renderClientAlbums()">🔙 QUAY LẠI DANH SÁCH</button>`;
@@ -846,7 +858,7 @@
             if(files.length > 3) { alert("Chỉ đính kèm tối đa 3 ảnh/bình luận nhé!"); e.target.value = ""; return; }
             const prev = document.getElementById(`cmt-prev-${postId}`);
             prev.innerHTML = "<span style='font-size:11px; color:var(--amber); font-weight:bold;'>Đang xử lý ảnh...</span>";
-            for(let f of files) { const b64 = await resizeImage(f, 400); window.tempCmtImgs[postId].push(b64); }
+            for(let f of files) { const b64 = await resizeImage(f, 1200); window.tempCmtImgs[postId].push(b64); }
             renderCmtPrev(postId);
         };
 
@@ -975,7 +987,10 @@
 
         function removeAccents(str) { return str ? str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase() : ''; }
 
-        function resizeImage(file, maxSize = 600) { 
+        // ============================================================
+        // HỆ THỐNG NÉN ẢNH SIÊU NÉT (1920px - 90% Quality)
+        // ============================================================
+        function resizeImage(file, maxSize = 1920) { 
             return new Promise((resolve) => { 
                 const reader = new FileReader(); 
                 reader.onload = (e) => { 
@@ -990,7 +1005,7 @@
                         canvas.width = w; canvas.height = h; 
                         const ctx = canvas.getContext('2d'); 
                         ctx.drawImage(img, 0, 0, w, h); 
-                        resolve(canvas.toDataURL('image/jpeg', 0.4)); 
+                        resolve(canvas.toDataURL('image/jpeg', 0.9)); 
                     }; 
                     img.src = e.target.result; 
                 }; 
@@ -1120,15 +1135,12 @@
                 if (localMusic && Array.isArray(localMusic) && (localMusicTime > dbMusicTime || localSongCount > dbSongCount || localMusic.length > dbMusic.length)) { CONFIG.musicLibrary = localMusic; } else { CONFIG.musicLibrary = dbMusic || []; }
                 if(!CONFIG.musicLibrary || !Array.isArray(CONFIG.musicLibrary)) CONFIG.musicLibrary = [];
                 
-                // DETOX: QUÉT VÀ TIÊU HỦY RÁC BASE64 CŨ TRONG BỘ NHỚ
+                // DETOX: QUÉT VÀ TIÊU HỦY RÁC BASE64 CŨ TRONG BỘ NHỚ NHẠC
                 if (CONFIG.musicLibrary) {
                     CONFIG.musicLibrary.forEach(pl => {
                         if (pl.songs) {
                             pl.songs.forEach(s => {
-                                // Nếu phát hiện chuỗi src quá dài (Base64), xóa sổ ngay lập tức để cứu RAM
-                                if (s.src && s.src.length > 1000) { 
-                                    delete s.src; 
-                                }
+                                if (s.src && s.src.length > 1000) { delete s.src; }
                             });
                         }
                     });
@@ -1148,7 +1160,6 @@
                 songs: (pl.songs || []).map(s => {
                     let cleanSong = { title: s.title };
                     if (s.id) cleanSong.id = s.id;
-                    // Bỏ rơi hoàn toàn thuộc tính 'src' (thủ phạm gây tràn RAM)
                     return cleanSong;
                 })
             }));
@@ -1185,7 +1196,7 @@
         document.getElementById("gbFileInp").addEventListener("change", async (ev) => {
             if(ev.target.files.length > 5) { alert("Để ga không bị quá tải, chỉ tải tối đa 5 ảnh một lần thôi nha!"); ev.target.value = ""; return; }
             document.getElementById("gbPreview").innerHTML = "<p style='color:var(--amber); font-size:12px;'>Đang xử lý ảnh, đợi chút xíu...</p>";
-            for(let f of ev.target.files) { const b64 = await resizeImage(f, 600); gbB64Imgs.push(b64); document.getElementById("gbPreview").innerHTML += `<img src="${b64}" onclick="openLightbox(this.src, event)" style="cursor:zoom-in;">`; }
+            for(let f of ev.target.files) { const b64 = await resizeImage(f, 1600); gbB64Imgs.push(b64); document.getElementById("gbPreview").innerHTML += `<img src="${b64}" onclick="openLightbox(this.src, event)" style="cursor:zoom-in;">`; }
             document.getElementById("gbPreview").querySelector('p')?.remove();
         });
 
@@ -1206,7 +1217,7 @@
         document.getElementById("rcFileInp").addEventListener("change", async (ev) => {
             if(ev.target.files.length > 5) { alert("Để ga không bị quá tải, chỉ tải tối đa 5 ảnh một lần thôi nha!"); ev.target.value = ""; return; }
             document.getElementById("rcPreview").innerHTML = "<p style='color:var(--amber); font-size:12px;'>Đang xử lý ảnh, đợi chút xíu...</p>";
-            for(let f of ev.target.files) { const b64 = await resizeImage(f, 600); rcB64Imgs.push(b64); document.getElementById("rcPreview").innerHTML += `<img src="${b64}" onclick="openLightbox(this.src, event)" style="cursor:zoom-in;">`; }
+            for(let f of ev.target.files) { const b64 = await resizeImage(f, 1600); rcB64Imgs.push(b64); document.getElementById("rcPreview").innerHTML += `<img src="${b64}" onclick="openLightbox(this.src, event)" style="cursor:zoom-in;">`; }
             document.getElementById("rcPreview").querySelector('p')?.remove();
         });
 
@@ -1357,7 +1368,7 @@
         function renderTrGenresList() { const listContainer = document.getElementById("aTrGenreList"); if(!listContainer) return; listContainer.innerHTML = trainGenresList.map((g, i) => `<span class="c-tag" style="background:#000; border-color:var(--silver); color:var(--pearl); display:flex; align-items:center; gap:4px;">${g} <span style="cursor:pointer; color:red; font-weight:bold;" onclick="removeTrGenre(${i})">×</span></span>`).join(''); }
         window.removeTrGenre = function(i) { trainGenresList.splice(i, 1); renderTrGenresList(); };
         
-        // HỆ THỐNG QUẢN LÝ NHIỀU ALBUMS CHO NHÂN VIÊN
+        // HỆ THỐNG QUẢN LÝ NHIỀU ALBUMS CHO NHÂN VIÊN (Bao gồm chức năng KHÓA)
         let tempAlbums = []; 
         window.renderTempAlbums = function() {
             const wrap = document.getElementById("aStAlbumsWrap");
@@ -1365,9 +1376,10 @@
             wrap.innerHTML = tempAlbums.map((alb, idx) => `
                 <div class="admin-album-item">
                     <div class="admin-album-header">
-                        <span>📁 ${alb.name} (${alb.images.length} ảnh)</span>
+                        <span>${alb.isLocked ? '🔒' : '📁'} ${alb.name} (${alb.images.length} ảnh)</span>
                         <button type="button" style="color:#ff4444; background:transparent; border:none; font-weight:bold; cursor:pointer;" onclick="removeTempAlbum(${idx})">✕ Xóa Album</button>
                     </div>
+                    ${alb.isLocked ? `<div style="font-size:12px; color:var(--amber); margin-bottom:8px; font-style:italic;">Câu hỏi khóa: ${alb.question}</div>` : ''}
                     <div class="img-preview-grid">
                         ${alb.images.slice(0, 4).map(img => `<img src="${img}">`).join('')}
                         ${alb.images.length > 4 ? `<span style="color:#666; font-size:12px; align-self:center;">+${alb.images.length - 4} ảnh</span>` : ''}
@@ -1382,7 +1394,7 @@
             const body = document.getElementById("generalModalBody"); document.getElementById("generalModal").classList.remove("hidden"); body.innerHTML = "";
             
             if(type === 'sm') {
-                document.getElementById("generalModalTitle").textContent = "CẬP NHẬT TRƯỞNG GA";
+                document.getElementById("generalModalTitle").textContent = "CẬP TRƯỞNG GA";
                 body.innerHTML = `
                     <div class="form-row"><label>Lời giới thiệu / Tiểu sử</label>
                         <div class="rt-toolbar">
@@ -1428,7 +1440,7 @@
                 tempAlbums = [];
                 if(sData.gallery && sData.gallery.length > 0) {
                     if(typeof sData.gallery[0] === 'string') {
-                        tempAlbums = [{ id: Date.now(), name: "Ký ức chung", images: [...sData.gallery] }];
+                        tempAlbums = [{ id: Date.now(), name: "Ký ức chung", images: [...sData.gallery], isLocked: false }];
                     } else {
                         tempAlbums = [...sData.gallery];
                     }
@@ -1463,6 +1475,10 @@
                                 <input type="text" id="aNewAlbumName" placeholder="Tên Album mới..." style="flex:1;">
                                 <label class="file-btn" style="width:auto; margin:0;"><input type="file" accept="image/*" multiple id="aNewAlbumFiles" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Chọn ảnh</label>
                             </div>
+                            <div style="margin-bottom:10px;">
+                                <input type="text" id="aNewAlbumQuestion" placeholder="Câu hỏi mở khóa (để trống nếu không khóa)..." style="width:100%; padding:10px; background:#000; color:var(--pearl); border:2px solid #333; font-size:13px; font-weight:bold;">
+                                <p style="font-size:11px; color:var(--silver); font-style:italic; margin-top:4px;">Nếu nhập câu hỏi, album sẽ bị khóa. Khách phải trả lời để xem ảnh.</p>
+                            </div>
                             <button type="button" class="submit-btn" id="btnAddAlbum" style="margin-bottom:15px; font-size:11px;">TẠO ALBUM & LƯU TẤT CẢ ẢNH</button>
                             <div id="aStAlbumsWrap"></div>
                         </div>
@@ -1473,26 +1489,30 @@
                 loadIcons(); renderTempAlbums();
                 window.insertToggleHTML = function() { const html = `<details><summary>Bấm vào đây để đổi tên nút</summary><div style="color:#000;">Nhập nội dung hiển thị cho hành khách vào đây...</div></details><br>`; document.execCommand('insertHTML', false, html); };
                 let sB64 = sData.avatar; 
-                document.getElementById("aStFile").addEventListener("change", async (e)=>{ sB64 = await resizeImage(e.target.files[0]); document.getElementById("aStPrev").innerHTML=`<img src="${sB64}">`; document.getElementById("aStPrev").querySelector('img').style.display='block'; });
+                document.getElementById("aStFile").addEventListener("change", async (e)=>{ sB64 = await resizeImage(e.target.files[0], 1920); document.getElementById("aStPrev").innerHTML=`<img src="${sB64}">`; document.getElementById("aStPrev").querySelector('img').style.display='block'; });
                 
-                // THÊM ALBUM MỚI
+                // THÊM ALBUM MỚI (CÓ KHÓA/KHÔNG KHÓA)
                 document.getElementById("btnAddAlbum").onclick = async () => {
                     const nameInput = document.getElementById("aNewAlbumName");
                     const fileInput = document.getElementById("aNewAlbumFiles");
+                    const questionInput = document.getElementById("aNewAlbumQuestion");
                     const btn = document.getElementById("btnAddAlbum");
                     
                     const name = nameInput.value.trim();
+                    const question = questionInput ? questionInput.value.trim() : "";
+                    const isLocked = question.length > 0;
                     const files = fileInput.files;
+
                     if(!name || files.length === 0) return alert("Vui lòng nhập tên Album và chọn ít nhất 1 ảnh!");
                     
                     btn.textContent = "ĐANG XỬ LÝ ẢNH..."; btn.style.pointerEvents = "none";
                     let b64s = [];
-                    for(let f of files) { b64s.push(await resizeImage(f, 1000)); }
+                    for(let f of files) { b64s.push(await resizeImage(f, 1920)); }
                     
-                    tempAlbums.push({ id: Date.now() + Math.random(), name: name, images: b64s });
+                    tempAlbums.push({ id: Date.now() + Math.random(), name: name, images: b64s, isLocked: isLocked, question: question });
                     renderTempAlbums();
                     
-                    nameInput.value = ""; fileInput.value = "";
+                    nameInput.value = ""; fileInput.value = ""; if(questionInput) questionInput.value = "";
                     btn.textContent = "TẠO ALBUM & LƯU TẤT CẢ ẢNH"; btn.style.pointerEvents = "auto";
                 };
 
@@ -1523,7 +1543,7 @@
                     </div>
                     <div class="form-row"><label>Tags Thể Loại</label><input type="text" id="aUpTags" value="${upTagsStr}"></div>
                     <button class="submit-btn" id="saveUp">LƯU HỒ SƠ</button>`;
-                loadIcons(); let uB64 = uData.avatar; document.getElementById("aUpFile").addEventListener("change", async (e)=>{ uB64 = await resizeImage(e.target.files[0]); document.getElementById("aUpPrev").innerHTML=`<img src="${uB64}">`; document.getElementById("aUpPrev").querySelector('img').style.display='block';});
+                loadIcons(); let uB64 = uData.avatar; document.getElementById("aUpFile").addEventListener("change", async (e)=>{ uB64 = await resizeImage(e.target.files[0], 1920); document.getElementById("aUpPrev").innerHTML=`<img src="${uB64}">`; document.getElementById("aUpPrev").querySelector('img').style.display='block';});
                 document.getElementById("saveUp").addEventListener("click", async () => { 
                     const tagsArray = document.getElementById("aUpTags").value.split(',').map(t=>t.trim()).filter(t=>t); 
                     const haremWarning = document.getElementById("aUpHarem").value;
@@ -1801,7 +1821,7 @@
                 let albums = staff.gallery || [];
                 // Bọc ảnh cũ vào album mặc định nếu phiên bản trước chỉ là array strings
                 if(albums.length > 0 && typeof albums[0] === 'string') {
-                    albums = [{ id: 'legacy', name: 'Ký ức chung', images: albums }];
+                    albums = [{ id: 'legacy', name: 'Ký ức chung', images: albums, isLocked: false }];
                 }
 
                 if(albums.length === 0) { 
@@ -1822,7 +1842,7 @@
                 loadIcons(); modal.classList.remove("hidden");
                 let curStar = 0; let b64Imgs = []; const stars = body.querySelectorAll('.fb-star');
                 stars.forEach(s => { s.addEventListener('click', () => { curStar = +s.dataset.val; stars.forEach(st => { if(+st.dataset.val <= curStar) { st.textContent="★"; st.classList.add("active");} else {st.textContent="☆"; st.classList.remove("active");} }); }); });
-                document.getElementById("fbImg").addEventListener("change", async (ev) => { for(let f of ev.target.files) { const b64 = await resizeImage(f); b64Imgs.push(b64); document.getElementById("fbPreview").innerHTML += `<img src="${b64}">`; } });
+                document.getElementById("fbImg").addEventListener("change", async (ev) => { for(let f of ev.target.files) { const b64 = await resizeImage(f, 1200); b64Imgs.push(b64); document.getElementById("fbPreview").innerHTML += `<img src="${b64}">`; } });
                 document.getElementById("fbSubmit").addEventListener("click", async () => { if(curStar === 0) return alert("Vui lòng chọn số sao!"); if(!staff.feedbacks) staff.feedbacks = []; staff.feedbacks.push({ stars: curStar, name: document.getElementById("fbName").value || "Ẩn danh", text: document.getElementById("fbText").value, images: b64Imgs, date: Date.now() }); if(!staff.rating) staff.rating = {sum:0, count:0}; staff.rating.sum += curStar; staff.rating.count += 1; document.getElementById("fbSubmit").textContent = "ĐANG LƯU..."; await saveStationConfigToDB(true); modal.classList.add("hidden"); renderTrains(); updateNotifications(); box.classList.remove("modal-white"); });
             });
             return cardWrap;
