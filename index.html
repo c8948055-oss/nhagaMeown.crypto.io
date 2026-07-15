@@ -197,6 +197,7 @@
         
         .t-windows-wrap { display: flex; gap: 15px; margin-top: 15px; flex: 1; align-items: stretch;}
         .t-window { background: var(--theme-color, #FFF); border: 4px solid #000; border-radius: 4px; box-shadow: inset 0 0 20px rgba(0,0,0,0.7), 0 0 15px var(--theme-color-glow); padding: 10px; position: relative; display: flex; flex-direction: column;}
+        .t-window-tags { flex: 0 0 120px; background: rgba(0,0,0,0.6) !important; border-color:#222 !important; box-shadow:inset 0 0 10px #000 !important; }
         .t-window-text { position: relative; z-index: 2; font-size: 13px; font-weight: bold; color: #FFF; text-shadow: 1px 1px 2px #000; line-height: 1.6; overflow-y: auto; max-height: 110px; padding-right: 5px; white-space: pre-wrap;}
         .t-window-text::-webkit-scrollbar { width: 4px; }
         .t-window-text::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.5); border-radius: 2px;}
@@ -515,6 +516,38 @@
         .rt-btn { background: #000; color: var(--pearl); border: 2px solid #444; padding: 6px 12px; cursor: pointer; font-size: 12px; font-weight: bold; font-family:var(--font-kicker);}
         .rt-btn:hover { border-color: var(--amber); }
         .rt-editor { background: #000; border: 2px solid #333; min-height: 150px; padding: 14px; color: var(--pearl); outline: none; overflow-y: auto; line-height: 1.6; font-size: 14px; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8); }
+
+        /* ============================================================
+           MOBILE RESPONSIVENESS (SMARTPHONE)
+           ============================================================ */
+        @media (max-width: 600px) {
+            .train-card { min-height: 130px; border-width: 2px; }
+            .t-door { width: 35px; border-right-width: 1px; }
+            .t-door::after { right: 6px; width: 4px; height: 20px; }
+            .t-bellows { width: 15px; border-left-width: 1px; }
+            .t-body { padding: 10px; }
+            .t-plate { font-size: 11px; padding: 4px 8px; letter-spacing: 1px; }
+            .t-plate::before, .t-plate::after { width: 3px; height: 3px; }
+            .t-windows-wrap { gap: 8px; margin-top: 10px; }
+            .t-window { padding: 8px; border-width: 2px; }
+            .t-window-tags { flex: 0 0 85px !important; }
+            .t-window-text { font-size: 11px; max-height: 80px; line-height: 1.5; }
+            .t-tags-container { max-height: 80px; gap: 5px; }
+            .t-genre-tag { font-size: 8px; padding: 3px 4px; letter-spacing: 0; }
+            .t-specs { font-size: 9px; right: 10px; bottom: 5px; }
+            
+            .staff-grid { grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); gap: 15px; padding: 10px 0; }
+            .staff-card-container { min-height: 480px; }
+            
+            .topnav { max-width: 95vw; gap: 6px; padding: 6px; border-radius: 4px;}
+            .nav-item, .nav-home { font-size: 10px; padding: 8px 12px; }
+            
+            .gramo-toggle { width: 45px; height: 45px; font-size: 18px; right: 15px; bottom: 15px; }
+            .gramo-panel-new { width: calc(100vw - 30px); right: 15px; bottom: 70px; max-height: 65vh; }
+            
+            .modal-box { padding: 20px 15px; }
+            .album-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+        }
     </style>
 </head>
 <body>
@@ -730,6 +763,27 @@
 
     <script>
         // ============================================================
+        // HACK AUDIO CHO MOBILE: Chạm màn hình 1 lần là cấp quyền phát nhạc
+        // ============================================================
+        let isAudioUnlocked = false;
+        function unlockAudioContext() {
+            if(isAudioUnlocked) return;
+            const audioEl = document.getElementById("gramoAudio");
+            if(audioEl) {
+                // Đặt nhạc silent base64 để không báo lỗi NotSupportedError
+                if(!audioEl.src) audioEl.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA";
+                audioEl.play().then(() => {
+                    audioEl.pause();
+                    isAudioUnlocked = true;
+                }).catch(() => {});
+            }
+            document.removeEventListener("click", unlockAudioContext);
+            document.removeEventListener("touchstart", unlockAudioContext);
+        }
+        document.addEventListener("click", unlockAudioContext);
+        document.addEventListener("touchstart", unlockAudioContext);
+
+        // ============================================================
         // GLOBAL KHÁCH XEM ALBUM & MỞ KHÓA
         // ============================================================
         window.currentViewingAlbums = [];
@@ -797,24 +851,20 @@
             let attempts = 0;
             
             do {
-                // Ưu tiên chọn các tên chưa xuất hiện lần nào
                 let availableNames = BASE_NAME_POOL.filter(n => !usedNames.includes(n));
                 
                 if (availableNames.length > 0) {
                     newName = availableNames[Math.floor(Math.random() * availableNames.length)];
                 } else {
-                    // Nếu xui rủi dùng sạch sẽ kho tên (hiếm), sẽ bốc 1 tên cũ và random gắn ID đuôi để luôn độc nhất
                     let base = BASE_NAME_POOL[Math.floor(Math.random() * BASE_NAME_POOL.length)];
                     newName = base + " #" + Math.floor(Math.random() * 10000);
                 }
                 attempts++;
             } while (usedNames.includes(newName) && attempts < 100);
 
-            // Ghi nhớ tên này để không bao giờ bị gợi ý lại cho ai nữa
             usedNames.push(newName);
             localStorage.setItem('meown_used_names', JSON.stringify(usedNames));
 
-            // Bắn tên đó ra Input
             const inputEl = document.getElementById(inputId);
             if(inputEl) {
                 inputEl.value = newName;
@@ -824,12 +874,10 @@
             }
         };
 
-        // GẮN CHẶT CÁC HÀM XỬ LÝ LÊN CAO NHẤT ĐỂ KHÔNG BAO GIỜ BỊ LỖI MẤT HÀM DO BẤM NHẦM
         window.tempCmtImgs = {}; 
 
         window.reactPost = async function(type, postIdStr, reactionType) {
             const postList = type === 'guestbook' ? localGuestbook : localRecruit;
-            // Dùng String() để đọ cho khớp tuyệt đối, không bị lỗi nhận diện
             const post = postList.find(p => String(p.id) === String(postIdStr));
             if(!post) return;
 
@@ -1196,7 +1244,7 @@
         document.getElementById("gbFileInp").addEventListener("change", async (ev) => {
             if(ev.target.files.length > 5) { alert("Để ga không bị quá tải, chỉ tải tối đa 5 ảnh một lần thôi nha!"); ev.target.value = ""; return; }
             document.getElementById("gbPreview").innerHTML = "<p style='color:var(--amber); font-size:12px;'>Đang xử lý ảnh, đợi chút xíu...</p>";
-            for(let f of ev.target.files) { const b64 = await resizeImage(f, 1600); gbB64Imgs.push(b64); document.getElementById("gbPreview").innerHTML += `<img src="${b64}" onclick="openLightbox(this.src, event)" style="cursor:zoom-in;">`; }
+            for(let f of ev.target.files) { const b64 = await resizeImage(f, 1920); gbB64Imgs.push(b64); document.getElementById("gbPreview").innerHTML += `<img src="${b64}" onclick="openLightbox(this.src, event)" style="cursor:zoom-in;">`; }
             document.getElementById("gbPreview").querySelector('p')?.remove();
         });
 
@@ -1217,7 +1265,7 @@
         document.getElementById("rcFileInp").addEventListener("change", async (ev) => {
             if(ev.target.files.length > 5) { alert("Để ga không bị quá tải, chỉ tải tối đa 5 ảnh một lần thôi nha!"); ev.target.value = ""; return; }
             document.getElementById("rcPreview").innerHTML = "<p style='color:var(--amber); font-size:12px;'>Đang xử lý ảnh, đợi chút xíu...</p>";
-            for(let f of ev.target.files) { const b64 = await resizeImage(f, 1600); rcB64Imgs.push(b64); document.getElementById("rcPreview").innerHTML += `<img src="${b64}" onclick="openLightbox(this.src, event)" style="cursor:zoom-in;">`; }
+            for(let f of ev.target.files) { const b64 = await resizeImage(f, 1920); rcB64Imgs.push(b64); document.getElementById("rcPreview").innerHTML += `<img src="${b64}" onclick="openLightbox(this.src, event)" style="cursor:zoom-in;">`; }
             document.getElementById("rcPreview").querySelector('p')?.remove();
         });
 
@@ -1708,7 +1756,7 @@
                             <div class="t-window" style="flex: 1; display: flex; flex-direction: column;">
                                 <div class="t-window-text" style="flex:1;">${train.intro || ''}</div>
                             </div>
-                            <div class="t-window" style="flex: 0 0 120px; background: rgba(0,0,0,0.6); border-color:#222; box-shadow:inset 0 0 10px #000;">
+                            <div class="t-window t-window-tags" style="background: rgba(0,0,0,0.6); border-color:#222; box-shadow:inset 0 0 10px #000;">
                                 <div class="t-tags-container">${trainTagsHtml}</div>
                             </div>
                         </div>
@@ -1842,7 +1890,7 @@
                 loadIcons(); modal.classList.remove("hidden");
                 let curStar = 0; let b64Imgs = []; const stars = body.querySelectorAll('.fb-star');
                 stars.forEach(s => { s.addEventListener('click', () => { curStar = +s.dataset.val; stars.forEach(st => { if(+st.dataset.val <= curStar) { st.textContent="★"; st.classList.add("active");} else {st.textContent="☆"; st.classList.remove("active");} }); }); });
-                document.getElementById("fbImg").addEventListener("change", async (ev) => { for(let f of ev.target.files) { const b64 = await resizeImage(f, 1200); b64Imgs.push(b64); document.getElementById("fbPreview").innerHTML += `<img src="${b64}">`; } });
+                document.getElementById("fbImg").addEventListener("change", async (ev) => { for(let f of ev.target.files) { const b64 = await resizeImage(f, 1600); b64Imgs.push(b64); document.getElementById("fbPreview").innerHTML += `<img src="${b64}">`; } });
                 document.getElementById("fbSubmit").addEventListener("click", async () => { if(curStar === 0) return alert("Vui lòng chọn số sao!"); if(!staff.feedbacks) staff.feedbacks = []; staff.feedbacks.push({ stars: curStar, name: document.getElementById("fbName").value || "Ẩn danh", text: document.getElementById("fbText").value, images: b64Imgs, date: Date.now() }); if(!staff.rating) staff.rating = {sum:0, count:0}; staff.rating.sum += curStar; staff.rating.count += 1; document.getElementById("fbSubmit").textContent = "ĐANG LƯU..."; await saveStationConfigToDB(true); modal.classList.add("hidden"); renderTrains(); updateNotifications(); box.classList.remove("modal-white"); });
             });
             return cardWrap;
