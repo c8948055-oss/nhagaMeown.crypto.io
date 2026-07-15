@@ -10,14 +10,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,500&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=Libre+Barcode+39+Text&display=swap" rel="stylesheet">
     
-    <!-- Supabase & LocalForage (Chống tràn bộ nhớ cực mạnh) -->
+    <!-- Supabase & LocalForage -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
 
     <style>
-        /* ============================================================
-           BIẾN MÀU SẮC CHỦ ĐẠO & VIBE RETRO / VINTAGE 1990s
-           ============================================================ */
         :root {
             --bg-abyss: #000000;
             --amber: #DDAA33; 
@@ -30,7 +27,6 @@
             --font-kicker: 'Be Vietnam Pro', sans-serif;
             --font-heading: 'Playfair Display', serif;
             --font-body: 'Be Vietnam Pro', sans-serif;
-            --font-barcode: 'Libre Barcode 39 Text', cursive;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -44,9 +40,6 @@
 
         .crt-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 9999; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03)); background-size: 100% 4px, 6px 100%; opacity: 0.35; }
 
-        /* ============================================================
-           BACKGROUND THEO ĐÚNG ẢNH YÊU CẦU
-           ============================================================ */
         #bg-page1 { 
             position: fixed; inset: 0; z-index: 0; overflow: hidden; 
             background-image: url("ChatGPT Image 15_07_13 12 thg 7, 2026.png"); 
@@ -77,15 +70,8 @@
         .magic-particle { position: absolute; background: #DDAA33; border-radius: 50%; box-shadow: 0 0 8px #FFDF73, 0 0 15px #FFDF73; opacity: 0; animation: floatMagic linear forwards; pointer-events: none; z-index: 10; }
         @keyframes floatMagic { 0% { transform: translateY(0) scale(0.5); opacity: 0; } 20% { opacity: 0.8; } 100% { transform: translateY(-100px) scale(1.5); opacity: 0; } }
 
-        /* ============================================================
-           BẢNG THỐNG KÊ & THÔNG BÁO (NOTIFICATION)
-           ============================================================ */
-        .global-tag { 
-            position: fixed; left: 10px; bottom: 10px; z-index: 100; 
-            padding: 6px 12px; background: transparent; pointer-events: none;
-            font-family: var(--font-kicker); font-size: 11px; color: var(--pearl); line-height: 1.4; transition: 0.5s ease; 
-            display: flex; flex-direction: column; gap: 4px;
-        }
+        /* TAGS & NOTIFICATIONS */
+        .global-tag { position: fixed; left: 10px; bottom: 10px; z-index: 100; padding: 6px 12px; background: transparent; pointer-events: none; font-family: var(--font-kicker); font-size: 11px; color: var(--pearl); line-height: 1.4; display: flex; flex-direction: column; gap: 4px; }
         .global-tag .tag-line { display: flex; align-items: center; gap: 6px; font-weight: 500; text-shadow: 1px 1px 2px #000, 0 0 8px #000; } 
         .global-tag .icon { color: var(--amber); width: 14px; height: 14px; filter: drop-shadow(0 0 2px #000); } 
         .global-tag .num { display: inline-block; font-variant-numeric: tabular-nums; color: var(--amber); font-weight: 900; font-size: 13px; min-width: 1.5em; text-shadow: 0 0 5px var(--amber-glow), 1px 1px 2px #000; }
@@ -104,9 +90,7 @@
         .noti-item:hover { background: rgba(221, 170, 51, 0.1); border-color: var(--amber); }
         .noti-item span.highlight { color: var(--amber); font-weight: bold; }
 
-        /* ============================================================
-           TRANG 1 — LANDING PAGE
-           ============================================================ */
+        /* PAGE 1 */
         #page1 { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 40px 20px; transition: opacity 1.2s ease, filter 1.2s ease; z-index: 10; }
         #page1.leaving { opacity: 0; filter: blur(20px); pointer-events: none; }
         .station-card { position: relative; z-index: 15; width: min(600px, 92vw); padding: 40px 20px; background: transparent; display: flex; flex-direction: column; align-items: center; text-align: center; }
@@ -128,9 +112,7 @@
         .cta-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 rgba(0,0,0,1), 0 0 25px rgba(255, 223, 115, 0.8); }
         .cta-btn:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0 rgba(0,0,0,1); }
 
-        /* ============================================================
-           TRANG 2 — NAV & BỐ CỤC CHUNG
-           ============================================================ */
+        /* PAGE 2 */
         #page2 { position: relative; min-height: 100vh; padding-top: 100px; padding-bottom: 120px; opacity: 0; transition: opacity 1.2s ease; z-index: 10; display: none; }
         #page2.entering { opacity: 1; display: block; }
         .topnav { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 150; display: flex; flex-wrap: nowrap; overflow-x: auto; align-items: center; justify-content: flex-start; gap: 10px; padding: 10px; border-radius: 4px; background: rgba(5, 5, 8, 0.95); border: 2px solid #222; box-shadow: 4px 4px 0 rgba(0,0,0,1); width: max-content; max-width: 85vw; }
@@ -149,13 +131,10 @@
         .wood-box { background: rgba(10,10,12,0.95); border: 2px solid #222; border-radius: 4px; padding: 24px 28px; box-shadow: 6px 6px 0 rgba(0,0,0,1); margin-bottom: 24px; position: relative; }
         .vintage-gold-title { font-family: var(--font-heading); font-size: 22px; font-weight: 900; letter-spacing: 2px; color: var(--amber); border-bottom: 2px dashed #333; padding-bottom: 12px; margin-bottom: 20px; text-transform: uppercase; text-shadow: 2px 2px 0 #000, 0 0 10px var(--amber-glow); }
 
-        /* QUYỀN ADMIN HIỂN THỊ */
         .admin-only-flex { display: none !important; }
         body.admin-active .admin-only-flex { display: flex !important; }
-        
         .admin-only-btn { display: none; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-kicker); font-size: 12px; padding: 10px 18px; border-radius: 2px; background: #000; color: var(--amber); border: 2px solid var(--amber); cursor: pointer; font-weight: 900; transition: 0.2s; margin-bottom: 20px; text-transform: uppercase; box-shadow: 3px 3px 0 rgba(0,0,0,1);}
         .admin-only-btn:hover { background: var(--amber); color: black; transform: translate(-2px, -2px); box-shadow: 5px 5px 0 rgba(0,0,0,1);}
-        .admin-only-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 rgba(0,0,0,1); }
         body.admin-active .admin-only-btn { display: inline-flex; }
         
         .admin-action-bar { display: none; margin-left: auto; gap: 8px;}
@@ -166,7 +145,6 @@
         .admin-delete-post { color: var(--silver); border: 2px solid #444; }
         .admin-delete-post:hover { background: #8B0000; color: white; border-color: #8B0000; }
 
-        /* CSS TRƯỞNG GA */
         #smBio { font-weight: 500; color: var(--pearl); font-size: 15px; line-height: 1.8; width: 100%; white-space: pre-wrap; }
         #smBio ul { padding-left: 20px; margin: 10px 0; }
         #smBio details { background: rgba(0,0,0,0.5); border: 1px dashed var(--amber); padding: 12px; margin: 12px 0; border-radius: 4px; color: var(--pearl); }
@@ -176,12 +154,7 @@
         
         .fb-link-box { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 60px; height: 60px; background: rgba(221, 170, 51, 0.1); border: 2px solid var(--amber); border-radius: 4px; text-decoration: none; color: var(--amber); transition: 0.2s; margin-top: 10px; box-shadow: 3px 3px 0 rgba(0,0,0,1); }
         .fb-link-box:hover { background: var(--amber); color: #000; transform: translate(-2px, -2px); box-shadow: 5px 5px 0 rgba(0,0,0,1); }
-        .fb-link-box .icon { width: 20px; height: 20px; margin-bottom: 4px; }
-        .fb-link-box span { font-size: 9px; font-weight: bold; width: 50px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
 
-        /* ============================================================
-           CHUYẾN TÀU (RETRO VINTAGE)
-           ============================================================ */
         .search-bar-basic { display: flex; gap: 12px; margin-bottom: 15px; flex-wrap: wrap; align-items: center;}
         .search-input { flex: 1; min-width: 200px; padding: 14px 18px; border-radius: 2px; background: #0A0A0C; border: 2px solid #333; color: var(--pearl); font-size: 14px; font-weight: bold; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8); }
         .sort-select { width: 180px; padding: 14px; border-radius: 2px; background: #0A0A0C; border: 2px solid #333; color: var(--amber); font-size: 13px; font-weight: bold; cursor: pointer; font-family: var(--font-kicker); text-transform: uppercase; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8);}
@@ -220,18 +193,12 @@
         .theme-44 { background: #2e1a1a; border-color: #140808; --theme-color: #9C3D38; --theme-color-glow: rgba(156, 61, 56, 0.4); } 
         .theme-77 { background: #332117; border-color: #170d08; --theme-color: #B35D1E; --theme-color-glow: rgba(179, 93, 30, 0.4); } 
 
-        /* ============================================================
-           THIẾT KẾ THẺ NHÂN VIÊN VÀ DỰ BỊ (ID BADGE VẬT LÝ)
-           ============================================================ */
         .staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 24px; padding: 16px 0; margin-top: 15px; width: 100%;}
         .staff-card-container { perspective: 1000px; width: 100%; min-height: 520px; position: relative; transition: 0.3s; scroll-margin-top: 100px;}
         
         .admin-card-controls { position: absolute; top: -35px; left: 0; right: 0; display: none; justify-content: center; gap: 8px; z-index: 20; }
         body.admin-active .admin-card-controls { display: flex; }
-        .admin-card-btn { background: #000; border: 2px solid var(--silver); padding: 4px 10px; font-size: 11px; color: var(--silver); font-family: var(--font-kicker); font-weight: 900; text-transform:uppercase; cursor:pointer;}
-        .admin-card-btn:hover { border-color: var(--pearl); color: var(--pearl); }
-        .admin-card-btn.del:hover { background: #8B0000; color: white; border-color: #8B0000; }
-
+        
         .staff-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; cursor: pointer; border-radius: 8px;}
         .staff-card-container.flipped .staff-card-inner { transform: rotateY(180deg); }
         
@@ -245,7 +212,6 @@
 
         .s-theme-09 { --st-color: #C5A059; } .s-theme-03 { --st-color: #5C7A68; } .s-theme-07 { --st-color: #6C7A9C; } .s-theme-44 { --st-color: #9C3D38; } .s-theme-77 { --st-color: #B35D1E; }
 
-        /* MẶT TRƯỚC - THẺ NHÂN VIÊN */
         .card-front { border-color: var(--st-color); border-top: 25px solid var(--st-color); padding: 25px 16px 16px; align-items: center;}
         .card-front::before { content: ''; position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 40px; height: 10px; background: #000; border-radius: 10px; border: 1px solid rgba(0,0,0,0.5); box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);}
         
@@ -253,13 +219,8 @@
         .card-front .c-image-wrap { width: 140px; height: 140px; border: 4px solid #FFF; border-bottom: 15px solid #FFF; background: #FFF; position: relative; box-shadow: 2px 2px 10px rgba(0,0,0,0.8); margin-bottom: 15px; transform: rotate(-2deg); flex-shrink: 0;}
         .card-front .c-image-wrap img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.1) sepia(0.2) grayscale(0.1); }
         
-        .card-front .c-name, .up-card-front .c-name { 
-            font-family: var(--font-heading); font-size: 24px; font-weight: 900; text-align: center; text-transform: uppercase; 
-            letter-spacing: 2px; width: 100%; border-bottom: 1px dashed #444; padding-bottom: 8px; margin-bottom: 12px;
-            color: var(--amber); text-shadow: 2px 2px 4px rgba(0,0,0,0.9); 
-        }
+        .card-front .c-name, .up-card-front .c-name { font-family: var(--font-heading); font-size: 24px; font-weight: 900; text-align: center; text-transform: uppercase; letter-spacing: 2px; width: 100%; border-bottom: 1px dashed #444; padding-bottom: 8px; margin-bottom: 12px; color: var(--amber); text-shadow: 2px 2px 4px rgba(0,0,0,0.9); }
 
-        /* TAG CẢNH BÁO HAREM (ĐỎ VÀ XANH RÊU) */
         .c-tag.warning-no { background: #8B0000 !important; color: #FFF !important; border-color: #ff4444 !important; }
         .c-tag.warning-yes { background: #1e4620 !important; color: #FFF !important; border-color: #4caf50 !important; }
 
@@ -268,22 +229,17 @@
         .card-front .c-hook { font-size: 13px; font-style: italic; color: var(--pearl); text-align: center; margin-bottom: auto; line-height: 1.4; text-shadow: 1px 1px 0 #000; width: 100%;}
         
         .c-rating-badge { background: #000; border: 1px solid var(--st-color); padding: 4px 10px; font-size: 12px; font-weight: 900; color: var(--st-color); box-shadow: 2px 2px 0 rgba(0,0,0,1); margin-top: 10px;}
-        
         .card-front .c-flip-hint { text-align: center; font-size: 10px; color: var(--amber); animation: pulseHint 2s infinite; font-family: var(--font-kicker); font-weight: 900; letter-spacing: 1px; text-transform: uppercase; margin-top: 10px; background: rgba(0,0,0,0.8); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--amber); box-shadow: 2px 2px 0 #000;}
         @keyframes pulseHint { 0%, 100% { opacity: 0.8; } 50% { opacity: 1; box-shadow: 0 0 15px rgba(221,170,51,0.8), 2px 2px 0 #000; } }
 
-        /* MẶT SAU THẺ NHÂN VIÊN */
         .card-back { transform: rotateY(180deg); border-color: var(--st-color); border-top: 25px solid var(--st-color); padding: 25px 16px 16px; align-items: center; }
         .card-back::before { content: ''; position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 40px; height: 10px; background: #000; border-radius: 10px; border: 1px solid rgba(0,0,0,0.5); box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);}
         
         .c-back-btn { width: 100%; padding: 14px; background: #000; color: var(--pearl); font-family: var(--font-kicker); font-size: 12px; font-weight: 900; letter-spacing: 1px; text-align: center; border: 2px solid var(--st-color); cursor: pointer; transition: 0.2s; margin-bottom: 12px; text-transform: uppercase; box-shadow: 3px 3px 0 rgba(0,0,0,1);}
         .c-back-btn:hover { background: var(--st-color); color: #000; transform: translate(-2px,-2px); box-shadow: 5px 5px 0 rgba(0,0,0,1); }
-        .c-back-btn:active { transform: translate(2px,2px); box-shadow: 0 0 0 rgba(0,0,0,1); }
-        
         .c-chat-btn { display: block; width: 100%; background: linear-gradient(135deg, var(--st-color), #222); color: #FFF; font-weight: 900; font-family: var(--font-kicker); font-size: 13px; letter-spacing: 1px; text-align: center; padding: 16px; text-decoration: none; transition: 0.2s; margin-top: auto; border: 2px solid #000; box-shadow: 4px 4px 0 rgba(0,0,0,1); text-transform: uppercase; text-shadow: 1px 1px 0 #000;}
         .c-chat-btn:hover { filter: brightness(1.2); transform: translate(-2px, -2px); box-shadow: 6px 6px 0 rgba(0,0,0,1); }
 
-        /* KÝ ỨC (ALBUMS) BỎ QUÊN */
         .album-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; padding: 10px 0; }
         .album-folder { background: rgba(0,0,0,0.05); border: 2px dashed #1A0F0A; border-radius: 8px; padding: 20px 10px; cursor: pointer; text-align: center; transition: 0.2s; color: #1A0F0A;}
         .album-folder:hover { background: rgba(221, 170, 51, 0.2); border-style: solid; border-color: var(--amber); transform: translateY(-3px); }
@@ -299,29 +255,17 @@
         .admin-album-item { background: #111; border: 1px dashed #444; padding: 10px; margin-bottom: 10px; border-radius: 4px; }
         .admin-album-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-weight: bold; color: var(--amber); }
 
-        /* ============================================================
-           HỒ SƠ DỰ BỊ
-           ============================================================ */
         .upcoming-empty { text-align: center; padding: 40px 20px; width: 100%; grid-column: 1 / -1; display:flex; flex-direction:column; align-items:center;}
         .upcoming-empty p { font-style: italic; color: var(--silver); font-size: 15px; line-height: 1.8; margin-bottom: 20px; text-shadow: 1px 1px 0 #000; max-width: 600px; text-align: center;}
         .upcoming-empty svg { width: 120px; height: 120px; stroke: var(--brass); opacity: 0.5; margin: 0 auto 20px auto; display: block; filter: drop-shadow(0 0 5px rgba(181, 166, 66, 0.5)); }
 
         .up-card-front { border-color: #555; border-top: 25px solid #444; padding: 25px 16px 16px; align-items: center; position:relative; background: #151515 url('https://www.transparenttextures.com/patterns/cardboard-flat.png'); border-radius: 8px; border-left: 2px solid #333; border-right: 2px solid #333; border-bottom: 2px solid #333; box-shadow: 6px 6px 0 rgba(0,0,0,1); display: flex; flex-direction: column; height: 100%; filter: grayscale(0.8); --st-color: var(--amber);}
         .up-card-front::before { content: ''; position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 40px; height: 10px; background: #000; border-radius: 10px; border: 1px solid rgba(0,0,0,0.5); box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);}
-        
         .up-stamp { position: absolute; top: 15px; left: -10px; background: #D50000; color: #FFF; font-weight: 900; font-size: 12px; padding: 4px 15px; transform: rotate(-15deg); border: 2px solid #FFF; box-shadow: 2px 2px 0 #000, 0 0 10px rgba(213,0,0,0.6); z-index: 5; letter-spacing: 2px; }
-        
         .up-idea-box { background: rgba(0,0,0,0.6); border: 1px solid #444; padding: 10px; font-size: 13px; color: #ccc; line-height: 1.6; width: 100%; flex: 1; overflow-y: auto; margin-bottom: 10px; border-radius: 4px; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8); white-space: pre-wrap;}
-        .up-idea-box::-webkit-scrollbar { width: 4px; }
-        .up-idea-box::-webkit-scrollbar-thumb { background: #666; }
-        
         .up-vote-btn { background: rgba(0,0,0,0.8); border: 1px solid #444; color: var(--pearl); display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.2s; width: 100%; font-family: var(--font-kicker); font-size: 13px; margin-top: auto;}
-        .up-vote-btn:hover { background: rgba(255,255,255,0.1); }
         .up-vote-btn.voted { border-color: #D50000; color: #D50000; box-shadow: inset 0 0 10px rgba(213,0,0,0.2); }
 
-        /* ============================================================
-           SỔ LƯU BÚT & BÀI ĐĂNG + CSS TƯƠNG TÁC NGANG HOÀN TOÀN
-           ============================================================ */
         .mailbox-panel { background: rgba(10,10,12,0.95); border: 2px solid #222; padding: 30px; position: relative; box-shadow: 8px 8px 0 rgba(0,0,0,1); margin-bottom: 28px; }
         .form-row { margin-bottom: 18px; }
         .form-row label { display: block; font-family: var(--font-kicker); font-weight: 900; font-size: 12px; letter-spacing: 1px; color: var(--silver); margin-bottom: 8px; text-transform: uppercase; text-shadow: 1px 1px 0 #000;}
@@ -329,11 +273,9 @@
         .form-row input:focus, .form-row textarea:focus { border-color: var(--amber); }
         .submit-btn { padding: 14px 28px; background: var(--amber); border: 2px solid #000; color: #000; font-weight: 900; font-size: 13px; letter-spacing: 1px; font-family: var(--font-kicker); width: 100%; cursor: pointer; transition: 0.2s; text-transform: uppercase; box-shadow: 4px 4px 0 rgba(0,0,0,1);}
         .submit-btn:hover { filter: brightness(1.1); transform: translate(-2px, -2px); box-shadow: 6px 6px 0 rgba(0,0,0,1); }
-        .submit-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 rgba(0,0,0,1); }
 
         .file-upload-wrapper { display: flex; flex-direction: column; gap: 12px; }
         .file-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border: 2px dashed #444; background: #000; color: var(--silver); cursor: pointer; font-size: 12px; font-weight: 900; width: 100%; text-transform: uppercase; letter-spacing: 1px;}
-        .file-btn:hover { border-color: var(--pearl); color: var(--pearl); }
         .img-preview-grid { display: flex; gap: 10px; flex-wrap: wrap; }
         .img-preview-grid img { width: 60px; height: 60px; object-fit: cover; border: 2px solid #333; position: relative;}
         .del-img-btn { position:absolute; top: -5px; right: -5px; background: #8B0000; color:#FFF; width:20px; height:20px; border-radius:50%; border:2px solid #000; font-size:10px; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; }
@@ -345,15 +287,11 @@
         .post-time { font-size: 11px; color: var(--silver); font-weight: bold; }
         .post-content { font-size: 14.5px; color: var(--pearl); line-height: 1.6; margin-bottom: 16px; white-space: pre-wrap; font-weight: 500;}
 
-        /* CSS MỚI: Tương tác (HÀNG NGANG CHUẨN) */
         .reaction-container { display: flex; align-items: center; gap: 8px; border-top: 1px dashed #333; border-bottom: 1px dashed #333; padding: 12px 0; margin: 15px 0; flex-wrap: wrap; }
-        
         .emoji-btn { font-size: 16px; cursor: pointer; transition: 0.2s; background: rgba(0,0,0,0.4); border: 1px solid #444; outline: none; padding: 6px 12px; border-radius: 20px; display: flex; align-items: center; gap: 6px; color: var(--silver); font-weight: bold; font-family: var(--font-kicker); }
         .emoji-btn:hover { background: rgba(221, 170, 51, 0.1); border-color: var(--amber); color: var(--pearl); transform: translateY(-2px); }
         .emoji-btn.active { background: rgba(221, 170, 51, 0.2); border-color: var(--amber); color: var(--amber); box-shadow: 0 2px 8px rgba(221, 170, 51, 0.2); }
-        
         .react-btn { margin-left: auto; background: none; border: 1px solid transparent; color: var(--silver); display: flex; align-items: center; gap: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 12px; font-family: var(--font-kicker); text-transform: uppercase; padding: 6px 12px; border-radius: 4px; }
-        .react-btn:hover { color: var(--amber); background: rgba(221, 170, 51, 0.1); }
         
         .comments-section { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 4px; border: 1px solid #222; }
         .comment-item { display: flex; gap: 12px; margin-bottom: 15px; border-bottom: 1px solid #1a1a1a; padding-bottom: 12px; }
@@ -368,71 +306,23 @@
         .comment-input-area { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
         .cmt-row { display: flex; gap: 8px; align-items:stretch;}
         .cmt-input { flex: 1; background: #000; border: 2px solid #333; color: var(--pearl); padding: 10px 12px; font-size: 13px; font-weight:bold; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8);}
-        .cmt-input:focus { border-color: var(--amber); outline: none; }
         .cmt-submit { background: var(--amber); color: #000; border: 2px solid #000; padding: 0 16px; font-weight: 900; cursor: pointer; font-family: var(--font-kicker); text-transform: uppercase; font-size: 11px; box-shadow: 2px 2px 0 rgba(0,0,0,1); transition:0.2s;}
-        .cmt-submit:hover { transform:translate(-1px,-1px); box-shadow: 3px 3px 0 rgba(0,0,0,1); }
-        .cmt-submit:active { transform:translate(1px,1px); box-shadow: 0 0 0 rgba(0,0,0,1); }
         .cmt-file-btn { background: #111; color: var(--silver); padding: 0 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #333; transition: 0.2s; box-shadow: 2px 2px 0 rgba(0,0,0,1);}
-        .cmt-file-btn:hover { background: #222; border-color: var(--amber); color: var(--amber); }
         .cmt-preview { display: flex; gap: 8px; flex-wrap: wrap; }
         .cmt-preview img { width: 60px; height: 60px; object-fit: cover; border: 2px solid #444; position: relative; }
 
-        /* ============================================================
-           CSS HIỆU ỨNG NỔI BẬT CHO TRƯỞNG GA (POST & COMMENT)
-           ============================================================ */
-        .post-card.admin-post {
-            background: rgba(221, 170, 51, 0.08);
-            border: 2px solid var(--amber);
-            box-shadow: 0 0 15px rgba(221, 170, 51, 0.15), 6px 6px 0 rgba(0,0,0,1);
-        }
+        .post-card.admin-post { background: rgba(221, 170, 51, 0.08); border: 2px solid var(--amber); box-shadow: 0 0 15px rgba(221, 170, 51, 0.15), 6px 6px 0 rgba(0,0,0,1); }
+        .comment-item.admin-comment { background: rgba(221, 170, 51, 0.1); border: 1px solid rgba(221, 170, 51, 0.3); border-left: 3px solid var(--amber); border-radius: 6px; padding: 12px; margin-top: 5px; margin-bottom: 15px; }
         
-        .comment-item.admin-comment {
-            background: rgba(221, 170, 51, 0.1);
-            border: 1px solid rgba(221, 170, 51, 0.3);
-            border-left: 3px solid var(--amber);
-            border-radius: 6px;
-            padding: 12px;
-            margin-top: 5px;
-            margin-bottom: 15px;
-        }
-        
-        .comment-item.admin-comment:last-child {
-            margin-bottom: 0;
-        }
-
-        /* LIGHTBOX ẢNH */
         .lightbox { position: fixed; inset: 0; z-index: 99999; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; opacity: 1; transition: opacity 0.3s ease; cursor: zoom-out; }
         .lightbox.hidden { opacity: 0; pointer-events: none; }
         .lightbox img { max-width: 90vw; max-height: 90vh; border: 4px solid #FFF; box-shadow: 0 0 30px rgba(0,0,0,1); border-radius: 4px; object-fit: contain; cursor: default; }
         .lightbox-close { position: absolute; top: 30px; right: 40px; color: #FFF; font-size: 50px; font-weight: bold; cursor: pointer; text-shadow: 0 0 10px #000; }
         
-        /* CSS NÚT GỢI Ý TÊN */
-        .suggest-btn {
-            background: rgba(221, 170, 51, 0.15);
-            color: var(--amber);
-            border: 1px solid var(--amber);
-            padding: 3px 10px;
-            font-size: 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-left: auto;
-            text-transform: uppercase;
-            font-family: var(--font-kicker);
-            font-weight: bold;
-            transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .suggest-btn:hover {
-            background: var(--amber);
-            color: #000;
-            box-shadow: 0 0 10px var(--amber-glow);
-        }
+        .suggest-btn { background: rgba(221, 170, 51, 0.15); color: var(--amber); border: 1px solid var(--amber); padding: 3px 10px; font-size: 10px; border-radius: 4px; cursor: pointer; margin-left: auto; text-transform: uppercase; font-family: var(--font-kicker); font-weight: bold; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
+        .suggest-btn:hover { background: var(--amber); color: #000; box-shadow: 0 0 10px var(--amber-glow); }
         
-        /* ============================================================
-           MÁY HÁT GRAMOPHONE & SEEKBAR
-           ============================================================ */
+        /* HỘP NHẠC */
         .gramo-toggle { position: fixed; right: 24px; bottom: 24px; z-index: 2000; width: 60px; height: 60px; border-radius: 50%; background: #000; border: 2px solid var(--brass); box-shadow: 0 0 15px rgba(181, 166, 66, 0.4), 4px 4px 0 rgba(0,0,0,1); display: flex; align-items: center; justify-content: center; color: var(--brass); font-size: 24px; transition: 0.3s; cursor: pointer; }
         .gramo-toggle:hover { border-color: #FFF; color: #FFF; box-shadow: 0 0 25px rgba(181, 166, 66, 0.8), 4px 4px 0 rgba(0,0,0,1); transform: scale(1.05); }
         .vinyl-spin { animation: spinVinyl 4s linear infinite; }
@@ -444,7 +334,6 @@
         .gramo-new-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px dashed rgba(181, 166, 66, 0.4); padding-bottom: 10px; margin-bottom: 15px; position: relative; z-index: 2; flex-shrink: 0;}
         .gramo-new-title { font-family: var(--font-heading); font-size: 20px; font-weight: 900; letter-spacing: 2px; color: #FFDF73; text-shadow: 0 0 10px rgba(221, 170, 51, 0.6), 2px 2px 0 #000; text-transform: uppercase; }
         .gramo-new-actions button { color: var(--brass); font-size: 16px; font-weight: bold; transition: 0.2s; }
-        .gramo-new-actions button:hover { color: #FFF; text-shadow: 0 0 10px var(--amber); }
         
         .g-stage { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; position: relative; z-index: 2; background: rgba(0,0,0,0.5); padding: 10px; border: 1px solid #333; flex-shrink: 0;}
         .mini-vinyl-container { position: relative; width: 44px; height: 44px; flex-shrink: 0; }
@@ -462,11 +351,8 @@
 
         .gramo-pl-item, .gramo-song-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(0,0,0,0.6); margin-bottom: 6px; cursor: pointer; color: var(--silver); font-size: 12px; font-weight: bold; border: 1px solid transparent; transition: 0.2s; }
         .gramo-pl-item:hover, .gramo-song-item:hover, .gramo-song-item.active { border-color: var(--brass); color: #FFF; background: rgba(181, 166, 66, 0.1); }
-        
         .g-back-btn { background: transparent; border: none; color: var(--amber); cursor: pointer; font-size: 11px; font-family: var(--font-kicker); font-weight: bold; text-transform: uppercase; transition: 0.2s; }
-        .g-back-btn:hover { color: #FFF; }
-
-        /* SEEKBAR & PLAYER CONTROLS */
+        
         .gramo-progress-container { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-family: 'Courier New', monospace; font-size: 10px; color: var(--brass); border-top: 1px dashed rgba(181, 166, 66, 0.4); padding-top: 10px;}
         .seek-slider { flex: 1; -webkit-appearance: none; appearance: none; background: #222; height: 4px; outline: none; border-radius: 2px; cursor: pointer;}
         .seek-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--amber); cursor: pointer; box-shadow: 0 0 5px #000; border: 2px solid #000;}
@@ -474,52 +360,35 @@
         .gramo-player-controls { display: flex; justify-content: center; gap: 20px; align-items: center; padding-top: 15px; position: relative; z-index: 2; flex-shrink: 0;}
         .g-ctrl-btn { font-size: 18px; color: var(--brass); transition: 0.2s; display: flex; align-items: center; justify-content: center; background: #111; border: 2px solid #000; border-radius: 4px; padding: 8px; box-shadow: inset 1px 1px 0 rgba(255,255,255,0.1), 2px 2px 0 rgba(0,0,0,1); }
         .g-ctrl-btn:hover, .g-ctrl-btn.active { color: #FFF; border-color: var(--brass); transform: translate(-1px, -1px); box-shadow: 3px 3px 0 rgba(0,0,0,1); }
-        .g-ctrl-btn:active { transform: translate(1px, 1px); box-shadow: 0 0 0 rgba(0,0,0,1); }
-        
         #gramoPlayWrap { position: relative; border-radius: 50%; }
         #gramoPlay { font-size: 24px; padding: 12px; border-radius: 50%; border-color: var(--brass); color: #FFDF73; position: relative; z-index: 2; }
 
-        /* ============================================================
-           MODAL CHUNG & BẢNG TRẮNG TO CỦA HỒ SƠ/FEEDBACK
-           ============================================================ */
         .overlay-modal { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.9); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; padding: 20px; }
         .modal-box { width: min(650px, 100%); max-height: 85vh; overflow-y: auto; background: #0A0A0C; border: 3px solid #333; padding: 30px; box-shadow: 10px 10px 0 rgba(0,0,0,1); transition: 0.3s; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 2px dashed #333; padding-bottom: 14px; }
         .modal-title { font-family: var(--font-heading); font-size: 20px; font-weight: 900; color: var(--amber); text-transform: uppercase; letter-spacing:1px; text-shadow: 2px 2px 0 #000;}
         .close-btn { color: var(--silver); font-size: 28px; font-weight: 900; }
-        .close-btn:hover { color: #FFF; }
         .modal-box::-webkit-scrollbar { width: 6px; }
         .modal-box::-webkit-scrollbar-thumb { background: #333; }
 
         .modal-box.modal-white { background: #F4F1EA; color: #1A0F0A; border: 4px solid #1A0F0A; box-shadow: 12px 12px 0 rgba(0,0,0,1); }
         .modal-box.modal-white .modal-title { color: #1A0F0A; font-weight: 900; border-left: 6px solid #8B0000; padding-left: 12px; letter-spacing: 2px; text-shadow: none;}
         .modal-box.modal-white .modal-header { border-bottom: 2px solid #1A0F0A; }
-        .modal-box.modal-white .close-btn { color: #1A0F0A; }
-        .modal-box.modal-white .close-btn:hover { color: red; }
-        
         .modal-box.modal-white details { background: rgba(0,0,0,0.05); border: 2px dashed #1A0F0A; padding: 12px; margin: 12px 0; color: #1A0F0A; display: block; border-radius: 4px;}
-        .modal-box.modal-white details[open] summary { border-bottom: 1px solid rgba(0,0,0,0.2); margin-bottom: 10px; padding-bottom: 5px; }
         .modal-box.modal-white summary { cursor: pointer; color: inherit; font-weight: 500; outline: none; font-family: inherit; text-transform: none; font-size: 15px; display: block;}
-        .modal-box.modal-white details > div { color: #1A0F0A; font-weight: 500; line-height: 1.6; }
-        .modal-box.modal-white ul { padding-left: 24px; margin: 10px 0; font-weight: 500;}
-
+        
         .fb-stars { display: flex; gap: 8px; margin-bottom: 20px; justify-content: center; }
         .fb-star { font-size: 40px; color: #ccc; cursor: pointer; transition: 0.2s; text-shadow: 2px 2px 0 rgba(0,0,0,0.2); }
         .fb-star:hover, .fb-star.active { color: var(--amber); text-shadow: 0 0 10px rgba(221,170,51,0.5), 2px 2px 0 rgba(0,0,0,0.5); transform: scale(1.1); }
         .modal-white input[type="text"], .modal-white textarea { background: #FFF; border: 2px solid #1A0F0A; color: #1A0F0A; box-shadow: inset 2px 2px 0 rgba(0,0,0,0.1); }
         .modal-white .file-btn { border-color: #1A0F0A; color: #1A0F0A; background: transparent; }
-        .modal-white .file-btn:hover { background: #1A0F0A; color: #FFF; }
         .modal-white .submit-btn { border-color: #1A0F0A; box-shadow: 4px 4px 0 #1A0F0A; }
         .fb-note { font-style: italic; color: #8B0000; font-weight: bold; font-size: 12px; text-align: center; margin-bottom: 15px; }
 
         .rt-toolbar { display: flex; gap: 6px; padding-bottom: 8px; border-bottom: 2px solid #333; margin-bottom: 8px; flex-wrap: wrap; }
         .rt-btn { background: #000; color: var(--pearl); border: 2px solid #444; padding: 6px 12px; cursor: pointer; font-size: 12px; font-weight: bold; font-family:var(--font-kicker);}
-        .rt-btn:hover { border-color: var(--amber); }
         .rt-editor { background: #000; border: 2px solid #333; min-height: 150px; padding: 14px; color: var(--pearl); outline: none; overflow-y: auto; line-height: 1.6; font-size: 14px; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8); }
 
-        /* ============================================================
-           MOBILE RESPONSIVENESS (SMARTPHONE) - FIX CHỮ VÀ BỐ CỤC TÀU
-           ============================================================ */
         @media (max-width: 600px) {
             .train-card { min-height: 150px; border-width: 2px; }
             .t-door { width: 30px; border-right-width: 1px; }
@@ -527,36 +396,20 @@
             .t-bellows { width: 12px; border-left-width: 1px; }
             .t-body { padding: 10px; }
             .t-plate { font-size: 10px; padding: 4px 6px; letter-spacing: 0; }
-            
-            /* Sửa dứt điểm khung chữ bị ép: Chuyển sang trượt cuộn vàng siêu mượt */
             .t-windows-wrap { gap: 6px; margin-top: 10px; flex-direction: row; align-items: stretch; height: 95px; } 
             .t-window { padding: 6px; border-width: 2px; flex: 1; min-width: 0; height: 100%; }
             .t-window-tags { flex: 0 0 75px !important; } 
-            .t-window-text { 
-                font-size: 11.5px; 
-                height: 100%; max-height: none; 
-                line-height: 1.5; 
-                padding-right: 4px; 
-                overflow-y: auto; 
-                pointer-events: auto; /* Kích hoạt vuốt chạm */
-                -webkit-overflow-scrolling: touch; /* Mượt cho iPhone */
-            }
+            .t-window-text { font-size: 11.5px; height: 100%; max-height: none; line-height: 1.5; padding-right: 4px; overflow-y: auto; pointer-events: auto; -webkit-overflow-scrolling: touch; }
             .t-window-text::-webkit-scrollbar { width: 3px; }
-            .t-window-text::-webkit-scrollbar-thumb { background: var(--amber); border-radius: 2px;} 
-            
             .t-tags-container { height: 100%; max-height: none; gap: 4px; }
             .t-genre-tag { font-size: 8px; padding: 2px 4px; letter-spacing: 0;}
             .t-specs { font-size: 8px; right: 8px; bottom: 4px; }
-            
             .staff-grid { grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); gap: 15px; padding: 10px 0; }
             .staff-card-container { min-height: 480px; }
-            
             .topnav { max-width: 95vw; gap: 6px; padding: 6px; border-radius: 4px;}
             .nav-item, .nav-home { font-size: 10px; padding: 8px 12px; }
-            
             .gramo-toggle { width: 45px; height: 45px; font-size: 18px; right: 15px; bottom: 15px; }
             .gramo-panel-new { width: calc(100vw - 30px); right: 15px; bottom: 70px; max-height: 65vh; }
-            
             .modal-box { padding: 20px 15px; }
             .album-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
         }
@@ -566,32 +419,27 @@
 
     <div class="crt-overlay"></div>
 
-    <!-- LIGHTBOX -->
     <div id="imageLightbox" class="lightbox hidden" onclick="this.classList.add('hidden')">
         <span class="lightbox-close">&times;</span>
         <img id="lightboxImg" src="" onclick="event.stopPropagation()">
     </div>
 
-    <!-- BACKGROUND TRANG 1 -->
     <div id="bg-page1">
         <div class="p1-center-vignette"></div>
         <div class="p1-fog"></div>
         <div id="emberContainer"></div>
     </div>
 
-    <!-- BACKGROUND SẢNH CHỜ TRANG 2 -->
     <div id="bg-page2">
         <div class="p2-center-abyss"></div>
         <div class="p2-steam"></div>
     </div>
     
-    <!-- BẢNG THỐNG KÊ -->
     <div class="global-tag">
         <div class="tag-line"><span class="icon-slot" data-icon="hat"></span> <span class="num" id="statStaff">0</span> nhân viên túc trực tại ga.</div>
         <div class="tag-line"><span class="icon-slot" data-icon="ticket_punch"></span> <span class="num" id="statVisits">0</span> lượt hành khách đã ghé ga.</div>
     </div>
 
-    <!-- CHUÔNG THÔNG BÁO -->
     <div id="notiBtn" class="noti-btn">
         <span class="icon-slot" data-icon="bell"></span>
         <div id="notiBadge" class="noti-badge" style="display:none;">0</div>
@@ -601,7 +449,6 @@
         <div id="notiList" class="noti-list"></div>
     </div>
 
-    <!-- PAGE 1 — CỔNG VÀO -->
     <section id="page1">
         <div class="station-card">
             <div class="avatar-wrap">
@@ -618,7 +465,6 @@
         </div>
     </section>
 
-    <!-- PAGE 2 — SÂN GA -->
     <section id="page2">
         <nav class="topnav">
             <button class="nav-home" id="btnGoHome"><span class="icon-slot" data-icon="train"></span> TRỞ VỀ CỔNG CHÍNH</button>
@@ -629,7 +475,6 @@
         </nav>
 
         <div class="content-area">
-            <!-- PHÒNG TRƯỞNG GA -->
             <div class="section-view" id="view-stationmaster">
                 <div class="wood-box">
                     <h2 class="embossed-title vintage-gold-title">GIỚI THIỆU</h2>
@@ -643,7 +488,6 @@
                 </div>
             </div>
 
-            <!-- CÁC CHUYẾN TÀU -->
             <div class="section-view hidden" id="view-trains">
                 <div class="admin-only-flex" style="gap:12px; margin-bottom: 24px;">
                     <button class="submit-btn" style="width:auto; background:var(--amber); color:#000;" onclick="openAdminForm('train', 'add')">➕ THÊM CHUYẾN TÀU MỚI</button>
@@ -658,7 +502,6 @@
                 <div id="trainsList"></div>
             </div>
 
-            <!-- SỔ LƯU BÚT -->
             <div class="section-view hidden" id="view-guestbook">
                 <div class="mailbox-panel">
                     <h2 class="embossed-title">SỔ LƯU BÚT</h2>
@@ -680,7 +523,6 @@
                 <div class="feed-container" id="guestbookFeed"></div>
             </div>
 
-            <!-- TRẠM TUYỂN DỤNG -->
             <div class="section-view hidden" id="view-recruitment">
                 <h2 class="embossed-title" style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center;">
                     HỒ SƠ DỰ BỊ
@@ -762,7 +604,6 @@
         <audio id="gramoAudio"></audio>
     </div>
 
-    <!-- MODAL CHUNG CHO TOÀN BỘ FORM -->
     <div class="overlay-modal hidden" id="generalModal">
         <div class="modal-box" id="generalBox">
             <div class="modal-header">
@@ -774,9 +615,6 @@
     </div>
 
     <script>
-        // ============================================================
-        // GLOBAL KHÁCH XEM ALBUM & MỞ KHÓA
-        // ============================================================
         window.currentViewingAlbums = [];
         window.currentViewingStaffName = "";
         window.renderClientAlbums = function() {
@@ -798,8 +636,6 @@
 
         window.viewClientAlbum = function(idx) {
             const alb = window.currentViewingAlbums[idx];
-            
-            // KIỂM TRA MỞ KHÓA ALBUM
             if (alb.isLocked && !alb.unlocked) {
                 let answer = prompt("🔒 ALBUM NÀY ĐÃ BỊ KHÓA!\nCâu hỏi từ Trưởng ga:\n" + alb.question);
                 if (answer !== null && answer.trim() !== "") {
@@ -824,9 +660,6 @@
             body.innerHTML = html;
         };
 
-        // ============================================================
-        // HỆ THỐNG GỢI Ý ĐẶT TÊN GENZ VÀ BÍ ẨN
-        // ============================================================
         const BASE_NAME_POOL = [
             "Lữ Khách Không Đầu", "Kẻ Gõ Cửa Đêm Đông", "Hành Khách Không Tên", "Tiếng Thì Thầm Khe Cửa", "Bóng Người Trên Đường Ray", "Giọng Nói Từ Vách Ngăn",
             "Hành Khách Bất Tử", "Chiến Thần Lách Luật", "Tấm Chiếu Mới Trải", "Đại Ca Hướng Nội", "Kiếp Nạn Thứ N", "Ghệ yêu dấu",
@@ -1023,35 +856,24 @@
 
         function removeAccents(str) { return str ? str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase() : ''; }
 
-        // ============================================================
-        // HỆ THỐNG NÉN ẢNH SIÊU NÉT (1920px - 90% Quality)
-        // ============================================================
-        function resizeImage(file, maxSize = 1920) { 
-            return new Promise((resolve) => { 
-                const reader = new FileReader(); 
-                reader.onload = (e) => { 
-                    const img = new Image(); 
-                    img.onload = () => { 
-                        const canvas = document.createElement('canvas'); 
-                        let w = img.width, h = img.height; 
-                        if(w > maxSize || h > maxSize) { 
-                            if(w > h) { h = Math.round((h * maxSize) / w); w = maxSize; } 
-                            else { w = Math.round((w * maxSize) / h); h = maxSize; } 
-                        } 
-                        canvas.width = w; canvas.height = h; 
-                        const ctx = canvas.getContext('2d'); 
-                        ctx.drawImage(img, 0, 0, w, h); 
-                        resolve(canvas.toDataURL('image/jpeg', 0.9)); 
-                    }; 
-                    img.src = e.target.result; 
-                }; 
-                reader.readAsDataURL(file); 
-            }); 
+        // MÃ HÓA AUDIO XỬ LÝ CHUYỂN ĐỔI CHUẨN MỰC
+        function base64ToBlobUrl(base64Str) {
+            if (!base64Str || !base64Str.startsWith('data:')) return base64Str;
+            try {
+                const parts = base64Str.split(',');
+                const mime = parts[0].match(/:(.*?);/)[1];
+                const bstr = atob(parts[1]);
+                let n = bstr.length;
+                const u8arr = new Uint8Array(n);
+                while (n--) { u8arr[n] = bstr.charCodeAt(n); }
+                const blob = new Blob([u8arr], { type: mime });
+                return URL.createObjectURL(blob);
+            } catch (e) {
+                console.error("Lỗi parse Base64 sang Blob:", e);
+                return base64Str; 
+            }
         }
 
-        // ============================================================
-        // MÃ HÓA NHẠC NGUYÊN BẢN (KHÔNG CHẶN ĐỨNG TRÌNH DUYỆT)
-        // ============================================================
         function fileToBase64(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error); }); }
 
         function rollNumber(el, target){ 
@@ -1094,15 +916,10 @@
 
             await fetchStationConfig();
             
-            // XÓA SẠCH BỘ ĐẾM CŨ, CHUYỂN SANG BỘ ĐẾM SERVER ĐỒNG BỘ 100% TRÊN MỌI MÁY
             let globalVisits = 0;
             try {
-                // Tạo ID 8 để đếm lại từ đầu (0) và đồng nhất mọi thiết bị
                 const { data: visitData } = await supa.from('station_config').select('data').eq('id', 8).single();
-                if (visitData && visitData.data) {
-                    globalVisits = parseInt(visitData.data);
-                }
-                
+                if (visitData && visitData.data) { globalVisits = parseInt(visitData.data); }
                 if (!sessionStorage.getItem('has_visited_v5')) {
                     globalVisits++;
                     sessionStorage.setItem('has_visited_v5', 'true');
@@ -1186,13 +1003,8 @@
                 if (localMusic && Array.isArray(localMusic) && (localMusicTime > dbMusicTime || localSongCount > dbSongCount || localMusic.length > dbMusic.length)) { CONFIG.musicLibrary = localMusic; } else { CONFIG.musicLibrary = dbMusic || []; }
                 if(!CONFIG.musicLibrary || !Array.isArray(CONFIG.musicLibrary)) CONFIG.musicLibrary = [];
                 
-                // MẶC ĐỊNH PLAYLIST NẾU HỆ THỐNG CHƯA CÓ NHẠC ĐỂ TEST
                 if (CONFIG.musicLibrary.length === 0) {
-                    CONFIG.musicLibrary = [{
-                        id: "pl_default",
-                        name: "Bản Thu Bị Lãng Quên",
-                        songs: [{ title: "Lofi Nhạc Chờ", src: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" }]
-                    }];
+                    CONFIG.musicLibrary = [{ id: "pl_default", name: "Bản Thu Bị Lãng Quên", songs: [{ title: "Lofi Nhạc Chờ", src: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" }] }];
                 }
             } catch(e) { console.warn("Lỗi đồng bộ dữ liệu hệ thống:", e); }
         }
@@ -1212,7 +1024,6 @@
                 await supa.from('station_config').upsert([{ id: 1, data: JSON.stringify(mainPayload) }]); 
                 if(!skipMusicSync) {
                     const { error } = await supa.from('station_config').upsert([{ id: 2, data: JSON.stringify(CONFIG.musicLibrary) }]);
-                    if(error && error.message && error.message.includes('payload')) { console.warn("Nhạc đang được đồng bộ tại bộ nhớ đệm."); }
                 }
             } catch(e) {}
         }
@@ -1288,8 +1099,6 @@
             
             posts.forEach(post => {
                 const postEl = document.createElement("div"); 
-                
-                // KIỂM TRA POST CỦA ADMIN
                 let isAdminPost = (post.name === "Trưởng ga Meown" || post.author === "Trưởng ga Meown");
                 postEl.className = isAdminPost ? "post-card admin-post" : "post-card";
                 
@@ -1306,18 +1115,11 @@
 
                 let myReact = localStorage.getItem(`reacted_${type}_${post.id}`);
 
-                // KIỂM TRA COMMENT CỦA ADMIN
                 let commentsHtml = cmtArr.map(c => {
                     let isAdminCmt = (c.name === "Trưởng ga Meown");
                     let cmtClass = isAdminCmt ? "comment-item admin-comment" : "comment-item";
-                    
-                    let cmtAvatarHtml = isAdminCmt 
-                        ? `<img src="${ADMIN_CAT_AVATAR}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">` 
-                        : c.name.charAt(0).toUpperCase();
-                    
-                    let cmtNameHtml = isAdminCmt 
-                        ? `<span style="color:var(--amber);">TRƯỞNG GA MEOWN</span> ${VERIFIED_TICK} <span style="font-weight:normal; font-size:10px; color:#666; margin-left:6px;">- ${new Date(c.date).toLocaleString('vi-VN')}</span>`
-                        : `${c.name} <span style="font-weight:normal; font-size:10px; color:#666; margin-left:6px;">- ${new Date(c.date).toLocaleString('vi-VN')}</span>`;
+                    let cmtAvatarHtml = isAdminCmt ? `<img src="${ADMIN_CAT_AVATAR}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">` : c.name.charAt(0).toUpperCase();
+                    let cmtNameHtml = isAdminCmt ? `<span style="color:var(--amber);">TRƯỞNG GA MEOWN</span> ${VERIFIED_TICK} <span style="font-weight:normal; font-size:10px; color:#666; margin-left:6px;">- ${new Date(c.date).toLocaleString('vi-VN')}</span>` : `${c.name} <span style="font-weight:normal; font-size:10px; color:#666; margin-left:6px;">- ${new Date(c.date).toLocaleString('vi-VN')}</span>`;
 
                     return `
                     <div class="${cmtClass}">
@@ -1327,14 +1129,12 @@
                             <div class="comment-text">${c.text}</div>
                             ${c.images && c.images.length > 0 ? `<div class="comment-imgs">${c.images.map(img => `<img src="${img}" onclick="openLightbox(this.src, event)">`).join('')}</div>` : ''}
                         </div>
-                    </div>
-                `}).join('');
+                    </div>`
+                }).join('');
 
                 let nameInputHtml = isAdminMode ? `<input type="hidden" id="cmt-name-${post.id}" value="Trưởng ga Meown"><div style="display:flex; align-items:center; justify-content:center; background:#111; border:2px solid #333; padding:0 12px; font-weight:900; color:var(--amber); border-radius:4px;"><img src="${ADMIN_CAT_AVATAR}" style="width:16px;height:16px;border-radius:50%;margin-right:4px;"> ADMIN</div>` : `<input type="text" id="cmt-name-${post.id}" class="cmt-input" placeholder="Tên của bạn..." style="flex:0 0 120px;">`;
 
-                let postAuthorHtml = isAdminPost 
-                    ? `<img src="${ADMIN_CAT_AVATAR}" style="width:26px; height:26px; border-radius:50%; object-fit:cover;"> <span style="color:var(--amber);">TRƯỞNG GA MEOWN</span> ${VERIFIED_TICK}`
-                    : (post.name || post.author || "Khách ẩn danh");
+                let postAuthorHtml = isAdminPost ? `<img src="${ADMIN_CAT_AVATAR}" style="width:26px; height:26px; border-radius:50%; object-fit:cover;"> <span style="color:var(--amber);">TRƯỞNG GA MEOWN</span> ${VERIFIED_TICK}` : (post.name || post.author || "Khách ẩn danh");
 
                 postEl.innerHTML = `
                     <div class="post-header"><div class="post-author">${postAuthorHtml}</div>${adminBtns}</div>
@@ -1392,21 +1192,15 @@
             let fbHTML = '';
             if(CONFIG.stationMaster.facebook && CONFIG.stationMaster.facebook.url) { fbHTML = `<a href="${CONFIG.stationMaster.facebook.url}" target="_blank" class="fb-link-box" title="${CONFIG.stationMaster.facebook.name}"><span class="icon-slot" data-icon="facebook"></span><span>${CONFIG.stationMaster.facebook.name}</span></a>`; }
             
-            // Loại bỏ hoàn toàn thuộc tính open của thẻ details để nó tự động đóng 
             let safeBio = (CONFIG.stationMaster.bio || "Chưa có thông tin.").replace(/<details\b[^>]*>/gi, match => match.replace(/\bopen(=['"]?[^>]*['"]?)?\b/gi, ''));
-            
             document.getElementById("smBio").innerHTML = safeBio; 
             fbWrap.innerHTML = fbHTML; loadIcons();
         }
 
-        /* ============================================================
-           BẢNG ADMIN FORMS (CHỈNH SỬA / THÊM / XÓA) TOÀN BỘ
-           ============================================================ */
         let trainGenresList = [];
         function renderTrGenresList() { const listContainer = document.getElementById("aTrGenreList"); if(!listContainer) return; listContainer.innerHTML = trainGenresList.map((g, i) => `<span class="c-tag" style="background:#000; border-color:var(--silver); color:var(--pearl); display:flex; align-items:center; gap:4px;">${g} <span style="cursor:pointer; color:red; font-weight:bold;" onclick="removeTrGenre(${i})">×</span></span>`).join(''); }
         window.removeTrGenre = function(i) { trainGenresList.splice(i, 1); renderTrGenresList(); };
         
-        // HỆ THỐNG QUẢN LÝ NHIỀU ALBUMS CHO NHÂN VIÊN (Bao gồm chức năng KHÓA)
         let tempAlbums = []; 
         window.renderTempAlbums = function() {
             const wrap = document.getElementById("aStAlbumsWrap");
@@ -1474,7 +1268,6 @@
                 let tId = idOrParentId; if(action === 'edit') { const st = CONFIG.staff.find(s => s.id === idOrParentId); if(st){ sData = st; tId = st.trainId; } }
                 let tagsStr = (sData.tags || []).join(', '); 
                 
-                // LOAD ALBUMS (TƯƠNG THÍCH DATA CŨ)
                 tempAlbums = [];
                 if(sData.gallery && sData.gallery.length > 0) {
                     if(typeof sData.gallery[0] === 'string') {
@@ -1529,7 +1322,6 @@
                 let sB64 = sData.avatar; 
                 document.getElementById("aStFile").addEventListener("change", async (e)=>{ sB64 = await resizeImage(e.target.files[0], 1920); document.getElementById("aStPrev").innerHTML=`<img src="${sB64}">`; document.getElementById("aStPrev").querySelector('img').style.display='block'; });
                 
-                // THÊM ALBUM MỚI (CÓ KHÓA/KHÔNG KHÓA)
                 document.getElementById("btnAddAlbum").onclick = async () => {
                     const nameInput = document.getElementById("aNewAlbumName");
                     const fileInput = document.getElementById("aNewAlbumFiles");
@@ -1681,7 +1473,6 @@
                                 const title = r.querySelector(".sgName").value.trim(); const fileInput = r.querySelector(".sgFile"); 
                                 const file = r._attachedFile || (fileInput && fileInput.files.length > 0 ? fileInput.files[0] : null);
                                 if(title && file) { 
-                                    // CHẶN BẢO VỆ CHỐNG OUT OF MEMORY (Giới hạn cứng 3MB)
                                     if(file.size > 3 * 1024 * 1024) { 
                                         alert(`Bài hát "${file.name}" quá lớn (>3MB). Vui lòng chọn file nhẹ hơn hoặc nén lại để tránh làm sập bộ nhớ máy chủ!`); 
                                         r.querySelector(".file-status").textContent = "Lỗi: File quá nặng!"; 
@@ -1689,9 +1480,8 @@
                                         continue; 
                                     }
                                     processed++; btn.textContent = `ĐANG MÃ HÓA (${processed}/${totalToProcess})...`; 
-                                    await new Promise(resolve => setTimeout(resolve, 10)); // Trả lại vòng lặp cực nhanh
+                                    await new Promise(resolve => setTimeout(resolve, 10));
                                     
-                                    // MÃ HÓA BASE64 CHUẨN ĐỂ ĐỒNG BỘ 100% LÊN SERVER
                                     const base64Audio = await fileToBase64(file); 
                                     CONFIG.musicLibrary.forEach(p => { 
                                         if(p.id === targetPlId) { 
@@ -1719,9 +1509,6 @@
         }
         document.getElementById("closeGeneralModal").addEventListener("click", () => { document.getElementById("generalModal").classList.add("hidden"); document.getElementById("generalBox").classList.remove("modal-white"); });
 
-        /* ============================================================
-           HIỂN THỊ CHUYẾN TÀU VÀ LÁ BÀI 3D
-           ============================================================ */
         window.deleteTrain = async function(trainId, event) { event.stopPropagation(); if(confirm("XÓA CHUYẾN TÀU này và dàn nhân sự bên trong?")) { CONFIG.trains = CONFIG.trains.filter(t => t.id !== trainId); CONFIG.staff = CONFIG.staff.filter(s => s.trainId !== trainId); await saveStationConfigToDB(true); renderTrains(); } };
         window.toggleHideStaff = async function(staffId, event) { event.stopPropagation(); const st = CONFIG.staff.find(s => s.id === staffId); if(st) { st.isHidden = !st.isHidden; await saveStationConfigToDB(true); renderTrains(); } };
         window.deleteStaff = async function(staffId, event) { event.stopPropagation(); if(confirm("XÓA VĨNH VIỄN nhân viên này?")) { CONFIG.staff = CONFIG.staff.filter(s => s.id !== staffId); await saveStationConfigToDB(true); renderTrains(); rollNumber(document.getElementById("statStaff"), CONFIG.staff.length); updateNotifications();} };
@@ -1811,7 +1598,6 @@
             const sClass = "s-" + themeClass;
             const rData = staff.rating || { sum: 0, count: 0 }; const avgText = rData.count === 0 ? "0.0" : (rData.sum / rData.count).toFixed(1);
             
-            // XỬ LÝ TAG CẢNH BÁO HAREM
             let haremClass = (staff.haremWarning === 'Có thể chơi harem') ? 'warning-yes' : 'warning-no';
             let haremText = staff.haremWarning || 'Không nên chơi harem';
             let haremTagHTML = `<span class="c-tag ${haremClass}">⚠️ ${haremText}</span>`;
@@ -1863,7 +1649,6 @@
                 box.classList.add("modal-white"); 
                 
                 let albums = staff.gallery || [];
-                // Bọc ảnh cũ vào album mặc định nếu phiên bản trước chỉ là array strings
                 if(albums.length > 0 && typeof albums[0] === 'string') {
                     albums = [{ id: 'legacy', name: 'Ký ức chung', images: albums, isLocked: false }];
                 }
@@ -1892,7 +1677,6 @@
             return cardWrap;
         }
 
-        /* HỆ THỐNG VOTE CHO HỒ SƠ DỰ BỊ */
         window.voteUpcoming = async function(botId, e) {
             e.stopPropagation();
             if(localStorage.getItem('voted_upcoming_' + botId) === 'true') { alert("Bạn đã thả tim cho hồ sơ này rồi! Chỉ được vote 1 lần cho mỗi hồ sơ."); return; }
@@ -1920,7 +1704,6 @@
                 const cardWrap = document.createElement("div"); cardWrap.className = "staff-card-container"; 
                 if(bot.isHidden && isAdminMode) cardWrap.classList.add("is-hidden");
                 
-                // XỬ LÝ TAG CẢNH BÁO HAREM (DỰ BỊ)
                 let haremClass = (bot.haremWarning === 'Có thể chơi harem') ? 'warning-yes' : 'warning-no';
                 let haremText = bot.haremWarning || 'Không nên chơi harem';
                 let haremTagHTML = `<span class="c-tag ${haremClass}">⚠️ ${haremText}</span>`;
@@ -1958,9 +1741,6 @@
             setTimeout(() => loadIcons(), 10);
         }
 
-        // ============================================================
-        // LOGIC HỘP NHẠC ĐÃ ĐƯỢC FIX LỖI (CHƠI CHUẨN, KHÔNG ĐỨNG)
-        // ============================================================
         let isPlaying = false;
         let currentSongIndex = -1;
         
@@ -2042,41 +1822,37 @@
             if(!pl || !pl.songs || !pl.songs[index]) return;
             const song = pl.songs[index];
 
-            audioEl.src = song.src;
+            if (!song._blobUrl && song.src && song.src.startsWith('data:')) {
+                song._blobUrl = base64ToBlobUrl(song.src);
+            }
+            audioEl.src = song._blobUrl || song.src;
             
-            // FIX LỖI: Buộc trình duyệt load lại luồng âm thanh mới (Đặc biệt hiệu quả với chuỗi Base64)
             audioEl.load();
-
-            // Gọi Promise phát nhạc an toàn
-            const playPromise = audioEl.play();
             
+            const playPromise = audioEl.play();
             if (playPromise !== undefined) {
                 playPromise.then(_ => {
                     isPlaying = true; currentSongIndex = index; activeMusicPl = plId;
-                    
                     document.getElementById("gramoTitle").textContent = song.title;
                     document.getElementById("musicBoxVinyl").classList.add("playing"); 
                     document.getElementById("musicBoxStylus").classList.add("playing"); 
                     document.getElementById("gramoToggle").classList.remove("paused"); 
                     document.getElementById("gramoPlay").innerHTML = '<span class="icon-slot" data-icon="pause"></span>';
                     loadIcons();
-                    
                     if(noteInterval) clearInterval(noteInterval); noteInterval = setInterval(spawnNote, 800);
                     const allSongs = document.querySelectorAll(".gramo-song-item"); 
                     allSongs.forEach(el => el.classList.remove("active")); 
                     if(allSongs[index]) allSongs[index].classList.add("active");
                 }).catch(e => {
                     console.error("Lỗi phát nhạc:", e);
-                    alert("Trình duyệt đang chặn hộp nhạc hoặc file nhạc bị lỗi. Vui lòng bấm vào nút 'Play' lần nữa để tiếp tục!");
                 });
             }
         };
 
-        // FIX LỖI NÚT PLAY: Xử lý khi người dùng ấn nút Play mà không chọn bài
         document.getElementById("gramoPlay").addEventListener("click", () => {
             if(!audioEl.src || audioEl.src.endsWith("null") || audioEl.src === "") {
                 if (CONFIG.musicLibrary.length > 0 && CONFIG.musicLibrary[0].songs.length > 0) {
-                    playSong(CONFIG.musicLibrary[0].id, 0); // Tự động chọn bài đầu tiên
+                    playSong(CONFIG.musicLibrary[0].id, 0); 
                 } else {
                     alert("Chưa có bài hát nào trong hộp nhạc!");
                 }
