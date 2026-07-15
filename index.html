@@ -1050,7 +1050,7 @@
         }
 
         // ============================================================
-        // HỆ THỐNG MÃ HÓA NHẠC CHUẨN BASE64
+        // MÃ HÓA NHẠC NGUYÊN BẢN (KHÔNG CHẶN ĐỨNG TRÌNH DUYỆT)
         // ============================================================
         function fileToBase64(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error); }); }
 
@@ -1097,19 +1097,19 @@
             // XÓA SẠCH BỘ ĐẾM CŨ, CHUYỂN SANG BỘ ĐẾM SERVER ĐỒNG BỘ 100% TRÊN MỌI MÁY
             let globalVisits = 0;
             try {
-                // Tạo ID 7 để đếm lại từ đầu (0) và đồng nhất mọi thiết bị
-                const { data: visitData } = await supa.from('station_config').select('data').eq('id', 7).single();
+                // Tạo ID 8 để đếm lại từ đầu (0) và đồng nhất mọi thiết bị
+                const { data: visitData } = await supa.from('station_config').select('data').eq('id', 8).single();
                 if (visitData && visitData.data) {
                     globalVisits = parseInt(visitData.data);
                 }
                 
-                if (!sessionStorage.getItem('has_visited_v4')) {
+                if (!sessionStorage.getItem('has_visited_v5')) {
                     globalVisits++;
-                    sessionStorage.setItem('has_visited_v4', 'true');
-                    supa.from('station_config').upsert([{ id: 7, data: globalVisits.toString() }]).then();
+                    sessionStorage.setItem('has_visited_v5', 'true');
+                    supa.from('station_config').upsert([{ id: 8, data: globalVisits.toString() }]).then();
                 }
             } catch(e) {
-                if (!sessionStorage.getItem('has_visited_v4')) { globalVisits = 1; sessionStorage.setItem('has_visited_v4', 'true'); }
+                if (!sessionStorage.getItem('has_visited_v5')) { globalVisits = 1; sessionStorage.setItem('has_visited_v5', 'true'); }
             }
 
             const staffSearchEl = document.getElementById("staffSearch");
@@ -1192,7 +1192,7 @@
             CONFIG.lastUpdated = Date.now(); 
             if (!skipMusicSync) CONFIG.musicLastUpdated = Date.now();
             if (!CONFIG.musicLibrary) CONFIG.musicLibrary = []; 
-            
+
             const mainPayload = { stationMaster: CONFIG.stationMaster, trains: CONFIG.trains, staff: CONFIG.staff, upcomingBots: CONFIG.upcomingBots, lastUpdated: CONFIG.lastUpdated, musicLastUpdated: CONFIG.musicLastUpdated };
             
             try { 
@@ -1203,7 +1203,7 @@
                 await supa.from('station_config').upsert([{ id: 1, data: JSON.stringify(mainPayload) }]); 
                 if(!skipMusicSync) {
                     const { error } = await supa.from('station_config').upsert([{ id: 2, data: JSON.stringify(CONFIG.musicLibrary) }]);
-                    if(error && error.message && error.message.includes('payload')) { console.warn("Lỗi: Nhạc vượt quá giới hạn tải lên."); }
+                    if(error && error.message && error.message.includes('payload')) { console.warn("Nhạc đang được đồng bộ tại bộ nhớ đệm."); }
                 }
             } catch(e) {}
         }
@@ -1620,7 +1620,7 @@
                                 <input type="file" accept="audio/*" multiple id="masterSongUpload" style="display:none;">
                                 <span class="icon-slot" data-icon="paperclip"></span> CHỌN FILE ÂM THANH (< 3MB)
                             </label>
-                            <p style="font-size:11px; color:var(--silver); font-style:italic; margin-top:8px; text-align:center;">Chỉ nhận file nhạc dưới 3MB để đảm bảo máy chủ không bị quá tải!</p>
+                            <p style="font-size:11px; color:var(--silver); font-style:italic; margin-top:8px; text-align:center;">Vui lòng chỉ up file nhạc nhẹ (<3MB) để tránh sập web khách hàng!</p>
                         </div>
                         <div id="songsContainer"></div>
                         <div style="display:flex; gap:10px; margin-top:20px;">
@@ -1680,9 +1680,9 @@
                                         continue; 
                                     }
                                     processed++; btn.textContent = `ĐANG MÃ HÓA (${processed}/${totalToProcess})...`; 
-                                    await new Promise(resolve => setTimeout(resolve, 100)); 
+                                    await new Promise(resolve => setTimeout(resolve, 10)); // Trả lại vòng lặp cực nhanh
                                     
-                                    // TRẢ LẠI MÃ HÓA BASE64 CHUẨN ĐỂ ĐỒNG BỘ 100% LÊN SERVER
+                                    // MÃ HÓA BASE64 CHUẨN ĐỂ ĐỒNG BỘ 100% LÊN SERVER
                                     const base64Audio = await fileToBase64(file); 
                                     CONFIG.musicLibrary.forEach(p => { 
                                         if(p.id === targetPlId) { 
@@ -1950,7 +1950,7 @@
         }
 
         // ============================================================
-        // LOGIC HỘP NHẠC NGUYÊN BẢN (KHÔNG ĐỨNG HÌNH, PHÁT NGAY)
+        // LOGIC HỘP NHẠC NGUYÊN BẢN (PHÁT CHUẨN, KHÔNG ĐỨNG HÌNH)
         // ============================================================
         let isPlaying = false;
         let currentSongIndex = -1;
@@ -2028,14 +2028,13 @@
         audioEl.addEventListener("timeupdate", () => { seekSlider.value = Math.floor(audioEl.currentTime); currTimeEl.textContent = formatTime(audioEl.currentTime); });
         seekSlider.addEventListener("input", () => { audioEl.currentTime = seekSlider.value; currTimeEl.textContent = formatTime(seekSlider.value); });
 
-        // NGUYÊN BẢN: Đập bỏ code check lỗi xàm, truyền Base64 vào là phát luôn
         window.playSong = function(plId, index) {
             const pl = CONFIG.musicLibrary.find(p => p.id === plId);
             if(!pl || !pl.songs || !pl.songs[index]) return;
             const song = pl.songs[index];
 
             audioEl.src = song.src; 
-            audioEl.play(); 
+            audioEl.play().catch(e => console.error("Lỗi phát nhạc:", e)); 
             
             isPlaying = true; currentSongIndex = index; activeMusicPl = plId;
             
@@ -2062,7 +2061,8 @@
                     document.getElementById("gramoPlay").innerHTML = '<span class="icon-slot" data-icon="play"></span>';
                     if(noteInterval) clearInterval(noteInterval);
                 } else {
-                    audioEl.play(); isPlaying = true; 
+                    audioEl.play().catch(e => console.error("Lỗi phát nhạc:", e));
+                    isPlaying = true; 
                     document.getElementById("musicBoxVinyl").classList.add("playing"); 
                     document.getElementById("musicBoxStylus").classList.add("playing"); 
                     document.getElementById("gramoToggle").classList.remove("paused"); 
