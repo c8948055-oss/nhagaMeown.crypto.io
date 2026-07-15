@@ -282,11 +282,21 @@
         .c-chat-btn { display: block; width: 100%; background: linear-gradient(135deg, var(--st-color), #222); color: #FFF; font-weight: 900; font-family: var(--font-kicker); font-size: 13px; letter-spacing: 1px; text-align: center; padding: 16px; text-decoration: none; transition: 0.2s; margin-top: auto; border: 2px solid #000; box-shadow: 4px 4px 0 rgba(0,0,0,1); text-transform: uppercase; text-shadow: 1px 1px 0 #000;}
         .c-chat-btn:hover { filter: brightness(1.2); transform: translate(-2px, -2px); box-shadow: 6px 6px 0 rgba(0,0,0,1); }
 
-        /* KÝ ỨC BỎ QUÊN */
+        /* KÝ ỨC (ALBUMS) BỎ QUÊN */
+        .album-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; padding: 10px 0; }
+        .album-folder { background: rgba(0,0,0,0.05); border: 2px dashed #1A0F0A; border-radius: 8px; padding: 20px 10px; cursor: pointer; text-align: center; transition: 0.2s; color: #1A0F0A;}
+        .album-folder:hover { background: rgba(221, 170, 51, 0.2); border-style: solid; border-color: var(--amber); transform: translateY(-3px); }
+        .album-folder-icon { font-size: 40px; margin-bottom: 10px; }
+        .album-name { font-family: var(--font-heading); font-weight: 900; font-size: 14px; margin-bottom: 4px; }
+        .album-count { font-size: 11px; font-weight: 500; color: #666; }
+
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; padding: 20px 0;}
         .polaroid-frame { background: #FFF; padding: 10px 10px 30px 10px; box-shadow: 4px 4px 10px rgba(0,0,0,0.5); transform: rotate(calc(-3deg + (6deg * var(--rand)))); transition: 0.3s; cursor: pointer; filter: sepia(0.3) contrast(1.1);}
         .polaroid-frame:hover { transform: scale(1.05) rotate(0deg); z-index: 10; filter: sepia(0); box-shadow: 8px 8px 15px rgba(0,0,0,0.7);}
         .polaroid-frame img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border: 1px solid #ddd;}
+        
+        .admin-album-item { background: #111; border: 1px dashed #444; padding: 10px; margin-bottom: 10px; border-radius: 4px; }
+        .admin-album-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-weight: bold; color: var(--amber); }
 
         /* ============================================================
            HỒ SƠ DỰ BỊ
@@ -719,6 +729,44 @@
     </div>
 
     <script>
+        // ============================================================
+        // GLOBAL KHÁCH XEM ALBUM
+        // ============================================================
+        window.currentViewingAlbums = [];
+        window.currentViewingStaffName = "";
+        window.renderClientAlbums = function() {
+            const body = document.getElementById("generalModalBody");
+            document.getElementById("generalModalTitle").textContent = `KÝ ỨC LƯU TRỮ: ${window.currentViewingStaffName}`; 
+            let html = `<div class="album-grid">`;
+            window.currentViewingAlbums.forEach((alb, idx) => {
+                html += `
+                    <div class="album-folder" onclick="viewClientAlbum(${idx})">
+                        <div class="album-folder-icon">📁</div>
+                        <div class="album-name">${alb.name}</div>
+                        <div class="album-count">${alb.images ? alb.images.length : 0} Ký ức</div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            body.innerHTML = html;
+        };
+
+        window.viewClientAlbum = function(idx) {
+            const alb = window.currentViewingAlbums[idx];
+            const body = document.getElementById("generalModalBody");
+            document.getElementById("generalModalTitle").textContent = `ALBUM: ${alb.name}`; 
+            let html = `<button class="g-back-btn" style="margin-bottom: 15px; color: #8B0000; font-size: 12px; border: 1px solid #8B0000; padding: 4px 8px; border-radius:4px;" onclick="renderClientAlbums()">🔙 QUAY LẠI DANH SÁCH</button>`;
+            
+            if(!alb.images || alb.images.length === 0) {
+                html += `<p style="text-align:center; font-style:italic; color:#8A8A93; padding: 40px 0;">Album trống.</p>`;
+            } else {
+                html += `<div class="gallery-grid">`;
+                html += alb.images.map(imgBase64 => `<div class="polaroid-frame" style="--rand: ${Math.random()};"><img src="${imgBase64}" style="cursor:zoom-in;" onclick="openLightbox(this.src, event)"></div>`).join('');
+                html += `</div>`;
+            }
+            body.innerHTML = html;
+        };
+
         // ============================================================
         // HỆ THỐNG GỢI Ý ĐẶT TÊN GENZ VÀ BÍ ẨN (ĐẢM BẢO KHÔNG TRÙNG)
         // ============================================================
@@ -1309,13 +1357,25 @@
         function renderTrGenresList() { const listContainer = document.getElementById("aTrGenreList"); if(!listContainer) return; listContainer.innerHTML = trainGenresList.map((g, i) => `<span class="c-tag" style="background:#000; border-color:var(--silver); color:var(--pearl); display:flex; align-items:center; gap:4px;">${g} <span style="cursor:pointer; color:red; font-weight:bold;" onclick="removeTrGenre(${i})">×</span></span>`).join(''); }
         window.removeTrGenre = function(i) { trainGenresList.splice(i, 1); renderTrGenresList(); };
         
-        let tempGallery = [];
-        function renderTempGallery() {
-            const wrap = document.getElementById("aStGalleryPrev");
-            if(!wrap) return; wrap.innerHTML = "";
-            tempGallery.forEach((b64, idx) => { let div = document.createElement("div"); div.style.position = "relative"; div.innerHTML = `<img src="${b64}" style="cursor:zoom-in;" onclick="openLightbox(this.src, event)"><div class="del-img-btn" onclick="removeTempGalleryImg(${idx})">✕</div>`; wrap.appendChild(div); });
-        }
-        window.removeTempGalleryImg = function(idx) { tempGallery.splice(idx, 1); renderTempGallery(); };
+        // HỆ THỐNG QUẢN LÝ NHIỀU ALBUMS CHO NHÂN VIÊN
+        let tempAlbums = []; 
+        window.renderTempAlbums = function() {
+            const wrap = document.getElementById("aStAlbumsWrap");
+            if(!wrap) return;
+            wrap.innerHTML = tempAlbums.map((alb, idx) => `
+                <div class="admin-album-item">
+                    <div class="admin-album-header">
+                        <span>📁 ${alb.name} (${alb.images.length} ảnh)</span>
+                        <button type="button" style="color:#ff4444; background:transparent; border:none; font-weight:bold; cursor:pointer;" onclick="removeTempAlbum(${idx})">✕ Xóa Album</button>
+                    </div>
+                    <div class="img-preview-grid">
+                        ${alb.images.slice(0, 4).map(img => `<img src="${img}">`).join('')}
+                        ${alb.images.length > 4 ? `<span style="color:#666; font-size:12px; align-self:center;">+${alb.images.length - 4} ảnh</span>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        };
+        window.removeTempAlbum = function(idx) { tempAlbums.splice(idx, 1); renderTempAlbums(); };
 
         window.openAdminForm = function(type, action, idOrParentId) {
             document.getElementById("generalBox").classList.remove("modal-white");
@@ -1362,7 +1422,17 @@
             else if(type === 'staff') {
                 let sData = { name: "", avatar: "", hook: "", tags: [], scenario: "", chatLink: "", gallery: [], haremWarning: "Không nên chơi harem" };
                 let tId = idOrParentId; if(action === 'edit') { const st = CONFIG.staff.find(s => s.id === idOrParentId); if(st){ sData = st; tId = st.trainId; } }
-                let tagsStr = (sData.tags || []).join(', '); tempGallery = [...(sData.gallery || [])];
+                let tagsStr = (sData.tags || []).join(', '); 
+                
+                // LOAD ALBUMS (TƯƠNG THÍCH DATA CŨ)
+                tempAlbums = [];
+                if(sData.gallery && sData.gallery.length > 0) {
+                    if(typeof sData.gallery[0] === 'string') {
+                        tempAlbums = [{ id: Date.now(), name: "Ký ức chung", images: [...sData.gallery] }];
+                    } else {
+                        tempAlbums = [...sData.gallery];
+                    }
+                }
                 
                 document.getElementById("generalModalTitle").textContent = action === 'add' ? `IN THẺ NHÂN VIÊN MỚI` : `CHỈNH SỬA THẺ NHÂN VIÊN`;
                 body.innerHTML = `
@@ -1386,26 +1456,51 @@
                         </div>
                         <div id="aStScenario" class="rt-editor" contenteditable="true">${sData.scenario || ''}</div>
                     </div>
-                    <div class="form-row file-upload-wrapper">
-                        <label>Thư viện ảnh Ký ức (Mặt sau thẻ)</label>
-                        <label class="file-btn"><input type="file" accept="image/*" multiple id="aStGalleryInp" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> ĐĂNG NHIỀU ẢNH CÙNG LÚC</label>
-                        <div id="aStGalleryPrev" class="img-preview-grid"></div>
+                    <div class="form-row">
+                        <label>Quản lý Ký ức (Albums)</label>
+                        <div style="background:#1a1a1a; border:2px solid #333; padding:15px; border-radius:4px;">
+                            <div style="display:flex; gap:10px; margin-bottom:10px;">
+                                <input type="text" id="aNewAlbumName" placeholder="Tên Album mới..." style="flex:1;">
+                                <label class="file-btn" style="width:auto; margin:0;"><input type="file" accept="image/*" multiple id="aNewAlbumFiles" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Chọn ảnh</label>
+                            </div>
+                            <button type="button" class="submit-btn" id="btnAddAlbum" style="margin-bottom:15px; font-size:11px;">TẠO ALBUM & LƯU TẤT CẢ ẢNH</button>
+                            <div id="aStAlbumsWrap"></div>
+                        </div>
                     </div>
                     <div class="form-row"><label>LINK TRÒ CHUYỆN</label><input type="text" id="aStChat" value="${sData.chatLink || ''}"></div>
                     <button class="submit-btn" id="saveSt">${action==='add'?"IN THẺ":"LƯU HỒ SƠ"}</button>
                 `;
-                loadIcons(); renderTempGallery();
+                loadIcons(); renderTempAlbums();
                 window.insertToggleHTML = function() { const html = `<details><summary>Bấm vào đây để đổi tên nút</summary><div style="color:#000;">Nhập nội dung hiển thị cho hành khách vào đây...</div></details><br>`; document.execCommand('insertHTML', false, html); };
                 let sB64 = sData.avatar; 
                 document.getElementById("aStFile").addEventListener("change", async (e)=>{ sB64 = await resizeImage(e.target.files[0]); document.getElementById("aStPrev").innerHTML=`<img src="${sB64}">`; document.getElementById("aStPrev").querySelector('img').style.display='block'; });
                 
-                document.getElementById("aStGalleryInp").addEventListener("change", async (e) => { for(let f of e.target.files) { const b64 = await resizeImage(f, 1000); tempGallery.push(b64); } renderTempGallery(); });
+                // THÊM ALBUM MỚI
+                document.getElementById("btnAddAlbum").onclick = async () => {
+                    const nameInput = document.getElementById("aNewAlbumName");
+                    const fileInput = document.getElementById("aNewAlbumFiles");
+                    const btn = document.getElementById("btnAddAlbum");
+                    
+                    const name = nameInput.value.trim();
+                    const files = fileInput.files;
+                    if(!name || files.length === 0) return alert("Vui lòng nhập tên Album và chọn ít nhất 1 ảnh!");
+                    
+                    btn.textContent = "ĐANG XỬ LÝ ẢNH..."; btn.style.pointerEvents = "none";
+                    let b64s = [];
+                    for(let f of files) { b64s.push(await resizeImage(f, 1000)); }
+                    
+                    tempAlbums.push({ id: Date.now() + Math.random(), name: name, images: b64s });
+                    renderTempAlbums();
+                    
+                    nameInput.value = ""; fileInput.value = "";
+                    btn.textContent = "TẠO ALBUM & LƯU TẤT CẢ ẢNH"; btn.style.pointerEvents = "auto";
+                };
 
                 document.getElementById("saveSt").addEventListener("click", async () => { 
                     const tags = document.getElementById("aStTags").value.split(',').map(t=>t.trim()).filter(t=>t); 
                     const haremWarning = document.getElementById("aStHarem").value;
-                    if(action === 'add') { CONFIG.staff.push({ id: "s_"+Date.now(), trainId: tId, name: document.getElementById("aStName").value, avatar: sB64, hook: document.getElementById("aStHook").value, haremWarning: haremWarning, tags: tags, scenario: document.getElementById("aStScenario").innerHTML, chatLink: document.getElementById("aStChat").value, gallery: tempGallery, createdAt: Date.now(), rating: { sum: 0, count: 0 }, isHidden: false, feedbacks: [] }); } 
-                    else { let st = CONFIG.staff.find(s => s.id === idOrParentId); st.name = document.getElementById("aStName").value; st.avatar = sB64; st.hook = document.getElementById("aStHook").value; st.haremWarning = haremWarning; st.tags = tags; st.scenario = document.getElementById("aStScenario").innerHTML; st.chatLink = document.getElementById("aStChat").value; st.gallery = tempGallery; } 
+                    if(action === 'add') { CONFIG.staff.push({ id: "s_"+Date.now(), trainId: tId, name: document.getElementById("aStName").value, avatar: sB64, hook: document.getElementById("aStHook").value, haremWarning: haremWarning, tags: tags, scenario: document.getElementById("aStScenario").innerHTML, chatLink: document.getElementById("aStChat").value, gallery: tempAlbums, createdAt: Date.now(), rating: { sum: 0, count: 0 }, isHidden: false, feedbacks: [] }); } 
+                    else { let st = CONFIG.staff.find(s => s.id === idOrParentId); st.name = document.getElementById("aStName").value; st.avatar = sB64; st.hook = document.getElementById("aStHook").value; st.haremWarning = haremWarning; st.tags = tags; st.scenario = document.getElementById("aStScenario").innerHTML; st.chatLink = document.getElementById("aStChat").value; st.gallery = tempAlbums; } 
                     await saveStationConfigToDB(true); renderTrains(); updateNotifications(); rollNumber(document.getElementById("statStaff"), CONFIG.staff.length); document.getElementById("generalModal").classList.add("hidden"); 
                 });
             }
@@ -1699,10 +1794,24 @@
 
             const galleryBtn = cardWrap.querySelector('.c-gallery-btn');
             galleryBtn.addEventListener('click', (e) => {
-                const modal = document.getElementById("generalModal"); const box = document.getElementById("generalBox"); const body = document.getElementById("generalModalBody"); box.classList.add("modal-white"); 
-                document.getElementById("generalModalTitle").textContent = `KÝ ỨC LƯU TRỮ: ${staff.name}`; 
-                if(!staff.gallery || staff.gallery.length === 0) { body.innerHTML = `<p style="text-align:center; font-style:italic; color:#8A8A93; padding: 40px 0;">Nhân viên này chưa có bức ảnh lưu niệm nào.</p>`; } 
-                else { let imagesHtml = staff.gallery.map(imgBase64 => `<div class="polaroid-frame" style="--rand: ${Math.random()};"><img src="${imgBase64}" style="cursor:zoom-in;" onclick="openLightbox(this.src, event)"></div>`).join(''); body.innerHTML = `<div class="gallery-grid">${imagesHtml}</div>`; }
+                const modal = document.getElementById("generalModal"); 
+                const box = document.getElementById("generalBox"); 
+                box.classList.add("modal-white"); 
+                
+                let albums = staff.gallery || [];
+                // Bọc ảnh cũ vào album mặc định nếu phiên bản trước chỉ là array strings
+                if(albums.length > 0 && typeof albums[0] === 'string') {
+                    albums = [{ id: 'legacy', name: 'Ký ức chung', images: albums }];
+                }
+
+                if(albums.length === 0) { 
+                    document.getElementById("generalModalTitle").textContent = `KÝ ỨC LƯU TRỮ: ${staff.name}`; 
+                    document.getElementById("generalModalBody").innerHTML = `<p style="text-align:center; font-style:italic; color:#8A8A93; padding: 40px 0;">Nhân viên này chưa có bức ảnh lưu niệm nào.</p>`; 
+                } else { 
+                    window.currentViewingAlbums = albums;
+                    window.currentViewingStaffName = staff.name;
+                    renderClientAlbums();
+                }
                 modal.classList.remove("hidden"); 
             });
 
