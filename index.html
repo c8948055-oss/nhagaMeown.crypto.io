@@ -171,7 +171,7 @@
         #smBio ul { padding-left: 20px; margin: 10px 0; }
         #smBio details { background: rgba(0,0,0,0.5); border: 1px dashed var(--amber); padding: 12px; margin: 12px 0; border-radius: 4px; color: var(--pearl); }
         #smBio details[open] summary { border-bottom: 1px solid rgba(255,255,255,0.2); margin-bottom: 10px; padding-bottom: 5px; }
-        #smBio summary { cursor: pointer; color: var(--pearl); font-weight: 500; outline: none; font-family: inherit; text-transform: none; font-size: 15px; display: block; }
+        #smBio summary { cursor: pointer; color: var(--amber); font-weight: 900; outline: none; font-family: var(--font-kicker); text-transform: uppercase; font-size: 13px; letter-spacing: 1px; display: block; }
         #smBio details > div { padding-top: 10px; }
         
         .fb-link-box { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 60px; height: 60px; background: rgba(221, 170, 51, 0.1); border: 2px solid var(--amber); border-radius: 4px; text-decoration: none; color: var(--amber); transition: 0.2s; margin-top: 10px; box-shadow: 3px 3px 0 rgba(0,0,0,1); }
@@ -201,6 +201,7 @@
         .t-window-text::-webkit-scrollbar { width: 4px; }
         .t-window-text::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.5); border-radius: 2px;}
         
+        /* CỘT TAGS BÊN PHẢI ĐƯỢC CHỈNH LẠI: Nền Vàng, Chữ Đen */
         .t-tags-container { display: flex; flex-direction: column; gap: 6px; overflow-y: auto; max-height: 110px; padding-right: 4px; align-items: stretch;}
         .t-tags-container::-webkit-scrollbar { width: 4px; }
         .t-tags-container::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.5); border-radius: 2px;}
@@ -252,10 +253,20 @@
         .card-front .c-image-wrap { width: 140px; height: 140px; border: 4px solid #FFF; border-bottom: 15px solid #FFF; background: #FFF; position: relative; box-shadow: 2px 2px 10px rgba(0,0,0,0.8); margin-bottom: 15px; transform: rotate(-2deg); flex-shrink: 0;}
         .card-front .c-image-wrap img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.1) sepia(0.2) grayscale(0.1); }
         
+        /* HIỆU ỨNG TÊN NHÂN VIÊN VÀ DỰ BỊ (MÀU ĐỒNG NHẤT) */
         .card-front .c-name, .up-card-front .c-name { 
-            font-family: var(--font-heading); font-size: 24px; font-weight: 900; text-align: center; text-transform: uppercase; 
-            letter-spacing: 2px; width: 100%; border-bottom: 1px dashed #444; padding-bottom: 8px; margin-bottom: 12px;
-            color: var(--amber); text-shadow: 2px 2px 4px rgba(0,0,0,0.9); 
+            font-family: var(--font-heading); 
+            font-size: 24px; 
+            font-weight: 900; 
+            text-align: center; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            width: 100%; 
+            border-bottom: 1px dashed #444; 
+            padding-bottom: 8px; 
+            margin-bottom: 12px;
+            color: var(--amber); /* Set màu trơn đồng nhất thay cho dải gradient */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.9); /* Làm chữ nổi lên so với nền */
         }
 
         .c-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 10px; width: 100%;}
@@ -278,7 +289,7 @@
         .c-chat-btn { display: block; width: 100%; background: linear-gradient(135deg, var(--st-color), #222); color: #FFF; font-weight: 900; font-family: var(--font-kicker); font-size: 13px; letter-spacing: 1px; text-align: center; padding: 16px; text-decoration: none; transition: 0.2s; margin-top: auto; border: 2px solid #000; box-shadow: 4px 4px 0 rgba(0,0,0,1); text-transform: uppercase; text-shadow: 1px 1px 0 #000;}
         .c-chat-btn:hover { filter: brightness(1.2); transform: translate(-2px, -2px); box-shadow: 6px 6px 0 rgba(0,0,0,1); }
 
-        /* KÝ ỨC BỎ QUÊN */
+        /* KÝ ỨC BỎ QUÊN (THƯ VIỆN ẢNH NHÂN VIÊN) */
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; padding: 20px 0;}
         .polaroid-frame { background: #FFF; padding: 10px 10px 30px 10px; box-shadow: 4px 4px 10px rgba(0,0,0,0.5); transform: rotate(calc(-3deg + (6deg * var(--rand)))); transition: 0.3s; cursor: pointer; filter: sepia(0.3) contrast(1.1);}
         .polaroid-frame:hover { transform: scale(1.05) rotate(0deg); z-index: 10; filter: sepia(0); box-shadow: 8px 8px 15px rgba(0,0,0,0.7);}
@@ -305,7 +316,7 @@
         .up-vote-btn.voted { border-color: #D50000; color: #D50000; box-shadow: inset 0 0 10px rgba(213,0,0,0.2); }
 
         /* ============================================================
-           SỔ LƯU BÚT & BÀI ĐĂNG + CSS TƯƠNG TÁC NGANG HOÀN TOÀN
+           SỔ LƯU BÚT & BÀI ĐĂNG
            ============================================================ */
         .mailbox-panel { background: rgba(10,10,12,0.95); border: 2px solid #222; padding: 30px; position: relative; box-shadow: 8px 8px 0 rgba(0,0,0,1); margin-bottom: 28px; }
         .form-row { margin-bottom: 18px; }
@@ -321,6 +332,7 @@
         .file-btn:hover { border-color: var(--pearl); color: var(--pearl); }
         .img-preview-grid { display: flex; gap: 10px; flex-wrap: wrap; }
         .img-preview-grid img { width: 60px; height: 60px; object-fit: cover; border: 2px solid #333; position: relative;}
+        
         .del-img-btn { position:absolute; top: -5px; right: -5px; background: #8B0000; color:#FFF; width:20px; height:20px; border-radius:50%; border:2px solid #000; font-size:10px; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; }
 
         .feed-container { display: flex; flex-direction: column; gap: 24px; }
@@ -329,38 +341,6 @@
         .post-author { font-family: var(--font-heading); font-size: 18px; font-weight: 900; color: var(--amber); display: flex; align-items: center; gap: 8px; text-transform: uppercase; text-shadow: 1px 1px 0 #000;}
         .post-time { font-size: 11px; color: var(--silver); font-weight: bold; }
         .post-content { font-size: 14.5px; color: var(--pearl); line-height: 1.6; margin-bottom: 16px; white-space: pre-wrap; font-weight: 500;}
-
-        /* CSS MỚI: Tương tác (HÀNG NGANG CHUẨN) */
-        .reaction-container { display: flex; align-items: center; gap: 8px; border-top: 1px dashed #333; border-bottom: 1px dashed #333; padding: 12px 0; margin: 15px 0; flex-wrap: wrap; }
-        
-        .emoji-btn { font-size: 16px; cursor: pointer; transition: 0.2s; background: rgba(0,0,0,0.4); border: 1px solid #444; outline: none; padding: 6px 12px; border-radius: 20px; display: flex; align-items: center; gap: 6px; color: var(--silver); font-weight: bold; font-family: var(--font-kicker); }
-        .emoji-btn:hover { background: rgba(221, 170, 51, 0.1); border-color: var(--amber); color: var(--pearl); transform: translateY(-2px); }
-        .emoji-btn.active { background: rgba(221, 170, 51, 0.2); border-color: var(--amber); color: var(--amber); box-shadow: 0 2px 8px rgba(221, 170, 51, 0.2); }
-        
-        .react-btn { margin-left: auto; background: none; border: 1px solid transparent; color: var(--silver); display: flex; align-items: center; gap: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 12px; font-family: var(--font-kicker); text-transform: uppercase; padding: 6px 12px; border-radius: 4px; }
-        .react-btn:hover { color: var(--amber); background: rgba(221, 170, 51, 0.1); }
-        
-        .comments-section { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 4px; border: 1px solid #222; }
-        .comment-item { display: flex; gap: 12px; margin-bottom: 15px; border-bottom: 1px solid #1a1a1a; padding-bottom: 12px; }
-        .comment-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .comment-avatar { width: 32px; height: 32px; background: #111; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; color: var(--amber); flex-shrink: 0; border: 2px solid #333; box-shadow: inset 1px 1px 3px rgba(0,0,0,0.8);}
-        .comment-body { flex: 1; }
-        .comment-name { font-weight: 900; color: var(--pearl); font-size: 13px; margin-bottom: 4px; display:flex; align-items:center; gap:6px;}
-        .comment-text { font-size: 13.5px; color: #ccc; line-height: 1.5; white-space: pre-wrap; font-weight: 500;}
-        .comment-imgs { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-        .comment-imgs img { width: 80px; height: 80px; object-fit: cover; border: 2px solid #333; border-radius: 4px; cursor: zoom-in; }
-
-        .comment-input-area { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
-        .cmt-row { display: flex; gap: 8px; align-items:stretch;}
-        .cmt-input { flex: 1; background: #000; border: 2px solid #333; color: var(--pearl); padding: 10px 12px; font-size: 13px; font-weight:bold; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8);}
-        .cmt-input:focus { border-color: var(--amber); outline: none; }
-        .cmt-submit { background: var(--amber); color: #000; border: 2px solid #000; padding: 0 16px; font-weight: 900; cursor: pointer; font-family: var(--font-kicker); text-transform: uppercase; font-size: 11px; box-shadow: 2px 2px 0 rgba(0,0,0,1); transition:0.2s;}
-        .cmt-submit:hover { transform:translate(-1px,-1px); box-shadow: 3px 3px 0 rgba(0,0,0,1); }
-        .cmt-submit:active { transform:translate(1px,1px); box-shadow: 0 0 0 rgba(0,0,0,1); }
-        .cmt-file-btn { background: #111; color: var(--silver); padding: 0 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #333; transition: 0.2s; box-shadow: 2px 2px 0 rgba(0,0,0,1);}
-        .cmt-file-btn:hover { background: #222; border-color: var(--amber); color: var(--amber); }
-        .cmt-preview { display: flex; gap: 8px; flex-wrap: wrap; }
-        .cmt-preview img { width: 60px; height: 60px; object-fit: cover; border: 2px solid #444; position: relative; }
 
         /* ============================================================
            MÁY HÁT GRAMOPHONE & SEEKBAR
@@ -431,7 +411,7 @@
         
         .modal-box.modal-white details { background: rgba(0,0,0,0.05); border: 2px dashed #1A0F0A; padding: 12px; margin: 12px 0; color: #1A0F0A; display: block; border-radius: 4px;}
         .modal-box.modal-white details[open] summary { border-bottom: 1px solid rgba(0,0,0,0.2); margin-bottom: 10px; padding-bottom: 5px; }
-        .modal-box.modal-white summary { cursor: pointer; color: inherit; font-weight: 500; outline: none; font-family: inherit; text-transform: none; font-size: 15px; display: block;}
+        .modal-box.modal-white summary { cursor: pointer; color: #8B0000; font-weight: 900; outline: none; font-family:var(--font-kicker); text-transform:uppercase; font-size:13px; letter-spacing:1px; display: block;}
         .modal-box.modal-white details > div { color: #1A0F0A; font-weight: 500; line-height: 1.6; }
         .modal-box.modal-white ul { padding-left: 24px; margin: 10px 0; font-weight: 500;}
 
@@ -479,13 +459,13 @@
         <div class="p2-steam"></div>
     </div>
     
-    <!-- BẢNG THỐNG KÊ -->
+    <!-- BẢNG THỐNG KÊ (LUGGAGE TAG) NHỎ GỌN TRONG SUỐT GÓC TRÁI DƯỚI -->
     <div class="global-tag">
         <div class="tag-line"><span class="icon-slot" data-icon="hat"></span> <span class="num" id="statStaff">0</span> nhân viên túc trực tại ga.</div>
         <div class="tag-line"><span class="icon-slot" data-icon="ticket_punch"></span> <span class="num" id="statVisits">0</span> lượt hành khách đã ghé ga.</div>
     </div>
 
-    <!-- CHUÔNG THÔNG BÁO -->
+    <!-- CHUÔNG THÔNG BÁO GÓC TRÊN PHẢI -->
     <div id="notiBtn" class="noti-btn">
         <span class="icon-slot" data-icon="bell"></span>
         <div id="notiBadge" class="noti-badge" style="display:none;">0</div>
@@ -505,6 +485,7 @@
                     <div class="cat-eye right"></div>
                 </div>
             </div>
+            <!-- DOUBLE CLICK VÀO DÒNG CHỮ NÀY ĐỂ MỞ QUYỀN ADMIN -->
             <p class="kicker" id="secretAdminTrigger" title="Click đúp để mở lối vào ẩn của Trưởng ga">CHÀO MỪNG QUÝ KHÁCH ĐẾN VỚI</p>
             <h1 class="heading">NHÀ GA MEOWN</h1>
             <p class="body-text">Ở rìa của thực tại, nơi sương mù không bao giờ tan có một nhà ga nhỏ mang tên Meown. Đến với ga, quý khách không cần mua vé bằng tiền. Chỉ cần bạn bước lên chuyến tàu phù hợp, chọn một nhân viên và bắt đầu trò chuyện, con tàu sẽ tự động lăn bánh.</p>
@@ -615,6 +596,7 @@
             </div>
         </div>
 
+        <!-- MÀN HÌNH DANH SÁCH PLAYLIST -->
         <div id="gramoViewPlaylists" class="gramo-scroll-area">
             <div style="display:flex; justify-content:space-between; margin-bottom:10px; align-items:center;">
                 <span style="font-size:11px; font-weight:bold; color:var(--silver); text-transform:uppercase;">Danh sách Playlist</span>
@@ -623,6 +605,7 @@
             <div id="gramoPlaylistContainer"></div>
         </div>
 
+        <!-- MÀN HÌNH DANH SÁCH BÀI HÁT (ẨN MẶC ĐỊNH) -->
         <div id="gramoViewSongs" class="gramo-scroll-area" style="display:none;">
             <div style="display:flex; justify-content:space-between; margin-bottom:10px; align-items:center;">
                 <button class="g-back-btn" id="btnBackToPL">🔙 Quay lại Danh sách</button>
@@ -632,6 +615,7 @@
             <div id="gramoSongList"></div>
         </div>
         
+        <!-- THANH SEEKBAR MỚI THÊM -->
         <div class="gramo-progress-container">
             <span id="currTime">0:00</span>
             <input type="range" id="seekSlider" class="seek-slider" value="0" min="0" max="100" step="1">
@@ -660,81 +644,6 @@
     </div>
 
     <script>
-        // GẮN CHẶT CÁC HÀM XỬ LÝ LÊN CAO NHẤT ĐỂ KHÔNG BAO GIỜ BỊ LỖI MẤT HÀM DO BẤM NHẦM
-        window.tempCmtImgs = {}; 
-
-        window.reactPost = async function(type, postIdStr, reactionType) {
-            const postList = type === 'guestbook' ? localGuestbook : localRecruit;
-            // Dùng String() để đọ cho khớp tuyệt đối, không bị lỗi nhận diện
-            const post = postList.find(p => String(p.id) === String(postIdStr));
-            if(!post) return;
-
-            const votedKey = `reacted_${type}_${postIdStr}`;
-            const oldReact = localStorage.getItem(votedKey);
-
-            if(!post.reactions) post.reactions = {like:0, love:0, haha:0, sad:0, angry:0};
-            if(typeof post.reactions === 'string') { try { post.reactions = JSON.parse(post.reactions); } catch(e) { post.reactions = {like:0, love:0, haha:0, sad:0, angry:0}; } }
-
-            if(oldReact) { post.reactions[oldReact] = Math.max(0, post.reactions[oldReact] - 1); }
-            if(oldReact !== reactionType) {
-                post.reactions[reactionType] = (post.reactions[reactionType] || 0) + 1;
-                localStorage.setItem(votedKey, reactionType);
-            } else { localStorage.removeItem(votedKey); }
-
-            if(typeof post.reactions !== 'string') post.reactions = JSON.stringify(post.reactions);
-
-            renderFeed(type);
-            await localforage.setItem(type === 'guestbook' ? 'meown_gb_backup' : 'meown_rc_backup', postList);
-            supa.from(type === 'guestbook' ? 'meown_guestbook' : 'meown_recruit').update({reactions: post.reactions}).eq('id', postIdStr).then(({error})=> {if(error) console.warn(error);});
-        };
-
-        window.handleCmtImg = async function(e, postId) {
-            if(!window.tempCmtImgs[postId]) window.tempCmtImgs[postId] = [];
-            const files = e.target.files;
-            if(files.length > 3) { alert("Chỉ đính kèm tối đa 3 ảnh/bình luận nhé!"); e.target.value = ""; return; }
-            const prev = document.getElementById(`cmt-prev-${postId}`);
-            prev.innerHTML = "<span style='font-size:11px; color:var(--amber); font-weight:bold;'>Đang xử lý ảnh...</span>";
-            for(let f of files) { const b64 = await resizeImage(f, 400); window.tempCmtImgs[postId].push(b64); }
-            renderCmtPrev(postId);
-        };
-
-        window.renderCmtPrev = function(postId) {
-            const prev = document.getElementById(`cmt-prev-${postId}`);
-            if(!window.tempCmtImgs[postId]) return;
-            prev.innerHTML = window.tempCmtImgs[postId].map((img, i) => `<div style="position:relative; display:inline-block;"><img src="${img}"><div class="del-img-btn" onclick="removeCmtImg('${postId}', ${i})">✕</div></div>`).join('');
-        };
-
-        window.removeCmtImg = function(postId, i) { window.tempCmtImgs[postId].splice(i, 1); renderCmtPrev(postId); };
-
-        window.sendComment = async function(type, postIdStr) {
-            const textInp = document.getElementById(`cmt-text-${postIdStr}`);
-            if (!textInp) return;
-            const text = textInp.value.trim();
-            
-            const imgArr = window.tempCmtImgs[postIdStr] || [];
-            if(!text && imgArr.length === 0) return alert("Nhập nội dung hoặc chọn ảnh để bình luận nhé!");
-
-            const postList = type === 'guestbook' ? localGuestbook : localRecruit;
-            const post = postList.find(p => String(p.id) === String(postIdStr));
-            if(!post) return alert("Hệ thống đơ, xin load lại trang!");
-
-            let cmtArr = [];
-            if(post.comments) { if(typeof post.comments === 'string') { try { cmtArr = JSON.parse(post.comments); } catch(e){} } else { cmtArr = post.comments; } }
-            
-            const nameInp = document.getElementById(`cmt-name-${postIdStr}`);
-            const authorName = nameInp ? (nameInp.value || "Khách") : "Trưởng ga Meown";
-
-            cmtArr.push({ id: Date.now(), name: authorName, text: text, images: [...imgArr], date: Date.now() });
-            post.comments = JSON.stringify(cmtArr);
-
-            window.tempCmtImgs[postIdStr] = [];
-            textInp.value = "";
-            renderFeed(type);
-
-            await localforage.setItem(type === 'guestbook' ? 'meown_gb_backup' : 'meown_rc_backup', postList);
-            supa.from(type === 'guestbook' ? 'meown_guestbook' : 'meown_recruit').update({comments: post.comments}).eq('id', postIdStr).then(({error})=> {if(error) console.warn(error);});
-        };
-
         const ICONS = {
             user: '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/></svg>',
             ticket: '<svg class="icon" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M7 6v12M17 6v12"/></svg>',
@@ -755,8 +664,7 @@
             heart_filled: '<svg class="icon" viewBox="0 0 24 24" fill="#D50000" stroke="#D50000" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
             note1: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>',
             note2: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle></svg>',
-            bell: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>',
-            comment: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>'
+            bell: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>'
         };
         function loadIcons() { document.querySelectorAll(".icon-slot").forEach(el => { el.innerHTML = ICONS[el.dataset.icon]||""; }); }
 
@@ -804,6 +712,7 @@
             setTimeout(() => note.remove(), 2500);
         }
 
+        // TÍNH NĂNG XEM ẢNH TO (LIGHTBOX)
         window.openLightbox = function(src, e) {
             if(e) e.stopPropagation();
             document.getElementById("lightboxImg").src = src;
@@ -816,36 +725,18 @@
         const ADMIN_CAT_AVATAR = "ChatGPT_Image_02_56_58_7_thg_7__2026-removebg-preview-removebg-preview.png";
         const VERIFIED_TICK = `<svg style="width:14px; height:14px; display:inline-block; vertical-align:middle; margin-left:4px;" viewBox="0 0 24 24" fill="#0866FF"><circle cx="12" cy="12" r="10"/><path d="M16.5 8.5l-6 6-3-3" stroke="#fff" stroke-width="2" fill="none"/></svg>`;
         
+        /* CẬP NHẬT BIẾN CONFIG: THÊM musicLastUpdated ĐỂ CHỐNG MẤT NHẠC */
         let CONFIG = { stationMaster: { avatar: "", name: "Trưởng Ga", bio: "Chào mừng đến với nhà ga Meown.", facebook: {} }, trains: [], staff: [], upcomingBots: [], musicLibrary: [], lastUpdated: 0, musicLastUpdated: 0 };
         let isAdminMode = false; let activeMusicPl = null;
         let localGuestbook = []; let localRecruit = [];
         let currentSearch = ""; 
 
-        function removeAccents(str) { return str ? str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase() : ''; }
-
-        function resizeImage(file, maxSize = 600) { 
-            return new Promise((resolve) => { 
-                const reader = new FileReader(); 
-                reader.onload = (e) => { 
-                    const img = new Image(); 
-                    img.onload = () => { 
-                        const canvas = document.createElement('canvas'); 
-                        let w = img.width, h = img.height; 
-                        if(w > maxSize || h > maxSize) { 
-                            if(w > h) { h = Math.round((h * maxSize) / w); w = maxSize; } 
-                            else { w = Math.round((w * maxSize) / h); h = maxSize; } 
-                        } 
-                        canvas.width = w; canvas.height = h; 
-                        const ctx = canvas.getContext('2d'); 
-                        ctx.drawImage(img, 0, 0, w, h); 
-                        resolve(canvas.toDataURL('image/jpeg', 0.4)); 
-                    }; 
-                    img.src = e.target.result; 
-                }; 
-                reader.readAsDataURL(file); 
-            }); 
+        // Hàm xóa dấu tiếng Việt giúp tìm kiếm thông minh hơn
+        function removeAccents(str) {
+            return str ? str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase() : '';
         }
 
+        function resizeImage(file, maxSize = 800) { return new Promise((resolve) => { const reader = new FileReader(); reader.onload = (e) => { const img = new Image(); img.onload = () => { const canvas = document.createElement('canvas'); let w = img.width, h = img.height; if(w > maxSize || h > maxSize) { if(w > h) { h = Math.round((h * maxSize) / w); w = maxSize; } else { w = Math.round((w * maxSize) / h); h = maxSize; } } canvas.width = w; canvas.height = h; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, w, h); resolve(canvas.toDataURL('image/jpeg', 0.6)); }; img.src = e.target.result; }; reader.readAsDataURL(file); }); }
         function fileToBase64(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error); }); }
 
         function rollNumber(el, target){ 
@@ -866,8 +757,8 @@
                 isAdminMode = true; document.body.classList.add("admin-active");
                 const adminAvatarHtml = `<img src="${ADMIN_CAT_AVATAR}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;">`;
                 const gbWrap = document.getElementById("gbNameWrap"); const rcWrap = document.getElementById("rcNameWrap");
-                if(gbWrap) { gbWrap.innerHTML = `<div style="display:inline-flex; align-items:center; gap:6px; color:var(--amber); font-weight:900; margin-bottom:10px;">${adminAvatarHtml} Trưởng ga Meown ${VERIFIED_TICK}</div>`; }
-                if(rcWrap) { rcWrap.innerHTML = `<div style="display:inline-flex; align-items:center; gap:6px; color:var(--amber); font-weight:900; margin-bottom:10px;">${adminAvatarHtml} Trưởng ga Meown ${VERIFIED_TICK}</div>`; }
+                if(gbWrap) gbWrap.innerHTML = `<div style="display:inline-flex; align-items:center; gap:6px; color:var(--amber); font-weight:900; margin-bottom:10px;">${adminAvatarHtml} Trưởng ga Meown ${VERIFIED_TICK}</div>`;
+                if(rcWrap) rcWrap.innerHTML = `<div style="display:inline-flex; align-items:center; gap:6px; color:var(--amber); font-weight:900; margin-bottom:10px;">${adminAvatarHtml} Trưởng ga Meown ${VERIFIED_TICK}</div>`;
                 const cleanUrl = window.location.href.split('?')[0]; window.history.replaceState({}, document.title, cleanUrl);
             }
         }
@@ -875,8 +766,11 @@
         document.getElementById('secretAdminTrigger').addEventListener('dblclick', () => {
             if (!localStorage.getItem('isAdmin')) {
                 let pwd = prompt("LỐI VÀO CỦA TRƯỞNG GA\nVui lòng nhập mật mã bảo mật:");
-                if(pwd === "bhnt2006") { localStorage.setItem('isAdmin', 'true'); alert("Đã cấp quyền Tối thượng cho Trưởng ga Meown!"); window.location.reload(); } 
-                else if (pwd !== null) { alert("Mật mã không chính xác!"); }
+                if(pwd === "bhnt2006") { 
+                    localStorage.setItem('isAdmin', 'true'); 
+                    alert("Đã cấp quyền Tối thượng cho Trưởng ga Meown!");
+                    window.location.reload(); 
+                } else if (pwd !== null) { alert("Mật mã không chính xác!"); }
             } else {
                 if(confirm("Bạn đang ở chế độ Admin. Bạn có muốn thoát quyền không?")) { localStorage.removeItem('isAdmin'); window.location.reload(); }
             }
@@ -884,160 +778,279 @@
 
         document.addEventListener("DOMContentLoaded", async () => {
             localforage.config({ name: 'MeownStation' }); 
-            loadIcons(); createEmbers(); createFireflies(); checkAdminLogin(); 
+            loadIcons(); createEmbers(); createFireflies();
+            checkAdminLogin(); 
 
             await fetchStationConfig();
             
-            let currentVisits = parseInt(localStorage.getItem('meown_visits_reset') || '0');
+            let currentVisits = parseInt(localStorage.getItem('meown_real_visits') || '0');
             if (!sessionStorage.getItem('has_visited')) {
                 currentVisits++;
-                localStorage.setItem('meown_visits_reset', currentVisits);
+                localStorage.setItem('meown_real_visits', currentVisits);
                 sessionStorage.setItem('has_visited', 'true');
             }
 
             const staffSearchEl = document.getElementById("staffSearch");
-            if (staffSearchEl) { staffSearchEl.addEventListener("input", (e) => { currentSearch = e.target.value; renderTrains(); }); }
+            if (staffSearchEl) {
+                staffSearchEl.addEventListener("input", (e) => {
+                    currentSearch = e.target.value;
+                    renderTrains();
+                });
+            }
             
             const staffSortSelect = document.getElementById("staffSortSelect");
-            if (staffSortSelect) { staffSortSelect.addEventListener("change", () => { renderTrains(); }); }
+            if (staffSortSelect) {
+                staffSortSelect.addEventListener("change", () => {
+                    renderTrains();
+                });
+            }
 
-            document.getElementById("notiBtn").addEventListener("click", () => { const panel = document.getElementById("notiPanel"); panel.classList.toggle("show"); });
+            // Gán logic Chuông thông báo
+            document.getElementById("notiBtn").addEventListener("click", () => {
+                const panel = document.getElementById("notiPanel");
+                panel.classList.toggle("show");
+            });
 
             updateStationMasterUI(); renderTrains(); renderUpcomingBots(); renderGramoPlaylists();
-            rollNumber(document.getElementById("statStaff"), CONFIG.staff.length || 0); rollNumber(document.getElementById("statVisits"), currentVisits); 
+            rollNumber(document.getElementById("statStaff"), CONFIG.staff.length || 0); 
+            rollNumber(document.getElementById("statVisits"), currentVisits); 
             
             await fetchFeeds(); 
             updateNotifications();
         });
 
+        // Hàm click thẳng từ Thông báo đến Chuyến tàu / Tab tương ứng
         window.gotoNoti = function(type, id) {
-            document.getElementById("notiPanel").classList.remove("show"); document.getElementById("notiBadge").style.display = "none";
-            if(isAdminMode) localStorage.setItem("admin_last_read", Date.now()); else localStorage.setItem("user_last_read_noti", Date.now());
+            document.getElementById("notiPanel").classList.remove("show");
+            document.getElementById("notiBadge").style.display = "none";
+            
+            if(isAdminMode) localStorage.setItem("admin_last_read", Date.now());
+            else localStorage.setItem("user_last_read_noti", Date.now());
             
             document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
             document.querySelectorAll(".section-view").forEach(v => v.classList.add("hidden"));
 
-            if(type === 'guestbook') { document.querySelector('.nav-item[data-view="guestbook"]').classList.add("active"); document.getElementById("view-guestbook").classList.remove("hidden"); window.scrollTo({top: 0, behavior: 'smooth'}); } 
-            else if(type === 'recruit') { document.querySelector('.nav-item[data-view="recruitment"]').classList.add("active"); document.getElementById("view-recruitment").classList.remove("hidden"); window.scrollTo({top: 0, behavior: 'smooth'}); } 
-            else if(type === 'staff') {
-                document.querySelector('.nav-item[data-view="trains"]').classList.add("active"); document.getElementById("view-trains").classList.remove("hidden");
-                setTimeout(() => { const card = document.getElementById('staff_card_' + id); if(card) { const acc = card.closest('.train-accordion'); if(acc && !acc.classList.contains('open')) acc.classList.add('open'); card.scrollIntoView({behavior: 'smooth', block: 'center'}); card.querySelector('.staff-card-inner').style.boxShadow = "0 0 30px var(--amber)"; setTimeout(() => card.querySelector('.staff-card-inner').style.boxShadow = "6px 6px 0 rgba(0,0,0,1)", 3000); } }, 300);
+            if(type === 'guestbook') {
+                document.querySelector('.nav-item[data-view="guestbook"]').classList.add("active");
+                document.getElementById("view-guestbook").classList.remove("hidden");
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            } else if(type === 'recruit') {
+                document.querySelector('.nav-item[data-view="recruitment"]').classList.add("active");
+                document.getElementById("view-recruitment").classList.remove("hidden");
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            } else if(type === 'staff') {
+                document.querySelector('.nav-item[data-view="trains"]').classList.add("active");
+                document.getElementById("view-trains").classList.remove("hidden");
+                
+                setTimeout(() => {
+                    const card = document.getElementById('staff_card_' + id);
+                    if(card) {
+                        const acc = card.closest('.train-accordion');
+                        if(acc && !acc.classList.contains('open')) acc.classList.add('open');
+                        card.scrollIntoView({behavior: 'smooth', block: 'center'});
+                        card.querySelector('.staff-card-inner').style.boxShadow = "0 0 30px var(--amber)";
+                        setTimeout(() => card.querySelector('.staff-card-inner').style.boxShadow = "6px 6px 0 rgba(0,0,0,1)", 3000);
+                    }
+                }, 300);
             }
         }
 
+        // LOGIC THÔNG BÁO THÔNG MINH ĐƯỢC CHỈNH LẠI CÓ LINK TỚI TAB
         function updateNotifications() {
-            const panel = document.getElementById("notiList"); const badge = document.getElementById("notiBadge");
-            panel.innerHTML = ""; let notiCount = 0; let html = "";
+            const panel = document.getElementById("notiList");
+            const badge = document.getElementById("notiBadge");
+            panel.innerHTML = "";
+            let notiCount = 0;
+            let html = "";
 
             if (isAdminMode) {
                 let lastRead = parseInt(localStorage.getItem("admin_last_read") || "0");
-                CONFIG.staff.forEach(st => { (st.feedbacks || []).forEach(fb => { if (fb.date && fb.date > lastRead) { notiCount++; html += `<div class="noti-item" onclick="gotoNoti('staff', '${st.id}')">Khách <b>${fb.name}</b> vừa gửi feedback cho <span class="highlight">${st.name}</span>.</div>`; } }); });
-                localGuestbook.forEach(post => { let pTime = new Date(post.created_at || post.date).getTime(); if (pTime && pTime > lastRead) { notiCount++; html += `<div class="noti-item" onclick="gotoNoti('guestbook')"><b>${post.name || post.author}</b> vừa viết vào <span class="highlight">Sổ lưu bút</span>.</div>`; } });
-                localRecruit.forEach(post => { let pTime = new Date(post.created_at || post.date).getTime(); if (pTime && pTime > lastRead) { notiCount++; html += `<div class="noti-item" onclick="gotoNoti('recruit')"><b>${post.name || post.author}</b> vừa gửi ý tưởng <span class="highlight">Tuyển dụng</span>.</div>`; } });
+                CONFIG.staff.forEach(st => {
+                    (st.feedbacks || []).forEach(fb => {
+                        if (fb.date && fb.date > lastRead) {
+                            notiCount++;
+                            html += `<div class="noti-item" onclick="gotoNoti('staff', '${st.id}')">Khách <b>${fb.name}</b> vừa gửi feedback cho <span class="highlight">${st.name}</span>.</div>`;
+                        }
+                    });
+                });
+                localGuestbook.forEach(post => {
+                    let pTime = new Date(post.created_at || post.date).getTime();
+                    if (pTime && pTime > lastRead) {
+                        notiCount++;
+                        html += `<div class="noti-item" onclick="gotoNoti('guestbook')"><b>${post.name || post.author}</b> vừa viết vào <span class="highlight">Sổ lưu bút</span>.</div>`;
+                    }
+                });
+                localRecruit.forEach(post => {
+                    let pTime = new Date(post.created_at || post.date).getTime();
+                    if (pTime && pTime > lastRead) {
+                        notiCount++;
+                        html += `<div class="noti-item" onclick="gotoNoti('recruit')"><b>${post.name || post.author}</b> vừa gửi ý tưởng <span class="highlight">Tuyển dụng</span>.</div>`;
+                    }
+                });
             } else {
                 let userLastRead = parseInt(localStorage.getItem("user_last_read_noti") || "0");
                 let sortedStaff = [...CONFIG.staff].filter(s => !s.isHidden).sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
                 let top2 = sortedStaff.slice(0, 2);
-                top2.forEach(st => { if ((st.createdAt || 0) > userLastRead) { notiCount++; } html += `<div class="noti-item" onclick="gotoNoti('staff', '${st.id}')">Chào mừng nhân viên mới: <span class="highlight">${st.name}</span> vừa ra mắt! Xem ngay >></div>`; });
+                top2.forEach(st => {
+                    if ((st.createdAt || 0) > userLastRead) {
+                        notiCount++;
+                    }
+                    html += `<div class="noti-item" onclick="gotoNoti('staff', '${st.id}')">Chào mừng nhân viên mới: <span class="highlight">${st.name}</span> vừa ra mắt! Xem ngay >></div>`;
+                });
             }
 
-            if (html === "") { html = `<div class="noti-item" style="color:var(--silver); font-style:italic;">Chưa có thông báo mới nào.</div>`; }
+            if (html === "") {
+                html = `<div class="noti-item" style="color:var(--silver); font-style:italic;">Chưa có thông báo mới nào.</div>`;
+            }
+
             panel.innerHTML = html;
-            if (notiCount > 0) { badge.textContent = notiCount > 9 ? "9+" : notiCount; badge.style.display = "flex"; } else { badge.style.display = "none"; }
+            if (notiCount > 0) {
+                badge.textContent = notiCount > 9 ? "9+" : notiCount;
+                badge.style.display = "flex";
+            } else {
+                badge.style.display = "none";
+            }
         }
 
+        // =========================================================================
+        // HÀM FETCH DỮ LIỆU ĐƯỢC VIẾT LẠI HOÀN TOÀN ĐỂ FIX LỖI MẤT BÀI HÁT
+        // =========================================================================
         async function fetchStationConfig() {
             try {
+                // 1. Kéo dữ liệu cấu hình chính từ máy chủ Supabase
                 const { data: mainData } = await supa.from('station_config').select('data').eq('id', 1).single();
-                let dbConfig = {}; if (mainData && mainData.data) { dbConfig = typeof mainData.data === 'string' ? JSON.parse(mainData.data) : mainData.data; }
+                let dbConfig = {};
+                if (mainData && mainData.data) { 
+                    dbConfig = typeof mainData.data === 'string' ? JSON.parse(mainData.data) : mainData.data; 
+                }
 
-                let dbMusic = []; const { data: musicData } = await supa.from('station_config').select('data').eq('id', 2).single();
-                if (musicData && musicData.data) dbMusic = typeof musicData.data === 'string' ? JSON.parse(musicData.data) : musicData.data;
-                else if (dbConfig.musicLibrary) dbMusic = dbConfig.musicLibrary; 
+                // 2. Kéo dữ liệu THƯ VIỆN NHẠC từ máy chủ Supabase
+                let dbMusic = [];
+                const { data: musicData } = await supa.from('station_config').select('data').eq('id', 2).single();
+                if (musicData && musicData.data) {
+                    dbMusic = typeof musicData.data === 'string' ? JSON.parse(musicData.data) : musicData.data;
+                } else if (dbConfig.musicLibrary) {
+                    dbMusic = dbConfig.musicLibrary; 
+                }
 
+                // 3. Kéo dữ liệu từ bộ nhớ đệm an toàn (LocalForage) của trình duyệt
                 let localMain = await localforage.getItem("meown_config_backup") || {};
                 let localMusic = await localforage.getItem("meown_music_backup");
 
-                let dbTime = dbConfig.lastUpdated || 0; let localTime = localMain.lastUpdated || 0;
-                if (localTime > dbTime) { CONFIG = { ...CONFIG, ...localMain }; } else { CONFIG = { ...CONFIG, ...dbConfig }; }
+                // ĐỒNG BỘ CẤU HÌNH CHÍNH
+                let dbTime = dbConfig.lastUpdated || 0;
+                let localTime = localMain.lastUpdated || 0;
+                if (localTime > dbTime) {
+                    CONFIG = { ...CONFIG, ...localMain };
+                } else {
+                    CONFIG = { ...CONFIG, ...dbConfig };
+                }
 
-                let dbSongCount = 0; if(dbMusic && Array.isArray(dbMusic)) dbMusic.forEach(pl => dbSongCount += (pl.songs ? pl.songs.length : 0));
-                let localSongCount = 0; if(localMusic && Array.isArray(localMusic)) localMusic.forEach(pl => localSongCount += (pl.songs ? pl.songs.length : 0));
-                let dbMusicTime = dbConfig.musicLastUpdated || 0; let localMusicTime = localMain.musicLastUpdated || 0;
+                // ĐỒNG BỘ RIÊNG CHO NHẠC (CHỐNG MẤT DỮ LIỆU KHI SUPABASE TỪ CHỐI FILE NẶNG)
+                let dbSongCount = 0;
+                if(dbMusic && Array.isArray(dbMusic)) dbMusic.forEach(pl => dbSongCount += (pl.songs ? pl.songs.length : 0));
+                
+                let localSongCount = 0;
+                if(localMusic && Array.isArray(localMusic)) localMusic.forEach(pl => localSongCount += (pl.songs ? pl.songs.length : 0));
 
-                if (localMusic && Array.isArray(localMusic) && (localMusicTime > dbMusicTime || localSongCount > dbSongCount || localMusic.length > dbMusic.length)) { CONFIG.musicLibrary = localMusic; } else { CONFIG.musicLibrary = dbMusic || []; }
+                let dbMusicTime = dbConfig.musicLastUpdated || 0;
+                let localMusicTime = localMain.musicLastUpdated || 0;
+
+                // NẾU LUỒNG LƯU LOCAL TỐT HƠN LUỒNG LƯU DB (CẬP NHẬT MỚI HƠN HOẶC NHIỀU BÀI HÁT HƠN) -> GHI ĐÈ LẤY LOCAL
+                if (localMusic && Array.isArray(localMusic) && (localMusicTime > dbMusicTime || localSongCount > dbSongCount || localMusic.length > dbMusic.length)) {
+                    CONFIG.musicLibrary = localMusic;
+                } else {
+                    CONFIG.musicLibrary = dbMusic || [];
+                }
+
                 if(!CONFIG.musicLibrary || !Array.isArray(CONFIG.musicLibrary)) CONFIG.musicLibrary = [];
-            } catch(e) { console.warn("Lỗi đồng bộ dữ liệu hệ thống:", e); }
+            } catch(e) {
+                console.warn("Lỗi đồng bộ dữ liệu hệ thống:", e);
+            }
         }
 
+        // =========================================================================
+        // HÀM SAVE DỮ LIỆU ĐƯỢC CẬP NHẬT THEO THỜI GIAN THỰC CỦA NHẠC
+        // =========================================================================
         async function saveStationConfigToDB(skipMusicSync = false) {
             CONFIG.lastUpdated = Date.now(); 
             if (!skipMusicSync) CONFIG.musicLastUpdated = Date.now();
             if (!CONFIG.musicLibrary) CONFIG.musicLibrary = []; 
-            const mainPayload = { stationMaster: CONFIG.stationMaster, trains: CONFIG.trains, staff: CONFIG.staff, upcomingBots: CONFIG.upcomingBots, lastUpdated: CONFIG.lastUpdated, musicLastUpdated: CONFIG.musicLastUpdated };
             
-            try { await localforage.setItem("meown_config_backup", mainPayload); if(!skipMusicSync) await localforage.setItem("meown_music_backup", CONFIG.musicLibrary); } catch(e) {}
+            const mainPayload = { 
+                stationMaster: CONFIG.stationMaster, 
+                trains: CONFIG.trains, 
+                staff: CONFIG.staff, 
+                upcomingBots: CONFIG.upcomingBots, 
+                lastUpdated: CONFIG.lastUpdated,
+                musicLastUpdated: CONFIG.musicLastUpdated // Gắn thẻ thời gian vào gói tin chính
+            };
+            
+            // LUÔN LUÔN LƯU VÀO TRÌNH DUYỆT ĐỂ LÀM BẢO HIỂM
+            try { 
+                await localforage.setItem("meown_config_backup", mainPayload); 
+                if(!skipMusicSync) await localforage.setItem("meown_music_backup", CONFIG.musicLibrary);
+            } catch(e) { console.warn("Lỗi lưu LocalForage:", e); }
+
+            // ĐẨY LÊN DB
             try { 
                 await supa.from('station_config').upsert([{ id: 1, data: JSON.stringify(mainPayload) }]); 
+                
                 if(!skipMusicSync) {
-                    const { error } = await supa.from('station_config').upsert([{ id: 2, data: JSON.stringify(CONFIG.musicLibrary) }]);
-                    if(error && error.message && error.message.includes('payload')) { console.warn("Nhạc quá nặng với DB, đã tự động lưu trữ độc lập tại máy cá nhân."); }
+                    const musicPayload = JSON.stringify(CONFIG.musicLibrary);
+                    await supa.from('station_config').upsert([{ id: 2, data: musicPayload }]);
                 }
-            } catch(e) {}
+            } catch(e) {
+                console.error("Lỗi đồng bộ Supabase (Có thể do file quá nặng):", e);
+            }
         }
 
         async function fetchFeeds() {
-            try { 
-                const { data: gbData } = await supa.from('meown_guestbook').select('*'); 
-                if(gbData && gbData.length > 0) localGuestbook = gbData; else { const gbBackup = await localforage.getItem("meown_gb_backup"); if(gbBackup) localGuestbook = gbBackup; }
-                const { data: rcData } = await supa.from('meown_recruit').select('*'); 
-                if(rcData && rcData.length > 0) localRecruit = rcData; else { const rcBackup = await localforage.getItem("meown_rc_backup"); if(rcBackup) localRecruit = rcBackup; }
-            } catch(e) {
-                const gbB = await localforage.getItem("meown_gb_backup"); if(gbB) localGuestbook = gbB;
-                const rcB = await localforage.getItem("meown_rc_backup"); if(rcB) localRecruit = rcB;
-            }
-            renderFeed("guestbook"); renderFeed("recruit"); updateNotifications();
+            try { const { data: gbData } = await supa.from('meown_guestbook').select('*'); if(gbData) localGuestbook = gbData; const { data: rcData } = await supa.from('meown_recruit').select('*'); if(rcData) localRecruit = rcData; } catch(e) {}
+            renderFeed("guestbook"); renderFeed("recruit");
+            updateNotifications();
         }
 
+        // TÍCH HỢP TÍNH NĂNG GỬI BÀI VIẾT (SỔ LƯU BÚT VÀ TUYỂN DỤNG)
         let gbB64Imgs = [];
         document.getElementById("gbFileInp").addEventListener("change", async (ev) => {
-            if(ev.target.files.length > 5) { alert("Để ga không bị quá tải, chỉ tải tối đa 5 ảnh một lần thôi nha!"); ev.target.value = ""; return; }
-            document.getElementById("gbPreview").innerHTML = "<p style='color:var(--amber); font-size:12px;'>Đang xử lý ảnh, đợi chút xíu...</p>";
-            for(let f of ev.target.files) { const b64 = await resizeImage(f, 600); gbB64Imgs.push(b64); document.getElementById("gbPreview").innerHTML += `<img src="${b64}" onclick="openLightbox(this.src, event)" style="cursor:zoom-in;">`; }
-            document.getElementById("gbPreview").querySelector('p')?.remove();
+            for(let f of ev.target.files) {
+                const b64 = await resizeImage(f, 1000); gbB64Imgs.push(b64);
+                document.getElementById("gbPreview").innerHTML += `<img src="${b64}" onclick="openLightbox(this.src, event)" style="cursor:zoom-in;">`;
+            }
         });
-
         document.getElementById("guestbookForm").addEventListener("submit", async (e) => {
-            e.preventDefault(); const btn = e.target.querySelector("button"); btn.textContent = "ĐANG GỬI..."; btn.style.pointerEvents = "none";
+            e.preventDefault();
+            const btn = e.target.querySelector("button"); btn.textContent = "ĐANG GỬI..."; btn.style.pointerEvents = "none";
+            const post = { name: document.getElementById("gbName").value || "Khách", author: document.getElementById("gbName").value || "Khách", text: document.getElementById("gbMessage").value, content: document.getElementById("gbMessage").value, images: JSON.stringify(gbB64Imgs), date: Date.now() };
             try {
-                const gbNameEl = document.getElementById("gbName");
-                const authorName = gbNameEl ? (gbNameEl.value || "Khách") : "Trưởng ga Meown";
-                const post = { id: Date.now(), name: authorName, author: authorName, text: document.getElementById("gbMessage").value, content: document.getElementById("gbMessage").value, images: JSON.stringify(gbB64Imgs), date: Date.now(), created_at: new Date().toISOString(), reactions: JSON.stringify({like:0, love:0, haha:0, sad:0, angry:0}), comments: JSON.stringify([]) };
-                localGuestbook.unshift(post); renderFeed("guestbook"); await localforage.setItem('meown_gb_backup', localGuestbook);
-                supa.from('meown_guestbook').insert([post]).then(({error}) => { if(error) console.warn("Lỗi máy chủ:", error); });
-                e.target.reset(); document.getElementById("gbPreview").innerHTML = ""; gbB64Imgs = []; alert("Đã gửi vào Sổ lưu bút thành công!");
-            } catch(err) { alert("Lỗi khi đăng bài!"); }
+                const { data, error } = await supa.from('meown_guestbook').insert([post]).select();
+                if(data && data.length > 0) localGuestbook.unshift(data[0]);
+                renderFeed("guestbook");
+                e.target.reset(); document.getElementById("gbPreview").innerHTML = ""; gbB64Imgs = [];
+                alert("Đã gửi vào Sổ lưu bút!");
+            } catch(err) { console.error(err); alert("Lỗi khi đăng bài!"); }
             btn.textContent = "ĐĂNG BÀI"; btn.style.pointerEvents = "auto";
         });
 
         let rcB64Imgs = [];
         document.getElementById("rcFileInp").addEventListener("change", async (ev) => {
-            if(ev.target.files.length > 5) { alert("Để ga không bị quá tải, chỉ tải tối đa 5 ảnh một lần thôi nha!"); ev.target.value = ""; return; }
-            document.getElementById("rcPreview").innerHTML = "<p style='color:var(--amber); font-size:12px;'>Đang xử lý ảnh, đợi chút xíu...</p>";
-            for(let f of ev.target.files) { const b64 = await resizeImage(f, 600); rcB64Imgs.push(b64); document.getElementById("rcPreview").innerHTML += `<img src="${b64}" onclick="openLightbox(this.src, event)" style="cursor:zoom-in;">`; }
-            document.getElementById("rcPreview").querySelector('p')?.remove();
+            for(let f of ev.target.files) {
+                const b64 = await resizeImage(f, 1000); rcB64Imgs.push(b64);
+                document.getElementById("rcPreview").innerHTML += `<img src="${b64}" onclick="openLightbox(this.src, event)" style="cursor:zoom-in;">`;
+            }
         });
-
         document.getElementById("recruitForm").addEventListener("submit", async (e) => {
-            e.preventDefault(); const btn = e.target.querySelector("button"); btn.textContent = "ĐANG GỬI..."; btn.style.pointerEvents = "none";
+            e.preventDefault();
+            const btn = e.target.querySelector("button"); btn.textContent = "ĐANG GỬI..."; btn.style.pointerEvents = "none";
+            const post = { name: document.getElementById("rcName").value || "Khách", author: document.getElementById("rcName").value || "Khách", text: document.getElementById("rcMessage").value, content: document.getElementById("rcMessage").value, images: JSON.stringify(rcB64Imgs), date: Date.now() };
             try {
-                const rcNameEl = document.getElementById("rcName");
-                const authorName = rcNameEl ? (rcNameEl.value || "Khách") : "Trưởng ga Meown";
-                const post = { id: Date.now(), name: authorName, author: authorName, text: document.getElementById("rcMessage").value, content: document.getElementById("rcMessage").value, images: JSON.stringify(rcB64Imgs), date: Date.now(), created_at: new Date().toISOString(), reactions: JSON.stringify({like:0, love:0, haha:0, sad:0, angry:0}), comments: JSON.stringify([]) };
-                localRecruit.unshift(post); renderFeed("recruit"); await localforage.setItem('meown_rc_backup', localRecruit);
-                supa.from('meown_recruit').insert([post]).then(({error}) => { if(error) console.warn("Lỗi máy chủ:", error); });
-                e.target.reset(); document.getElementById("rcPreview").innerHTML = ""; rcB64Imgs = []; alert("Đã gửi Ý tưởng thành công!");
-            } catch(err) { alert("Lỗi khi đăng bài!"); }
+                const { data, error } = await supa.from('meown_recruit').insert([post]).select();
+                if(data && data.length > 0) localRecruit.unshift(data[0]);
+                renderFeed("recruit");
+                e.target.reset(); document.getElementById("rcPreview").innerHTML = ""; rcB64Imgs = [];
+                alert("Đã gửi Ý tưởng!");
+            } catch(err) { console.error(err); alert("Lỗi khi đăng bài!"); }
             btn.textContent = "GỬI LÊN HỆ THỐNG"; btn.style.pointerEvents = "auto";
         });
 
@@ -1045,7 +1058,19 @@
         window.deletePostFromDB = async function(type, id) {
             if(!confirm("Xóa bài đăng này vĩnh viễn?")) return;
             const table = type === "guestbook" ? "meown_guestbook" : "meown_recruit";
-            try { await supa.from(table).delete().eq('id', id); if(type === "guestbook") { localGuestbook = localGuestbook.filter(p => p.id !== id); await localforage.setItem('meown_gb_backup', localGuestbook); renderFeed("guestbook"); } else { localRecruit = localRecruit.filter(p => p.id !== id); await localforage.setItem('meown_rc_backup', localRecruit); renderFeed("recruit"); } } catch(e){}
+            try { await supa.from(table).delete().eq('id', id); if(type === "guestbook") { localGuestbook = localGuestbook.filter(p => p.id !== id); renderFeed("guestbook"); } else { localRecruit = localRecruit.filter(p => p.id !== id); renderFeed("recruit"); } } catch(e){}
+        };
+        window.deleteFeedback = async function(staffId, fbIndex, e) {
+            e.stopPropagation();
+            if(confirm("Xóa feedback này của khách hàng?")) {
+                const st = CONFIG.staff.find(s => s.id === staffId);
+                if(st && st.feedbacks) {
+                    st.feedbacks.splice(fbIndex, 1);
+                    let sum = 0, count = 0; st.feedbacks.forEach(f => { sum += f.stars; count++; }); st.rating = { sum, count };
+                    await saveStationConfigToDB(true);
+                    document.getElementById("generalModal").classList.add("hidden"); renderTrains();
+                }
+            }
         };
 
         function renderFeed(type) {
@@ -1060,65 +1085,17 @@
                 let adminBtns = isAdminMode ? `<div class="admin-action-bar"><button class="admin-edit-post" onclick="openAdminPost('${type}', ${post.id})"><span class="icon-slot" data-icon="loop"></span> Sửa</button><button class="admin-delete-post" onclick="deletePostFromDB('${type}', ${post.id})"><span class="icon-slot" data-icon="trash"></span> Xóa</button></div>` : "";
                 
                 let imgsHtml = "";
-                if(post.images) { try { let parsedImgs = typeof post.images === 'string' ? JSON.parse(post.images) : post.images; if(parsedImgs.length > 0) { imgsHtml = `<div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:15px;">` + parsedImgs.map(src => `<img src="${src}" style="width:120px; height:120px; object-fit:cover; border:2px solid #333; cursor:zoom-in; border-radius:4px;" onclick="openLightbox(this.src, event)">`).join('') + `</div>`; } } catch(e) {} }
+                if(post.images) {
+                    try {
+                        let parsedImgs = typeof post.images === 'string' ? JSON.parse(post.images) : post.images;
+                        if(parsedImgs.length > 0) {
+                            imgsHtml = `<div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:15px;">` + parsedImgs.map(src => `<img src="${src}" style="width:120px; height:120px; object-fit:cover; border:2px solid #333; cursor:zoom-in; border-radius:4px;" onclick="openLightbox(this.src, event)">`).join('') + `</div>`;
+                        }
+                    } catch(e) {}
+                }
                 
-                let reactObj = {like:0, love:0, haha:0, sad:0, angry:0};
-                if(post.reactions) { if(typeof post.reactions === 'string') try { reactObj = JSON.parse(post.reactions); } catch(e) {} else reactObj = post.reactions; }
-                
-                let cmtArr = [];
-                if(post.comments) { if(typeof post.comments === 'string') try { cmtArr = JSON.parse(post.comments); } catch(e) {} else cmtArr = post.comments; }
-
-                let myReact = localStorage.getItem(`reacted_${type}_${post.id}`);
-
-                let commentsHtml = cmtArr.map(c => `
-                    <div class="comment-item">
-                        <div class="comment-avatar">${c.name.charAt(0).toUpperCase()}</div>
-                        <div class="comment-body">
-                            <div class="comment-name">${c.name} <span style="font-weight:normal; font-size:10px; color:#666;">- ${new Date(c.date).toLocaleString('vi-VN')}</span></div>
-                            <div class="comment-text">${c.text}</div>
-                            ${c.images && c.images.length > 0 ? `<div class="comment-imgs">${c.images.map(img => `<img src="${img}" onclick="openLightbox(this.src, event)">`).join('')}</div>` : ''}
-                        </div>
-                    </div>
-                `).join('');
-
-                let nameInputHtml = isAdminMode ? `<input type="hidden" id="cmt-name-${post.id}" value="Trưởng ga Meown"><div style="display:flex; align-items:center; justify-content:center; background:#111; border:2px solid #333; padding:0 12px; font-weight:900; color:var(--amber); border-radius:4px;"><img src="${ADMIN_CAT_AVATAR}" style="width:16px;height:16px;border-radius:50%;margin-right:4px;"> ADMIN</div>` : `<input type="text" id="cmt-name-${post.id}" class="cmt-input" placeholder="Tên của bạn..." style="flex:0 0 120px;">`;
-
-                postEl.innerHTML = `
-                    <div class="post-header"><div class="post-author">${post.name || post.author || "Khách ẩn danh"}</div>${adminBtns}</div>
-                    <div class="post-time">${new Date(post.date || post.created_at).toLocaleString('vi-VN')}</div>
-                    <div class="post-content">${post.text || post.content || ""}</div>
-                    ${imgsHtml}
-                    
-                    <div class="reaction-container">
-                        <button class="emoji-btn ${myReact === 'like' ? 'active' : ''}" onclick="reactPost('${type}', '${post.id}', 'like')" title="Thích">👍 <span class="count">${reactObj.like > 0 ? reactObj.like : ''}</span></button>
-                        <button class="emoji-btn ${myReact === 'love' ? 'active' : ''}" onclick="reactPost('${type}', '${post.id}', 'love')" title="Yêu thích">❤️ <span class="count">${reactObj.love > 0 ? reactObj.love : ''}</span></button>
-                        <button class="emoji-btn ${myReact === 'haha' ? 'active' : ''}" onclick="reactPost('${type}', '${post.id}', 'haha')" title="Haha">😆 <span class="count">${reactObj.haha > 0 ? reactObj.haha : ''}</span></button>
-                        <button class="emoji-btn ${myReact === 'sad' ? 'active' : ''}" onclick="reactPost('${type}', '${post.id}', 'sad')" title="Buồn">😢 <span class="count">${reactObj.sad > 0 ? reactObj.sad : ''}</span></button>
-                        <button class="emoji-btn ${myReact === 'angry' ? 'active' : ''}" onclick="reactPost('${type}', '${post.id}', 'angry')" title="Phẫn nộ">😡 <span class="count">${reactObj.angry > 0 ? reactObj.angry : ''}</span></button>
-
-                        <button class="react-btn" onclick="document.getElementById('cmt-section-${post.id}').style.display='block'; document.getElementById('cmt-text-${post.id}').focus();">
-                            <span class="icon-slot" data-icon="comment"></span> BÌNH LUẬN (${cmtArr.length})
-                        </button>
-                    </div>
-
-                    <div class="comments-section" id="cmt-section-${post.id}" style="display: ${cmtArr.length > 0 ? 'block' : 'none'};">
-                        ${commentsHtml}
-                        <div class="comment-input-area" id="cmt-input-wrap-${post.id}">
-                            <div class="cmt-row">
-                                ${nameInputHtml}
-                                <input type="text" id="cmt-text-${post.id}" class="cmt-input" placeholder="Viết bình luận..." onkeypress="if(event.key==='Enter') sendComment('${type}', '${post.id}')">
-                                <label class="cmt-file-btn" title="Đính kèm ảnh">
-                                    <input type="file" accept="image/*" multiple style="display:none;" onchange="handleCmtImg(event, '${post.id}')">
-                                    <span class="icon-slot" data-icon="paperclip"></span>
-                                </label>
-                                <button class="cmt-submit" onclick="sendComment('${type}', '${post.id}')">GỬI</button>
-                            </div>
-                            <div class="cmt-preview" id="cmt-prev-${post.id}"></div>
-                        </div>
-                    </div>
-                `;
+                postEl.innerHTML = `<div class="post-header"><div class="post-author">${post.name || post.author || "Khách ẩn danh"}</div>${adminBtns}</div><div class="post-time">${new Date(post.date || post.created_at).toLocaleString('vi-VN')}</div><div class="post-content">${post.text || post.content || ""}</div>${imgsHtml}`;
                 container.appendChild(postEl);
-                if(window.tempCmtImgs[post.id] && window.tempCmtImgs[post.id].length > 0) renderCmtPrev(post.id);
             });
             loadIcons();
         }
@@ -1137,11 +1114,12 @@
         function updateStationMasterUI() { 
             const fbWrap = document.getElementById("smFbContainer");
             let fbHTML = '';
-            if(CONFIG.stationMaster.facebook && CONFIG.stationMaster.facebook.url) { fbHTML = `<a href="${CONFIG.stationMaster.facebook.url}" target="_blank" class="fb-link-box" title="${CONFIG.stationMaster.facebook.name}"><span class="icon-slot" data-icon="facebook"></span><span>${CONFIG.stationMaster.facebook.name}</span></a>`; }
-            
-            let safeBio = (CONFIG.stationMaster.bio || "Chưa có thông tin.").replace(/<details open>/gi, "<details>");
-            document.getElementById("smBio").innerHTML = safeBio; 
-            fbWrap.innerHTML = fbHTML; loadIcons();
+            if(CONFIG.stationMaster.facebook && CONFIG.stationMaster.facebook.url) {
+                fbHTML = `<a href="${CONFIG.stationMaster.facebook.url}" target="_blank" class="fb-link-box" title="${CONFIG.stationMaster.facebook.name}"><span class="icon-slot" data-icon="facebook"></span><span>${CONFIG.stationMaster.facebook.name}</span></a>`;
+            }
+            document.getElementById("smBio").innerHTML = (CONFIG.stationMaster.bio || "Chưa có thông tin."); 
+            fbWrap.innerHTML = fbHTML;
+            loadIcons();
         }
 
         /* ============================================================
@@ -1154,8 +1132,14 @@
         let tempGallery = [];
         function renderTempGallery() {
             const wrap = document.getElementById("aStGalleryPrev");
-            if(!wrap) return; wrap.innerHTML = "";
-            tempGallery.forEach((b64, idx) => { let div = document.createElement("div"); div.style.position = "relative"; div.innerHTML = `<img src="${b64}" style="cursor:zoom-in;" onclick="openLightbox(this.src, event)"><div class="del-img-btn" onclick="removeTempGalleryImg(${idx})">✕</div>`; wrap.appendChild(div); });
+            if(!wrap) return;
+            wrap.innerHTML = "";
+            tempGallery.forEach((b64, idx) => {
+                let div = document.createElement("div");
+                div.style.position = "relative";
+                div.innerHTML = `<img src="${b64}" style="cursor:zoom-in;" onclick="openLightbox(this.src, event)"><div class="del-img-btn" onclick="removeTempGalleryImg(${idx})">✕</div>`;
+                wrap.appendChild(div);
+            });
         }
         window.removeTempGalleryImg = function(idx) { tempGallery.splice(idx, 1); renderTempGallery(); };
 
@@ -1181,7 +1165,7 @@
                     <button class="submit-btn" id="saveSM">ĐỒNG BỘ LÊN MÁY CHỦ</button>
                 `;
                 loadIcons(); 
-                window.insertToggleHTML = function() { const html = `<details><summary>Bấm vào đây để đổi tên nút</summary><div style="color:var(--pearl);">Nhập nội dung hiển thị cho hành khách vào đây...</div></details><br>`; document.execCommand('insertHTML', false, html); };
+                window.insertToggleHTML = function() { const html = `<details open><summary>BẤM VÀO ĐÂY ĐỂ ĐỔI TÊN NÚT</summary><div style="color:var(--pearl);">Nhập nội dung hiển thị cho hành khách vào đây...</div></details><br>`; document.execCommand('insertHTML', false, html); };
                 document.getElementById("saveSM").addEventListener("click", async () => { 
                     CONFIG.stationMaster.bio = document.getElementById("aBio").innerHTML; 
                     CONFIG.stationMaster.facebook = { name: document.getElementById("aFbName").value, url: document.getElementById("aFbUrl").value };
@@ -1204,7 +1188,8 @@
             else if(type === 'staff') {
                 let sData = { name: "", avatar: "", hook: "", tags: [], scenario: "", chatLink: "", gallery: [] };
                 let tId = idOrParentId; if(action === 'edit') { const st = CONFIG.staff.find(s => s.id === idOrParentId); if(st){ sData = st; tId = st.trainId; } }
-                let tagsStr = (sData.tags || []).join(', '); tempGallery = [...(sData.gallery || [])];
+                let tagsStr = (sData.tags || []).join(', ');
+                tempGallery = [...(sData.gallery || [])];
                 
                 document.getElementById("generalModalTitle").textContent = action === 'add' ? `IN THẺ NHÂN VIÊN MỚI` : `CHỈNH SỬA THẺ NHÂN VIÊN`;
                 body.innerHTML = `
@@ -1212,7 +1197,7 @@
                     <div class="form-row"><label>Ảnh Chân Dung (Vuông)</label><div class="file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" id="aStFile" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Tải ảnh</label><div id="aStPrev" class="img-preview-grid"><img src="${sData.avatar || ''}" onerror="this.style.display='none'" onclick="openLightbox(this.src, event)" style="cursor:zoom-in;"></div></div></div>
                     <div class="form-row"><label>Câu Thoại Đặc Trưng (Hook)</label><input type="text" id="aStHook" value="${sData.hook || ''}"></div>
                     <div class="form-row"><label>Tags (Cách nhau dấu phẩy)</label><input type="text" id="aStTags" value="${tagsStr}"></div>
-                    <div class="form-row"><label>HỒ SƠ MẬT</label>
+                    <div class="form-row"><label>HỒ SƠ MẬT (Hiển thị dạng bảng trắng lớn)</label>
                         <div class="rt-toolbar">
                             <button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="document.execCommand('bold',false,null)"><b>B</b></button>
                             <button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="document.execCommand('italic',false,null)"><i>I</i></button>
@@ -1231,11 +1216,17 @@
                     <button class="submit-btn" id="saveSt">${action==='add'?"IN THẺ":"LƯU HỒ SƠ"}</button>
                 `;
                 loadIcons(); renderTempGallery();
-                window.insertToggleHTML = function() { const html = `<details><summary>Bấm vào đây để đổi tên nút</summary><div style="color:#000;">Nhập nội dung hiển thị cho hành khách vào đây...</div></details><br>`; document.execCommand('insertHTML', false, html); };
+                window.insertToggleHTML = function() { const html = `<details open><summary>BẤM VÀO ĐÂY ĐỂ ĐỔI TÊN NÚT</summary><div style="color:#000;">Nhập nội dung hiển thị cho hành khách vào đây...</div></details><br>`; document.execCommand('insertHTML', false, html); };
                 let sB64 = sData.avatar; 
                 document.getElementById("aStFile").addEventListener("change", async (e)=>{ sB64 = await resizeImage(e.target.files[0]); document.getElementById("aStPrev").innerHTML=`<img src="${sB64}">`; document.getElementById("aStPrev").querySelector('img').style.display='block'; });
                 
-                document.getElementById("aStGalleryInp").addEventListener("change", async (e) => { for(let f of e.target.files) { const b64 = await resizeImage(f, 1000); tempGallery.push(b64); } renderTempGallery(); });
+                document.getElementById("aStGalleryInp").addEventListener("change", async (e) => {
+                    for(let f of e.target.files) {
+                        const b64 = await resizeImage(f, 1000); 
+                        tempGallery.push(b64);
+                    }
+                    renderTempGallery();
+                });
 
                 document.getElementById("saveSt").addEventListener("click", async () => { 
                     const tags = document.getElementById("aStTags").value.split(',').map(t=>t.trim()).filter(t=>t); 
@@ -1291,7 +1282,10 @@
                     document.getElementById("generalModalTitle").textContent = "TẢI NHẠC LÊN PLAYLIST";
                     
                     body.innerHTML = `
-                        <div class="form-row"><label>Chọn Playlist</label><select id="aSongPlSelect" style="width:100%; padding:14px; background:#000; color:var(--pearl); border:2px solid #333;">${plOptions}</select></div>
+                        <div class="form-row">
+                            <label>Chọn Playlist</label>
+                            <select id="aSongPlSelect" style="width:100%; padding:14px; background:#000; color:var(--pearl); border:2px solid #333;">${plOptions}</select>
+                        </div>
                         <div class="form-row">
                             <label class="file-btn" style="width:100%; background:var(--amber); color:#000; border-color:#000; padding:16px;">
                                 <input type="file" accept="audio/*" multiple id="masterSongUpload" style="display:none;">
@@ -1308,60 +1302,140 @@
                     loadIcons();
 
                     document.getElementById("masterSongUpload").addEventListener("change", function(e) {
-                        const files = e.target.files; const container = document.getElementById("songsContainer");
+                        const files = e.target.files;
+                        const container = document.getElementById("songsContainer");
+                        
                         for (let i = 0; i < files.length; i++) {
-                            const file = files[i]; const row = document.createElement("div"); row.className = "form-row song-row";
+                            const file = files[i];
+                            const row = document.createElement("div");
+                            row.className = "form-row song-row";
                             row.style.cssText = "display:flex; flex-direction:column; gap:10px; margin-bottom: 20px; padding-bottom:15px; border-bottom:1px dashed var(--blood); position:relative;";
+                            
                             let cleanName = file.name.replace(/\.[^/.]+$/, ""); 
-                            row.innerHTML = `<div style="display:flex; align-items:center; gap:10px;"><input type="text" class="sgName" value="${cleanName}" placeholder="Tên bài hát..." style="flex:1;"><button type="button" class="remove-row-btn" style="background:#8B0000; color:#fff; width:40px; height:40px; font-weight:bold; cursor:pointer; border:2px solid #000; border-radius:2px; font-size:16px;">✕</button></div><div class="file-status" style="font-size:11px; color:#FFD166; font-weight:bold;">Tệp: ${file.name}</div>`;
-                            row._attachedFile = file; row.querySelector(".remove-row-btn").onclick = function() { row._attachedFile = null; row.remove(); }; container.appendChild(row);
-                            const nameInput = row.querySelector(".sgName"); nameInput.style.transition = "0.3s"; nameInput.style.backgroundColor = "rgba(221, 170, 51, 0.2)"; setTimeout(() => { nameInput.style.backgroundColor = "#000"; }, 500);
-                        } this.value = "";
+                            
+                            row.innerHTML = `
+                                <div style="display:flex; align-items:center; gap:10px;">
+                                    <input type="text" class="sgName" value="${cleanName}" placeholder="Tên bài hát..." style="flex:1;">
+                                    <button type="button" class="remove-row-btn" style="background:#8B0000; color:#fff; width:40px; height:40px; font-weight:bold; cursor:pointer; border:2px solid #000; border-radius:2px; font-size:16px;">✕</button>
+                                </div>
+                                <div class="file-status" style="font-size:11px; color:#FFD166; font-weight:bold;">Tệp: ${file.name}</div>
+                            `;
+                            
+                            row._attachedFile = file;
+                            row.querySelector(".remove-row-btn").onclick = function() { 
+                                row._attachedFile = null; 
+                                row.remove(); 
+                            };
+                            
+                            container.appendChild(row);
+                            
+                            const nameInput = row.querySelector(".sgName");
+                            nameInput.style.transition = "0.3s";
+                            nameInput.style.backgroundColor = "rgba(221, 170, 51, 0.2)";
+                            setTimeout(() => { nameInput.style.backgroundColor = "#000"; }, 500);
+                        }
+                        this.value = "";
                     });
 
                     document.getElementById("addMoreRow").addEventListener("click", () => { 
-                        const row = document.createElement("div"); row.className = "form-row song-row"; 
+                        const row = document.createElement("div"); 
+                        row.className = "form-row song-row"; 
                         row.style.cssText = "display:flex; flex-direction:column; gap:10px; margin-bottom: 20px; padding-bottom:15px; border-bottom:1px dashed var(--blood); position:relative;"; 
-                        row.innerHTML = `<div style="display:flex; align-items:center; gap:10px;"><input type="text" class="sgName" placeholder="Tên bài hát..." style="flex:1;"><button type="button" class="remove-row-btn" style="background:#8B0000; color:#fff; width:40px; height:40px; font-weight:bold; cursor:pointer; border:2px solid #000; border-radius:2px; font-size:16px;">✕</button></div><label class="file-btn" style="width:100%;"><input type="file" accept="audio/*" class="sgFile" style="display:none;"><span class="file-status">Chọn file âm thanh</span></label>`; 
-                        row.querySelector(".remove-row-btn").onclick = function() { row.remove(); }; document.getElementById("songsContainer").appendChild(row); 
+                        row.innerHTML = `
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <input type="text" class="sgName" placeholder="Tên bài hát..." style="flex:1;">
+                                <button type="button" class="remove-row-btn" style="background:#8B0000; color:#fff; width:40px; height:40px; font-weight:bold; cursor:pointer; border:2px solid #000; border-radius:2px; font-size:16px;">✕</button>
+                            </div>
+                            <label class="file-btn" style="width:100%;"><input type="file" accept="audio/*" class="sgFile" style="display:none;"><span class="file-status">Chọn file âm thanh</span></label>`; 
+                        
+                        row.querySelector(".remove-row-btn").onclick = function() { row.remove(); };
+                        document.getElementById("songsContainer").appendChild(row); 
                     });
 
                     document.getElementById("songsContainer").addEventListener("change", function(e) {
                         if(e.target && e.target.classList.contains("sgFile")) {
-                            const fileInput = e.target; const row = fileInput.closest(".song-row");
-                            const statusText = row.querySelector(".file-status"); const nameInput = row.querySelector(".sgName");
+                            const fileInput = e.target;
+                            const row = fileInput.closest(".song-row");
+                            const statusText = row.querySelector(".file-status");
+                            const nameInput = row.querySelector(".sgName");
+
                             if(fileInput.files.length > 0) {
-                                const file = fileInput.files[0]; statusText.textContent = "Đã chọn: " + file.name; statusText.style.color = "#FFD166";
-                                if(nameInput && nameInput.value.trim() === "") { let cleanName = file.name.replace(/\.[^/.]+$/, ""); nameInput.value = cleanName; nameInput.style.transition = "0.3s"; nameInput.style.backgroundColor = "rgba(221, 170, 51, 0.2)"; setTimeout(() => { nameInput.style.backgroundColor = "#000"; }, 500); }
+                                const file = fileInput.files[0];
+                                statusText.textContent = "Đã chọn: " + file.name;
+                                statusText.style.color = "#FFD166";
+                                
+                                if(nameInput && nameInput.value.trim() === "") {
+                                    let cleanName = file.name.replace(/\.[^/.]+$/, "");
+                                    nameInput.value = cleanName;
+                                    nameInput.style.transition = "0.3s";
+                                    nameInput.style.backgroundColor = "rgba(221, 170, 51, 0.2)";
+                                    setTimeout(() => { nameInput.style.backgroundColor = "#000"; }, 500);
+                                }
                             }
                         }
                     });
                     
                     document.getElementById("saveSg").addEventListener("click", async () => { 
-                        const btn = document.getElementById("saveSg"); btn.style.pointerEvents = 'none';
+                        const btn = document.getElementById("saveSg");
+                        btn.style.pointerEvents = 'none';
                         try {
-                            const targetPlId = document.getElementById("aSongPlSelect").value; const rows = document.querySelectorAll(".song-row"); let totalToProcess = 0;
-                            for (let r of rows) { const title = r.querySelector(".sgName").value.trim(); const fileInput = r.querySelector(".sgFile"); const file = r._attachedFile || (fileInput && fileInput.files.length > 0 ? fileInput.files[0] : null); if(title && file) totalToProcess++; }
+                            const targetPlId = document.getElementById("aSongPlSelect").value;
+                            const rows = document.querySelectorAll(".song-row"); 
+                            let totalToProcess = 0;
+                            
+                            for (let r of rows) {
+                                const title = r.querySelector(".sgName").value.trim();
+                                const fileInput = r.querySelector(".sgFile");
+                                const file = r._attachedFile || (fileInput && fileInput.files.length > 0 ? fileInput.files[0] : null);
+                                if(title && file) totalToProcess++;
+                            }
                             if(totalToProcess === 0) throw new Error("Chưa có bài nhạc hợp lệ nào để tải lên!");
                             
                             let processed = 0;
+                            
                             for (let r of rows) { 
-                                const title = r.querySelector(".sgName").value.trim(); const fileInput = r.querySelector(".sgFile"); 
+                                const title = r.querySelector(".sgName").value.trim(); 
+                                const fileInput = r.querySelector(".sgFile"); 
                                 const file = r._attachedFile || (fileInput && fileInput.files.length > 0 ? fileInput.files[0] : null);
+                                
                                 if(title && file) { 
-                                    if(file.size > 5 * 1024 * 1024) { alert(`Bài hát "${file.name}" quá lớn (>5MB). Loại bỏ khỏi danh sách tải lên để chống sập ga!`); r.querySelector(".file-status").textContent = "Lỗi: File quá nặng!"; r.querySelector(".file-status").style.color = "#8B0000"; continue; }
-                                    processed++; btn.textContent = `ĐANG MÃ HÓA (${processed}/${totalToProcess})...`; await new Promise(resolve => setTimeout(resolve, 100)); 
+                                    if(file.size > 8 * 1024 * 1024) { 
+                                        alert(`Bài hát "${file.name}" quá lớn (>8MB). Đã bỏ qua để chống tràn bộ nhớ!`);
+                                        r.querySelector(".file-status").textContent = "Lỗi: File quá nặng!";
+                                        r.querySelector(".file-status").style.color = "#8B0000";
+                                        continue; 
+                                    }
+                                    processed++;
+                                    btn.textContent = `ĐANG MÃ HÓA (${processed}/${totalToProcess})...`;
+                                    
+                                    await new Promise(resolve => setTimeout(resolve, 100)); 
+                                    
                                     const base64Audio = await fileToBase64(file); 
-                                    CONFIG.musicLibrary.forEach(p => { if(p.id === targetPlId) { p.songs.push({ title: title, src: base64Audio }); } }); 
-                                    r._attachedFile = null; if(fileInput) fileInput.value = ""; 
+                                    
+                                    CONFIG.musicLibrary.forEach(p => { 
+                                        if(p.id === targetPlId) { 
+                                            p.songs.push({ title: title, src: base64Audio }); 
+                                        } 
+                                    }); 
+
+                                    r._attachedFile = null; 
+                                    if(fileInput) fileInput.value = ""; 
                                 } 
                             } 
                             
-                            btn.textContent = "ĐANG LƯU VÀO MÁY CHỦ..."; await new Promise(resolve => setTimeout(resolve, 100));
+                            btn.textContent = "ĐANG LƯU VÀO MÁY CHỦ...";
+                            await new Promise(resolve => setTimeout(resolve, 100));
+
                             await saveStationConfigToDB(false); 
+                            
                             if (activeMusicPl === targetPlId) { renderGramoSongs(activeMusicPl); }
-                            document.getElementById("generalModal").classList.add("hidden"); alert(`Đã tải nhạc vào máy nội bộ thành công!`);
-                        } catch (err) { alert(err.message || "Lỗi lưu nhạc. Định dạng không hợp lệ."); } finally { btn.textContent = "LƯU BÀI HÁT"; btn.style.pointerEvents = 'auto'; }
+                            document.getElementById("generalModal").classList.add("hidden"); 
+                            alert(`Đã lưu thành công!`);
+                        } catch (err) {
+                            alert(err.message || "Lỗi lưu nhạc. Định dạng không hợp lệ.");
+                        } finally {
+                            btn.textContent = "LƯU BÀI HÁT"; btn.style.pointerEvents = 'auto';
+                        }
                     });
                 } else if(action === 'edit') {
                     let pl = CONFIG.musicLibrary.find(p => p.id === activeMusicPl); let song = pl.songs[idOrParentId];
@@ -1374,7 +1448,7 @@
         document.getElementById("closeGeneralModal").addEventListener("click", () => { document.getElementById("generalModal").classList.add("hidden"); document.getElementById("generalBox").classList.remove("modal-white"); });
 
         /* ============================================================
-           HIỂN THỊ CHUYẾN TÀU VÀ LÁ BÀI 3D
+           HIỂN THỊ CHUYẾN TÀU VÀ LÁ BÀI 3D (THẺ ID BADGE CHUẨN)
            ============================================================ */
         window.deleteTrain = async function(trainId, event) { event.stopPropagation(); if(confirm("XÓA CHUYẾN TÀU này và dàn nhân sự bên trong?")) { CONFIG.trains = CONFIG.trains.filter(t => t.id !== trainId); CONFIG.staff = CONFIG.staff.filter(s => s.trainId !== trainId); await saveStationConfigToDB(true); renderTrains(); } };
         window.toggleHideStaff = async function(staffId, event) { event.stopPropagation(); const st = CONFIG.staff.find(s => s.id === staffId); if(st) { st.isHidden = !st.isHidden; await saveStationConfigToDB(true); renderTrains(); } };
@@ -1383,18 +1457,29 @@
         function renderTrains(){
             const wrap = document.getElementById("trainsList"); wrap.innerHTML = ""; 
             const q = removeAccents(currentSearch);
+            
+            // SẮP XẾP CHUYẾN TÀU THEO NHÂN VIÊN MỚI NHẤT
             let sortedTrains = [...CONFIG.trains].sort((a, b) => {
-                let aStaff = CONFIG.staff.filter(s => s.trainId === a.id); let bStaff = CONFIG.staff.filter(s => s.trainId === b.id);
-                let aMax = aStaff.length ? Math.max(...aStaff.map(s => s.createdAt || 0)) : (a.createdAt || 0); let bMax = bStaff.length ? Math.max(...bStaff.map(s => s.createdAt || 0)) : (b.createdAt || 0);
+                let aStaff = CONFIG.staff.filter(s => s.trainId === a.id);
+                let bStaff = CONFIG.staff.filter(s => s.trainId === b.id);
+                let aMax = aStaff.length ? Math.max(...aStaff.map(s => s.createdAt || 0)) : (a.createdAt || 0);
+                let bMax = bStaff.length ? Math.max(...bStaff.map(s => s.createdAt || 0)) : (b.createdAt || 0);
                 return bMax - aMax;
             });
+
             let staffSortMode = document.getElementById("staffSortSelect") ? document.getElementById("staffSortSelect").value : 'newest';
 
             for(let train of sortedTrains) {
                 const staffCount = CONFIG.staff.filter(s => s.trainId === train.id).length;
                 const card = document.createElement("div"); card.className = `train-card ${train.theme || 'theme-09'}`; 
                 
-                let adminCtrls = isAdminMode ? `<div class="admin-action-btn-group" style="position:absolute; top:10px; right:10px; z-index:100; display:flex; gap:6px;"><button style="background:var(--amber); color:#000; padding:6px 12px; border-radius:3px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="openAdminForm('train', 'edit', '${train.id}'); event.stopPropagation();">✏️ SỬA CHUYẾN TÀU</button><button style="background:#8B0000; color:#FFF; padding:6px 12px; border-radius:3px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="deleteTrain('${train.id}', event)">🗑️ XÓA TÀU</button></div>` : "";
+                let adminCtrls = isAdminMode ? `
+                <div class="admin-action-btn-group" style="position:absolute; top:10px; right:10px; z-index:100; display:flex; gap:6px;">
+                    <button style="background:var(--amber); color:#000; padding:6px 12px; border-radius:3px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="openAdminForm('train', 'edit', '${train.id}'); event.stopPropagation();">✏️ SỬA CHUYẾN TÀU</button>
+                    <button style="background:#8B0000; color:#FFF; padding:6px 12px; border-radius:3px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="deleteTrain('${train.id}', event)">🗑️ XÓA TÀU</button>
+                </div>` : "";
+                
+                // Hiển thị Lời giới thiệu và Tags thể loại (1 tag 1 dòng)
                 let trainTagsHtml = (train.genres || []).map(g => `<span class="t-genre-tag">${g}</span>`).join('');
                 
                 card.innerHTML = `
@@ -1426,6 +1511,7 @@
                 let trainStaff = CONFIG.staff.filter(s => s.trainId === train.id && removeAccents(s.name).includes(q));
                 if(!isAdminMode) trainStaff = trainStaff.filter(s => !s.isHidden);
                 
+                // Logic SẮP XẾP NHÂN VIÊN
                 trainStaff.sort((a, b) => {
                     if (staffSortMode === 'rating') {
                         let rA = a.rating && a.rating.count > 0 ? a.rating.sum / a.rating.count : 0;
@@ -1440,6 +1526,7 @@
                 if(trainStaff.length === 0) { grid.innerHTML = "<p style='color:var(--silver); padding: 0 16px; font-style:italic;'>Trống.</p>"; }
                 
                 if(q !== "" && trainStaff.length > 0) acc.classList.add("open");
+
                 acc.appendChild(grid); card.addEventListener("click", () => acc.classList.toggle("open")); wrap.appendChild(card); wrap.appendChild(acc);
             }
             setTimeout(() => loadIcons(), 10);
@@ -1468,7 +1555,13 @@
             const scenarioHTML = staff.scenario && staff.scenario.trim() !== "" ? staff.scenario : "<p style='font-style:italic; text-align:center;'>Hồ sơ mật chưa được công bố.</p>";
             
             let hiddenText = staff.isHidden ? '👁️ HIỆN' : '👁️ ẨN';
-            let adminControls = isAdminMode ? `<div style="position: absolute; top: -35px; left: 0; right: 0; display: flex; justify-content: center; gap: 8px; z-index: 50;"><button style="background:var(--amber); color:#000; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="openAdminForm('staff', 'edit', '${staff.id}'); event.stopPropagation();">✏️ SỬA</button><button style="background:#8A8A93; color:#000; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="viewFeedbacks('${staff.id}', event)">XEM FB</button><button style="background:#444; color:#FFF; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="toggleHideStaff('${staff.id}', event)">${hiddenText}</button><button style="background:#8B0000; color:#FFF; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="deleteStaff('${staff.id}', event)">🗑️ XÓA</button></div>` : "";
+            let adminControls = isAdminMode ? `
+            <div style="position: absolute; top: -35px; left: 0; right: 0; display: flex; justify-content: center; gap: 8px; z-index: 50;">
+                <button style="background:var(--amber); color:#000; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="openAdminForm('staff', 'edit', '${staff.id}'); event.stopPropagation();">✏️ SỬA</button>
+                <button style="background:#8A8A93; color:#000; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="viewFeedbacks('${staff.id}', event)">XEM FB</button>
+                <button style="background:#444; color:#FFF; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="toggleHideStaff('${staff.id}', event)">${hiddenText}</button>
+                <button style="background:#8B0000; color:#FFF; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="deleteStaff('${staff.id}', event)">🗑️ XÓA</button>
+            </div>` : "";
 
             cardWrap.innerHTML = `
                 ${adminControls}
@@ -1506,8 +1599,17 @@
             galleryBtn.addEventListener('click', (e) => {
                 const modal = document.getElementById("generalModal"); const box = document.getElementById("generalBox"); const body = document.getElementById("generalModalBody"); box.classList.add("modal-white"); 
                 document.getElementById("generalModalTitle").textContent = `KÝ ỨC LƯU TRỮ: ${staff.name}`; 
-                if(!staff.gallery || staff.gallery.length === 0) { body.innerHTML = `<p style="text-align:center; font-style:italic; color:#8A8A93; padding: 40px 0;">Nhân viên này chưa có bức ảnh lưu niệm nào.</p>`; } 
-                else { let imagesHtml = staff.gallery.map(imgBase64 => `<div class="polaroid-frame" style="--rand: ${Math.random()};"><img src="${imgBase64}" style="cursor:zoom-in;" onclick="openLightbox(this.src, event)"></div>`).join(''); body.innerHTML = `<div class="gallery-grid">${imagesHtml}</div>`; }
+                
+                if(!staff.gallery || staff.gallery.length === 0) {
+                    body.innerHTML = `<p style="text-align:center; font-style:italic; color:#8A8A93; padding: 40px 0;">Nhân viên này chưa có bức ảnh lưu niệm nào.</p>`;
+                } else {
+                    let imagesHtml = staff.gallery.map(imgBase64 => `
+                        <div class="polaroid-frame" style="--rand: ${Math.random()};">
+                            <img src="${imgBase64}" style="cursor:zoom-in;" onclick="openLightbox(this.src, event)">
+                        </div>
+                    `).join('');
+                    body.innerHTML = `<div class="gallery-grid">${imagesHtml}</div>`;
+                }
                 modal.classList.remove("hidden"); 
             });
 
@@ -1527,9 +1629,17 @@
         /* HỆ THỐNG VOTE CHO HỒ SƠ DỰ BỊ */
         window.voteUpcoming = async function(botId, e) {
             e.stopPropagation();
-            if(localStorage.getItem('voted_upcoming_' + botId) === 'true') { alert("Bạn đã thả tim cho hồ sơ này rồi! Chỉ được vote 1 lần cho mỗi hồ sơ."); return; }
+            if(localStorage.getItem('voted_upcoming_' + botId) === 'true') {
+                alert("Bạn đã thả tim cho hồ sơ này rồi! Chỉ được vote 1 lần cho mỗi hồ sơ.");
+                return;
+            }
             const bot = CONFIG.upcomingBots.find(b => b.id === botId);
-            if(bot) { bot.votes = (bot.votes || 0) + 1; localStorage.setItem('voted_upcoming_' + botId, 'true'); await saveStationConfigToDB(true); renderUpcomingBots(); }
+            if(bot) {
+                bot.votes = (bot.votes || 0) + 1;
+                localStorage.setItem('voted_upcoming_' + botId, 'true');
+                await saveStationConfigToDB(true);
+                renderUpcomingBots(); 
+            }
         }
 
         window.toggleHideUpcoming = async function(botId, event) { event.stopPropagation(); const bot = CONFIG.upcomingBots.find(b => b.id === botId); if(bot) { bot.isHidden = !bot.isHidden; await saveStationConfigToDB(true); renderUpcomingBots(); } };
@@ -1539,6 +1649,8 @@
             const grid = document.getElementById("upcomingBotsGrid"); grid.innerHTML = "";
             let upBots = CONFIG.upcomingBots || []; 
             if(!isAdminMode) upBots = upBots.filter(b => !b.isHidden);
+            
+            // TỰ ĐỘNG SẮP XẾP THEO LƯỢT VOTE GIẢM DẦN
             upBots.sort((a, b) => (b.votes || 0) - (a.votes || 0));
 
             if(upBots.length === 0) { 
@@ -1554,10 +1666,17 @@
                 let tagHTML = (bot.tags||[]).map(t => `<span class="c-tag">${t.trim().startsWith('#')?t.trim():'#'+t.trim()}</span>`).join('');
                 
                 let hiddenText = bot.isHidden ? '👁️ HIỆN' : '👁️ ẨN'; 
-                let adminControls = isAdminMode ? `<div style="position: absolute; top: -35px; left: 0; right: 0; display: flex; justify-content: center; gap: 8px; z-index: 50;"><button style="background:var(--amber); color:#000; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="openAdminForm('upcoming', 'edit', '${bot.id}')">✏️ SỬA</button><button style="background:#444; color:#FFF; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="toggleHideUpcoming('${bot.id}', event)">${hiddenText}</button><button style="background:#8B0000; color:#FFF; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="deleteUpcoming('${bot.id}', event)">🗑️ XÓA</button></div>` : "";
+                let adminControls = isAdminMode ? `
+                <div style="position: absolute; top: -35px; left: 0; right: 0; display: flex; justify-content: center; gap: 8px; z-index: 50;">
+                    <button style="background:var(--amber); color:#000; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="openAdminForm('upcoming', 'edit', '${bot.id}')">✏️ SỬA</button>
+                    <button style="background:#444; color:#FFF; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="toggleHideUpcoming('${bot.id}', event)">${hiddenText}</button>
+                    <button style="background:#8B0000; color:#FFF; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="deleteUpcoming('${bot.id}', event)">🗑️ XÓA</button>
+                </div>` : "";
                 
                 let hasVoted = localStorage.getItem('voted_upcoming_' + bot.id) === 'true';
-                let heartIcon = hasVoted ? 'heart_filled' : 'heart_empty'; let voteClass = hasVoted ? 'voted' : ''; let votesCount = bot.votes || 0;
+                let heartIcon = hasVoted ? 'heart_filled' : 'heart_empty';
+                let voteClass = hasVoted ? 'voted' : '';
+                let votesCount = bot.votes || 0;
 
                 cardWrap.innerHTML = `
                     ${adminControls}
@@ -1584,100 +1703,204 @@
         }
 
         // ============================================================
-        // LOGIC HỘP NHẠC
+        // LOGIC HỘP NHẠC ĐƯỢC BỔ SUNG ĐỂ TRÁNH LỖI VÀ LƯU VĨNH VIỄN
         // ============================================================
         let isPlaying = false;
         let currentSongIndex = -1;
         
+        // BẬT / TẮT HỘP NHẠC BẰNG CHÍNH ICON
         document.getElementById("gramoToggle").addEventListener("click", () => {
             const panel = document.getElementById("gramoPanel");
-            if (panel.classList.contains("hidden-panel")) { panel.classList.remove("hidden-panel"); } 
-            else { panel.classList.add("hidden-panel"); }
+            if (panel.classList.contains("hidden-panel")) {
+                panel.classList.remove("hidden-panel");
+            } else {
+                panel.classList.add("hidden-panel");
+            }
         });
 
-        document.getElementById("gramoClose").addEventListener("click", () => { document.getElementById("gramoPanel").classList.add("hidden-panel"); });
-        document.getElementById("btnBackToPL").addEventListener("click", () => { document.getElementById("gramoViewSongs").style.display = "none"; document.getElementById("gramoViewPlaylists").style.display = "block"; activeMusicPl = null; });
+        document.getElementById("gramoClose").addEventListener("click", () => {
+            document.getElementById("gramoPanel").classList.add("hidden-panel");
+        });
+        document.getElementById("btnBackToPL").addEventListener("click", () => {
+            document.getElementById("gramoViewSongs").style.display = "none";
+            document.getElementById("gramoViewPlaylists").style.display = "block";
+            activeMusicPl = null;
+        });
 
         window.renderGramoPlaylists = function() {
             const container = document.getElementById("gramoPlaylistContainer");
-            if(!container) return; container.innerHTML = "";
-            if(!CONFIG.musicLibrary || CONFIG.musicLibrary.length === 0) { container.innerHTML = "<p style='color:var(--silver); font-style:italic;'>Chưa có Playlist nào.</p>"; return; }
+            if(!container) return;
+            container.innerHTML = "";
+            if(!CONFIG.musicLibrary || CONFIG.musicLibrary.length === 0) {
+                container.innerHTML = "<p style='color:var(--silver); font-style:italic;'>Chưa có Playlist nào.</p>";
+                return;
+            }
             CONFIG.musicLibrary.forEach(pl => {
-                const plEl = document.createElement("div"); plEl.className = "gramo-pl-item";
-                let adminBtns = isAdminMode ? `<div style="display:flex; gap:6px;"><button style="background:transparent; border:none; color:var(--amber); cursor:pointer;" onclick="openAdminForm('playlist', 'edit', '${pl.id}'); event.stopPropagation();">✏️</button><button style="background:transparent; border:none; color:#8B0000; cursor:pointer;" onclick="deletePlaylist('${pl.id}', event)">🗑️</button></div>` : "";
+                const plEl = document.createElement("div");
+                plEl.className = "gramo-pl-item";
+                let adminBtns = isAdminMode ? `
+                    <div style="display:flex; gap:6px;">
+                        <button style="background:transparent; border:none; color:var(--amber); cursor:pointer;" onclick="openAdminForm('playlist', 'edit', '${pl.id}'); event.stopPropagation();">✏️</button>
+                        <button style="background:transparent; border:none; color:#8B0000; cursor:pointer;" onclick="deletePlaylist('${pl.id}', event)">🗑️</button>
+                    </div>
+                ` : "";
                 plEl.innerHTML = `<div><span class="icon-slot" data-icon="disc"></span> ${pl.name} (${pl.songs ? pl.songs.length : 0})</div>${adminBtns}`;
-                plEl.onclick = () => { activeMusicPl = pl.id; document.getElementById("gramoViewPlaylists").style.display = "none"; document.getElementById("gramoViewSongs").style.display = "block"; document.getElementById("currentPlNameDisplay").textContent = pl.name; renderGramoSongs(pl.id); };
+                plEl.onclick = () => {
+                    activeMusicPl = pl.id;
+                    document.getElementById("gramoViewPlaylists").style.display = "none";
+                    document.getElementById("gramoViewSongs").style.display = "block";
+                    document.getElementById("currentPlNameDisplay").textContent = pl.name;
+                    renderGramoSongs(pl.id);
+                };
                 container.appendChild(plEl);
             });
             loadIcons();
         };
 
-        window.deletePlaylist = async function(plId, e) { e.stopPropagation(); if(confirm("XÓA PLAYLIST NÀY?")) { CONFIG.musicLibrary = CONFIG.musicLibrary.filter(p => p.id !== plId); await saveStationConfigToDB(false); renderGramoPlaylists(); } };
+        window.deletePlaylist = async function(plId, e) {
+            e.stopPropagation();
+            if(confirm("XÓA PLAYLIST NÀY?")) {
+                CONFIG.musicLibrary = CONFIG.musicLibrary.filter(p => p.id !== plId);
+                await saveStationConfigToDB(false);
+                renderGramoPlaylists();
+            }
+        };
 
         window.renderGramoSongs = function(plId) {
             const container = document.getElementById("gramoSongList");
-            if(!container) return; container.innerHTML = "";
+            if(!container) return;
+            container.innerHTML = "";
             const pl = CONFIG.musicLibrary.find(p => p.id === plId);
-            if(!pl || !pl.songs || pl.songs.length === 0) { container.innerHTML = "<p style='color:var(--silver); font-style:italic;'>Playlist trống.</p>"; return; }
-            
-            pl.songs.sort((a, b) => a.title.localeCompare(b.title, 'vi'));
-
+            if(!pl || !pl.songs || pl.songs.length === 0) {
+                container.innerHTML = "<p style='color:var(--silver); font-style:italic;'>Playlist trống.</p>";
+                return;
+            }
             pl.songs.forEach((song, index) => {
-                const sgEl = document.createElement("div"); sgEl.className = "gramo-song-item";
-                let adminBtns = isAdminMode ? `<div style="display:flex; gap:6px;"><button style="background:transparent; border:none; color:var(--amber); cursor:pointer;" onclick="openAdminForm('song', 'edit', ${index}); event.stopPropagation();">✏️</button><button style="background:transparent; border:none; color:#8B0000; cursor:pointer;" onclick="deleteSong('${pl.id}', ${index}, event)">🗑️</button></div>` : "";
+                const sgEl = document.createElement("div");
+                sgEl.className = "gramo-song-item";
+                let adminBtns = isAdminMode ? `
+                    <div style="display:flex; gap:6px;">
+                        <button style="background:transparent; border:none; color:var(--amber); cursor:pointer;" onclick="openAdminForm('song', 'edit', ${index}); event.stopPropagation();">✏️</button>
+                        <button style="background:transparent; border:none; color:#8B0000; cursor:pointer;" onclick="deleteSong('${pl.id}', ${index}, event)">🗑️</button>
+                    </div>
+                ` : "";
                 sgEl.innerHTML = `<div><span class="icon-slot" data-icon="play"></span> ${song.title}</div>${adminBtns}`;
-                sgEl.onclick = () => { playSong(pl.id, index); };
+                sgEl.onclick = () => {
+                    playSong(pl.id, index);
+                };
                 container.appendChild(sgEl);
             });
             loadIcons();
         };
 
-        window.deleteSong = async function(plId, index, e) { e.stopPropagation(); if(confirm("XÓA BÀI HÁT NÀY?")) { const pl = CONFIG.musicLibrary.find(p => p.id === plId); if(pl) { pl.songs.splice(index, 1); await saveStationConfigToDB(false); renderGramoSongs(plId); } } };
+        window.deleteSong = async function(plId, index, e) {
+            e.stopPropagation();
+            if(confirm("XÓA BÀI HÁT NÀY?")) {
+                const pl = CONFIG.musicLibrary.find(p => p.id === plId);
+                if(pl) {
+                    pl.songs.splice(index, 1);
+                    await saveStationConfigToDB(false);
+                    renderGramoSongs(plId);
+                }
+            }
+        };
 
         const audioEl = document.getElementById("gramoAudio");
         const seekSlider = document.getElementById("seekSlider");
         const currTimeEl = document.getElementById("currTime");
         const totalTimeEl = document.getElementById("totalTime");
 
-        function formatTime(seconds) { if (isNaN(seconds)) return "0:00"; const m = Math.floor(seconds / 60); const s = Math.floor(seconds % 60); return `${m}:${s < 10 ? '0' : ''}${s}`; }
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            const m = Math.floor(seconds / 60);
+            const s = Math.floor(seconds % 60);
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
 
-        audioEl.addEventListener("loadedmetadata", () => { seekSlider.max = Math.floor(audioEl.duration); totalTimeEl.textContent = formatTime(audioEl.duration); });
-        audioEl.addEventListener("timeupdate", () => { seekSlider.value = Math.floor(audioEl.currentTime); currTimeEl.textContent = formatTime(audioEl.currentTime); });
-        seekSlider.addEventListener("input", () => { audioEl.currentTime = seekSlider.value; currTimeEl.textContent = formatTime(seekSlider.value); });
+        audioEl.addEventListener("loadedmetadata", () => {
+            seekSlider.max = Math.floor(audioEl.duration);
+            totalTimeEl.textContent = formatTime(audioEl.duration);
+        });
+
+        audioEl.addEventListener("timeupdate", () => {
+            seekSlider.value = Math.floor(audioEl.currentTime);
+            currTimeEl.textContent = formatTime(audioEl.currentTime);
+        });
+
+        seekSlider.addEventListener("input", () => {
+            audioEl.currentTime = seekSlider.value;
+            currTimeEl.textContent = formatTime(seekSlider.value);
+        });
 
         window.playSong = function(plId, index) {
             const pl = CONFIG.musicLibrary.find(p => p.id === plId);
             if(!pl || !pl.songs || !pl.songs[index]) return;
             const song = pl.songs[index];
-            audioEl.src = song.src; audioEl.play(); isPlaying = true; currentSongIndex = index; activeMusicPl = plId;
+            audioEl.src = song.src;
+            audioEl.play();
+            isPlaying = true;
+            currentSongIndex = index;
+            activeMusicPl = plId;
             
             document.getElementById("gramoTitle").textContent = song.title;
-            document.getElementById("musicBoxVinyl").classList.add("playing"); document.getElementById("musicBoxStylus").classList.add("playing"); document.getElementById("gramoToggle").classList.remove("paused"); document.getElementById("gramoPlay").innerHTML = '<span class="icon-slot" data-icon="pause"></span>';
+            document.getElementById("musicBoxVinyl").classList.add("playing");
+            document.getElementById("musicBoxStylus").classList.add("playing");
+            document.getElementById("gramoToggle").classList.remove("paused");
+            document.getElementById("gramoPlay").innerHTML = '<span class="icon-slot" data-icon="pause"></span>';
             loadIcons();
             
-            if(noteInterval) clearInterval(noteInterval); noteInterval = setInterval(spawnNote, 800);
-            const allSongs = document.querySelectorAll(".gramo-song-item"); allSongs.forEach(el => el.classList.remove("active")); if(allSongs[index]) allSongs[index].classList.add("active");
+            if(noteInterval) clearInterval(noteInterval);
+            noteInterval = setInterval(spawnNote, 800);
+            
+            const allSongs = document.querySelectorAll(".gramo-song-item");
+            allSongs.forEach(el => el.classList.remove("active"));
+            if(allSongs[index]) allSongs[index].classList.add("active");
         };
 
         document.getElementById("gramoPlay").addEventListener("click", () => {
             if(audioEl.src) {
                 if(isPlaying) {
-                    audioEl.pause(); isPlaying = false; document.getElementById("musicBoxVinyl").classList.remove("playing"); document.getElementById("musicBoxStylus").classList.remove("playing"); document.getElementById("gramoToggle").classList.add("paused"); document.getElementById("gramoPlay").innerHTML = '<span class="icon-slot" data-icon="play"></span>';
+                    audioEl.pause();
+                    isPlaying = false;
+                    document.getElementById("musicBoxVinyl").classList.remove("playing");
+                    document.getElementById("musicBoxStylus").classList.remove("playing");
+                    document.getElementById("gramoToggle").classList.add("paused");
+                    document.getElementById("gramoPlay").innerHTML = '<span class="icon-slot" data-icon="play"></span>';
                     if(noteInterval) clearInterval(noteInterval);
                 } else {
-                    audioEl.play(); isPlaying = true; document.getElementById("musicBoxVinyl").classList.add("playing"); document.getElementById("musicBoxStylus").classList.add("playing"); document.getElementById("gramoToggle").classList.remove("paused"); document.getElementById("gramoPlay").innerHTML = '<span class="icon-slot" data-icon="pause"></span>';
-                    if(noteInterval) clearInterval(noteInterval); noteInterval = setInterval(spawnNote, 800);
+                    audioEl.play();
+                    isPlaying = true;
+                    document.getElementById("musicBoxVinyl").classList.add("playing");
+                    document.getElementById("musicBoxStylus").classList.add("playing");
+                    document.getElementById("gramoToggle").classList.remove("paused");
+                    document.getElementById("gramoPlay").innerHTML = '<span class="icon-slot" data-icon="pause"></span>';
+                    if(noteInterval) clearInterval(noteInterval);
+                    noteInterval = setInterval(spawnNote, 800);
                 }
                 loadIcons();
             }
         });
 
-        document.getElementById("gramoPrev").addEventListener("click", () => { if(activeMusicPl && currentSongIndex > 0) playSong(activeMusicPl, currentSongIndex - 1); });
-        document.getElementById("gramoNext").addEventListener("click", () => { const pl = CONFIG.musicLibrary.find(p => p.id === activeMusicPl); if(pl && currentSongIndex < pl.songs.length - 1) playSong(activeMusicPl, currentSongIndex + 1); });
+        document.getElementById("gramoPrev").addEventListener("click", () => {
+            if(activeMusicPl && currentSongIndex > 0) playSong(activeMusicPl, currentSongIndex - 1);
+        });
+        document.getElementById("gramoNext").addEventListener("click", () => {
+            const pl = CONFIG.musicLibrary.find(p => p.id === activeMusicPl);
+            if(pl && currentSongIndex < pl.songs.length - 1) playSong(activeMusicPl, currentSongIndex + 1);
+        });
         audioEl.addEventListener("ended", () => {
             const pl = CONFIG.musicLibrary.find(p => p.id === activeMusicPl);
-            if(pl && currentSongIndex < pl.songs.length - 1) { playSong(activeMusicPl, currentSongIndex + 1); } 
-            else { isPlaying = false; document.getElementById("musicBoxVinyl").classList.remove("playing"); document.getElementById("musicBoxStylus").classList.remove("playing"); document.getElementById("gramoToggle").classList.add("paused"); document.getElementById("gramoPlay").innerHTML = '<span class="icon-slot" data-icon="play"></span>'; if(noteInterval) clearInterval(noteInterval); loadIcons(); }
+            if(pl && currentSongIndex < pl.songs.length - 1) {
+                playSong(activeMusicPl, currentSongIndex + 1);
+            } else {
+                isPlaying = false;
+                document.getElementById("musicBoxVinyl").classList.remove("playing");
+                document.getElementById("musicBoxStylus").classList.remove("playing");
+                document.getElementById("gramoToggle").classList.add("paused");
+                document.getElementById("gramoPlay").innerHTML = '<span class="icon-slot" data-icon="play"></span>';
+                if(noteInterval) clearInterval(noteInterval);
+                loadIcons();
+            }
         });
     </script>
 </body>
