@@ -521,18 +521,22 @@
            MOBILE RESPONSIVENESS (SMARTPHONE) - FIX LỖI ÉP CHỮ
            ============================================================ */
         @media (max-width: 600px) {
-            .train-card { min-height: 120px; border-width: 2px; }
+            .train-card { min-height: 140px; border-width: 2px; }
             .t-door { width: 30px; border-right-width: 1px; }
             .t-door::after { right: 4px; width: 4px; height: 16px; }
             .t-bellows { width: 12px; border-left-width: 1px; }
             .t-body { padding: 8px; }
-            .t-plate { font-size: 10px; padding: 3px 6px; letter-spacing: 0; }
+            .t-plate { font-size: 10px; padding: 4px 6px; letter-spacing: 0; }
+            
+            /* SỬA CHỮ BỊ ÉP BẸP Ở ĐÂY */
             .t-windows-wrap { gap: 6px; margin-top: 8px; flex-direction: row; } 
             .t-window { padding: 6px; border-width: 2px; }
-            .t-window-tags { flex: 0 0 70px !important; } /* Thu nhỏ ô Tag nhường chỗ cho text */
-            .t-window-text { font-size: 11px; max-height: 75px; line-height: 1.4; }
-            .t-tags-container { max-height: 75px; gap: 4px; }
-            .t-genre-tag { font-size: 8px; padding: 2px 4px; }
+            .t-window-tags { flex: 0 0 75px !important; } /* Thu nhỏ ô Tag */
+            .t-window-text { font-size: 11.5px; max-height: 95px; line-height: 1.5; padding-right: 6px; overflow-y: auto; }
+            .t-window-text::-webkit-scrollbar { width: 4px; }
+            .t-window-text::-webkit-scrollbar-thumb { background: var(--amber); border-radius: 2px;} /* Thanh cuộn vàng nổi bật để khách biết có thể kéo đọc */
+            .t-tags-container { max-height: 95px; gap: 4px; }
+            .t-genre-tag { font-size: 8px; padding: 2px 4px; letter-spacing: 0;}
             .t-specs { font-size: 8px; right: 8px; bottom: 4px; }
             
             .staff-grid { grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); gap: 15px; padding: 10px 0; }
@@ -761,6 +765,27 @@
     </div>
 
     <script>
+        // ============================================================
+        // HACK AUDIO CHO MOBILE: Chạm màn hình 1 lần là cấp quyền phát nhạc
+        // ============================================================
+        let isAudioUnlocked = false;
+        function unlockAudioContext() {
+            if(isAudioUnlocked) return;
+            const audioEl = document.getElementById("gramoAudio");
+            if(audioEl) {
+                // Đặt nhạc silent base64 để không báo lỗi NotSupportedError
+                if(!audioEl.src) audioEl.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA";
+                audioEl.play().then(() => {
+                    audioEl.pause();
+                    isAudioUnlocked = true;
+                }).catch(() => {});
+            }
+            document.removeEventListener("click", unlockAudioContext);
+            document.removeEventListener("touchstart", unlockAudioContext);
+        }
+        document.addEventListener("click", unlockAudioContext);
+        document.addEventListener("touchstart", unlockAudioContext);
+
         // ============================================================
         // GLOBAL KHÁCH XEM ALBUM & MỞ KHÓA
         // ============================================================
@@ -1040,9 +1065,26 @@
         }
 
         // ============================================================
-        // HỆ THỐNG NÉN NHẠC GỐC (TRẢ LẠI TÍNH NĂNG TẢI FILE ÂM THANH MƯỢT NHẤT)
+        // HỆ THỐNG NÉN NHẠC GỐC (TRẢ LẠI TÍNH NĂNG TẢI FILE ÂM THANH)
         // ============================================================
         function fileToBase64(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error); }); }
+        
+        // HÀM CHỐNG ĐỨNG HÌNH (Chuyển đổi ngầm Base64 sang Blob trước khi phát nhạc)
+        function base64ToBlobUrl(base64URI) {
+            try {
+                let byteString = atob(base64URI.split(',')[1]);
+                let mimeString = base64URI.split(',')[0].split(':')[1].split(';')[0];
+                let ab = new ArrayBuffer(byteString.length);
+                let ia = new Uint8Array(ab);
+                for (let i = 0; i < byteString.length; i++) {
+                    ia[i] = byteString.charCodeAt(i);
+                }
+                let blob = new Blob([ab], {type: mimeString});
+                return URL.createObjectURL(blob);
+            } catch(e) {
+                return base64URI;
+            }
+        }
 
         function rollNumber(el, target){ 
             const chars = "0123456789"; let iteration = 0; const startStr = "0".repeat(target.toString().length);
@@ -1084,11 +1126,22 @@
 
             await fetchStationConfig();
             
-            let currentVisits = parseInt(localStorage.getItem('meown_visits_reset') || '0');
-            if (!sessionStorage.getItem('has_visited')) {
-                currentVisits++;
-                localStorage.setItem('meown_visits_reset', currentVisits);
-                sessionStorage.setItem('has_visited', 'true');
+            // ĐỒNG BỘ LƯỢT TRUY CẬP TỪ MÁY CHỦ (ID = 4)
+            let globalVisits = 0;
+            try {
+                const { data: visitData } = await supa.from('station_config').select('data').eq('id', 4).single();
+                if (visitData && visitData.data) {
+                    globalVisits = parseInt(visitData.data);
+                }
+                
+                if (!sessionStorage.getItem('has_visited_global')) {
+                    globalVisits++;
+                    sessionStorage.setItem('has_visited_global', 'true');
+                    supa.from('station_config').upsert([{ id: 4, data: globalVisits.toString() }]).then();
+                }
+            } catch(e) {
+                // Fallback nếu lỗi kết nối
+                if (!sessionStorage.getItem('has_visited_global')) { globalVisits = 1; sessionStorage.setItem('has_visited_global', 'true'); }
             }
 
             const staffSearchEl = document.getElementById("staffSearch");
@@ -1100,7 +1153,8 @@
             document.getElementById("notiBtn").addEventListener("click", () => { const panel = document.getElementById("notiPanel"); panel.classList.toggle("show"); });
 
             updateStationMasterUI(); renderTrains(); renderUpcomingBots(); renderGramoPlaylists();
-            rollNumber(document.getElementById("statStaff"), CONFIG.staff.length || 0); rollNumber(document.getElementById("statVisits"), currentVisits); 
+            rollNumber(document.getElementById("statStaff"), CONFIG.staff.length || 0); 
+            rollNumber(document.getElementById("statVisits"), globalVisits); 
             
             await fetchFeeds(); 
             updateNotifications();
@@ -1170,7 +1224,7 @@
             CONFIG.lastUpdated = Date.now(); 
             if (!skipMusicSync) CONFIG.musicLastUpdated = Date.now();
             if (!CONFIG.musicLibrary) CONFIG.musicLibrary = []; 
-            
+
             const mainPayload = { stationMaster: CONFIG.stationMaster, trains: CONFIG.trains, staff: CONFIG.staff, upcomingBots: CONFIG.upcomingBots, lastUpdated: CONFIG.lastUpdated, musicLastUpdated: CONFIG.musicLastUpdated };
             
             try { 
@@ -1596,9 +1650,9 @@
                         <div class="form-row">
                             <label class="file-btn" style="width:100%; background:var(--amber); color:#000; border-color:#000; padding:16px;">
                                 <input type="file" accept="audio/*" multiple id="masterSongUpload" style="display:none;">
-                                <span class="icon-slot" data-icon="paperclip"></span> CHỌN FILE ÂM THANH (< 4MB)
+                                <span class="icon-slot" data-icon="paperclip"></span> CHỌN FILE ÂM THANH (< 3MB)
                             </label>
-                            <p style="font-size:11px; color:var(--silver); font-style:italic; margin-top:8px; text-align:center;">Chỉ nhận file nhạc dưới 4MB để chống lỗi Out of Memory!</p>
+                            <p style="font-size:11px; color:var(--silver); font-style:italic; margin-top:8px; text-align:center;">Chỉ nhận file nhạc dưới 3MB để chống lỗi Out of Memory tuyệt đối!</p>
                         </div>
                         <div id="songsContainer"></div>
                         <div style="display:flex; gap:10px; margin-top:20px;">
@@ -1650,9 +1704,9 @@
                                 const title = r.querySelector(".sgName").value.trim(); const fileInput = r.querySelector(".sgFile"); 
                                 const file = r._attachedFile || (fileInput && fileInput.files.length > 0 ? fileInput.files[0] : null);
                                 if(title && file) { 
-                                    // CHẶN FILE QUÁ NẶNG GÂY LỖI OUT OF MEMORY
-                                    if(file.size > 4 * 1024 * 1024) { 
-                                        alert(`Bài hát "${file.name}" quá lớn (>4MB). Vui lòng chọn file nhẹ hơn để tránh lỗi Out of Memory gây sập web!`); 
+                                    // CHẶN FILE QUÁ NẶNG GÂY LỖI OUT OF MEMORY (Giới hạn 3MB)
+                                    if(file.size > 3 * 1024 * 1024) { 
+                                        alert(`Bài hát "${file.name}" quá lớn (>3MB). Vui lòng chọn file nhẹ hơn hoặc nén lại để tránh lỗi sập web!`); 
                                         r.querySelector(".file-status").textContent = "Lỗi: File quá nặng!"; 
                                         r.querySelector(".file-status").style.color = "#8B0000"; 
                                         continue; 
@@ -1676,7 +1730,7 @@
                             await saveStationConfigToDB(false); 
                             if (activeMusicPl === targetPlId) { renderGramoSongs(activeMusicPl); }
                             document.getElementById("generalModal").classList.add("hidden"); 
-                            alert(`Đã thêm ${processed} bài hát thành công!`);
+                            alert(`Đã thêm ${processed} bài hát thành công! Nhạc đã được đồng bộ lên toàn hệ thống.`);
                         } catch (err) { alert(err.message || "Lỗi lưu nhạc. Định dạng không hợp lệ."); } finally { btn.textContent = "LƯU BÀI HÁT"; btn.style.pointerEvents = 'auto'; }
                     });
                 } else if(action === 'edit') {
@@ -1929,7 +1983,7 @@
         }
 
         // ============================================================
-        // LOGIC HỘP NHẠC
+        // LOGIC HỘP NHẠC CHỐNG ĐỨNG HÌNH (BIẾN ĐỔI NGẦM RA BLOB)
         // ============================================================
         let isPlaying = false;
         let currentSongIndex = -1;
@@ -2011,8 +2065,14 @@
             const pl = CONFIG.musicLibrary.find(p => p.id === plId);
             if(!pl || !pl.songs || !pl.songs[index]) return;
             const song = pl.songs[index];
+            
+            // XỬ LÝ CHỐNG ĐỨNG HÌNH BẰNG CÁCH CHUYỂN NGẦM BASE64 -> BLOB TRƯỚC KHI PHÁT
+            let audioUrl = song.src;
+            if (audioUrl && audioUrl.startsWith('data:audio')) {
+                audioUrl = base64ToBlobUrl(audioUrl);
+            }
 
-            audioEl.src = song.src; 
+            audioEl.src = audioUrl; 
             audioEl.play().catch(e => console.error("Auto-play bị chặn bởi trình duyệt:", e)); 
             isPlaying = true; currentSongIndex = index; activeMusicPl = plId;
             
