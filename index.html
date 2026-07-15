@@ -434,7 +434,7 @@
         .modal-white .file-btn:hover { background: #1A0F0A; color: #FFF; }
         .modal-white .submit-btn { border-color: #1A0F0A; box-shadow: 4px 4px 0 #1A0F0A; }
         
-        /* FIX KẸT CHUỘT: TĂNG PADDING BOTTOM RỘNG RA ĐỂ DỄ BẤM */
+        /* CHỈNH LẠI CÁI TRÌNH SOẠN THẢO TEXT CHO RỘNG RÃI */
         .modal-white .rt-editor { background: #FFF; border: 2px solid #1A0F0A; color: #1A0F0A; box-shadow: inset 2px 2px 0 rgba(0,0,0,0.1); padding-bottom: 60px; }
         .modal-white .rt-btn { background: transparent; color: #1A0F0A; border: 2px solid #1A0F0A; }
         .modal-white .rt-btn:hover { background: #1A0F0A; color: #FFF; }
@@ -1017,6 +1017,9 @@
             } catch(e) { console.warn("Lỗi đồng bộ dữ liệu hệ thống:", e); }
         }
 
+        // ============================================================
+        // THUẬT TOÁN ĐỒNG BỘ NHẠC THỜI GIAN THỰC
+        // ============================================================
         async function fetchMusicConfig() {
             try {
                 const { data: musicData } = await supa.from('station_config').select('data').eq('id', 2).single();
@@ -1065,7 +1068,7 @@
                     let { error } = await supa.from('station_config').upsert([{ id: 2, data: JSON.stringify(musicPayload) }]);
                     if (error) {
                         console.error("Lỗi Supabase khi lưu nhạc:", error);
-                        alert("⚠️ CẢNH BÁO TỪ HỆ THỐNG:\n\nFile MP3 của bạn tải lên ĐÃ LÀM QUÁ TẢI MÁY CHỦ SUPABASE (Vượt giới hạn dung lượng).\nBài nhạc vừa rồi CHỈ CÓ THỂ NGHE TRÊN LAPTOP NÀY và SẼ KHÔNG BAO GIỜ ĐỒNG BỘ ĐƯỢC XUỐNG ĐIỆN THOẠI.\n\nGiải pháp: Hãy lên Google tìm trang web 'Compress MP3' để nén file gốc xuống dung lượng siêu nhẹ (< 1.5MB) rồi mới Upload nhé!");
+                        alert("⚠️ CẢNH BÁO TỪ HỆ THỐNG:\n\nFile MP3 của bạn tải lên ĐÃ LÀM QUÁ TẢI MÁY CHỦ SUPABASE (Vượt giới hạn dung lượng).\nBài nhạc vừa rồi CHỈ CÓ THỂ NGHE TRÊN LAPTOP NÀY và SẼ KHÔNG BAO GIỜ ĐỒNG BỘ ĐƯỢC XUỐNG ĐIỆN THOẠI.\n\nGiải pháp: Hãy lên Google tìm trang web 'Compress MP3' để nén file gốc xuống dung lượng siêu nhẹ (< 1MB) rồi mới Upload nhé!");
                     }
                 }
             } catch(e) { console.error("Lỗi mạng khi lưu DB:", e); }
@@ -1332,9 +1335,8 @@
                         </select>
                     </div>
                     <div class="form-row"><label>Tags (Cách nhau dấu phẩy)</label><input type="text" id="aStTags" value="${tagsStr}"></div>
-                    <div class="form-row"><label>HỒ SƠ MẬT</label>
-                        <div class="rt-toolbar"><button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="document.execCommand('bold',false,null)"><b>B</b></button><button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="document.execCommand('italic',false,null)"><i>I</i></button><button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="document.execCommand('insertUnorderedList',false,null)">• List</button><input type="color" class="rt-btn" style="padding:0; width:40px; height:30px;" onmousedown="event.preventDefault()" oninput="document.execCommand('styleWithCSS', false, true); document.execCommand('foreColor',false,this.value)"><button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="insertToggleHTML()">Thêm Nút Đóng Mở</button><button type="button" class="rt-btn" style="background:var(--amber);" onmousedown="event.preventDefault()" onclick="forceNewLine()">↵ Ép Xuống Dòng</button></div>
-                        <div id="aStScenario" class="rt-editor" contenteditable="true">${sData.scenario || ''}</div>
+                    <div class="form-row"><label>LINK HỒ SƠ (Docs, Drive,...)</label>
+                        <input type="text" id="aStScenario" value="${sData.scenario || ''}" placeholder="Dán link Google Docs vào đây...">
                     </div>
                     <div class="form-row"><label>Quản lý Ký ức (Albums)</label>
                         <div style="background:rgba(0,0,0,0.05); border:2px dashed #1A0F0A; padding:15px; border-radius:4px;">
@@ -1348,24 +1350,6 @@
                     <button class="submit-btn" id="saveSt">${action==='add'?"IN THẺ":"LƯU HỒ SƠ"}</button>
                 `;
                 loadIcons(); renderTempAlbums();
-                
-                window.insertToggleHTML = function() { 
-                    const id = 'det_' + Date.now();
-                    const html = `<details><summary>Bấm vào đây để đổi tên nút</summary><div style="color:inherit;">Nhập nội dung hiển thị cho hành khách vào đây...</div></details><div id="${id}"><br></div>`; 
-                    document.execCommand('insertHTML', false, html); 
-                    setTimeout(() => {
-                        const el = document.getElementById(id);
-                        if(el) {
-                            const range = document.createRange();
-                            const sel = window.getSelection();
-                            range.setStart(el, 0);
-                            range.collapse(true);
-                            sel.removeAllRanges();
-                            sel.addRange(range);
-                        }
-                    }, 10);
-                };
-                
                 let sB64 = sData.avatar; document.getElementById("aStFile").addEventListener("change", async (e)=>{ sB64 = await resizeImage(e.target.files[0], 1920); document.getElementById("aStPrev").innerHTML=`<img src="${sB64}">`; document.getElementById("aStPrev").querySelector('img').style.display='block'; });
                 
                 document.getElementById("btnAddAlbum").onclick = async () => {
@@ -1380,8 +1364,8 @@
 
                 document.getElementById("saveSt").addEventListener("click", async () => { 
                     const tags = document.getElementById("aStTags").value.split(',').map(t=>t.trim()).filter(t=>t); const haremWarning = document.getElementById("aStHarem").value;
-                    if(action === 'add') { CONFIG.staff.push({ id: "s_"+Date.now(), trainId: tId, name: document.getElementById("aStName").value, avatar: sB64, hook: document.getElementById("aStHook").value, haremWarning: haremWarning, tags: tags, scenario: document.getElementById("aStScenario").innerHTML, chatLink: document.getElementById("aStChat").value, gallery: tempAlbums, createdAt: Date.now(), rating: { sum: 0, count: 0 }, isHidden: false, feedbacks: [] }); } 
-                    else { let st = CONFIG.staff.find(s => s.id === idOrParentId); st.name = document.getElementById("aStName").value; st.avatar = sB64; st.hook = document.getElementById("aStHook").value; st.haremWarning = haremWarning; st.tags = tags; st.scenario = document.getElementById("aStScenario").innerHTML; st.chatLink = document.getElementById("aStChat").value; st.gallery = tempAlbums; } 
+                    if(action === 'add') { CONFIG.staff.push({ id: "s_"+Date.now(), trainId: tId, name: document.getElementById("aStName").value, avatar: sB64, hook: document.getElementById("aStHook").value, haremWarning: haremWarning, tags: tags, scenario: document.getElementById("aStScenario").value, chatLink: document.getElementById("aStChat").value, gallery: tempAlbums, createdAt: Date.now(), rating: { sum: 0, count: 0 }, isHidden: false, feedbacks: [] }); } 
+                    else { let st = CONFIG.staff.find(s => s.id === idOrParentId); st.name = document.getElementById("aStName").value; st.avatar = sB64; st.hook = document.getElementById("aStHook").value; st.haremWarning = haremWarning; st.tags = tags; st.scenario = document.getElementById("aStScenario").value; st.chatLink = document.getElementById("aStChat").value; st.gallery = tempAlbums; } 
                     await saveStationConfigToDB(true); renderTrains(); updateNotifications(); rollNumber(document.getElementById("statStaff"), CONFIG.staff.length); document.getElementById("generalModal").classList.add("hidden"); 
                 });
             }
@@ -1543,8 +1527,8 @@
                     }
                     st.feedbacks.splice(index, 1);
                     await saveStationConfigToDB(true);
-                    viewFeedbacks(staffId, event); // Load lại popup
-                    renderTrains(); // Tải lại số sao ngoài UI
+                    viewFeedbacks(staffId, event); 
+                    renderTrains(); 
                 }
             }
         };
@@ -1605,27 +1589,32 @@
             const sClass = "s-" + themeClass; const rData = staff.rating || { sum: 0, count: 0 }; const avgText = rData.count === 0 ? "0.0" : (rData.sum / rData.count).toFixed(1);
             let haremClass = (staff.haremWarning === 'Có thể chơi harem') ? 'warning-yes' : 'warning-no'; let haremText = staff.haremWarning || 'Không nên chơi harem'; let haremTagHTML = `<span class="c-tag ${haremClass}">⚠️ ${haremText}</span>`;
             let regularTagHTML = (staff.tags||[]).map(t=>{ let txt = t.trim().startsWith('#') ? t : '#' + t; return `<span class="c-tag">${txt}</span>` }).join(""); let tagHTML = haremTagHTML + regularTagHTML;
-            const scenarioHTML = staff.scenario && staff.scenario.trim() !== "" ? staff.scenario : "<p style='font-style:italic; text-align:center;'>Hồ sơ mật chưa được công bố.</p>";
             let hiddenText = staff.isHidden ? '👁️ HIỆN' : '👁️ ẨN'; let adminControls = isAdminMode ? `<div style="position: absolute; top: -35px; left: 0; right: 0; display: flex; justify-content: center; gap: 8px; z-index: 50;"><button style="background:var(--amber); color:#000; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="openAdminForm('staff', 'edit', '${staff.id}'); event.stopPropagation();">✏️ SỬA</button><button style="background:#8A8A93; color:#000; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="viewFeedbacks('${staff.id}', event)">XEM FB</button><button style="background:#444; color:#FFF; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="toggleHideStaff('${staff.id}', event)">${hiddenText}</button><button style="background:#8B0000; color:#FFF; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="deleteStaff('${staff.id}', event)">🗑️ XÓA</button></div>` : "";
 
             cardWrap.innerHTML = `
                 ${adminControls}
                 <div class="staff-card-inner ${sClass}">
                     <div class="card-front"><div class="c-id-header">STATION STAFF ID</div><div class="c-image-wrap"><img src="${staff.avatar}" onerror="this.style.opacity=0"></div><div class="c-name">${staff.name}</div><div class="c-tags">${tagHTML}</div><div class="c-hook">"${staff.hook}"</div><div style="display:flex; justify-content:space-between; width:100%; align-items:flex-end;"><div class="c-rating-badge"><span class="icon-slot" data-icon="star"></span> ${avgText}</div><div class="c-flip-hint">LẬT THẺ ⟳</div></div></div>
-                    <div class="card-back"><div class="c-id-header" style="margin-bottom:15px;">BACK OF ID</div><button class="c-back-btn c-profile-btn">HỒ SƠ MẬT 📜</button><button class="c-back-btn c-gallery-btn" style="background: #000; border-color: var(--amber); color: var(--amber);">KÝ ỨC LƯU TRỮ 🎞️</button><button class="c-back-btn c-fb-btn">ĐỂ LẠI LỜI NHẮN ✍️</button><a href="${staff.chatLink || '#'}" target="_blank" class="c-chat-btn">TRÒ CHUYỆN</a></div>
+                    <div class="card-back"><div class="c-id-header" style="margin-bottom:15px;">BACK OF ID</div><button class="c-back-btn c-profile-btn">HỒ SƠ 📜</button><button class="c-back-btn c-gallery-btn" style="background: #000; border-color: var(--amber); color: var(--amber);">KÝ ỨC LƯU TRỮ 🎞️</button><button class="c-back-btn c-fb-btn">ĐỂ LẠI LỜI NHẮN ✍️</button><a href="${staff.chatLink || '#'}" target="_blank" class="c-chat-btn">TRÒ CHUYỆN</a></div>
                 </div>
             `;
             setTimeout(() => loadIcons(), 15);
             cardWrap.addEventListener("click", function() { this.classList.toggle("flipped"); });
             const cardBack = cardWrap.querySelector('.card-back'); cardBack.querySelectorAll('button, a').forEach(el => { el.addEventListener("click", (e) => e.stopPropagation()); });
             
+            // XỬ LÝ NÚT HỒ SƠ: MỞ LINK TRỰC TIẾP
             const profileBtn = cardWrap.querySelector('.c-profile-btn');
             profileBtn.addEventListener('click', (e) => { 
-                const modal = document.getElementById("generalModal"); const box = document.getElementById("generalBox"); const body = document.getElementById("generalModalBody"); 
-                box.classList.add("modal-white"); 
-                document.getElementById("generalModalTitle").textContent = `HỒ SƠ: ${staff.name}`; 
-                body.innerHTML = `<div style="font-size:15px; color:#1A0F0A; line-height: 1.8;">${scenarioHTML}</div>`; 
-                modal.classList.remove("hidden"); 
+                const link = staff.scenario;
+                if (link && link.trim() !== "" && !link.includes("<p>")) {
+                    let targetLink = link.trim();
+                    if (!targetLink.startsWith('http') && !targetLink.startsWith('//')) {
+                        targetLink = 'https://' + targetLink;
+                    }
+                    window.open(targetLink, '_blank');
+                } else {
+                    alert("Hồ sơ chưa được cập nhật link!");
+                }
             });
 
             const galleryBtn = cardWrap.querySelector('.c-gallery-btn');
