@@ -76,7 +76,7 @@
 
         .noti-btn { position: fixed; top: 16px; right: 20px; z-index: 200; background: rgba(5,5,8,0.95); border: 2px solid #222; border-radius: 4px; padding: 10px; color: var(--amber); cursor: pointer; box-shadow: 4px 4px 0 rgba(0,0,0,1); transition: 0.2s;}
         .noti-btn:hover { background: var(--amber); color: #000; }
-        .noti-badge { position: absolute; top: -5px; right: -5px; background: #D50000; color: #FFF; font-size: 10px; font-weight: bold; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #000; box-shadow: 1px 1px 0 #000;}
+        .noti-badge { position: absolute; top: -5px; right: -5px; background: #D50000; color: #FFF; font-size: 10px; font-weight: bold; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: border: 2px solid #000; box-shadow: 1px 1px 0 #000;}
         
         .noti-panel { position: fixed; top: 65px; right: 20px; z-index: 199; width: 320px; max-height: 400px; background: rgba(10,10,12,0.95); border: 2px solid #222; box-shadow: 6px 6px 0 rgba(0,0,0,1); display: none; flex-direction: column; opacity: 0; transform: translateY(-10px); transition: 0.3s;}
         .noti-panel.show { display: flex; opacity: 1; transform: translateY(0); }
@@ -450,6 +450,8 @@
         .modal-white .file-btn { border-color: #1A0F0A; color: #1A0F0A; background: transparent; }
         .modal-white .file-btn:hover { background: #1A0F0A; color: #FFF; }
         .modal-white .submit-btn { border-color: #1A0F0A; box-shadow: 4px 4px 0 #1A0F0A; }
+        
+        /* CHỈNH LẠI CÁI TRÌNH SOẠN THẢO TEXT CHO RỘNG RÃI */
         .modal-white .rt-editor { background: #FFF; border: 2px solid #1A0F0A; color: #1A0F0A; box-shadow: inset 2px 2px 0 rgba(0,0,0,0.1); }
         .modal-white .rt-btn { background: transparent; color: #1A0F0A; border: 2px solid #1A0F0A; }
         .modal-white .rt-btn:hover { background: #1A0F0A; color: #FFF; }
@@ -464,7 +466,9 @@
         .rt-toolbar { display: flex; gap: 6px; padding-bottom: 8px; border-bottom: 2px solid #333; margin-bottom: 8px; flex-wrap: wrap; }
         .rt-btn { background: #000; color: var(--pearl); border: 2px solid #444; padding: 6px 12px; cursor: pointer; font-size: 12px; font-weight: bold; font-family:var(--font-kicker);}
         .rt-btn:hover { border-color: var(--amber); }
-        .rt-editor { background: #000; border: 2px solid #333; min-height: 150px; padding: 14px; color: var(--pearl); outline: none; overflow-y: auto; line-height: 1.6; font-size: 14px; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8); }
+        
+        /* CHỖ NÀY GIẢI QUYẾT LỖI KẸT CHUỘT: THÊM PADDING-BOTTOM ĐỂ RỘNG ĐÁY */
+        .rt-editor { background: #000; border: 2px solid #333; min-height: 150px; padding: 14px; padding-bottom: 50px; color: var(--pearl); outline: none; overflow-y: auto; line-height: 1.6; font-size: 14px; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8); }
 
         @media (max-width: 600px) {
             .train-card { min-height: 150px; border-width: 2px; }
@@ -1236,7 +1240,7 @@
         }
 
         /* ============================================================
-           BẢNG ADMIN FORMS (Đã chỉnh nền trắng đồng bộ hoàn toàn)
+           BẢNG ADMIN FORMS (Đã chỉnh nền trắng đồng bộ)
            ============================================================ */
         let trainGenresList = [];
         function renderTrGenresList() { const listContainer = document.getElementById("aTrGenreList"); if(!listContainer) return; listContainer.innerHTML = trainGenresList.map((g, i) => `<span class="c-tag" style="background:#000; border-color:var(--silver); color:var(--pearl); display:flex; align-items:center; gap:4px;">${g} <span style="cursor:pointer; color:red; font-weight:bold;" onclick="removeTrGenre(${i})">×</span></span>`).join(''); }
@@ -1264,14 +1268,14 @@
                 document.getElementById("generalModalTitle").textContent = "CẬP TRƯỞNG GA";
                 body.innerHTML = `
                     <div class="form-row"><label>Lời giới thiệu / Tiểu sử</label>
-                        <div class="rt-toolbar"><button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="document.execCommand('bold',false,null)"><b>B</b></button><button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="document.execCommand('italic',false,null)"><i>I</i></button><button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="document.execCommand('insertUnorderedList',false,null)">• List</button><input type="color" class="rt-btn" style="padding:0; width:40px; height:30px;" onmousedown="event.preventDefault()" oninput="document.execCommand('styleWithCSS', false, true); document.execCommand('foreColor',false,this.value)"><button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="insertToggleHTML()">Thêm Nút Đóng Mở</button></div>
+                        <div class="rt-toolbar"><button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="document.execCommand('bold',false,null)"><b>B</b></button><button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="document.execCommand('italic',false,null)"><i>I</i></button><button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="document.execCommand('insertUnorderedList',false,null)">• List</button><input type="color" class="rt-btn" style="padding:0; width:40px; height:30px;" onmousedown="event.preventDefault()" oninput="document.execCommand('styleWithCSS', false, true); document.execCommand('foreColor',false,this.value)"><button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="insertToggleHTML()">Thêm Nút Đóng Mở</button><button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="document.execCommand('insertHTML',false,'<p><br></p>')">↵ Xuống Dòng</button></div>
                         <div id="aBio" class="rt-editor" contenteditable="true">${CONFIG.stationMaster.bio || ''}</div>
                     </div>
                     <div class="form-row"><label>Tên hiển thị FB</label><input type="text" id="aFbName" value="${CONFIG.stationMaster.facebook?.name || ''}" placeholder="VD: Trưởng ga Meown"></div>
                     <div class="form-row"><label>Link Facebook</label><input type="text" id="aFbUrl" value="${CONFIG.stationMaster.facebook?.url || ''}" placeholder="https://facebook.com/..."></div>
                     <button class="submit-btn" id="saveSM">ĐỒNG BỘ LÊN MÁY CHỦ</button>
                 `;
-                loadIcons(); window.insertToggleHTML = function() { const html = `<details><summary>Bấm vào đây để đổi tên nút</summary><div style="color:inherit;">Nhập nội dung hiển thị cho hành khách vào đây...</div></details><br>`; document.execCommand('insertHTML', false, html); };
+                loadIcons(); window.insertToggleHTML = function() { const html = `<details><summary>Bấm vào đây để đổi tên nút</summary><div style="color:inherit;">Nhập nội dung hiển thị cho hành khách vào đây...</div></details><p><br></p>`; document.execCommand('insertHTML', false, html); };
                 document.getElementById("saveSM").addEventListener("click", async () => { 
                     CONFIG.stationMaster.bio = document.getElementById("aBio").innerHTML; 
                     CONFIG.stationMaster.facebook = { name: document.getElementById("aFbName").value, url: document.getElementById("aFbUrl").value };
@@ -1310,7 +1314,7 @@
                     </div>
                     <div class="form-row"><label>Tags (Cách nhau dấu phẩy)</label><input type="text" id="aStTags" value="${tagsStr}"></div>
                     <div class="form-row"><label>HỒ SƠ MẬT</label>
-                        <div class="rt-toolbar"><button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="document.execCommand('bold',false,null)"><b>B</b></button><button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="document.execCommand('italic',false,null)"><i>I</i></button><button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="document.execCommand('insertUnorderedList',false,null)">• List</button><input type="color" class="rt-btn" style="padding:0; width:40px; height:30px;" onmousedown="event.preventDefault()" oninput="document.execCommand('styleWithCSS', false, true); document.execCommand('foreColor',false,this.value)"><button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="insertToggleHTML()">Thêm Nút Đóng Mở</button></div>
+                        <div class="rt-toolbar"><button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="document.execCommand('bold',false,null)"><b>B</b></button><button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="document.execCommand('italic',false,null)"><i>I</i></button><button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="document.execCommand('insertUnorderedList',false,null)">• List</button><input type="color" class="rt-btn" style="padding:0; width:40px; height:30px;" onmousedown="event.preventDefault()" oninput="document.execCommand('styleWithCSS', false, true); document.execCommand('foreColor',false,this.value)"><button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="insertToggleHTML()">Thêm Nút Đóng Mở</button><button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="document.execCommand('insertHTML',false,'<p><br></p>')">↵ Xuống Dòng</button></div>
                         <div id="aStScenario" class="rt-editor" contenteditable="true">${sData.scenario || ''}</div>
                     </div>
                     <div class="form-row"><label>Quản lý Ký ức (Albums)</label>
@@ -1325,7 +1329,7 @@
                     <button class="submit-btn" id="saveSt">${action==='add'?"IN THẺ":"LƯU HỒ SƠ"}</button>
                 `;
                 loadIcons(); renderTempAlbums();
-                window.insertToggleHTML = function() { const html = `<details><summary>Bấm vào đây để đổi tên nút</summary><div style="color:inherit;">Nhập nội dung hiển thị cho hành khách vào đây...</div></details><br>`; document.execCommand('insertHTML', false, html); };
+                window.insertToggleHTML = function() { const html = `<details><summary>Bấm vào đây để đổi tên nút</summary><div style="color:inherit;">Nhập nội dung hiển thị cho hành khách vào đây...</div></details><p><br></p>`; document.execCommand('insertHTML', false, html); };
                 let sB64 = sData.avatar; document.getElementById("aStFile").addEventListener("change", async (e)=>{ sB64 = await resizeImage(e.target.files[0], 1920); document.getElementById("aStPrev").innerHTML=`<img src="${sB64}">`; document.getElementById("aStPrev").querySelector('img').style.display='block'; });
                 
                 document.getElementById("btnAddAlbum").onclick = async () => {
@@ -1409,9 +1413,9 @@
                         <div class="form-row">
                             <label class="file-btn" style="width:100%; background:var(--amber); color:#000; border-color:#000; padding:16px;">
                                 <input type="file" accept="audio/*" multiple id="masterSongUpload" style="display:none;">
-                                <span class="icon-slot" data-icon="paperclip"></span> CHỌN FILE ÂM THANH (< 1.5MB)
+                                <span class="icon-slot" data-icon="paperclip"></span> CHỌN FILE ÂM THANH (Càng nhẹ càng tốt)
                             </label>
-                            <p style="font-size:11px; color:var(--blood); font-weight:bold; margin-top:8px; text-align:center;">Tuyệt đối nén MP3 < 1.5MB để không bị mất nhạc khi xem trên điện thoại.</p>
+                            <p style="font-size:11px; color:var(--blood); font-weight:bold; margin-top:8px; text-align:center;">Lưu ý: Up từng bài siêu nén (Ví dụ 1MB-2MB). Nặng quá Supabase sẽ chặn đồng bộ.</p>
                         </div>
                         <div id="songsContainer"></div>
                         <div style="display:flex; gap:10px; margin-top:20px;">
@@ -1463,7 +1467,7 @@
                                 const title = r.querySelector(".sgName").value.trim(); const fileInput = r.querySelector(".sgFile"); 
                                 const file = r._attachedFile || (fileInput && fileInput.files.length > 0 ? fileInput.files[0] : null);
                                 if(title && file) { 
-                                    processed++; btn.textContent = `ĐANG XỬ LÝ (${processed}/${totalToProcess})...`; 
+                                    processed++; btn.textContent = `ĐANG MÃ HÓA (${processed}/${totalToProcess})...`; 
                                     const base64Audio = await fileToBase64(file); 
                                     CONFIG.musicLibrary.forEach(p => { if(p.id === targetPlId) { p.songs.push({ title: title, src: base64Audio }); } }); 
                                     r._attachedFile = null; if(fileInput) fileInput.value = ""; 
@@ -1560,7 +1564,6 @@
             cardWrap.addEventListener("click", function() { this.classList.toggle("flipped"); });
             const cardBack = cardWrap.querySelector('.card-back'); cardBack.querySelectorAll('button, a').forEach(el => { el.addEventListener("click", (e) => e.stopPropagation()); });
             
-            // XỬ LÝ NÚT HỒ SƠ MẬT: NỀN TRẮNG
             const profileBtn = cardWrap.querySelector('.c-profile-btn');
             profileBtn.addEventListener('click', (e) => { 
                 const modal = document.getElementById("generalModal"); const box = document.getElementById("generalBox"); const body = document.getElementById("generalModalBody"); 
