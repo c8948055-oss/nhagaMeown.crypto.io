@@ -363,31 +363,31 @@
 .btn-vintage.active { background: #e8c382; color: #000; font-weight: bold; border-color: #e8c382; }
 .btn-group { display: flex; gap: 10px; justify-content: center; margin-top: 15px; flex-wrap: wrap;}
 
-/* BÀI TAROT CHUẨN TÂY */
+/* BÀI TAROT FIX 3D TUYỆT ĐỐI */
 .tarot-board { position: relative; margin: 20px auto; width: 200px; height: 340px; perspective: 1000px; cursor: pointer; }
-.polaroid-card { width: 100%; height: 100%; position: absolute; transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-.polaroid-card.flipped { transform: rotateY(180deg); }
-.card-inner { width: 100%; height: 100%; position: relative; }
+.polaroid-card { width: 100%; height: 100%; position: absolute; transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: center; }
+.card-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; }
+.card-front-tarot, .card-back-tarot { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 8px; box-shadow: 5px 5px 15px rgba(0,0,0,0.8); }
 
-/* Mặt úp (Lưng bài) */
-.card-front-tarot { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px; background: radial-gradient(circle at center, #2a1b12 0%, #0a0502 100%); border: 8px solid #b5a642; box-shadow: inset 0 0 0 2px #000, inset 0 0 0 6px rgba(181, 166, 66, 0.5), 5px 5px 15px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; flex-direction: column;}
+/* Mặt úp (Lưng bài Tây) */
+.card-front-tarot { background: radial-gradient(circle at center, #2a1b12 0%, #0a0502 100%); border: 8px solid #b5a642; box-shadow: inset 0 0 0 2px #000, inset 0 0 0 6px rgba(181, 166, 66, 0.5); display: flex; align-items: center; justify-content: center; flex-direction: column; z-index: 2;}
 .card-front-tarot::before { content: '✧'; font-size: 40px; color: #b5a642; margin-bottom: 10px; }
 .card-front-tarot::after { content: 'MEOWN \A TAROT'; white-space: pre-wrap; text-align: center; color: #b5a642; font-family: var(--font-heading); font-size: 18px; font-weight: 900; letter-spacing: 3px; }
 
-/* Mặt ngửa (Nội dung) */
-.card-back-tarot { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; transform: rotateY(180deg); background: #fdfbf7; border: 8px solid #fdfbf7; border-bottom-width: 25px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; border-radius: 8px; box-shadow: 5px 5px 15px rgba(0,0,0,0.8); }
-.tarot-img-frame { width: 100%; flex: 1; border: 2px solid #2a1b12; padding: 2px; margin-bottom: 10px; }
-.tarot-img-frame img { width: 100%; height: 100%; object-fit: cover; filter: sepia(0.4) contrast(1.1); }
+/* Mặt ngửa (Nội dung bài) */
+.card-back-tarot { transform: rotateY(180deg); background: #fdfbf7; border: 8px solid #fdfbf7; border-bottom-width: 25px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; }
+.tarot-img-frame { width: 100%; flex: 1; border: 2px solid #2a1b12; padding: 2px; margin-bottom: 10px; overflow: hidden; }
+.tarot-img-frame img { width: 100%; height: 100%; object-fit: cover; filter: sepia(0.4) contrast(1.1); display: block; }
 .card-back-tarot h4 { margin: 0 0 8px 0; font-size: 16px; font-family: var(--font-heading); color:#2a1b12; text-transform: uppercase; border-bottom: 2px solid #b5a642; padding-bottom: 5px; width: 90%; text-align: center; letter-spacing: 1px;}
 .card-back-tarot p { font-size: 12px; margin: 0; font-style: italic; text-align: center; color:#444; font-weight:bold; line-height: 1.4; padding: 0 5px;}
 
-/* MÈO PIXEL 9:16 */
+/* MÈO PIXEL 9:16 VƯỜN ĐÊM */
 .cat-station { margin: 15px 0; text-align: center; }
 #catCanvas { 
     display: block; margin: 0 auto; image-rendering: pixelated; 
     border: 4px solid #8b7355; border-radius: 90px 90px 10px 10px; /* Khung vòm cửa sổ */
     box-shadow: inset 0 0 20px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.5);
-    background: #000; /* Nền sẽ được vẽ bằng JS */
+    background: #0f172a; /* Nền trời đêm */
 }
 .affection-bar-bg { width: 80%; height: 10px; background: #222; margin: 10px auto; border-radius: 5px; overflow: hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.8);}
 .affection-bar-fill { height: 100%; background: #e8c382; transition: width 0.5s ease-in-out; }
@@ -405,7 +405,6 @@
 .modal-box-small input, .modal-box-small textarea { width: 100%; background: #000; color: #fff; border: 1px solid #444; padding: 10px; box-sizing: border-box; font-family: inherit;}
 .modal-box-small input:focus, .modal-box-small textarea:focus { border-color: #e8c382; outline:none; }
 .admin-btn { background: none; border: none; color: #888; text-decoration: underline; cursor: pointer; margin-top: 10px; font-size: 12px; text-transform: uppercase; font-weight: bold;}
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         /* ============================================================
            MÁY HÁT GRAMOPHONE
@@ -662,8 +661,8 @@
 
         <!-- 2. Trạm Mèo Pixel 9:16 -->
         <div class="game-box vintage-border">
-            <h3 class="game-title">🐈 Trạm Mèo Pixel</h3>
-            <p class="game-desc">Bé mèo hoang đang ngủ ngoài vườn. Hãy nhẹ nhàng nhé.</p>
+            <h3 class="game-title">🐈 Mèo Đen Trưởng Ga</h3>
+            <p class="game-desc">Trưởng ga đang nghỉ ngơi ngoài vườn. Hãy nhẹ nhàng nhé.</p>
             <div class="cat-station">
                 <!-- Khung vẽ 9:16 (180x320) -->
                 <canvas id="catCanvas" width="180" height="320"></canvas>
@@ -867,7 +866,7 @@
         // LOGIC KHU GIẢI TRÍ (TAROT, CAT 9:16, JIGSAW)
         // ============================================================
 
-// --- 1. BỐC BÀI KÝ ỨC ---
+// --- 1. BỐC BÀI KÝ ỨC (ĐÃ FIX LỖI LẬT BÀI) ---
 let hasDrawnToday = false;
 let tarotTempB64 = "";
 
@@ -876,10 +875,9 @@ function openAdminTarot() {
     renderAdminTarotRepo();
 }
 
-// Giảm dung lượng ảnh Tarot xuống 400px để tránh đầy bộ nhớ
 document.getElementById("admin-nv-file").addEventListener("change", async (e) => {
     if(e.target.files.length > 0) {
-        tarotTempB64 = await resizeImage(e.target.files[0], 400);
+        tarotTempB64 = await resizeImage(e.target.files[0], 400); // Nén ảnh tránh đầy bộ nhớ
         document.getElementById("admin-tarot-prev").innerHTML = `<img src="${tarotTempB64}" style="width:60px; height:60px; object-fit:cover; border:2px solid #8b7355; border-radius:4px;">`;
     }
 });
@@ -937,29 +935,122 @@ function drawTarotCard() {
     document.getElementById('tarot-name').innerText = randomStaff.name;
     document.getElementById('tarot-message').innerText = `"${randomStaff.prompt}"`;
     
-    document.getElementById('daily-card').classList.add('flipped');
+    // Ép lật bằng inline CSS để 100% không kẹt
+    document.getElementById('daily-card').style.transform = "rotateY(180deg)";
     hasDrawnToday = true;
 }
 
-// --- 2. TRẠM MÈO PIXEL 9:16 SÂN VƯỜN ---
+// --- 2. TRẠM CHĂM MÈO (PIXEL CHIBI 9:16) ---
 let catAffection = parseInt(localStorage.getItem('ga_catAffection')) || 0;
 
-// Ma trận 16x16: . Rỗng | B Viền | O Cam | W Trắng | P Hồng | F Cá | L Bát | M Sữa | H Tay
+// Ma trận 20x20 vẽ tay chuẩn form mèo đen mặc áo Trưởng ga
 const pixelFrames = {
     idle: [
-        "................", "................", "................", "....BB......BB..", "...BPOB....BPOB.", "...BOOB....BOOB.", "..BOOOOBBBOOOOB.", "..BOWOBOOBOWOOB.", "..BWWOBBOBWWOBB.", "...BWOOOOOOWOB..", "....BOOOOOOOB...", "...BOOOOOOOOOB..", "...BOOOOOOOOOB..", "...BWOOOOOOWOB..", "...BWWBBBBBWWBB.", "....BB.....BB..."
+        "....................",
+        "......NNNNNNN.......",
+        ".....NNNNGNNNN......",
+        "....NNNNNNNNNNN.....",
+        "...BBNNNNNNNNNBB....",
+        "..BBBBBBBBBBBBBBB...",
+        "..BBBWBEEBWBEEBBB...",
+        "..BBBBBBBPBBBBBBB...",
+        "...BBBBBBBBBBBBB....",
+        ".....CCCCCCCCC......",
+        "....NNNBWBNNNNN.....",
+        "...NNNGNNNNGNNNN....",
+        "..NNNNNNNNNNNNNNN...",
+        "..NNGNNBBBBBNNGNN...",
+        "..NNNNNBBBBBNNNNN...",
+        "..NNGNNBBBBBNNGNN...",
+        "..BBBBBBBBBBBBBBB...",
+        "..DBBBBBBBBBBBBBD...",
+        "..DBBBBBBBBBBBBBD...",
+        "...DBBB......BBBD..."
     ],
     eat: [
-        "................", "................", "....BB......BB..", "...BPOB....BPOB.", "...BOOB....BOOB.", "..BOOOOBBBOOOOB.", "..BOBOBOOBOBOOB.", "..BWWOBBOBWWOBB.", "...BWOOOOOOWOB..", "....BOOOBBOOB...", "...BOOOBBBOOOB..", "...BWOOOOOOWOB..", "...BWWBBBBBWWBB.", "....BB.....BB...", "......F...FF....", ".....FFFFF.F...."
+        "....................",
+        "......NNNNNNN.......",
+        ".....NNNNGNNNN......",
+        "....NNNNNNNNNNN.....",
+        "...BBNNNNNNNNNBB....",
+        "..BBBBBBBBBBBBBBB...",
+        "..BBBWBEEBWBEEBBB...",
+        "..BBBBBBBPBBBBBBB...",
+        "...BBBBBBXBBBBBB....", // Há miệng
+        ".....CCCCCCCCC......",
+        "....NNNBWBNNNNN.....",
+        "...NNNGNNNNGNNNN....",
+        "..NNNNNFFFFFNNNNN...", // Xuất hiện cá
+        "..NNGNNFBBBFNNGNN...",
+        "..NNNNNFFFFFNNNNN...",
+        "..NNGNNBBBBBNNGNN...",
+        "..BBBBBBBBBBBBBBB...",
+        "..DBBBBBBBBBBBBBD...",
+        "..DBBBBBBBBBBBBBD...",
+        "...DBBB......BBBD..."
     ],
     drink: [
-        "................", "................", "................", "....BB......BB..", "...BPOB....BPOB.", "...BOOB....BOOB.", "..BOOOOBBBOOOOB.", "..BOWOBOOBOWOOB.", "..BWWOBBOBWWOBB.", "...BWOOOOOOWOB..", "....BOOOOOOOB...", "...BWWBBBBBWWBB.", "....BB.....BB...", ".....LLLLLL.....", "....LMMMMMML....", "....LLLLLLLL...."
+        "....................",
+        "....................",
+        "......NNNNNNN.......",
+        ".....NNNNGNNNN......",
+        "....NNNNNNNNNNN.....",
+        "...BBNNNNNNNNNBB....",
+        "..BBBBBBBBBBBBBBB...",
+        "..BBBXBBBBBBBXXBB...", // Cúi xuống nhắm mắt
+        "..BBBBBBBPBBBBBBB...",
+        ".....CCCCCCCCC......",
+        "....NNNBWBNNNNN.....",
+        "...NNNGNNNNGNNNN....",
+        "..NNNNNNNNNNNNNNN...",
+        "..NNGNNBBBBBNNGNN...",
+        "..NNNNNBBBBBNNNNN...",
+        "....LLLLLLLLLLL.....", // Bát sữa
+        "...LMMMMMMMMMMML....",
+        "..LLLLLLLLLLLLLLL...",
+        "..DBBBBBBBBBBBBBD...",
+        "...DBBB......BBBD..."
     ],
     pet: [
-        ".....HHHHH......", "....HHHHHHH.....", "....BB.HHH..BB..", "...BPOB....BPOB.", "...B--B....B--B.", "..BOOOOBBBOOOOB.", "..BOWOBOOBOWOOB.", "..BWWOBBOBWWOBB.", "...BWOOOOOOWOB..", "....BOOOOOOOB...", "...BOOOOOOOOOB..", "...BOOOOOOOOOB..", "...BWOOOOOOWOB..", "...BWWBBBBBWWBB.", "....BB.....BB...", "................"
+        ".....HHHHHHH........",
+        "....HHHHHHHHH.......",
+        "....HHNNNNNNNH......", // Bàn tay xoa đầu
+        ".....NNNNGNNNN......",
+        "....NNNNNNNNNNN.....",
+        "...BBNNNNNNNNNBB....",
+        "..BBBBBBBBBBBBBBB...",
+        "..BBBXBBBBBXXBBBB...", // Mắt híp tận hưởng
+        "..BBBBBBBPBBBBBBB...",
+        "...BBBBBBBBBBBBB....",
+        ".....CCCCCCCCC......",
+        "....NNNBWBNNNNN.....",
+        "...NNNGNNNNGNNNN....",
+        "..NNNNNNNNNNNNNNN...",
+        "..NNGNNBBBBBNNGNN...",
+        "..NNNNNBBBBBNNNNN...",
+        "..NNGNNBBBBBNNGNN...",
+        "..BBBBBBBBBBBBBBB...",
+        "..DBBBBBBBBBBBBBD...",
+        "...DBBB......BBBD..."
     ]
 };
-const colors = { '.': null, 'B': '#1a1a1a', 'P': '#ff9aaa', 'O': '#e58d2e', 'W': '#fff', 'F': '#8bd', 'L': '#6b8cce', 'M': '#fff', 'H': '#fcd2a8', '-': '#1a1a1a' };
+
+const colors = { 
+    '.': null, 
+    'B': '#0f172a', // Lông đen tuyền
+    'D': '#334155', // Đổ bóng chân
+    'N': '#1e3a8a', // Áo khoác & Mũ navy
+    'G': '#fbbf24', // Cúc áo, dấu chân vàng
+    'W': '#ffffff', // Mắt trắng, đồng hồ
+    'E': '#38bdf8', // Tròng mắt Xanh Cyan
+    'P': '#000000', // Mũi đen
+    'C': '#78350f', // Vòng cổ da
+    'F': '#60a5fa', // Cá xanh
+    'M': '#ffffff', // Sữa
+    'L': '#cbd5e1', // Bát sữa
+    'H': '#fcd2a8', // Bàn tay
+    'X': '#000000'  // Mắt nhắm
+};
 
 function drawPixelCat(state) {
     const canvas = document.getElementById('catCanvas');
@@ -969,30 +1060,29 @@ function drawPixelCat(state) {
     // Xóa nền cũ
     ctx.clearRect(0, 0, 180, 320);
     
-    // Vẽ Sân vườn (Bầu trời đêm & Cỏ)
-    ctx.fillStyle = '#0f172a'; ctx.fillRect(0, 0, 180, 220); // Bầu trời
-    ctx.fillStyle = '#153320'; ctx.fillRect(0, 220, 180, 100); // Cỏ
+    // Vẽ Sân vườn Đêm
+    ctx.fillStyle = '#0f172a'; ctx.fillRect(0, 0, 180, 220); // Trời đêm
+    ctx.fillStyle = '#14532d'; ctx.fillRect(0, 220, 180, 100); // Thảm cỏ xanh
     
-    // Vẽ Trăng & Sao
+    // Vẽ Mặt trăng & Sao
     ctx.fillStyle = '#FFDF73';
-    ctx.beginPath(); ctx.arc(140, 60, 20, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(140, 50, 20, 0, Math.PI*2); ctx.fill();
     ctx.fillStyle = '#fff';
     ctx.fillRect(30, 40, 2, 2); ctx.fillRect(80, 90, 2, 2);
     ctx.fillRect(150, 120, 2, 2); ctx.fillRect(40, 150, 2, 2);
 
-    // Kích thước Mèo (scale = 8 => mèo rộng 128px)
+    // Render Mèo (Ma trận 20x20, mỗi pixel = 8px thật) => Tổng chiều ngang 160px
     const scale = 8;
-    const offsetX = (180 - 16 * scale) / 2; // Canh giữa (26px)
-    const offsetY = 320 - (16 * scale) - 15; // Nằm trên thảm cỏ (cách đáy 15px)
+    const offsetX = (180 - 20 * scale) / 2; // Canh giữa (10px lề)
+    const offsetY = 320 - (20 * scale) - 20; // Nằm lên cỏ, cách đáy 20px
 
     const map = pixelFrames[state] || pixelFrames.idle;
-    for(let y = 0; y < 16; y++) {
-        for(let x = 0; x < 16; x++) {
+    for(let y = 0; y < 20; y++) {
+        for(let x = 0; x < 20; x++) {
             let char = map[y][x];
             if(colors[char]) {
                 ctx.fillStyle = colors[char];
-                if(char === '-') { ctx.fillRect(x*scale + offsetX, y*scale + offsetY + 4, scale, 4); } // Mắt nhắm
-                else { ctx.fillRect(x*scale + offsetX, y*scale + offsetY, scale, scale); }
+                ctx.fillRect(x*scale + offsetX, y*scale + offsetY, scale, scale);
             }
         }
     }
@@ -1042,7 +1132,6 @@ function renderAdminJigsawRepo() {
     document.getElementById('admin-jigsaw-repo').innerHTML = html || "<p style='font-size:11px; color:#888;'>Chưa có ảnh nào.</p>";
 }
 
-// Giảm size ảnh tải lên còn 400px
 document.getElementById("admin-jigsaw-files").addEventListener("change", async (e) => {
     let imgs = JSON.parse(localStorage.getItem('ga_puzzle_imgs')) || [];
     try {
