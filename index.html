@@ -352,41 +352,60 @@
         .suggest-btn:hover { background: var(--amber); color: #000; box-shadow: 0 0 10px var(--amber-glow); }
         
         /* --- KHU GIẢI TRÍ STYLES --- */
-.khu-giai-tri-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; color: #d4c5b0; }
+.khu-giai-tri-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; color: #d4c5b0; font-family: "Times New Roman", serif; }
 @media (max-width: 768px) { .khu-giai-tri-container { grid-template-columns: 1fr; } }
-.vintage-border { background: rgba(30, 20, 15, 0.85); border: 1px solid #8b7355; box-shadow: 0 0 15px rgba(0, 0, 0, 0.7); border-radius: 8px; padding: 20px; text-align: center; display: flex; flex-direction: column; align-items: center;}
-.game-title { color: #e8c382; border-bottom: 1px dashed #8b7355; padding-bottom: 10px; width: 100%;}
+
+.vintage-border { background: rgba(30, 20, 15, 0.85); border: 1px solid #8b7355; box-shadow: 0 0 15px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(139, 115, 85, 0.1); border-radius: 8px; padding: 20px; text-align: center; display: flex; flex-direction: column; align-items: center;}
+.game-title { color: #e8c382; text-shadow: 0 0 5px rgba(232, 195, 130, 0.5); border-bottom: 1px dashed #8b7355; padding-bottom: 10px; margin-top: 0; width: 100%; text-transform: uppercase; letter-spacing: 2px;}
 .game-desc { font-style: italic; font-size: 0.9em; opacity: 0.8; margin-bottom: 15px; }
 .btn-vintage { background: transparent; border: 1px solid #8b7355; color: #d4c5b0; padding: 8px 15px; cursor: pointer; transition: 0.3s; font-family: inherit; }
-.btn-vintage:hover { background: #8b7355; color: #fff; }
+.btn-vintage:hover { background: #8b7355; color: #fff; box-shadow: 0 0 10px rgba(139, 115, 85, 0.5);}
 .btn-vintage.active { background: #e8c382; color: #000; font-weight: bold; border-color: #e8c382; }
 .btn-group { display: flex; gap: 10px; justify-content: center; margin-top: 15px; flex-wrap: wrap;}
 
-/* Tarot */
-.tarot-board { position: relative; margin: 20px auto; width: 200px; height: 320px; perspective: 1000px; cursor: pointer; }
-.polaroid-card { width: 100%; height: 100%; position: absolute; transform-style: preserve-3d; transition: transform 0.8s ease; }
+/* BÀI TAROT CHUẨN TÂY */
+.tarot-board { position: relative; margin: 20px auto; width: 200px; height: 340px; perspective: 1000px; cursor: pointer; }
+.polaroid-card { width: 100%; height: 100%; position: absolute; transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 .polaroid-card.flipped { transform: rotateY(180deg); }
-.card-front-tarot, .card-back-tarot { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px; }
-.card-front-tarot { background: linear-gradient(135deg, #2c211b, #150d08); border: 4px solid #8b7355; display: flex; align-items: center; justify-content: center; color: #8b7355; font-size: 20px; font-weight: bold; }
-.card-front-tarot::after { content: '⟳ LẬT BÀI'; position: absolute; font-size: 12px; margin-top: 50px; opacity: 0.7;}
-.card-back-tarot { transform: rotateY(180deg); background: #fdfbf7; border: 12px solid #fdfbf7; border-bottom-width: 30px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; }
-.card-back-tarot img { width: 100%; height: 160px; object-fit: cover; border: 1px solid #ccc; filter: sepia(0.3); margin-bottom: 10px;}
-.card-back-tarot h4 { margin: 0 0 5px 0; font-size: 14px; color:#5a0000; text-transform: uppercase; border-bottom: 1px solid #ddd; padding-bottom: 5px; width: 100%;}
-.card-back-tarot p { font-size: 11px; margin: 0; font-style: italic; color:#333; font-weight:bold;}
+.card-inner { width: 100%; height: 100%; position: relative; }
 
-/* Cat Pixel */
-.cat-station { margin: 20px 0; text-align: center; }
-#catCanvas { background: transparent; border: 2px dashed rgba(139, 115, 85, 0.3); border-radius: 8px; margin: 0 auto; display: block; image-rendering: pixelated; }
-.affection-bar-bg { width: 80%; height: 10px; background: #333; margin: 10px auto; border-radius: 5px; overflow: hidden; }
+/* Mặt úp (Lưng bài) */
+.card-front-tarot { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px; background: radial-gradient(circle at center, #2a1b12 0%, #0a0502 100%); border: 8px solid #b5a642; box-shadow: inset 0 0 0 2px #000, inset 0 0 0 6px rgba(181, 166, 66, 0.5), 5px 5px 15px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; flex-direction: column;}
+.card-front-tarot::before { content: '✧'; font-size: 40px; color: #b5a642; margin-bottom: 10px; }
+.card-front-tarot::after { content: 'MEOWN \A TAROT'; white-space: pre-wrap; text-align: center; color: #b5a642; font-family: var(--font-heading); font-size: 18px; font-weight: 900; letter-spacing: 3px; }
+
+/* Mặt ngửa (Nội dung) */
+.card-back-tarot { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; transform: rotateY(180deg); background: #fdfbf7; border: 8px solid #fdfbf7; border-bottom-width: 25px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; border-radius: 8px; box-shadow: 5px 5px 15px rgba(0,0,0,0.8); }
+.tarot-img-frame { width: 100%; flex: 1; border: 2px solid #2a1b12; padding: 2px; margin-bottom: 10px; }
+.tarot-img-frame img { width: 100%; height: 100%; object-fit: cover; filter: sepia(0.4) contrast(1.1); }
+.card-back-tarot h4 { margin: 0 0 8px 0; font-size: 16px; font-family: var(--font-heading); color:#2a1b12; text-transform: uppercase; border-bottom: 2px solid #b5a642; padding-bottom: 5px; width: 90%; text-align: center; letter-spacing: 1px;}
+.card-back-tarot p { font-size: 12px; margin: 0; font-style: italic; text-align: center; color:#444; font-weight:bold; line-height: 1.4; padding: 0 5px;}
+
+/* MÈO PIXEL 9:16 */
+.cat-station { margin: 15px 0; text-align: center; }
+#catCanvas { 
+    display: block; margin: 0 auto; image-rendering: pixelated; 
+    border: 4px solid #8b7355; border-radius: 90px 90px 10px 10px; /* Khung vòm cửa sổ */
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.5);
+    background: #000; /* Nền sẽ được vẽ bằng JS */
+}
+.affection-bar-bg { width: 80%; height: 10px; background: #222; margin: 10px auto; border-radius: 5px; overflow: hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.8);}
 .affection-bar-fill { height: 100%; background: #e8c382; transition: width 0.5s ease-in-out; }
 
-/* Jigsaw */
-.jigsaw-container { position: relative; width: 100%; max-width: 350px; aspect-ratio: 1/1; margin: 20px auto; background: #111; border: 2px solid #8b7355; display: grid; gap: 1px; }
-.jigsaw-piece { cursor: grab; background-repeat: no-repeat; box-sizing: border-box; transition: transform 0.2s; border: 1px solid rgba(255,255,255,0.1); }
+/* JIGSAW PUZZLE */
+.jigsaw-container { position: relative; width: 100%; max-width: 320px; aspect-ratio: 1/1; margin: 20px auto; background: #111; border: 4px solid #8b7355; box-shadow: inset 0 0 20px #000; display: grid; gap: 1px; }
+.jigsaw-piece { cursor: grab; background-repeat: no-repeat; border: 1px solid rgba(255,255,255,0.1); box-sizing: border-box; transition: transform 0.2s; }
 .jigsaw-piece:active { cursor: grabbing; transform: scale(0.95); z-index: 10; border: 1px solid #e8c382;}
-.sparkle-img { width: 100%; max-width: 250px; border: 5px solid #fff; box-shadow: 0 0 20px #e8c382; margin: 0 auto 10px auto;}
-.modal-box-small { background: #1e140f; padding: 30px; width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 15px; border: 2px solid #8b7355; border-radius: 8px; max-height: 90vh; overflow-y: auto;}
-.admin-btn { background: none; border: none; color: #888; text-decoration: underline; cursor: pointer; margin-top: 10px; font-size: 12px; }
+.memory-win-screen { margin-top: 20px; animation: fadeIn 2s; }
+.sparkle-img { width: 100%; max-width: 250px; border: 5px solid #fff; box-shadow: 0 0 30px #e8c382; margin: 0 auto 10px auto;}
+
+/* Modals Admin */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; display: flex; justify-content: center; align-items: center; }
+.modal-box-small { background: #1e140f; padding: 25px; width: 90%; max-width: 450px; display: flex; flex-direction: column; gap: 15px; border: 2px solid #8b7355; border-radius: 8px; max-height: 90vh; overflow-y: auto; font-family: var(--font-body);}
+.modal-box-small input, .modal-box-small textarea { width: 100%; background: #000; color: #fff; border: 1px solid #444; padding: 10px; box-sizing: border-box; font-family: inherit;}
+.modal-box-small input:focus, .modal-box-small textarea:focus { border-color: #e8c382; outline:none; }
+.admin-btn { background: none; border: none; color: #888; text-decoration: underline; cursor: pointer; margin-top: 10px; font-size: 12px; text-transform: uppercase; font-weight: bold;}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         /* ============================================================
            MÁY HÁT GRAMOPHONE
@@ -620,14 +639,16 @@
         
         <!-- 1. Bốc Bài Ký Ức -->
         <div class="game-box vintage-border">
-            <h3 class="game-title">🎴 Bốc Bài Ký Ức</h3>
+            <h3 class="game-title">🎴 Tarot Ký Ức</h3>
             <p class="game-desc">Rút một lá bài để xem hôm nay sân ga nhắn nhủ bạn điều gì.</p>
             <div id="tarot-board" class="tarot-board" onclick="drawTarotCard()">
                 <div class="polaroid-card" id="daily-card">
-                    <div class="card-inner" style="position: relative; width: 100%; height: 100%;">
+                    <div class="card-inner">
                         <div class="card-front-tarot"></div>
                         <div class="card-back-tarot" id="tarot-result">
-                            <img id="tarot-img" src="" alt="Lá bài">
+                            <div class="tarot-img-frame">
+                                <img id="tarot-img" src="" alt="Lá bài">
+                            </div>
                             <h4 id="tarot-name"></h4>
                             <p id="tarot-message"></p>
                         </div>
@@ -635,28 +656,32 @@
                 </div>
             </div>
             <div class="admin-only-flex" style="justify-content:center;">
-                <button onclick="document.getElementById('admin-tarot-modal').style.display='flex'" class="admin-btn">⚙️ Admin: Quản lý Lá Bài</button>
+                <button onclick="openAdminTarot()" class="admin-btn">⚙️ Admin: Quản lý Lá Bài</button>
             </div>
         </div>
 
-        <!-- 2. Trạm Mèo Pixel -->
+        <!-- 2. Trạm Mèo Pixel 9:16 -->
         <div class="game-box vintage-border">
             <h3 class="game-title">🐈 Trạm Mèo Pixel</h3>
-            <p class="game-desc">Một bé mèo hoang đang nằm ngủ ở góc sảnh.</p>
+            <p class="game-desc">Bé mèo hoang đang ngủ ngoài vườn. Hãy nhẹ nhàng nhé.</p>
             <div class="cat-station">
-                <canvas id="catCanvas" width="160" height="160"></canvas>
-                <div class="affection-bar-bg"><div id="affection-bar" class="affection-bar-fill"></div></div>
-                <p class="affection-text">Độ thân thiện: <span id="affection-score">0</span>/100</p>
+                <!-- Khung vẽ 9:16 (180x320) -->
+                <canvas id="catCanvas" width="180" height="320"></canvas>
+                
+                <div class="affection-bar-bg" style="margin-top: 15px;">
+                    <div id="affection-bar" class="affection-bar-fill"></div>
+                </div>
+                <p class="affection-text" style="font-size:12px; margin-bottom:10px;">Độ thân thiện: <span id="affection-score">0</span>/100</p>
                 <div class="btn-group">
-                    <button class="btn-vintage" onclick="tuongTacMeo('fish')">🐟 Cho ăn cá</button>
-                    <button class="btn-vintage" onclick="tuongTacMeo('milk')">🥛 Đặt bát sữa</button>
+                    <button class="btn-vintage" onclick="tuongTacMeo('fish')">🐟 Ăn cá</button>
+                    <button class="btn-vintage" onclick="tuongTacMeo('milk')">🥛 Uống sữa</button>
                     <button class="btn-vintage" onclick="tuongTacMeo('pet')">✋ Vuốt ve</button>
                 </div>
-                <div id="cat-gift" style="display: none; margin-top:15px; color:#e8c382;">🎵 Bạn nhặt được một nốt nhạc ẩn!</div>
+                <div id="cat-gift" style="display: none; margin-top:15px; color:#e8c382; font-weight:bold; font-size:12px;">🎵 Meow! Bạn nhặt được một nốt nhạc ẩn!</div>
             </div>
         </div>
 
-        <!-- 3. Ghép Hình Kỷ Niệm (Xé Mảnh) -->
+        <!-- 3. Ghép Hình Kỷ Niệm -->
         <div class="game-box vintage-border" style="grid-column: 1 / -1;">
             <h3 class="game-title">🧩 Ghép Hình Kỷ Niệm</h3>
             <p class="game-desc">Chọn độ khó để phục hồi lại bức ảnh bị vỡ nát.</p>
@@ -675,39 +700,52 @@
             </div>
 
             <div class="admin-only-flex" style="justify-content:center; margin-top: 15px;">
-                <button onclick="document.getElementById('admin-jigsaw-modal').style.display='flex'" class="admin-btn">⚙️ Admin: Quản lý ảnh ghép hình</button>
+                <button onclick="openAdminJigsaw()" class="admin-btn">⚙️ Admin: Quản lý ảnh ghép hình</button>
             </div>
+
+            <audio id="gramophone-audio" loop>
+                <source src="https://raw.githubusercontent.com/c8948055-oss/nhagaMeown.crypto.io/c55e15d5e74dece9e250d2fa1ceb8a184eaa993e/%C4%90%C6%B0%E1%BB%9Dng%20L%C3%AAn%20Ph%C3%ADa%20Tr%C6%B0%E1%BB%9Bc%20-%20S%C3%A0i%20G%C3%B2n%20Chill%20ft.%20Ti%E1%BA%BFn%20Minh%20_%20%C4%90%C6%B0%E1%BB%9Dng%20L%C3%AAn%20Ph%C3%ADa%20Tr%C6%B0%E1%BB%9Bc%20%C3%81nh%20Tr%C4%83ng%20D%C3%ACm%20X%C3%A1c%20Th%C3%B9%20__%20%5BibMztUbPnMw%5D.mp3" type="audio/mpeg">
+            </audio>
         </div>
 
     </div>
 </div>
 
-<!-- Modal Admin Game Bốc Bài -->
+<!-- Modal Admin cho Game Bốc Bài -->
 <div id="admin-tarot-modal" class="modal-overlay" style="display: none;">
     <div class="modal-box-small">
-        <h3 style="color:#e8c382; text-align:center;">THÊM LÁ BÀI</h3>
-        <div class="file-upload-wrapper">
-            <label class="file-btn" style="border-color:#8b7355;"><input type="file" accept="image/*" id="admin-nv-file" style="display:none;"> Tải ảnh lá bài</label>
-            <div id="admin-tarot-prev" class="img-preview-grid" style="justify-content:center;"></div>
+        <h3 style="color:#e8c382; text-align:center; margin:0; border-bottom:1px dashed #8b7355; padding-bottom:10px;">QUẢN LÝ LÁ BÀI</h3>
+        <div style="display:flex; flex-direction:column; gap:10px; padding:10px; background:#111; border:1px solid #333;">
+            <div class="form-row file-upload-wrapper" style="margin:0;">
+                <label class="file-btn" style="border-color:#8b7355; color:#d4c5b0; width:100%;"><input type="file" accept="image/*" id="admin-nv-file" style="display:none;"> 1. Tải ảnh lá bài</label>
+                <div id="admin-tarot-prev" class="img-preview-grid" style="justify-content:center;"></div>
+            </div>
+            <input type="text" id="admin-nv-name" placeholder="2. Tên lá bài (VD: Tình Yêu)">
+            <textarea id="admin-nv-prompt" placeholder="3. Thông điệp gửi gắm..." style="height: 60px;"></textarea>
+            <button class="btn-vintage active" style="width:100%;" onclick="saveStaffTarot()">➕ THÊM LÁ BÀI</button>
         </div>
-        <input type="text" id="admin-nv-name" placeholder="Tên lá bài / Nhân vật">
-        <textarea id="admin-nv-prompt" placeholder="Thông điệp gửi gắm..." style="height: 80px;"></textarea>
+        
+        <p style="font-size:12px; color:#8b7355; font-weight:bold; margin:10px 0 0 0;">CÁC LÁ BÀI ĐÃ TẠO:</p>
+        <div id="admin-tarot-repo" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; max-height:200px; overflow-y:auto; padding-right:5px;"></div>
+        
         <div class="btn-group">
-            <button class="btn-vintage" onclick="saveStaffTarot()">Lưu lại</button>
             <button class="btn-vintage" onclick="document.getElementById('admin-tarot-modal').style.display='none'">Đóng</button>
         </div>
     </div>
 </div>
 
-<!-- Modal Admin Game Ghép Hình -->
+<!-- Modal Admin cho Game Ghép Hình -->
 <div id="admin-jigsaw-modal" class="modal-overlay" style="display: none;">
     <div class="modal-box-small">
-        <h3 style="color:#e8c382; text-align:center;">KHO ẢNH GHÉP HÌNH</h3>
-        <div class="file-upload-wrapper">
-            <label class="file-btn" style="border-color:#8b7355;"><input type="file" accept="image/*" multiple id="admin-jigsaw-files" style="display:none;"> Đăng tải ảnh mới</label>
+        <h3 style="color:#e8c382; text-align:center; margin:0; border-bottom:1px dashed #8b7355; padding-bottom:10px;">KHO ẢNH GHÉP HÌNH</h3>
+        <p style="font-size:11px; color:#aaa; font-style:italic;">Web sẽ tự động bốc 1 ảnh trong này để cắt làm game.</p>
+        <div class="form-row file-upload-wrapper" style="margin:0;">
+            <label class="file-btn" style="border-color:#e8c382; color:#e8c382; width:100%;"><input type="file" accept="image/*" multiple id="admin-jigsaw-files" style="display:none;"> ➕ TẢI THÊM ẢNH MỚI</label>
         </div>
-        <div id="admin-jigsaw-repo" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; max-height:200px; overflow-y:auto;"></div>
-        <button class="btn-vintage" style="margin-top:10px;" onclick="document.getElementById('admin-jigsaw-modal').style.display='none'">Đóng</button>
+        <div id="admin-jigsaw-repo" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; max-height:300px; overflow-y:auto; padding-right:5px; margin-top:10px;"></div>
+        <div class="btn-group">
+            <button class="btn-vintage" onclick="document.getElementById('admin-jigsaw-modal').style.display='none'">Đóng</button>
+        </div>
     </div>
 </div>
 
@@ -825,77 +863,136 @@
     </div>
 
     <script>
-        // ==========================================
-// LOGIC KHU GIẢI TRÍ 
-// ==========================================
+        // ============================================================
+        // LOGIC KHU GIẢI TRÍ (TAROT, CAT 9:16, JIGSAW)
+        // ============================================================
 
-// --- 1. BỐC BÀI KÝ ỨC (UPLOAD ẢNH) ---
+// --- 1. BỐC BÀI KÝ ỨC ---
 let hasDrawnToday = false;
 let tarotTempB64 = "";
 
+function openAdminTarot() {
+    document.getElementById('admin-tarot-modal').style.display='flex';
+    renderAdminTarotRepo();
+}
+
+// Giảm dung lượng ảnh Tarot xuống 400px để tránh đầy bộ nhớ
 document.getElementById("admin-nv-file").addEventListener("change", async (e) => {
     if(e.target.files.length > 0) {
-        tarotTempB64 = await resizeImage(e.target.files[0], 800);
-        document.getElementById("admin-tarot-prev").innerHTML = `<img src="${tarotTempB64}" style="width:60px; height:60px; object-fit:cover; border:1px solid #8b7355;">`;
+        tarotTempB64 = await resizeImage(e.target.files[0], 400);
+        document.getElementById("admin-tarot-prev").innerHTML = `<img src="${tarotTempB64}" style="width:60px; height:60px; object-fit:cover; border:2px solid #8b7355; border-radius:4px;">`;
     }
 });
 
 function saveStaffTarot() {
-    const name = document.getElementById('admin-nv-name').value;
-    const prompt = document.getElementById('admin-nv-prompt').value;
-    if(!name || !prompt || !tarotTempB64) { alert("Vui lòng điền đủ Tên, Lời nhắn và Tải ảnh lên!"); return; }
+    const name = document.getElementById('admin-nv-name').value.trim();
+    const prompt = document.getElementById('admin-nv-prompt').value.trim();
+    if(!name || !prompt || !tarotTempB64) { alert("Vui lòng nhập Tên, Thông điệp và Tải ảnh!"); return; }
     
     let staffList = JSON.parse(localStorage.getItem('ga_tarotList')) || [];
     staffList.push({ name, img: tarotTempB64, prompt });
-    localStorage.setItem('ga_tarotList', JSON.stringify(staffList));
     
-    alert("Đã lưu lá bài thành công!");
-    document.getElementById('admin-nv-name').value = '';
-    document.getElementById('admin-nv-prompt').value = '';
-    document.getElementById('admin-tarot-prev').innerHTML = '';
-    tarotTempB64 = "";
-    document.getElementById('admin-tarot-modal').style.display = 'none';
+    try {
+        localStorage.setItem('ga_tarotList', JSON.stringify(staffList));
+        alert("Đã lưu lá bài thành công!");
+        document.getElementById('admin-nv-name').value = '';
+        document.getElementById('admin-nv-prompt').value = '';
+        document.getElementById('admin-tarot-prev').innerHTML = '';
+        tarotTempB64 = "";
+        renderAdminTarotRepo();
+    } catch(e) {
+        alert("Bộ nhớ đầy! Hãy xóa bớt lá bài cũ hoặc ảnh ghép hình.");
+    }
+}
+
+function renderAdminTarotRepo() {
+    let list = JSON.parse(localStorage.getItem('ga_tarotList')) || [];
+    let html = "";
+    list.forEach((item, idx) => {
+        html += `<div style="background:#000; padding:6px; border:1px solid #444; position:relative; border-radius:4px;">
+            <img src="${item.img}" style="width:100%; height:90px; object-fit:cover; filter:sepia(0.3);">
+            <div style="font-size:11px; color:#e8c382; margin-top:6px; font-weight:bold; text-align:center;">${item.name}</div>
+            <button onclick="deleteTarotCard(${idx})" style="position:absolute; top:2px; right:2px; background:#8B0000; color:#fff; border:1px solid #000; font-weight:bold; width:20px; height:20px; display:flex; align-items:center; justify-content:center; cursor:pointer; border-radius:50%;">X</button>
+        </div>`;
+    });
+    document.getElementById('admin-tarot-repo').innerHTML = html || "<p style='font-size:11px; color:#888;'>Chưa có lá bài nào.</p>";
+}
+
+window.deleteTarotCard = function(idx) {
+    let list = JSON.parse(localStorage.getItem('ga_tarotList')) || [];
+    list.splice(idx, 1);
+    localStorage.setItem('ga_tarotList', JSON.stringify(list));
+    renderAdminTarotRepo();
 }
 
 function drawTarotCard() {
     if (hasDrawnToday) return; 
     let staffList = JSON.parse(localStorage.getItem('ga_tarotList'));
     if (!staffList || staffList.length === 0) {
-        staffList = [{ name: "Người gác ghi", img: "https://images.unsplash.com/photo-1517488629431-6427e0ee1e5f?w=400", prompt: "Đường ray có thể dài, nghỉ chân chút đi." }];
+        staffList = [{ name: "SÂN GA VẮNG", img: "https://images.unsplash.com/photo-1517488629431-6427e0ee1e5f?w=400", prompt: "Đường ray có thể dài, nghỉ chân chút đi lữ khách." }];
     }
     const randomStaff = staffList[Math.floor(Math.random() * staffList.length)];
+    
     document.getElementById('tarot-img').src = randomStaff.img;
     document.getElementById('tarot-name').innerText = randomStaff.name;
     document.getElementById('tarot-message').innerText = `"${randomStaff.prompt}"`;
+    
     document.getElementById('daily-card').classList.add('flipped');
     hasDrawnToday = true;
 }
 
-// --- 2. TRẠM MÈO PIXEL ---
+// --- 2. TRẠM MÈO PIXEL 9:16 SÂN VƯỜN ---
 let catAffection = parseInt(localStorage.getItem('ga_catAffection')) || 0;
 
-// Ma trận Pixel Art (16x16). W=Trắng, B=Đen, O=Cam, P=Hồng, F=Cá, M=Sữa, H=Tay vuốt
+// Ma trận 16x16: . Rỗng | B Viền | O Cam | W Trắng | P Hồng | F Cá | L Bát | M Sữa | H Tay
 const pixelFrames = {
-    idle: ["....BB......BB..", "...BPOB....BPOB.", "...BOOB....BOOB.", "..BOOOOBBBOOOOB.", "..BOWOBOOBOWOOB.", "..BWWOBBOBWWOBB.", "...BWOOOOOOWOB..", "....BOOOOOOOB...", "...BOOOOOOOOOB..", "...BOOOOOOOOOB..", "...BWOOOOOOWOB..", "...BWWBBBBBWWBB.", "....BB.....BB...", "................", "................", "................"],
-    eat:  ["....BB......BB..", "...BPOB....BPOB.", "...BOOB....BOOB.", "..BOOOOBBBOOOOB.", "..BOBOBOOBOBOOB.", "..BWWOBBOBWWOBB.", "...BWOOOOOOWOB..", "....BOOOBBOOB...", "...BOOOBBBOOOB..", "...BWOOOOOOWOB..", "...BWWBBBBBWWBB.", "....BB.....BB...", "......F...FF....", ".....FFFFF.F....", "......F...FF....", "................"],
-    drink:["................", "................", "....BB......BB..", "...BPOB....BPOB.", "...BOOB....BOOB.", "..BOOOOBBBOOOOB.", "..BOWOBOOBOWOOB.", "..BWWOBBOBWWOBB.", "...BWOOOOOOWOB..", "....BOOOOOOOB...", "...BWWBBBBBWWBB.", "....BB.....BB...", ".....BBBBBB.....", "....BMMMMMMB....", "....BBBBBBBB....", "................"],
-    pet:  [".....HHHHH......", "....HHHHHHH.....", "....BB.HHH..BB..", "...BPOB....BPOB.", "...B--B....B--B.", "..BOOOOBBBOOOOB.", "..BOWOBOOBOWOOB.", "..BWWOBBOBWWOBB.", "...BWOOOOOOWOB..", "....BOOOOOOOB...", "...BOOOOOOOOOB..", "...BOOOOOOOOOB..", "...BWOOOOOOWOB..", "...BWWBBBBBWWBB.", "....BB.....BB...", "................"]
+    idle: [
+        "................", "................", "................", "....BB......BB..", "...BPOB....BPOB.", "...BOOB....BOOB.", "..BOOOOBBBOOOOB.", "..BOWOBOOBOWOOB.", "..BWWOBBOBWWOBB.", "...BWOOOOOOWOB..", "....BOOOOOOOB...", "...BOOOOOOOOOB..", "...BOOOOOOOOOB..", "...BWOOOOOOWOB..", "...BWWBBBBBWWBB.", "....BB.....BB..."
+    ],
+    eat: [
+        "................", "................", "....BB......BB..", "...BPOB....BPOB.", "...BOOB....BOOB.", "..BOOOOBBBOOOOB.", "..BOBOBOOBOBOOB.", "..BWWOBBOBWWOBB.", "...BWOOOOOOWOB..", "....BOOOBBOOB...", "...BOOOBBBOOOB..", "...BWOOOOOOWOB..", "...BWWBBBBBWWBB.", "....BB.....BB...", "......F...FF....", ".....FFFFF.F...."
+    ],
+    drink: [
+        "................", "................", "................", "....BB......BB..", "...BPOB....BPOB.", "...BOOB....BOOB.", "..BOOOOBBBOOOOB.", "..BOWOBOOBOWOOB.", "..BWWOBBOBWWOBB.", "...BWOOOOOOWOB..", "....BOOOOOOOB...", "...BWWBBBBBWWBB.", "....BB.....BB...", ".....LLLLLL.....", "....LMMMMMML....", "....LLLLLLLL...."
+    ],
+    pet: [
+        ".....HHHHH......", "....HHHHHHH.....", "....BB.HHH..BB..", "...BPOB....BPOB.", "...B--B....B--B.", "..BOOOOBBBOOOOB.", "..BOWOBOOBOWOOB.", "..BWWOBBOBWWOBB.", "...BWOOOOOOWOB..", "....BOOOOOOOB...", "...BOOOOOOOOOB..", "...BOOOOOOOOOB..", "...BWOOOOOOWOB..", "...BWWBBBBBWWBB.", "....BB.....BB...", "................"
+    ]
 };
-const colors = { '.': null, 'B': '#2d2d2d', 'P': '#ff9aaa', 'O': '#e58d2e', 'W': '#fff', 'F': '#8bd', 'M': '#fff', 'H': '#fcd2a8', '-': '#2d2d2d' };
+const colors = { '.': null, 'B': '#1a1a1a', 'P': '#ff9aaa', 'O': '#e58d2e', 'W': '#fff', 'F': '#8bd', 'L': '#6b8cce', 'M': '#fff', 'H': '#fcd2a8', '-': '#1a1a1a' };
 
 function drawPixelCat(state) {
     const canvas = document.getElementById('catCanvas');
     if(!canvas) return;
     const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, 160, 160);
+    
+    // Xóa nền cũ
+    ctx.clearRect(0, 0, 180, 320);
+    
+    // Vẽ Sân vườn (Bầu trời đêm & Cỏ)
+    ctx.fillStyle = '#0f172a'; ctx.fillRect(0, 0, 180, 220); // Bầu trời
+    ctx.fillStyle = '#153320'; ctx.fillRect(0, 220, 180, 100); // Cỏ
+    
+    // Vẽ Trăng & Sao
+    ctx.fillStyle = '#FFDF73';
+    ctx.beginPath(); ctx.arc(140, 60, 20, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(30, 40, 2, 2); ctx.fillRect(80, 90, 2, 2);
+    ctx.fillRect(150, 120, 2, 2); ctx.fillRect(40, 150, 2, 2);
+
+    // Kích thước Mèo (scale = 8 => mèo rộng 128px)
+    const scale = 8;
+    const offsetX = (180 - 16 * scale) / 2; // Canh giữa (26px)
+    const offsetY = 320 - (16 * scale) - 15; // Nằm trên thảm cỏ (cách đáy 15px)
+
     const map = pixelFrames[state] || pixelFrames.idle;
     for(let y = 0; y < 16; y++) {
         for(let x = 0; x < 16; x++) {
             let char = map[y][x];
             if(colors[char]) {
                 ctx.fillStyle = colors[char];
-                if(char === '-') ctx.fillRect(x*10, y*10 + 4, 10, 4); // Mắt nhắm
-                else ctx.fillRect(x*10, y*10, 10, 10);
+                if(char === '-') { ctx.fillRect(x*scale + offsetX, y*scale + offsetY + 4, scale, 4); } // Mắt nhắm
+                else { ctx.fillRect(x*scale + offsetX, y*scale + offsetY, scale, scale); }
             }
         }
     }
@@ -906,33 +1003,60 @@ function tuongTacMeo(action) {
     if (catAffection >= 100) { drawPixelCat('pet'); document.getElementById('cat-gift').style.display = 'block'; return; }
     clearTimeout(catTimeout);
     let increment = action === 'fish' ? 5 : (action === 'milk' ? 3 : 2);
+    
     drawPixelCat(action === 'fish' ? 'eat' : (action === 'milk' ? 'drink' : 'pet'));
+    
     catAffection = Math.min(100, catAffection + increment);
     localStorage.setItem('ga_catAffection', catAffection);
     document.getElementById('affection-score').innerText = catAffection;
     document.getElementById('affection-bar').style.width = catAffection + '%';
+    
     catTimeout = setTimeout(() => drawPixelCat('idle'), 2500);
 }
-setTimeout(() => { drawPixelCat('idle'); document.getElementById('affection-score').innerText = catAffection; document.getElementById('affection-bar').style.width = catAffection + '%';}, 500);
 
-// --- 3. GHÉP HÌNH XÉ MẢNH ---
+// Khởi tạo trạng thái mèo lúc mở
+setTimeout(() => { 
+    drawPixelCat('idle'); 
+    document.getElementById('affection-score').innerText = catAffection; 
+    document.getElementById('affection-bar').style.width = catAffection + '%';
+}, 500);
+
+
+// --- 3. GHÉP HÌNH KỶ NIỆM (JIGSAW) ---
 let draggedPiece = null;
+
+function openAdminJigsaw() {
+    document.getElementById('admin-jigsaw-modal').style.display='flex';
+    renderAdminJigsawRepo();
+}
 
 function renderAdminJigsawRepo() {
     let imgs = JSON.parse(localStorage.getItem('ga_puzzle_imgs')) || [];
-    document.getElementById('admin-jigsaw-repo').innerHTML = imgs.map((img, idx) => `<div style="position:relative;"><img src="${img}" style="width:100%; aspect-ratio:1/1; object-fit:cover; border:2px solid #8b7355;"><button onclick="deleteJigsawImg(${idx})" style="position:absolute; top:5px; right:5px; background:#8B0000; color:#fff; border:none; padding:2px 6px; font-weight:bold; cursor:pointer;">X</button></div>`).join('');
+    let html = "";
+    imgs.forEach((img, idx) => {
+        html += `<div style="position:relative; background:#000; padding:5px; border:1px solid #444; border-radius:4px;">
+            <img src="${img}" style="width:100%; aspect-ratio:1/1; object-fit:cover; border:2px solid #8b7355;">
+            <button onclick="deleteJigsawImg(${idx})" style="position:absolute; top:8px; right:8px; background:#8B0000; color:#fff; border:1px solid #000; font-weight:bold; cursor:pointer; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center;">X</button>
+        </div>`;
+    });
+    document.getElementById('admin-jigsaw-repo').innerHTML = html || "<p style='font-size:11px; color:#888;'>Chưa có ảnh nào.</p>";
 }
 
+// Giảm size ảnh tải lên còn 400px
 document.getElementById("admin-jigsaw-files").addEventListener("change", async (e) => {
     let imgs = JSON.parse(localStorage.getItem('ga_puzzle_imgs')) || [];
-    for(let f of e.target.files) imgs.push(await resizeImage(f, 800));
-    localStorage.setItem('ga_puzzle_imgs', JSON.stringify(imgs));
-    renderAdminJigsawRepo(); e.target.value = "";
+    try {
+        for(let f of e.target.files) imgs.push(await resizeImage(f, 400));
+        localStorage.setItem('ga_puzzle_imgs', JSON.stringify(imgs));
+        renderAdminJigsawRepo(); 
+    } catch(err) { alert("Bộ nhớ đã đầy, không thể lưu thêm ảnh!"); }
+    e.target.value = "";
 });
 
 window.deleteJigsawImg = function(idx) {
     let imgs = JSON.parse(localStorage.getItem('ga_puzzle_imgs')) || [];
-    imgs.splice(idx, 1); localStorage.setItem('ga_puzzle_imgs', JSON.stringify(imgs));
+    imgs.splice(idx, 1); 
+    localStorage.setItem('ga_puzzle_imgs', JSON.stringify(imgs));
     renderAdminJigsawRepo();
 }
 
@@ -985,7 +1109,6 @@ function checkJigsawWin() {
         document.getElementById('memory-win').style.display = 'block';
     }
 }
-setTimeout(() => renderAdminJigsawRepo(), 1000);
 
         // ============================================================
         // GLOBAL KHÁCH XEM ALBUM & MỞ KHÓA
