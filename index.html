@@ -352,6 +352,49 @@
         .suggest-btn:hover { background: var(--amber); color: #000; box-shadow: 0 0 10px var(--amber-glow); }
         
         /* ============================================================
+           KHU GIẢI TRÍ STYLES
+           ============================================================ */
+        .khu-giai-tri-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; color: #d4c5b0; font-family: "Times New Roman", serif; }
+        @media (max-width: 768px) { .khu-giai-tri-container { grid-template-columns: 1fr; } }
+        
+        .vintage-border { background: rgba(30, 20, 15, 0.85); border: 1px solid #8b7355; box-shadow: 0 0 15px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(139, 115, 85, 0.1); border-radius: 8px; padding: 20px; text-align: center; }
+        .game-title { color: #e8c382; text-shadow: 0 0 5px rgba(232, 195, 130, 0.5); border-bottom: 1px dashed #8b7355; padding-bottom: 10px; margin-top: 0; }
+        .game-desc { font-style: italic; font-size: 0.9em; opacity: 0.8; margin-bottom: 15px; }
+        .btn-vintage { background: transparent; border: 1px solid #8b7355; color: #d4c5b0; padding: 8px 15px; cursor: pointer; transition: 0.3s; font-family: inherit; }
+        .btn-vintage:hover { background: #8b7355; color: #fff; }
+        .btn-group { display: flex; gap: 10px; justify-content: center; margin-top: 15px; }
+        
+        .tarot-board { perspective: 1000px; margin: 20px auto; width: 200px; height: 300px; cursor: pointer; }
+        .polaroid-card { width: 100%; height: 100%; transition: transform 0.8s; transform-style: preserve-3d; }
+        .polaroid-card.flipped { transform: rotateY(180deg); }
+        .card-inner { width: 100%; height: 100%; position: relative; }
+        .card-front-tarot, .card-back-tarot { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border: 10px solid #fff; border-bottom: 40px solid #fff; background: #fff; color: #333; box-sizing: border-box; }
+        .card-front-tarot { background: #2c211b; border-color: #eee; display: flex; align-items: center; justify-content: center; color: #fff; }
+        .card-back-tarot { transform: rotateY(180deg); display: flex; flex-direction: column; align-items: center; justify-content: space-between; overflow: hidden; }
+        .card-back-tarot img { width: 100%; height: 140px; object-fit: cover; }
+        .card-back-tarot h4 { margin: 5px 0; font-size: 14px; font-family: var(--font-heading); color:#8B0000;}
+        .card-back-tarot p { font-size: 12px; padding: 0 5px; font-style: italic; text-align: center; color:#111; font-weight:bold;}
+        .admin-btn { background: none; border: none; color: #888; text-decoration: underline; cursor: pointer; margin-top: 10px; font-size: 12px; }
+        
+        #bottle-input { width: 90%; height: 80px; background: rgba(0,0,0,0.3); border: 1px solid #8b7355; color: #fff; padding: 10px; font-family: inherit; }
+        .bottle-message-box { margin-top: 15px; padding: 15px; background: rgba(255, 255, 255, 0.05); font-style: italic; border-left: 3px solid #e8c382; text-align: left; }
+        
+        .cat-sprite { font-size: 1.2em; margin: 20px 0; transition: 0.5s; }
+        .affection-bar-bg { width: 80%; height: 10px; background: #333; margin: 10px auto; border-radius: 5px; overflow: hidden; }
+        .affection-bar-fill { height: 100%; background: #e8c382; transition: width 0.5s ease-in-out; }
+        
+        .memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 20px; }
+        .mem-card { width: 100%; aspect-ratio: 3/4; background: #8b7355; cursor: pointer; border: 2px solid #fff; transition: 0.3s; background-size: cover; background-position: center; }
+        .mem-card.matched { opacity: 0; pointer-events: none; }
+        .memory-win-screen { margin-top: 20px; animation: fadeIn 2s; }
+        .sparkle-img { width: 100%; max-width: 250px; border: 5px solid #fff; box-shadow: 0 0 20px #e8c382; margin: 0 auto 10px auto;}
+        
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; display: flex; justify-content: center; align-items: center; }
+        .modal-box-small { background: #1e140f; padding: 30px; width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 15px; border: 2px solid #8b7355; border-radius: 8px;}
+        .modal-box-small input, .modal-box-small textarea { width: 100%; background: #333; color: #fff; border: 1px solid #888; padding: 8px; box-sizing: border-box; font-family: inherit;}
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* ============================================================
            MÁY HÁT GRAMOPHONE
            ============================================================ */
         .gramo-toggle { position: fixed; right: 24px; bottom: 24px; z-index: 2000; width: 60px; height: 60px; border-radius: 50%; background: #000; border: 2px solid var(--brass); box-shadow: 0 0 15px rgba(181, 166, 66, 0.4), 4px 4px 0 rgba(0,0,0,1); display: flex; align-items: center; justify-content: center; color: var(--brass); font-size: 24px; transition: 0.3s; cursor: pointer; }
@@ -542,6 +585,7 @@
             <button class="nav-home" id="btnGoHome"><span class="icon-slot" data-icon="train"></span> TRỞ VỀ CỔNG CHÍNH</button>
             <button class="nav-item active" data-view="stationmaster">PHÒNG TRƯỞNG GA</button>
             <button class="nav-item" data-view="trains">CÁC CHUYẾN TÀU</button>
+            <button class="nav-item" data-view="entertainment">KHU GIẢI TRÍ</button>
             <button class="nav-item" data-view="guestbook">SỔ LƯU BÚT</button>
             <button class="nav-item" data-view="recruitment">TRẠM TUYỂN DỤNG</button>
         </nav>
@@ -576,6 +620,81 @@
                 <div id="trainsList"></div>
             </div>
 
+            <!-- KHU GIẢI TRÍ SÂN GA -->
+            <div class="section-view hidden" id="view-entertainment">
+                <div class="khu-giai-tri-container">
+                    
+                    <!-- 1. Bốc Bài Ký Ức -->
+                    <div class="game-box vintage-border">
+                        <h3 class="game-title">🎴 Bốc Bài Ký Ức</h3>
+                        <p class="game-desc">Rút một lá bài để xem hôm nay sân ga nhắn nhủ bạn điều gì.</p>
+                        <div id="tarot-board" class="tarot-board">
+                            <div class="polaroid-card" id="daily-card" onclick="drawTarotCard()">
+                                <div class="card-inner">
+                                    <div class="card-front-tarot">Mặt Sau Lá Bài</div>
+                                    <div class="card-back-tarot" id="tarot-result">
+                                        <img id="tarot-img" src="" alt="Nhân viên">
+                                        <h4 id="tarot-name"></h4>
+                                        <p id="tarot-message"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="admin-only-flex" style="justify-content:center;">
+                            <button onclick="document.getElementById('admin-tarot-modal').style.display='flex'" class="admin-btn">⚙️ Admin: Quản lý nhân viên Bốc Bài</button>
+                        </div>
+                    </div>
+
+                    <!-- 2. Chai Thả Trôi Sân Ga -->
+                    <div class="game-box vintage-border">
+                        <h3 class="game-title">🍾 Chai Thả Trôi Sân Ga</h3>
+                        <p class="game-desc">Gửi gắm một tâm tư xuống đường ray, hoặc lắng nghe một người lạ.</p>
+                        <textarea id="bottle-input" placeholder="Viết một nỗi buồn, một lời chào, hay một lời tỏ tình ẩn danh..."></textarea>
+                        <div class="btn-group">
+                            <button class="btn-vintage" onclick="dropBottle()">🌊 Thả xuống đường ray</button>
+                            <button class="btn-vintage" onclick="pickBottle()">💌 Nhặt chai</button>
+                        </div>
+                        <div id="bottle-display" class="bottle-message-box" style="display: none;"></div>
+                    </div>
+
+                    <!-- 3. Trạm Nuôi Mèo Ảo -->
+                    <div class="game-box vintage-border">
+                        <h3 class="game-title">🐈 Trạm Nuôi Mèo Ảo</h3>
+                        <p class="game-desc">Một bé mèo hoang đang nằm ngủ ở góc sảnh. Hãy nhẹ nhàng nhé.</p>
+                        <div class="cat-station">
+                            <div id="cat-visual" class="cat-sprite">💤 Mèo đang ngủ cuộn tròn...</div>
+                            <div class="affection-bar-bg">
+                                <div id="affection-bar" class="affection-bar-fill"></div>
+                            </div>
+                            <p class="affection-text" style="font-size:12px; margin-bottom:10px;">Điểm thân thiện: <span id="affection-score">0</span>/100</p>
+                            <div class="btn-group">
+                                <button class="btn-vintage" onclick="tuongTacMeo('fish')">🐟 Cho ăn cá</button>
+                                <button class="btn-vintage" onclick="tuongTacMeo('milk')">🥛 Đặt bát sữa</button>
+                                <button class="btn-vintage" onclick="tuongTacMeo('pet')">✋ Vuốt ve</button>
+                            </div>
+                            <div id="cat-gift" style="display: none; margin-top:15px; color:#e8c382;">🎵 Bạn nhặt được một nốt nhạc ẩn: 𝅗𝅥</div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Ghép Hình Kỷ Niệm -->
+                    <div class="game-box vintage-border">
+                        <h3 class="game-title">🧩 Ghép Hình Kỷ Niệm</h3>
+                        <p class="game-desc">Lật mở những khung hình để khôi phục lại ký ức sân ga.</p>
+                        <button class="btn-vintage" id="start-memory-btn" onclick="startMemoryGame()">Bắt đầu khôi phục</button>
+                        <div id="memory-grid" class="memory-grid"></div>
+                        <div id="memory-win" class="memory-win-screen" style="display: none;">
+                            <img src="https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?w=300" alt="Kỷ niệm" class="sparkle-img">
+                            <p style="color:#e8c382; font-weight:bold;">✨ Ký ức đã được ghép lại trọn vẹn ✨</p>
+                        </div>
+                        <!-- Audio ẩn cho nhạc nền game ghép hình -->
+                        <audio id="gramophone-audio" loop>
+                            <source src="https://raw.githubusercontent.com/c8948055-oss/nhagaMeown.crypto.io/c55e15d5e74dece9e250d2fa1ceb8a184eaa993e/%C4%90%C6%B0%E1%BB%9Dng%20L%C3%AAn%20Ph%C3%ADa%20Tr%C6%B0%E1%BB%9Bc%20-%20S%C3%A0i%20G%C3%B2n%20Chill%20ft.%20Ti%E1%BA%BFn%20Minh%20_%20%C4%90%C6%B0%E1%BB%9Dng%20L%C3%AAn%20Ph%C3%ADa%20Tr%C6%B0%E1%BB%9Bc%20%C3%81nh%20Tr%C4%83ng%20D%C3%ACm%20X%C3%A1c%20Th%C3%B9%20__%20%5BibMztUbPnMw%5D.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+
+                </div>
+            </div>
+
             <!-- SỔ LƯU BÚT -->
             <div class="section-view hidden" id="view-guestbook">
                 <div class="mailbox-panel">
@@ -598,7 +717,7 @@
                 <div class="feed-container" id="guestbookFeed"></div>
             </div>
 
-            <!-- TRẠM TUYỂN DỤNG (ĐÃ BỎ FORM ĐĂNG BÀI) -->
+            <!-- TRẠM TUYỂN DỤNG -->
             <div class="section-view hidden" id="view-recruitment">
                 <h2 class="embossed-title" style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center;">
                     HỒ SƠ DỰ BỊ
@@ -610,6 +729,20 @@
             </div>
         </div>
     </section>
+
+    <!-- Modal Admin cho Game Bốc Bài -->
+    <div id="admin-tarot-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-box-small">
+            <h3 style="color:#e8c382; text-align:center;">THÊM NHÂN VIÊN BỐC BÀI</h3>
+            <input type="text" id="admin-nv-name" placeholder="Tên nhân viên (VD: Chú bảo vệ già)">
+            <input type="text" id="admin-nv-img" placeholder="Link ảnh nhân viên">
+            <textarea id="admin-nv-prompt" placeholder="Tính cách/Câu nói mẫu (VD: Đường ray còn dài, nghỉ chân chút đi.)" style="height: 80px;"></textarea>
+            <div class="btn-group">
+                <button class="btn-vintage" onclick="saveStaffTarot()">Lưu lại</button>
+                <button class="btn-vintage" onclick="document.getElementById('admin-tarot-modal').style.display='none'">Đóng</button>
+            </div>
+        </div>
+    </div>
 
     <!-- HỘP NHẠC -->
     <button class="gramo-toggle paused" id="gramoToggle" title="Bật/Tắt Hộp Nhạc"><span class="vinyl-spin icon-slot" data-icon="disc"></span></button>
@@ -676,6 +809,187 @@
     </div>
 
     <script>
+        // ============================================================
+        // LOGIC KHU GIẢI TRÍ SÂN GA (THÊM MỚI VÀO ĐÂY)
+        // ============================================================
+
+        // --- 1. BỐC BÀI KÝ ỨC ---
+        let hasDrawnToday = false;
+
+        function saveStaffTarot() {
+            const name = document.getElementById('admin-nv-name').value;
+            const img = document.getElementById('admin-nv-img').value;
+            const prompt = document.getElementById('admin-nv-prompt').value;
+            
+            if(!name || !prompt) { alert("Vui lòng điền đủ Tên và Tính cách/Câu nói!"); return; }
+            
+            let staffList = JSON.parse(localStorage.getItem('ga_staffList')) || [];
+            staffList.push({ name, img: img || 'https://via.placeholder.com/150', prompt });
+            localStorage.setItem('ga_staffList', JSON.stringify(staffList));
+            
+            alert("Đã lưu nhân viên thành công!");
+            document.getElementById('admin-nv-name').value = '';
+            document.getElementById('admin-nv-img').value = '';
+            document.getElementById('admin-nv-prompt').value = '';
+            document.getElementById('admin-tarot-modal').style.display = 'none';
+        }
+
+        function drawTarotCard() {
+            if (hasDrawnToday) return; 
+            
+            let staffList = JSON.parse(localStorage.getItem('ga_staffList'));
+            if (!staffList || staffList.length === 0) {
+                staffList = [{
+                    name: "Người gác ghi",
+                    img: "https://images.unsplash.com/photo-1517488629431-6427e0ee1e5f?w=400",
+                    prompt: "Đường ray có thể dài, nhưng rồi chuyến tàu bạn đợi cũng sẽ đến thôi. Nghỉ ngơi nhé."
+                }];
+            }
+            
+            const randomStaff = staffList[Math.floor(Math.random() * staffList.length)];
+            
+            // Do chạy frontend, tạm dùng chính prompt làm câu thoại (Nếu có API AI thì gắn vào đây)
+            const simulatedAIResponse = `"${randomStaff.prompt}"`;
+
+            document.getElementById('tarot-img').src = randomStaff.img;
+            document.getElementById('tarot-name').innerText = randomStaff.name;
+            document.getElementById('tarot-message').innerText = simulatedAIResponse;
+            
+            document.getElementById('daily-card').classList.add('flipped');
+            hasDrawnToday = true;
+        }
+
+        // --- 2. CHAI THẢ TRÔI ---
+        function dropBottle() {
+            const msg = document.getElementById('bottle-input').value.trim();
+            if (!msg) return;
+            
+            let bottles = JSON.parse(localStorage.getItem('ga_bottles')) || [
+                "Hôm nay trời mưa to quá, nhớ nhà ghê.",
+                "Gửi cậu đang đọc dòng này: Cậu đã làm rất tốt rồi!",
+                "Chuyến tàu lúc 3h sáng vắng lặng đến lạ..."
+            ];
+            bottles.push(msg);
+            localStorage.setItem('ga_bottles', JSON.stringify(bottles));
+            
+            document.getElementById('bottle-input').value = "";
+            const display = document.getElementById('bottle-display');
+            display.style.display = "block";
+            display.innerHTML = "<em>Âm thanh tỏm xuống nước... Lời nhắn của bạn đã được thả trôi vào màn sương.</em>";
+        }
+
+        function pickBottle() {
+            let bottles = JSON.parse(localStorage.getItem('ga_bottles')) || ["Chưa có chai nào trôi dạt đến đây cả..."];
+            const randomMsg = bottles[Math.floor(Math.random() * bottles.length)];
+            
+            const display = document.getElementById('bottle-display');
+            display.style.display = "block";
+            display.innerHTML = `<strong>Một tờ giấy nhàu nhĩ viết:</strong><br><br>"${randomMsg}"`;
+        }
+
+        // --- 3. TRẠM NUÔI MÈO ẢO ---
+        let catAffection = parseInt(localStorage.getItem('ga_catAffection')) || 0;
+        updateCatUI();
+
+        function tuongTacMeo(action) {
+            if (catAffection >= 100) return;
+            
+            let increment = action === 'fish' ? 5 : (action === 'milk' ? 3 : 2);
+            catAffection += increment;
+            if (catAffection > 100) catAffection = 100;
+            
+            localStorage.setItem('ga_catAffection', catAffection);
+            updateCatUI();
+        }
+
+        function updateCatUI() {
+            const scoreEl = document.getElementById('affection-score');
+            const barEl = document.getElementById('affection-bar');
+            const visual = document.getElementById('cat-visual');
+            
+            if(scoreEl && barEl && visual) {
+                scoreEl.innerText = catAffection;
+                barEl.style.width = catAffection + '%';
+                
+                if (catAffection < 30) {
+                    visual.innerText = "💤 Mèo hoang đang cuộn tròn ngủ, hơi cảnh giác.";
+                } else if (catAffection < 70) {
+                    visual.innerText = "🐈 Mèo vươn vai, đuôi khẽ vẫy vẫy nhìn bạn.";
+                } else if (catAffection < 100) {
+                    visual.innerText = "🐾 Mèo ngửa bụng, kêu meo đòi vuốt ve tiếp!";
+                } else {
+                    visual.innerText = "✨ Mèo cọ đầu vào tay bạn. Thật ấm áp!";
+                    document.getElementById('cat-gift').style.display = 'block';
+                }
+            }
+        }
+
+        // --- 4. GHÉP HÌNH KỶ NIỆM ---
+        const memImgs = [
+            "https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?w=150", 
+            "https://images.unsplash.com/photo-1601758174114-e711c0cbaa69?w=150", 
+            "https://images.unsplash.com/photo-1512428559087-560fa5ceab42?w=150", 
+            "https://images.unsplash.com/photo-1525011268546-bf3f9b007f6a?w=150"  
+        ];
+        let memCards = [];
+        let flippedCards = [];
+        let matchedCount = 0;
+
+        function startMemoryGame() {
+            document.getElementById('start-memory-btn').style.display = 'none';
+            document.getElementById('memory-win').style.display = 'none';
+            const grid = document.getElementById('memory-grid');
+            grid.innerHTML = '';
+            matchedCount = 0;
+            
+            const audio = document.getElementById('gramophone-audio');
+            if(audio) {
+                audio.volume = 0.3;
+                audio.play().catch(e => console.log("Cần tương tác trước để phát nhạc"));
+            }
+
+            memCards = [...memImgs, ...memImgs].sort(() => 0.5 - Math.random());
+
+            memCards.forEach((imgSrc, index) => {
+                let card = document.createElement('div');
+                card.classList.add('mem-card');
+                card.dataset.val = imgSrc;
+                card.dataset.index = index;
+                card.onclick = () => flipMemCard(card);
+                grid.appendChild(card);
+            });
+        }
+
+        function flipMemCard(card) {
+            if (flippedCards.length >= 2 || card.style.backgroundImage || card.classList.contains('matched')) return;
+
+            card.style.backgroundImage = `url(${card.dataset.val})`;
+            flippedCards.push(card);
+
+            if (flippedCards.length === 2) {
+                setTimeout(checkMatch, 800);
+            }
+        }
+
+        function checkMatch() {
+            const [c1, c2] = flippedCards;
+            if (c1.dataset.val === c2.dataset.val) {
+                c1.classList.add('matched');
+                c2.classList.add('matched');
+                matchedCount += 2;
+                if (matchedCount === memCards.length) {
+                    document.getElementById('memory-win').style.display = 'block';
+                    const audio = document.getElementById('gramophone-audio');
+                    if(audio) audio.pause();
+                }
+            } else {
+                c1.style.backgroundImage = '';
+                c2.style.backgroundImage = '';
+            }
+            flippedCards = [];
+        }
+
+
         // ============================================================
         // GLOBAL KHÁCH XEM ALBUM & MỞ KHÓA
         // ============================================================
