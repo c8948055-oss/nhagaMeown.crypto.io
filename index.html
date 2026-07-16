@@ -1090,7 +1090,7 @@
             if (!skipMusicSync) CONFIG.musicLastUpdated = Date.now();
             if (!CONFIG.musicLibrary) CONFIG.musicLibrary = []; 
 
-            const mainPayload = { stationMaster: CONFIG.stationMaster, trains: CONFIG.staff.length > 0 ? CONFIG.trains : CONFIG.trains, staff: CONFIG.staff, upcomingBots: CONFIG.upcomingBots, lastUpdated: CONFIG.lastUpdated, musicLastUpdated: CONFIG.musicLastUpdated };
+            const mainPayload = { stationMaster: CONFIG.stationMaster, trains: CONFIG.trains, staff: CONFIG.staff, upcomingBots: CONFIG.upcomingBots, lastUpdated: CONFIG.lastUpdated, musicLastUpdated: CONFIG.musicLastUpdated };
             const musicPayload = { timestamp: CONFIG.musicLastUpdated, library: CONFIG.musicLibrary };
             
             try { 
@@ -1509,7 +1509,21 @@
                                     const parts = line.split('|');
                                     if(parts.length >= 2) {
                                         const name = parts[0].trim();
-                                        const link = parts.slice(1).join('|').trim(); 
+                                        let link = parts.slice(1).join('|').trim(); 
+                                        
+                                        // BỘ LỌC TỰ ĐỘNG CHUYỂN ĐỔI LINK GOOGLE DRIVE
+                                        if (link.includes("drive.google.com")) {
+                                            let fileId = "";
+                                            if (link.includes("/d/")) {
+                                                fileId = link.split("/d/")[1].split("/")[0];
+                                            } else if (link.includes("id=")) {
+                                                fileId = link.split("id=")[1].split("&")[0];
+                                            }
+                                            if (fileId) {
+                                                link = "https://drive.google.com/uc?export=download&id=" + fileId;
+                                            }
+                                        }
+
                                         if(name && link) {
                                             p.songs.push({ title: name, src: link });
                                             addedCount++;
