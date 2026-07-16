@@ -956,10 +956,20 @@
             
             let globalVisits = 0;
             try {
-                const { data: visitData } = await supa.from('station_config').select('data').eq('id', 8).single();
+                const { data: visitData } = await supa.from('station_config').select('data').eq('id', 99).single();
                 if (visitData && visitData.data) { globalVisits = parseInt(visitData.data); }
-                if (!sessionStorage.getItem('has_visited_v5')) { globalVisits++; sessionStorage.setItem('has_visited_v5', 'true'); supa.from('station_config').upsert([{ id: 8, data: globalVisits.toString() }]).then(); }
-            } catch(e) { if (!sessionStorage.getItem('has_visited_v5')) { globalVisits = 1; sessionStorage.setItem('has_visited_v5', 'true'); } }
+                if (!sessionStorage.getItem('has_visited_v99') && !isAdminMode) { 
+                    globalVisits++; 
+                    sessionStorage.setItem('has_visited_v99', 'true'); 
+                    supa.from('station_config').upsert([{ id: 99, data: globalVisits.toString() }]).then(); 
+                }
+            } catch(e) { 
+                if (!sessionStorage.getItem('has_visited_v99') && !isAdminMode) { 
+                    globalVisits = 1; 
+                    sessionStorage.setItem('has_visited_v99', 'true'); 
+                    supa.from('station_config').upsert([{ id: 99, data: '1' }]).then(); 
+                } 
+            }
 
             const staffSearchEl = document.getElementById("staffSearch"); if (staffSearchEl) { staffSearchEl.addEventListener("input", (e) => { currentSearch = e.target.value; renderTrains(); }); }
             const staffSortSelect = document.getElementById("staffSortSelect"); if (staffSortSelect) { staffSortSelect.addEventListener("change", () => { renderTrains(); }); }
@@ -969,6 +979,25 @@
             rollNumber(document.getElementById("statStaff"), CONFIG.staff.length || 0); rollNumber(document.getElementById("statVisits"), globalVisits); 
             
             await fetchFeeds(); updateNotifications();
+
+            // ĐỒNG BỘ REALTIME LƯỢT TRUY CẬP VÀ HỘP NHẠC
+            supa.channel('meown_sync_channel')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'station_config' }, payload => {
+                    if (payload.new) {
+                        if (payload.new.id === 99) {
+                            rollNumber(document.getElementById("statVisits"), parseInt(payload.new.data));
+                        }
+                        if (payload.new.id === 2 && !isAdminMode) {
+                            let parsed = typeof payload.new.data === 'string' ? JSON.parse(payload.new.data) : payload.new.data;
+                            if (parsed && parsed.library) {
+                                CONFIG.musicLibrary = parsed.library;
+                                localforage.setItem("meown_music_backup", parsed);
+                                renderGramoPlaylists();
+                                if(activeMusicPl) renderGramoSongs(activeMusicPl);
+                            }
+                        }
+                    }
+                }).subscribe();
         });
 
         window.gotoNoti = function(type, id) {
@@ -1012,7 +1041,14 @@
                 let dbConfig = {}; if (mainData && mainData.data) { dbConfig = typeof mainData.data === 'string' ? JSON.parse(mainData.data) : mainData.data; }
                 let localMain = await localforage.getItem("meown_config_backup") || {};
                 let dbTime = dbConfig.lastUpdated || 0; let localTime = localMain.lastUpdated || 0;
-                if (localTime > dbTime) { CONFIG = { ...CONFIG, ...localMain }; } else { CONFIG = { ...CONFIG, ...dbConfig }; }
+                
+                if (isAdminMode && localTime > dbTime) { 
+                    CONFIG = { ...CONFIG, ...localMain }; 
+                } else { 
+                    CONFIG = { ...CONFIG, ...dbConfig }; 
+                    localforage.setItem("meown_config_backup", dbConfig);
+                }
+                
                 fetchMusicConfig();
             } catch(e) { console.warn("Lỗi đồng bộ dữ liệu hệ thống:", e); }
         }
@@ -1035,14 +1071,14 @@
                 if (Array.isArray(localMusicPayload)) { localMusicPayload = { timestamp: 0, library: localMusicPayload }; } 
                 else if (!localMusicPayload) { localMusicPayload = { timestamp: 0, library: [] }; }
 
-                if (dbMusicPayload.timestamp >= localMusicPayload.timestamp) {
-                    CONFIG.musicLibrary = dbMusicPayload.library || [];
-                    await localforage.setItem("meown_music_backup", dbMusicPayload); 
-                } else {
+                if (isAdminMode && localMusicPayload.timestamp > dbMusicPayload.timestamp) {
                     CONFIG.musicLibrary = localMusicPayload.library || [];
                     supa.from('station_config').upsert([{ id: 2, data: JSON.stringify(localMusicPayload) }]).then(({error}) => {
                         if(error && isAdminMode) console.warn("Vẫn bị lỗi nghẽn Supabase do file quá to!");
                     });
+                } else {
+                    CONFIG.musicLibrary = dbMusicPayload.library || [];
+                    await localforage.setItem("meown_music_backup", dbMusicPayload); 
                 }
 
                 renderGramoPlaylists();
