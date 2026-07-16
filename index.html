@@ -1090,7 +1090,7 @@
             if (!skipMusicSync) CONFIG.musicLastUpdated = Date.now();
             if (!CONFIG.musicLibrary) CONFIG.musicLibrary = []; 
 
-            const mainPayload = { stationMaster: CONFIG.stationMaster, trains: CONFIG.trains, staff: CONFIG.staff, upcomingBots: CONFIG.upcomingBots, lastUpdated: CONFIG.lastUpdated, musicLastUpdated: CONFIG.musicLastUpdated };
+            const mainPayload = { stationMaster: CONFIG.stationMaster, trains: CONFIG.staff.length > 0 ? CONFIG.trains : CONFIG.trains, staff: CONFIG.staff, upcomingBots: CONFIG.upcomingBots, lastUpdated: CONFIG.lastUpdated, musicLastUpdated: CONFIG.musicLastUpdated };
             const musicPayload = { timestamp: CONFIG.musicLastUpdated, library: CONFIG.musicLibrary };
             
             try { 
@@ -1470,19 +1470,22 @@
                     
                     body.innerHTML = `
                         <div class="form-row"><label>Chọn Playlist</label><select id="aSongPlSelect">${plOptions}</select></div>
+                        
                         <div class="form-row" style="background: rgba(221,170,51,0.1); padding: 15px; border: 2px dashed var(--amber); border-radius: 4px;">
-                            <label style="color:var(--amber);">CÁCH 1: DÁN LINK TRỰC TIẾP (KHUYÊN DÙNG, KHÔNG BỊ LỖI ĐỒNG BỘ)</label>
-                            <input type="text" id="directSongLink" placeholder="Dán link MP3 từ host ngoài (Drive, Github, Dropbox...)">
-                            <input type="text" id="directSongName" placeholder="Tên bài hát..." style="margin-top:8px;">
-                            <button class="submit-btn" id="btnAddLinkSong" style="margin-top:8px; padding: 10px;">THÊM BẰNG LINK</button>
+                            <label style="color:var(--amber);">CÁCH 1: DÁN LINK HÀNG LOẠT (SIÊU NHANH, KHÔNG LỖI)</label>
+                            <p style="font-size:11px; color:var(--silver); margin-bottom:8px; text-transform:none;">Nhập theo cú pháp: <b>Tên bài hát | Link MP3 trực tiếp</b> (Mỗi bài 1 dòng)</p>
+                            <textarea id="bulkSongInput" placeholder="Ví dụ:\nTình ca của Vũ | https://link-bai-1.mp3\nHôm nay thất tình | https://link-bai-2.mp3" style="height: 120px; white-space: pre; line-height: 1.6;"></textarea>
+                            <button class="submit-btn" id="btnAddBulkSong" style="margin-top:8px; padding: 10px;">THÊM TẤT CẢ VÀO PLAYLIST</button>
                         </div>
+
                         <div style="text-align:center; font-weight:bold; margin: 15px 0;">HOẶC</div>
+
                         <div class="form-row">
                             <label class="file-btn" style="width:100%; background:var(--amber); color:#000; border-color:#000; padding:16px;">
                                 <input type="file" accept="audio/*" multiple id="masterSongUpload" style="display:none;">
                                 <span class="icon-slot" data-icon="paperclip"></span> CÁCH 2: UP FILE NHẠC TỪ MÁY (< 1MB)
                             </label>
-                            <p style="font-size:11px; color:var(--blood); font-weight:bold; margin-top:8px; text-align:center;">Tuyệt đối không up quá 3 bài cùng lúc. Dung lượng lớn sẽ làm cháy DB và không hiện trên điện thoại.</p>
+                            <p style="font-size:11px; color:var(--blood); font-weight:bold; margin-top:8px; text-align:center; text-transform:none;">Tuyệt đối không up quá 3 bài cùng lúc. Dung lượng lớn sẽ làm cháy DB và không hiện trên điện thoại.</p>
                         </div>
                         <div id="songsContainer"></div>
                         <div style="display:flex; gap:10px; margin-top:20px;">
@@ -1491,25 +1494,43 @@
                     
                     loadIcons();
 
-                    // Xử lý thêm bằng Link (Rất nhẹ, an toàn tuyệt đối)
-                    document.getElementById("btnAddLinkSong").addEventListener("click", async () => {
-                        const link = document.getElementById("directSongLink").value.trim();
-                        const name = document.getElementById("directSongName").value.trim();
-                        if(!link || !name) return alert("Vui lòng nhập cả Link và Tên bài hát!");
+                    // Xử lý thêm hàng loạt bằng Link
+                    document.getElementById("btnAddBulkSong").addEventListener("click", async () => {
+                        const text = document.getElementById("bulkSongInput").value.trim();
+                        if(!text) return alert("Vui lòng dán danh sách bài hát!");
                         
+                        const lines = text.split('\n');
+                        let addedCount = 0;
                         const targetPlId = document.getElementById("aSongPlSelect").value;
-                        CONFIG.musicLibrary.forEach(p => { if(p.id === targetPlId) { p.songs.push({ title: name, src: link }); } });
                         
-                        document.getElementById("btnAddLinkSong").textContent = "ĐANG LƯU...";
+                        CONFIG.musicLibrary.forEach(p => { 
+                            if(p.id === targetPlId) { 
+                                lines.forEach(line => {
+                                    const parts = line.split('|');
+                                    if(parts.length >= 2) {
+                                        const name = parts[0].trim();
+                                        const link = parts.slice(1).join('|').trim(); 
+                                        if(name && link) {
+                                            p.songs.push({ title: name, src: link });
+                                            addedCount++;
+                                        }
+                                    }
+                                });
+                            } 
+                        });
+                        
+                        if(addedCount === 0) return alert("Không tìm thấy bài hát nào đúng cú pháp (Tên bài | Link)!");
+                        
+                        document.getElementById("btnAddBulkSong").textContent = "ĐANG LƯU...";
                         await saveStationConfigToDB(false);
                         if (activeMusicPl === targetPlId) { renderGramoSongs(activeMusicPl); }
-                        document.getElementById("directSongLink").value = "";
-                        document.getElementById("directSongName").value = "";
-                        document.getElementById("btnAddLinkSong").textContent = "THÊM BẰNG LINK";
-                        alert("Thêm bài hát bằng link thành công!");
+                        
+                        document.getElementById("bulkSongInput").value = "";
+                        document.getElementById("btnAddBulkSong").textContent = "THÊM TẤT CẢ VÀO PLAYLIST";
+                        alert(`Đã thêm thành công ${addedCount} bài hát!`);
                     });
 
-                    // Xử lý File Upload như cũ
+                    // Xử lý File Upload (Cách cũ)
                     document.getElementById("masterSongUpload").addEventListener("change", function(e) {
                         const files = e.target.files; const container = document.getElementById("songsContainer");
                         if(files.length > 3) { alert("Chỉ được up tối đa 3 bài/lần để tránh sập máy chủ!"); this.value = ""; return; }
@@ -1544,7 +1565,6 @@
                             btn.textContent = "ĐANG LƯU LÊN SUPABASE..."; 
                             await saveStationConfigToDB(false); 
                             
-                            // Check lại xem Supabase có nhả lỗi không
                             const checkData = await supa.from('station_config').select('data').eq('id', 2).single();
                             if(!checkData.data) throw new Error("Máy chủ từ chối file do dung lượng quá lớn!");
 
@@ -1552,8 +1572,7 @@
                             document.getElementById("generalModal").classList.add("hidden"); 
                             alert(`Đã thêm ${processed} bài hát thành công! Vui lòng F5 trên điện thoại để kiểm tra.`);
                         } catch (err) { 
-                            alert("CẢNH BÁO TỪ HỆ THỐNG: Quá tải dung lượng Supabase. Mạng đã từ chối nhận file của bạn.\nGiải pháp: Xóa bộ nhớ Laptop bằng F12 và dùng Cách 1 (Dán Link) ở trên.");
-                            // Force Rollback để bảo vệ Laptop không bị kẹt dữ liệu ảo
+                            alert("CẢNH BÁO TỪ HỆ THỐNG: Mạng đã từ chối nhận file do quá giới hạn dung lượng.\nGiải pháp: Dùng Cách 1 (Dán Link Hàng Loạt) ở trên.");
                             await fetchMusicConfig();
                         } finally { btn.textContent = "LƯU LÊN MÁY CHỦ"; btn.style.pointerEvents = 'auto'; }
                     });
