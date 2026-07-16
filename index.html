@@ -598,7 +598,7 @@
                 <div class="feed-container" id="guestbookFeed"></div>
             </div>
 
-            <!-- TRẠM TUYỂN DỤNG -->
+            <!-- TRẠM TUYỂN DỤNG (ĐÃ BỎ FORM ĐĂNG BÀI) -->
             <div class="section-view hidden" id="view-recruitment">
                 <h2 class="embossed-title" style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center;">
                     HỒ SƠ DỰ BỊ
@@ -607,22 +607,6 @@
                     <button class="submit-btn" style="width:auto; background:var(--amber); color:#000;" onclick="openAdminForm('upcoming', 'add')">➕ THÊM HỒ SƠ DỰ BỊ</button>
                 </div>
                 <div id="upcomingBotsGrid" style="margin-bottom: 40px; width: 100%;"></div>
-                
-                <div class="mailbox-panel">
-                    <h2 class="embossed-title">GỬI Ý TƯỞNG CỦA BẠN</h2>
-                    <form id="recruitForm">
-                        <div id="rcNameWrap">
-                            <div class="form-row">
-                                <label style="display:flex; align-items:center;">Tên / Bút danh <button type="button" class="suggest-btn" onclick="suggestName('rcName')">🎲 Gợi ý</button></label>
-                                <input type="text" id="rcName" placeholder="Nhập tên..." required>
-                            </div>
-                        </div>
-                        <div class="form-row file-upload-wrapper"><label class="file-btn"><input type="file" accept="image/*" multiple id="rcFileInp" style="display:none;"><span class="icon-slot" data-icon="paperclip"></span> Ảnh ý tưởng (Nếu có)</label><div id="rcPreview" class="img-preview-grid"></div></div>
-                        <div class="form-row"><label>Mô tả chi tiết</label><textarea id="rcMessage" placeholder="Miêu tả bối cảnh..." required style="height: 100px;"></textarea></div>
-                        <button type="submit" class="submit-btn">GỬI LÊN HỆ THỐNG</button>
-                    </form>
-                </div>
-                <div class="feed-container" id="recruitFeed"></div>
             </div>
         </div>
     </section>
@@ -772,12 +756,12 @@
 
         window.tempCmtImgs = {}; 
 
-        window.reactPost = async function(type, postIdStr, reactionType) {
-            const postList = type === 'guestbook' ? localGuestbook : localRecruit;
+        window.reactPost = async function(postIdStr, reactionType) {
+            const postList = localGuestbook;
             const post = postList.find(p => String(p.id) === String(postIdStr));
             if(!post) return;
 
-            const votedKey = `reacted_${type}_${postIdStr}`;
+            const votedKey = `reacted_guestbook_${postIdStr}`;
             const oldReact = localStorage.getItem(votedKey);
 
             if(!post.reactions) post.reactions = {like:0, love:0, haha:0, sad:0, angry:0};
@@ -791,9 +775,9 @@
 
             if(typeof post.reactions !== 'string') post.reactions = JSON.stringify(post.reactions);
 
-            renderFeed(type);
-            await localforage.setItem(type === 'guestbook' ? 'meown_gb_backup' : 'meown_rc_backup', postList);
-            supa.from(type === 'guestbook' ? 'meown_guestbook' : 'meown_recruit').update({reactions: post.reactions}).eq('id', postIdStr).then(({error})=> {if(error) console.warn(error);});
+            renderFeed("guestbook");
+            await localforage.setItem('meown_gb_backup', postList);
+            supa.from('meown_guestbook').update({reactions: post.reactions}).eq('id', postIdStr).then(({error})=> {if(error) console.warn(error);});
         };
 
         window.handleCmtImg = async function(e, postId) {
@@ -814,14 +798,14 @@
 
         window.removeCmtImg = function(postId, i) { window.tempCmtImgs[postId].splice(i, 1); renderCmtPrev(postId); };
 
-        window.sendComment = async function(type, postIdStr) {
+        window.sendComment = async function(postIdStr) {
             const textInp = document.getElementById(`cmt-text-${postIdStr}`);
             if (!textInp) return;
             const text = textInp.value.trim();
             const imgArr = window.tempCmtImgs[postIdStr] || [];
             if(!text && imgArr.length === 0) return alert("Nhập nội dung hoặc chọn ảnh để bình luận nhé!");
 
-            const postList = type === 'guestbook' ? localGuestbook : localRecruit;
+            const postList = localGuestbook;
             const post = postList.find(p => String(p.id) === String(postIdStr));
             if(!post) return alert("Hệ thống đơ, xin load lại trang!");
 
@@ -834,10 +818,10 @@
             cmtArr.push({ id: Date.now(), name: authorName, text: text, images: [...imgArr], date: Date.now() });
             post.comments = JSON.stringify(cmtArr);
 
-            window.tempCmtImgs[postIdStr] = []; textInp.value = ""; renderFeed(type);
+            window.tempCmtImgs[postIdStr] = []; textInp.value = ""; renderFeed("guestbook");
 
-            await localforage.setItem(type === 'guestbook' ? 'meown_gb_backup' : 'meown_rc_backup', postList);
-            supa.from(type === 'guestbook' ? 'meown_guestbook' : 'meown_recruit').update({comments: post.comments}).eq('id', postIdStr).then(({error})=> {if(error) console.warn(error);});
+            await localforage.setItem('meown_gb_backup', postList);
+            supa.from('meown_guestbook').update({comments: post.comments}).eq('id', postIdStr).then(({error})=> {if(error) console.warn(error);});
         };
 
         const ICONS = {
@@ -906,7 +890,7 @@
         const VERIFIED_TICK = `<svg style="width:14px; height:14px; display:inline-block; vertical-align:middle; margin-left:4px;" viewBox="0 0 24 24" fill="#0866FF"><circle cx="12" cy="12" r="10"/><path d="M16.5 8.5l-6 6-3-3" stroke="#fff" stroke-width="2" fill="none"/></svg>`;
         
         let CONFIG = { stationMaster: { avatar: "", name: "Trưởng Ga", bio: "Chào mừng đến với nhà ga Meown.", facebook: {} }, trains: [], staff: [], upcomingBots: [], musicLibrary: [], lastUpdated: 0, musicLastUpdated: 0 };
-        let isAdminMode = false; let activeMusicPl = null; let localGuestbook = []; let localRecruit = []; let currentSearch = ""; 
+        let isAdminMode = false; let activeMusicPl = null; let localGuestbook = []; let currentSearch = ""; 
 
         function removeAccents(str) { return str ? str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase() : ''; }
 
@@ -938,9 +922,8 @@
             if(urlParams.get('admin') === 'true' || localStorage.getItem('isAdmin') === 'true') {
                 isAdminMode = true; document.body.classList.add("admin-active");
                 const adminAvatarHtml = `<img src="${ADMIN_CAT_AVATAR}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;">`;
-                const gbWrap = document.getElementById("gbNameWrap"); const rcWrap = document.getElementById("rcNameWrap");
+                const gbWrap = document.getElementById("gbNameWrap");
                 if(gbWrap) { gbWrap.innerHTML = `<div style="display:inline-flex; align-items:center; gap:6px; color:var(--amber); font-weight:900; margin-bottom:10px;">${adminAvatarHtml} TRƯỞNG GA MEOWN ${VERIFIED_TICK}</div>`; }
-                if(rcWrap) { rcWrap.innerHTML = `<div style="display:inline-flex; align-items:center; gap:6px; color:var(--amber); font-weight:900; margin-bottom:10px;">${adminAvatarHtml} TRƯỞNG GA MEOWN ${VERIFIED_TICK}</div>`; }
                 const cleanUrl = window.location.href.split('?')[0]; window.history.replaceState({}, document.title, cleanUrl);
             }
         }
@@ -978,7 +961,7 @@
             updateStationMasterUI(); renderTrains(); renderUpcomingBots();
             rollNumber(document.getElementById("statStaff"), CONFIG.staff.length || 0); rollNumber(document.getElementById("statVisits"), globalVisits); 
             
-            await fetchFeeds(); updateNotifications();
+            await fetchFeeds(); 
 
             // ĐỒNG BỘ REALTIME LƯỢT TRUY CẬP VÀ HỘP NHẠC
             supa.channel('meown_sync_channel')
@@ -1007,7 +990,6 @@
             document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active")); document.querySelectorAll(".section-view").forEach(v => v.classList.add("hidden"));
 
             if(type === 'guestbook') { document.querySelector('.nav-item[data-view="guestbook"]').classList.add("active"); document.getElementById("view-guestbook").classList.remove("hidden"); window.scrollTo({top: 0, behavior: 'smooth'}); } 
-            else if(type === 'recruit') { document.querySelector('.nav-item[data-view="recruitment"]').classList.add("active"); document.getElementById("view-recruitment").classList.remove("hidden"); window.scrollTo({top: 0, behavior: 'smooth'}); } 
             else if(type === 'staff') {
                 document.querySelector('.nav-item[data-view="trains"]').classList.add("active"); document.getElementById("view-trains").classList.remove("hidden");
                 setTimeout(() => { const card = document.getElementById('staff_card_' + id); if(card) { const acc = card.closest('.train-accordion'); if(acc && !acc.classList.contains('open')) acc.classList.add('open'); card.scrollIntoView({behavior: 'smooth', block: 'center'}); card.querySelector('.staff-card-inner').style.boxShadow = "0 0 30px var(--amber)"; setTimeout(() => card.querySelector('.staff-card-inner').style.boxShadow = "6px 6px 0 rgba(0,0,0,1)", 3000); } }, 300);
@@ -1022,7 +1004,6 @@
                 let lastRead = parseInt(localStorage.getItem("admin_last_read") || "0");
                 CONFIG.staff.forEach(st => { (st.feedbacks || []).forEach(fb => { if (fb.date && fb.date > lastRead) { notiCount++; html += `<div class="noti-item" onclick="gotoNoti('staff', '${st.id}')">Khách <b>${fb.name}</b> vừa gửi feedback cho <span class="highlight">${st.name}</span>.</div>`; } }); });
                 localGuestbook.forEach(post => { let pTime = new Date(post.created_at || post.date).getTime(); if (pTime && pTime > lastRead) { notiCount++; html += `<div class="noti-item" onclick="gotoNoti('guestbook')"><b>${post.name || post.author}</b> vừa viết vào <span class="highlight">Sổ lưu bút</span>.</div>`; } });
-                localRecruit.forEach(post => { let pTime = new Date(post.created_at || post.date).getTime(); if (pTime && pTime > lastRead) { notiCount++; html += `<div class="noti-item" onclick="gotoNoti('recruit')"><b>${post.name || post.author}</b> vừa gửi ý tưởng <span class="highlight">Tuyển dụng</span>.</div>`; } });
             } else {
                 let userLastRead = parseInt(localStorage.getItem("user_last_read_noti") || "0");
                 let sortedStaff = [...CONFIG.staff].filter(s => !s.isHidden).sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
@@ -1118,13 +1099,10 @@
             try { 
                 const { data: gbData } = await supa.from('meown_guestbook').select('*'); 
                 if(gbData && gbData.length > 0) localGuestbook = gbData; else { const gbBackup = await localforage.getItem("meown_gb_backup"); if(gbBackup) localGuestbook = gbBackup; }
-                const { data: rcData } = await supa.from('meown_recruit').select('*'); 
-                if(rcData && rcData.length > 0) localRecruit = rcData; else { const rcBackup = await localforage.getItem("meown_rc_backup"); if(rcBackup) localRecruit = rcBackup; }
             } catch(e) {
                 const gbB = await localforage.getItem("meown_gb_backup"); if(gbB) localGuestbook = gbB;
-                const rcB = await localforage.getItem("meown_rc_backup"); if(rcB) localRecruit = rcB;
             }
-            renderFeed("guestbook"); renderFeed("recruit"); updateNotifications();
+            renderFeed("guestbook"); updateNotifications();
         }
 
         let gbB64Imgs = [];
@@ -1148,37 +1126,20 @@
             btn.textContent = "ĐĂNG BÀI"; btn.style.pointerEvents = "auto";
         });
 
-        let rcB64Imgs = [];
-        document.getElementById("rcFileInp").addEventListener("change", async (ev) => {
-            if(ev.target.files.length > 5) { alert("Để ga không bị quá tải, chỉ tải tối đa 5 ảnh một lần thôi nha!"); ev.target.value = ""; return; }
-            document.getElementById("rcPreview").innerHTML = "<p style='color:var(--amber); font-size:12px;'>Đang xử lý ảnh, đợi chút xíu...</p>";
-            for(let f of ev.target.files) { const b64 = await resizeImage(f, 1920); rcB64Imgs.push(b64); document.getElementById("rcPreview").innerHTML += `<img src="${b64}" onclick="openLightbox(this.src, event)" style="cursor:zoom-in;">`; }
-            document.getElementById("rcPreview").querySelector('p')?.remove();
-        });
-
-        document.getElementById("recruitForm").addEventListener("submit", async (e) => {
-            e.preventDefault(); const btn = e.target.querySelector("button"); btn.textContent = "ĐANG GỬI..."; btn.style.pointerEvents = "none";
-            try {
-                const rcNameEl = document.getElementById("rcName");
-                const authorName = rcNameEl ? (rcNameEl.value || "Khách") : "Trưởng ga Meown";
-                const post = { id: Date.now(), name: authorName, author: authorName, text: document.getElementById("rcMessage").value, content: document.getElementById("rcMessage").value, images: JSON.stringify(rcB64Imgs), date: Date.now(), created_at: new Date().toISOString(), reactions: JSON.stringify({like:0, love:0, haha:0, sad:0, angry:0}), comments: JSON.stringify([]) };
-                localRecruit.unshift(post); renderFeed("recruit"); await localforage.setItem('meown_rc_backup', localRecruit);
-                supa.from('meown_recruit').insert([post]).then(({error}) => { if(error) console.warn("Lỗi máy chủ:", error); });
-                e.target.reset(); document.getElementById("rcPreview").innerHTML = ""; rcB64Imgs = []; alert("Đã gửi Ý tưởng thành công!");
-            } catch(err) { alert("Lỗi khi đăng bài!"); }
-            btn.textContent = "GỬI LÊN HỆ THỐNG"; btn.style.pointerEvents = "auto";
-        });
-
         window.openAdminPost = function(type, id) { openAdminForm('post', 'edit', {type, id}); };
         window.deletePostFromDB = async function(type, id) {
             if(!confirm("Xóa bài đăng này vĩnh viễn?")) return;
-            const table = type === "guestbook" ? "meown_guestbook" : "meown_recruit";
-            try { await supa.from(table).delete().eq('id', id); if(type === "guestbook") { localGuestbook = localGuestbook.filter(p => p.id !== id); await localforage.setItem('meown_gb_backup', localGuestbook); renderFeed("guestbook"); } else { localRecruit = localRecruit.filter(p => p.id !== id); await localforage.setItem('meown_rc_backup', localRecruit); renderFeed("recruit"); } } catch(e){}
+            try { 
+                await supa.from('meown_guestbook').delete().eq('id', id); 
+                localGuestbook = localGuestbook.filter(p => p.id !== id); 
+                await localforage.setItem('meown_gb_backup', localGuestbook); 
+                renderFeed("guestbook"); 
+            } catch(e){}
         };
 
         function renderFeed(type) {
-            const container = document.getElementById(type === "guestbook" ? "guestbookFeed" : "recruitFeed");
-            container.innerHTML = ""; let posts = type === "guestbook" ? localGuestbook : localRecruit;
+            const container = document.getElementById("guestbookFeed");
+            container.innerHTML = ""; let posts = localGuestbook;
             if(!posts || posts.length === 0) { container.innerHTML = "<p style='color:var(--silver); font-style:italic;'>Chưa có bài đăng nào.</p>"; return; }
             
             posts.sort((a,b) => (new Date(b.date || b.created_at).getTime()) - (new Date(a.date || a.created_at).getTime()));
@@ -1200,7 +1161,7 @@
                 let cmtArr = [];
                 if(post.comments) { if(typeof post.comments === 'string') try { cmtArr = JSON.parse(post.comments); } catch(e) {} else cmtArr = post.comments; }
 
-                let myReact = localStorage.getItem(`reacted_${type}_${post.id}`);
+                let myReact = localStorage.getItem(`reacted_guestbook_${post.id}`);
 
                 let commentsHtml = cmtArr.map(c => {
                     let isAdminCmt = (c.name === "Trưởng ga Meown");
@@ -1221,17 +1182,17 @@
                     <div class="post-content">${post.text || post.content || ""}</div>
                     ${imgsHtml}
                     <div class="reaction-container">
-                        <button class="emoji-btn ${myReact === 'like' ? 'active' : ''}" onclick="reactPost('${type}', '${post.id}', 'like')" title="Thích">👍 <span class="count">${reactObj.like > 0 ? reactObj.like : ''}</span></button>
-                        <button class="emoji-btn ${myReact === 'love' ? 'active' : ''}" onclick="reactPost('${type}', '${post.id}', 'love')" title="Yêu thích">❤️ <span class="count">${reactObj.love > 0 ? reactObj.love : ''}</span></button>
-                        <button class="emoji-btn ${myReact === 'haha' ? 'active' : ''}" onclick="reactPost('${type}', '${post.id}', 'haha')" title="Haha">😆 <span class="count">${reactObj.haha > 0 ? reactObj.haha : ''}</span></button>
-                        <button class="emoji-btn ${myReact === 'sad' ? 'active' : ''}" onclick="reactPost('${type}', '${post.id}', 'sad')" title="Buồn">😢 <span class="count">${reactObj.sad > 0 ? reactObj.sad : ''}</span></button>
-                        <button class="emoji-btn ${myReact === 'angry' ? 'active' : ''}" onclick="reactPost('${type}', '${post.id}', 'angry')" title="Phẫn nộ">😡 <span class="count">${reactObj.angry > 0 ? reactObj.angry : ''}</span></button>
+                        <button class="emoji-btn ${myReact === 'like' ? 'active' : ''}" onclick="reactPost('${post.id}', 'like')" title="Thích">👍 <span class="count">${reactObj.like > 0 ? reactObj.like : ''}</span></button>
+                        <button class="emoji-btn ${myReact === 'love' ? 'active' : ''}" onclick="reactPost('${post.id}', 'love')" title="Yêu thích">❤️ <span class="count">${reactObj.love > 0 ? reactObj.love : ''}</span></button>
+                        <button class="emoji-btn ${myReact === 'haha' ? 'active' : ''}" onclick="reactPost('${post.id}', 'haha')" title="Haha">😆 <span class="count">${reactObj.haha > 0 ? reactObj.haha : ''}</span></button>
+                        <button class="emoji-btn ${myReact === 'sad' ? 'active' : ''}" onclick="reactPost('${post.id}', 'sad')" title="Buồn">😢 <span class="count">${reactObj.sad > 0 ? reactObj.sad : ''}</span></button>
+                        <button class="emoji-btn ${myReact === 'angry' ? 'active' : ''}" onclick="reactPost('${post.id}', 'angry')" title="Phẫn nộ">😡 <span class="count">${reactObj.angry > 0 ? reactObj.angry : ''}</span></button>
                         <button class="react-btn" onclick="document.getElementById('cmt-section-${post.id}').style.display='block'; document.getElementById('cmt-text-${post.id}').focus();"><span class="icon-slot" data-icon="comment"></span> BÌNH LUẬN (${cmtArr.length})</button>
                     </div>
                     <div class="comments-section" id="cmt-section-${post.id}" style="display: ${cmtArr.length > 0 ? 'block' : 'none'};">
                         ${commentsHtml}
                         <div class="comment-input-area" id="cmt-input-wrap-${post.id}">
-                            <div class="cmt-row">${nameInputHtml}<input type="text" id="cmt-text-${post.id}" class="cmt-input" placeholder="Viết bình luận..." onkeypress="if(event.key==='Enter') sendComment('${type}', '${post.id}')"><label class="cmt-file-btn" title="Đính kèm ảnh"><input type="file" accept="image/*" multiple style="display:none;" onchange="handleCmtImg(event, '${post.id}')"><span class="icon-slot" data-icon="paperclip"></span></label><button class="cmt-submit" onclick="sendComment('${type}', '${post.id}')">GỬI</button></div>
+                            <div class="cmt-row">${nameInputHtml}<input type="text" id="cmt-text-${post.id}" class="cmt-input" placeholder="Viết bình luận..." onkeypress="if(event.key==='Enter') sendComment('${post.id}')"><label class="cmt-file-btn" title="Đính kèm ảnh"><input type="file" accept="image/*" multiple style="display:none;" onchange="handleCmtImg(event, '${post.id}')"><span class="icon-slot" data-icon="paperclip"></span></label><button class="cmt-submit" onclick="sendComment('${post.id}')">GỬI</button></div>
                             <div class="cmt-preview" id="cmt-prev-${post.id}"></div>
                         </div>
                     </div>
@@ -1437,17 +1398,16 @@
                 });
             }
             else if(type === 'post') {
-                const table = idOrParentId.type; const postId = idOrParentId.id;
-                let targetPost = (table === 'guestbook' ? localGuestbook : localRecruit).find(p => p.id === postId);
+                const postId = idOrParentId.id;
+                let targetPost = localGuestbook.find(p => p.id === postId);
                 if(!targetPost) return;
                 document.getElementById("generalModalTitle").textContent = "CHỈNH SỬA BÀI ĐĂNG";
                 body.innerHTML = `<div class="form-row"><label>Tên tác giả</label><input type="text" id="aPostName" value="${targetPost.name || targetPost.author || ''}"></div><div class="form-row"><label>Nội dung</label><textarea id="aPostText" style="height:120px;">${targetPost.text || targetPost.content || ''}</textarea></div><button class="submit-btn" id="savePostBtn">LƯU BÀI VIẾT</button>`;
                 document.getElementById("savePostBtn").onclick = async () => {
                     targetPost.name = document.getElementById("aPostName").value; targetPost.author = targetPost.name;
                     targetPost.text = document.getElementById("aPostText").value; targetPost.content = targetPost.text;
-                    const dbTable = table === 'guestbook' ? 'meown_guestbook' : 'meown_recruit';
-                    try { await supa.from(dbTable).update({ name: targetPost.name, author: targetPost.author, text: targetPost.text, content: targetPost.content }).eq('id', postId); } catch(e) {}
-                    renderFeed(table); document.getElementById("generalModal").classList.add("hidden");
+                    try { await supa.from('meown_guestbook').update({ name: targetPost.name, author: targetPost.author, text: targetPost.text, content: targetPost.content }).eq('id', postId); } catch(e) {}
+                    renderFeed("guestbook"); document.getElementById("generalModal").classList.add("hidden");
                 };
             }
             else if(type === 'playlist') {
