@@ -1105,9 +1105,13 @@
                     if (error) {
                         console.error("Lỗi Supabase khi lưu nhạc:", error);
                         alert("⚠️ CẢNH BÁO TỪ HỆ THỐNG:\n\nFile MP3 của bạn tải lên ĐÃ LÀM QUÁ TẢI MÁY CHỦ SUPABASE (Vượt giới hạn dung lượng).\nBài nhạc vừa rồi CHỈ CÓ THỂ NGHE TRÊN LAPTOP NÀY và SẼ KHÔNG BAO GIỜ ĐỒNG BỘ ĐƯỢC XUỐNG ĐIỆN THOẠI.\n\nGiải pháp: Hãy lên Google tìm trang web 'Compress MP3' để nén file gốc xuống dung lượng siêu nhẹ (< 1MB) rồi mới Upload nhé!");
+                        throw new Error("Supabase quota exceeded");
                     }
                 }
-            } catch(e) { console.error("Lỗi mạng khi lưu DB:", e); }
+            } catch(e) { 
+                console.error("Lỗi mạng khi lưu DB:", e);
+                throw e;
+            }
         }
 
         async function fetchFeeds() {
@@ -1462,61 +1466,68 @@
                 if(!activeMusicPl) return alert("Vui lòng chọn 1 Playlist trước!");
                 if(action === 'add') {
                     let plOptions = CONFIG.musicLibrary.map(p => `<option value="${p.id}" ${p.id === activeMusicPl ? 'selected' : ''}>${p.name}</option>`).join('');
-                    document.getElementById("generalModalTitle").textContent = "TẢI NHẠC LÊN PLAYLIST";
+                    document.getElementById("generalModalTitle").textContent = "THÊM BÀI HÁT VÀO PLAYLIST";
                     
                     body.innerHTML = `
                         <div class="form-row"><label>Chọn Playlist</label><select id="aSongPlSelect">${plOptions}</select></div>
+                        <div class="form-row" style="background: rgba(221,170,51,0.1); padding: 15px; border: 2px dashed var(--amber); border-radius: 4px;">
+                            <label style="color:var(--amber);">CÁCH 1: DÁN LINK TRỰC TIẾP (KHUYÊN DÙNG, KHÔNG BỊ LỖI ĐỒNG BỘ)</label>
+                            <input type="text" id="directSongLink" placeholder="Dán link MP3 từ host ngoài (Drive, Github, Dropbox...)">
+                            <input type="text" id="directSongName" placeholder="Tên bài hát..." style="margin-top:8px;">
+                            <button class="submit-btn" id="btnAddLinkSong" style="margin-top:8px; padding: 10px;">THÊM BẰNG LINK</button>
+                        </div>
+                        <div style="text-align:center; font-weight:bold; margin: 15px 0;">HOẶC</div>
                         <div class="form-row">
                             <label class="file-btn" style="width:100%; background:var(--amber); color:#000; border-color:#000; padding:16px;">
                                 <input type="file" accept="audio/*" multiple id="masterSongUpload" style="display:none;">
-                                <span class="icon-slot" data-icon="paperclip"></span> CHỌN FILE ÂM THANH (< 1.5MB)
+                                <span class="icon-slot" data-icon="paperclip"></span> CÁCH 2: UP FILE NHẠC TỪ MÁY (< 1MB)
                             </label>
-                            <p style="font-size:11px; color:var(--blood); font-weight:bold; margin-top:8px; text-align:center;">Tuyệt đối nén MP3 < 1.5MB để không bị mất nhạc khi xem trên điện thoại.</p>
+                            <p style="font-size:11px; color:var(--blood); font-weight:bold; margin-top:8px; text-align:center;">Tuyệt đối không up quá 3 bài cùng lúc. Dung lượng lớn sẽ làm cháy DB và không hiện trên điện thoại.</p>
                         </div>
                         <div id="songsContainer"></div>
                         <div style="display:flex; gap:10px; margin-top:20px;">
-                            <button class="submit-btn" style="width:auto; padding: 14px; background:transparent;" id="addMoreRow" title="Thêm ô trống">➕ TẠO Ô TRỐNG</button>
-                            <button class="submit-btn" id="saveSg" style="flex:1;">LƯU BÀI HÁT LÊN MÁY CHỦ</button>
+                            <button class="submit-btn" id="saveSg" style="flex:1;">LƯU LÊN MÁY CHỦ</button>
                         </div>`;
                     
                     loadIcons();
 
+                    // Xử lý thêm bằng Link (Rất nhẹ, an toàn tuyệt đối)
+                    document.getElementById("btnAddLinkSong").addEventListener("click", async () => {
+                        const link = document.getElementById("directSongLink").value.trim();
+                        const name = document.getElementById("directSongName").value.trim();
+                        if(!link || !name) return alert("Vui lòng nhập cả Link và Tên bài hát!");
+                        
+                        const targetPlId = document.getElementById("aSongPlSelect").value;
+                        CONFIG.musicLibrary.forEach(p => { if(p.id === targetPlId) { p.songs.push({ title: name, src: link }); } });
+                        
+                        document.getElementById("btnAddLinkSong").textContent = "ĐANG LƯU...";
+                        await saveStationConfigToDB(false);
+                        if (activeMusicPl === targetPlId) { renderGramoSongs(activeMusicPl); }
+                        document.getElementById("directSongLink").value = "";
+                        document.getElementById("directSongName").value = "";
+                        document.getElementById("btnAddLinkSong").textContent = "THÊM BẰNG LINK";
+                        alert("Thêm bài hát bằng link thành công!");
+                    });
+
+                    // Xử lý File Upload như cũ
                     document.getElementById("masterSongUpload").addEventListener("change", function(e) {
                         const files = e.target.files; const container = document.getElementById("songsContainer");
+                        if(files.length > 3) { alert("Chỉ được up tối đa 3 bài/lần để tránh sập máy chủ!"); this.value = ""; return; }
                         for (let i = 0; i < files.length; i++) {
                             const file = files[i]; const row = document.createElement("div"); row.className = "form-row song-row";
                             row.style.cssText = "display:flex; flex-direction:column; gap:10px; margin-bottom: 20px; padding-bottom:15px; border-bottom:1px dashed #1A0F0A; position:relative;";
                             let cleanName = file.name.replace(/\.[^/.]+$/, ""); 
                             row.innerHTML = `<div style="display:flex; align-items:center; gap:10px;"><input type="text" class="sgName" value="${cleanName}" placeholder="Tên bài hát..." style="flex:1;"><button type="button" class="remove-row-btn" style="background:#8B0000; color:#fff; width:40px; height:40px; font-weight:bold; cursor:pointer; border:2px solid #1A0F0A; border-radius:2px; font-size:16px;">✕</button></div><div class="file-status" style="font-size:11px; color:#1A0F0A; font-weight:bold;">Tệp: ${file.name}</div>`;
                             row._attachedFile = file; row.querySelector(".remove-row-btn").onclick = function() { row._attachedFile = null; row.remove(); }; container.appendChild(row);
-                            const nameInput = row.querySelector(".sgName"); nameInput.style.transition = "0.3s"; nameInput.style.backgroundColor = "rgba(221, 170, 51, 0.2)"; setTimeout(() => { nameInput.style.backgroundColor = ""; }, 500);
                         } this.value = "";
                     });
 
-                    document.getElementById("addMoreRow").addEventListener("click", () => { 
-                        const row = document.createElement("div"); row.className = "form-row song-row"; 
-                        row.style.cssText = "display:flex; flex-direction:column; gap:10px; margin-bottom: 20px; padding-bottom:15px; border-bottom:1px dashed #1A0F0A; position:relative;"; 
-                        row.innerHTML = `<div style="display:flex; align-items:center; gap:10px;"><input type="text" class="sgName" placeholder="Tên bài hát..." style="flex:1;"><button type="button" class="remove-row-btn" style="background:#8B0000; color:#fff; width:40px; height:40px; font-weight:bold; cursor:pointer; border:2px solid #1A0F0A; border-radius:2px; font-size:16px;">✕</button></div><label class="file-btn" style="width:100%;"><input type="file" accept="audio/*" class="sgFile" style="display:none;"><span class="file-status">Chọn file âm thanh</span></label>`; 
-                        row.querySelector(".remove-row-btn").onclick = function() { row.remove(); }; document.getElementById("songsContainer").appendChild(row); 
-                    });
-
-                    document.getElementById("songsContainer").addEventListener("change", function(e) {
-                        if(e.target && e.target.classList.contains("sgFile")) {
-                            const fileInput = e.target; const row = fileInput.closest(".song-row");
-                            const statusText = row.querySelector(".file-status"); const nameInput = row.querySelector(".sgName");
-                            if(fileInput.files.length > 0) {
-                                const file = fileInput.files[0]; statusText.textContent = "Đã chọn: " + file.name; statusText.style.color = "#1A0F0A";
-                                if(nameInput && nameInput.value.trim() === "") { let cleanName = file.name.replace(/\.[^/.]+$/, ""); nameInput.value = cleanName; nameInput.style.transition = "0.3s"; nameInput.style.backgroundColor = "rgba(221, 170, 51, 0.2)"; setTimeout(() => { nameInput.style.backgroundColor = ""; }, 500); }
-                            }
-                        }
-                    });
-                    
                     document.getElementById("saveSg").addEventListener("click", async () => { 
                         const btn = document.getElementById("saveSg"); btn.style.pointerEvents = 'none';
                         try {
                             const targetPlId = document.getElementById("aSongPlSelect").value; const rows = document.querySelectorAll(".song-row"); let totalToProcess = 0;
                             for (let r of rows) { const title = r.querySelector(".sgName").value.trim(); const fileInput = r.querySelector(".sgFile"); const file = r._attachedFile || (fileInput && fileInput.files.length > 0 ? fileInput.files[0] : null); if(title && file) totalToProcess++; }
-                            if(totalToProcess === 0) throw new Error("Chưa có bài nhạc hợp lệ nào để tải lên!");
+                            if(totalToProcess === 0) return alert("Chưa có file nhạc hợp lệ nào để tải lên!");
                             
                             let processed = 0;
                             for (let r of rows) { 
@@ -1532,10 +1543,19 @@
                             
                             btn.textContent = "ĐANG LƯU LÊN SUPABASE..."; 
                             await saveStationConfigToDB(false); 
+                            
+                            // Check lại xem Supabase có nhả lỗi không
+                            const checkData = await supa.from('station_config').select('data').eq('id', 2).single();
+                            if(!checkData.data) throw new Error("Máy chủ từ chối file do dung lượng quá lớn!");
+
                             if (activeMusicPl === targetPlId) { renderGramoSongs(activeMusicPl); }
                             document.getElementById("generalModal").classList.add("hidden"); 
-                            alert(`Đã thêm ${processed} bài hát thành công! Vui lòng F5 (tải lại trang) trên điện thoại để đồng bộ.`);
-                        } catch (err) { alert(err.message || "Lỗi lưu nhạc. Định dạng không hợp lệ."); } finally { btn.textContent = "LƯU BÀI HÁT LÊN MÁY CHỦ"; btn.style.pointerEvents = 'auto'; }
+                            alert(`Đã thêm ${processed} bài hát thành công! Vui lòng F5 trên điện thoại để kiểm tra.`);
+                        } catch (err) { 
+                            alert("CẢNH BÁO TỪ HỆ THỐNG: Quá tải dung lượng Supabase. Mạng đã từ chối nhận file của bạn.\nGiải pháp: Xóa bộ nhớ Laptop bằng F12 và dùng Cách 1 (Dán Link) ở trên.");
+                            // Force Rollback để bảo vệ Laptop không bị kẹt dữ liệu ảo
+                            await fetchMusicConfig();
+                        } finally { btn.textContent = "LƯU LÊN MÁY CHỦ"; btn.style.pointerEvents = 'auto'; }
                     });
                 } else if(action === 'edit') {
                     let pl = CONFIG.musicLibrary.find(p => p.id === activeMusicPl); let song = pl.songs[idOrParentId];
