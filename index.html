@@ -1426,15 +1426,15 @@
                 if(!activeMusicPl) return alert("Vui lòng chọn 1 Playlist trước!");
                 if(action === 'add') {
                     let plOptions = CONFIG.musicLibrary.map(p => `<option value="${p.id}" ${p.id === activeMusicPl ? 'selected' : ''}>${p.name}</option>`).join('');
-                    document.getElementById("generalModalTitle").textContent = "THÊM BÀI HÁT TỪ GOOGLE DRIVE";
+                    document.getElementById("generalModalTitle").textContent = "THÊM BÀI HÁT VÀO PLAYLIST";
                     
                     body.innerHTML = `
                         <div class="form-row"><label>Chọn Playlist</label><select id="aSongPlSelect">${plOptions}</select></div>
                         
                         <div class="form-row" style="background: rgba(221,170,51,0.1); padding: 15px; border: 2px solid var(--amber); border-radius: 4px;">
-                            <label style="color:var(--amber);">THÊM 1 BÀI HÁT (LINK DRIVE)</label>
+                            <label style="color:var(--amber);">THÊM 1 BÀI HÁT (LINK MP3 TRỰC TIẾP)</label>
                             <input type="text" id="directSongName" placeholder="Tên bài hát...">
-                            <input type="text" id="directSongLink" placeholder="Dán link Google Drive..." style="margin-top:8px;">
+                            <input type="text" id="directSongLink" placeholder="Dán link MP3 (VD: Github, Dropbox...)" style="margin-top:8px;">
                             <button class="submit-btn" id="btnAddSingleSong" style="margin-top:8px; padding: 10px;">THÊM VÀO PLAYLIST</button>
                         </div>
 
@@ -1442,38 +1442,20 @@
 
                         <div class="form-row" style="background: rgba(0,0,0,0.05); padding: 15px; border: 2px dashed #1A0F0A; border-radius: 4px;">
                             <label>THÊM NHIỀU BÀI CÙNG LÚC</label>
-                            <p style="font-size:11px; color:var(--silver); margin-bottom:8px; text-transform:none;">Cú pháp: <b>Tên bài hát | Link Google Drive</b> (Mỗi bài 1 dòng)</p>
-                            <textarea id="bulkSongInput" placeholder="Ví dụ:\nTình ca của Vũ | https://drive.google.com/file/d/...\nHôm nay thất tình | https://drive.google.com/file/d/..." style="height: 120px; white-space: pre; line-height: 1.6;"></textarea>
+                            <p style="font-size:11px; color:var(--silver); margin-bottom:8px; text-transform:none;">Cú pháp: <b>Tên bài hát | Link MP3 trực tiếp</b> (Mỗi bài 1 dòng)</p>
+                            <textarea id="bulkSongInput" placeholder="Ví dụ:\nTình ca của Vũ | https://.../bai-1.mp3\nHôm nay thất tình | https://.../bai-2.mp3" style="height: 120px; white-space: pre; line-height: 1.6;"></textarea>
                             <button class="submit-btn" id="btnAddBulkSong" style="margin-top:8px; padding: 10px; background:#111; color:var(--amber); border-color:#111;">THÊM DANH SÁCH</button>
                         </div>`;
                     
                     loadIcons();
 
-                    // Hàm chuyển đổi Drive Link dùng chung
-                    function parseDriveLink(link) {
-                        if (link.includes("drive.google.com")) {
-                            let fileId = "";
-                            if (link.includes("/d/")) {
-                                fileId = link.split("/d/")[1].split("/")[0];
-                            } else if (link.includes("id=")) {
-                                fileId = link.split("id=")[1].split("&")[0];
-                            }
-                            if (fileId) {
-                                return "https://drive.google.com/uc?export=download&id=" + fileId;
-                            }
-                        }
-                        return link;
-                    }
-
                     // Xử lý thêm 1 bài
                     document.getElementById("btnAddSingleSong").addEventListener("click", async () => {
                         const name = document.getElementById("directSongName").value.trim();
-                        const linkRaw = document.getElementById("directSongLink").value.trim();
-                        if(!name || !linkRaw) return alert("Vui lòng nhập Tên bài hát và Link Drive!");
+                        const link = document.getElementById("directSongLink").value.trim();
+                        if(!name || !link) return alert("Vui lòng nhập Tên bài hát và Link MP3!");
                         
                         const targetPlId = document.getElementById("aSongPlSelect").value;
-                        const link = parseDriveLink(linkRaw);
-
                         CONFIG.musicLibrary.forEach(p => { 
                             if(p.id === targetPlId) p.songs.push({ title: name, src: link }); 
                         });
@@ -1488,7 +1470,7 @@
                         alert("Đã thêm bài hát thành công!");
                     });
 
-                    // Xử lý thêm hàng loạt bằng Link
+                    // Xử lý thêm hàng loạt
                     document.getElementById("btnAddBulkSong").addEventListener("click", async () => {
                         const text = document.getElementById("bulkSongInput").value.trim();
                         if(!text) return alert("Vui lòng dán danh sách bài hát!");
@@ -1503,8 +1485,7 @@
                                     const parts = line.split('|');
                                     if(parts.length >= 2) {
                                         const name = parts[0].trim();
-                                        let linkRaw = parts.slice(1).join('|').trim(); 
-                                        let link = parseDriveLink(linkRaw);
+                                        const link = parts.slice(1).join('|').trim(); 
                                         if(name && link) {
                                             p.songs.push({ title: name, src: link });
                                             addedCount++;
