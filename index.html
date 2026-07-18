@@ -395,7 +395,11 @@
 .affection-bar-fill { height: 100%; background: #e8c382; transition: width 0.5s ease-in-out; }
 
 /* JIGSAW PUZZLE & WIN SCREEN */
-.jigsaw-container { position: relative; width: 100%; max-width: 320px; aspect-ratio: 1/1; margin: 20px auto; background: #111; border: 4px solid #8b7355; box-shadow: inset 0 0 20px #000; display: grid; gap: 1px; }
+.jigsaw-container { 
+    position: relative; width: 100%; max-width: 400px; max-height: 75vh; 
+    margin: 20px auto; background: #111; border: 4px solid #8b7355; 
+    box-shadow: inset 0 0 20px #000; display: grid; gap: 1px; 
+}
 .jigsaw-piece { cursor: grab; background-repeat: no-repeat; border: 1px solid rgba(255,255,255,0.1); box-sizing: border-box; transition: transform 0.2s; }
 .jigsaw-piece:active { cursor: grabbing; transform: scale(0.95); z-index: 10; border: 1px solid #e8c382;}
 .memory-win-screen { margin-top: 20px; animation: fadeIn 2s; }
@@ -750,7 +754,7 @@
 
 <!-- Modal Admin Album Ghép Hình -->
 <div id="admin-jigsaw-modal" class="modal-overlay" style="display: none;">
-    <div class="modal-box-small" style="max-width: 500px;">
+    <div class="modal-box-small" style="max-width: 550px;">
         <h3 style="color:#e8c382; text-align:center; margin:0; border-bottom:1px dashed #8b7355; padding-bottom:10px;">QUẢN LÝ ALBUM GHÉP HÌNH</h3>
         
         <div style="background:#111; padding:15px; border:1px solid #444; border-radius:4px; display:flex; flex-direction:column; gap:10px;">
@@ -758,16 +762,10 @@
             <input type="text" id="aj-bot" placeholder="2. Thuộc Bot nào (VD: Huyết Nguyệt)">
             <input type="text" id="aj-train" placeholder="3. Chuyến số (VD: Chuyến 44)">
             
-            <select id="aj-diff" style="background:#000; color:#fff; border:1px solid #444; padding:10px; font-family:inherit;">
-                <option value="3">Độ khó: Dễ (3x3)</option>
-                <option value="4" selected>Độ khó: Trung Bình (4x4)</option>
-                <option value="5">Độ khó: Khó (5x5)</option>
-                <option value="6">Độ khó: Siêu Khó (6x6)</option>
-            </select>
-            
             <div class="file-upload-wrapper" style="margin:0;">
-                <label class="file-btn" style="border-color:#e8c382; color:#e8c382; width:100%;"><input type="file" accept="image/*" multiple id="aj-files" style="display:none;"> ➕ CHỌN ẢNH CHO ALBUM (Vuông là đẹp nhất)</label>
-                <div id="aj-preview" class="img-preview-grid" style="justify-content:center;"></div>
+                <label class="file-btn" style="border-color:#e8c382; color:#e8c382; width:100%;"><input type="file" accept="image/*" multiple id="aj-files" style="display:none;"> ➕ CHỌN ẢNH (Tự động thích ứng mọi Size)</label>
+                <!-- Khu vực preview ảnh + chọn độ khó cho TỪNG ẢNH -->
+                <div id="aj-preview" style="display:flex; flex-direction:column; gap:10px; margin-top:10px; max-height: 250px; overflow-y: auto; padding-right: 5px;"></div>
             </div>
             
             <button class="btn-vintage active" style="width:100%; padding:10px;" onclick="saveJigsawAlbum()">TẠO ALBUM NÀY</button>
@@ -1145,38 +1143,65 @@ setTimeout(() => {
     document.getElementById('affection-bar').style.width = catAffection + '%';
 }, 500);
 
-
 // --- 3. GHÉP HÌNH KỶ NIỆM ALBUM NHÂN VIÊN ---
 let draggedPiece = null;
 let currentJigsawAlbum = null;
-let ajTempImages = [];
+let ajTempImages = []; // Mảng chứa object { url: base64, diff: 4 }
 
 // Admin tải ảnh nháp lên
 document.getElementById("aj-files").addEventListener("change", async (e) => {
-    document.getElementById("aj-preview").innerHTML = "<span style='font-size:11px; color:#e8c382;'>Đang xử lý ảnh...</span>";
+    let previewEl = document.getElementById("aj-preview");
+    previewEl.innerHTML += "<span id='loading-img-msg' style='font-size:11px; color:#e8c382;'>Đang xử lý ảnh...</span>";
     for(let f of e.target.files) {
-        try { ajTempImages.push(await resizeImage(f, 600)); } catch(err) { alert("Lỗi xử lý ảnh!"); }
+        try { 
+            let b64 = await resizeImage(f, 800); // Nén 800px để ảnh dài 9:16 ko bị mờ
+            ajTempImages.push({ url: b64, diff: 4 }); // Mặc định mỗi ảnh là 4x4
+        } catch(err) { alert("Lỗi xử lý ảnh!"); }
     }
-    document.getElementById("aj-preview").innerHTML = ajTempImages.map((img, idx) => `<div style="position:relative;"><img src="${img}" style="width:50px; height:50px; object-fit:cover; border:1px solid #8b7355;"><button onclick="removeAjTempImg(${idx})" style="position:absolute; top:-5px; right:-5px; background:red; color:#fff; border:none; border-radius:50%; width:15px; height:15px; font-size:10px; cursor:pointer;">X</button></div>`).join('');
+    let msg = document.getElementById('loading-img-msg');
+    if(msg) msg.remove();
+    renderAjPreview();
     e.target.value = "";
 });
 
+function renderAjPreview() {
+    let html = ajTempImages.map((imgObj, idx) => `
+        <div style="display:flex; gap:10px; align-items:center; background:#000; padding:5px; border:1px solid #333; position:relative; border-radius:4px;">
+            <img src="${imgObj.url}" style="width:50px; height:50px; object-fit:contain; border:1px solid #8b7355; background:#222;">
+            <div style="flex:1; display:flex; flex-direction:column; gap:5px;">
+                <span style="font-size:11px; color:#aaa;">Độ khó cho ảnh này:</span>
+                <select onchange="updateAjTempDiff(${idx}, this.value)" style="background:#111; color:#fff; border:1px solid #444; padding:5px; border-radius:4px; font-family:inherit;">
+                    <option value="3" ${imgObj.diff == 3 ? 'selected' : ''}>Dễ (3x3)</option>
+                    <option value="4" ${imgObj.diff == 4 ? 'selected' : ''}>Trung Bình (4x4)</option>
+                    <option value="5" ${imgObj.diff == 5 ? 'selected' : ''}>Khó (5x5)</option>
+                    <option value="6" ${imgObj.diff == 6 ? 'selected' : ''}>Siêu Khó (6x6)</option>
+                </select>
+            </div>
+            <button onclick="removeAjTempImg(${idx})" style="background:#8B0000; color:#fff; border:none; padding:10px; cursor:pointer; font-weight:bold; border-radius:4px;">X</button>
+        </div>
+    `).join('');
+    document.getElementById("aj-preview").innerHTML = html;
+}
+
+window.updateAjTempDiff = function(idx, val) {
+    if(ajTempImages[idx]) ajTempImages[idx].diff = parseInt(val);
+}
+
 window.removeAjTempImg = function(idx) {
     ajTempImages.splice(idx, 1);
-    document.getElementById("aj-preview").innerHTML = ajTempImages.map((img, i) => `<div style="position:relative;"><img src="${img}" style="width:50px; height:50px; object-fit:cover; border:1px solid #8b7355;"><button onclick="removeAjTempImg(${i})" style="position:absolute; top:-5px; right:-5px; background:red; color:#fff; border:none; border-radius:50%; width:15px; height:15px; font-size:10px; cursor:pointer;">X</button></div>`).join('');
+    renderAjPreview();
 }
 
 // Lưu Album
-function saveJigsawAlbum() {
+window.saveJigsawAlbum = function() {
     let name = document.getElementById("aj-name").value.trim();
     let bot = document.getElementById("aj-bot").value.trim();
     let train = document.getElementById("aj-train").value.trim();
-    let diff = parseInt(document.getElementById("aj-diff").value);
     
     if(!name || ajTempImages.length === 0) return alert("Vui lòng nhập Tên nhân viên và tải ít nhất 1 ảnh!");
     
     let albums = JSON.parse(localStorage.getItem('ga_puzzle_albums')) || [];
-    albums.push({ id: Date.now(), name, bot, train, diff, images: ajTempImages });
+    albums.push({ id: Date.now(), name, bot, train, images: [...ajTempImages] }); 
     
     try {
         localStorage.setItem('ga_puzzle_albums', JSON.stringify(albums));
@@ -1185,23 +1210,23 @@ function saveJigsawAlbum() {
         document.getElementById("aj-bot").value = "";
         document.getElementById("aj-train").value = "";
         ajTempImages = [];
-        document.getElementById("aj-preview").innerHTML = "";
+        renderAjPreview();
         renderAdminJigsawRepo();
-        loadUserJigsawOptions(); // Cập nhật dropdown cho khách
+        loadUserJigsawOptions(); 
     } catch(e) { alert("Bộ nhớ đã đầy, hãy xóa bớt dữ liệu cũ!"); }
 }
 
-function openAdminJigsaw() {
+window.openAdminJigsaw = function() {
     document.getElementById('admin-jigsaw-modal').style.display='flex';
     renderAdminJigsawRepo();
 }
 
-function renderAdminJigsawRepo() {
+window.renderAdminJigsawRepo = function() {
     let albums = JSON.parse(localStorage.getItem('ga_puzzle_albums')) || [];
     let html = albums.map((alb, idx) => `
         <div style="background:#000; padding:10px; border:1px solid #444; border-radius:4px; display:flex; justify-content:space-between; align-items:center;">
             <div>
-                <div style="color:#e8c382; font-weight:bold;">${alb.name} <span style="color:#888; font-size:11px;">(${alb.diff}x${alb.diff})</span></div>
+                <div style="color:#e8c382; font-weight:bold;">${alb.name}</div>
                 <div style="font-size:11px; color:#aaa;">${alb.bot} | ${alb.train} | ${alb.images.length} Ảnh</div>
             </div>
             <button onclick="deleteJigsawAlbum(${idx})" style="background:#8B0000; color:#fff; border:1px solid #000; padding:5px 10px; font-weight:bold; cursor:pointer; border-radius:4px;">XÓA</button>
@@ -1220,7 +1245,7 @@ window.deleteJigsawAlbum = function(idx) {
 }
 
 // KHÁCH: Load danh sách nhân viên vào thẻ Select
-function loadUserJigsawOptions() {
+window.loadUserJigsawOptions = function() {
     let albums = JSON.parse(localStorage.getItem('ga_puzzle_albums')) || [];
     let selectEl = document.getElementById("jigsaw-character-select");
     if(!selectEl) return;
@@ -1232,60 +1257,71 @@ function loadUserJigsawOptions() {
 }
 
 // Bắt đầu game
-function startJigsawGame() {
+window.startJigsawGame = function() {
     let selectEl = document.getElementById("jigsaw-character-select");
     let targetId = selectEl.value;
     if(!targetId) return alert("Hiện chưa có nhân viên nào để phục hồi ảnh!");
     
     let albums = JSON.parse(localStorage.getItem('ga_puzzle_albums')) || [];
     let album = albums.find(a => a.id == targetId);
-    if(!album || album.images.length === 0) return alert("Album này bị lỗi hoặc không có ảnh!");
+    if(!album || !album.images || album.images.length === 0) return alert("Album này bị lỗi hoặc không có ảnh!");
     
-    currentJigsawAlbum = album; // Lưu lại để dùng lúc chiến thắng
+    currentJigsawAlbum = album; 
     
     document.getElementById('memory-win').style.display = 'none';
     const board = document.getElementById('jigsaw-board');
     board.style.display = 'grid'; board.innerHTML = '';
     
     // Bốc 1 ảnh ngẫu nhiên trong Album
-    let imgUrl = album.images[Math.floor(Math.random() * album.images.length)];
-    let level = album.diff || 4; // Mặc định là 4 nếu lỗi
-
-    board.style.gridTemplateColumns = `repeat(${level}, 1fr)`;
-    board.style.gridTemplateRows = `repeat(${level}, 1fr)`;
-
-    let pieces = [];
-    for(let y = 0; y < level; y++) {
-        for(let x = 0; x < level; x++) {
-            let p = document.createElement('div');
-            p.className = 'jigsaw-piece';
-            p.draggable = true;
-            p.dataset.trueIdx = y * level + x;
-            p.style.backgroundImage = `url(${imgUrl})`;
-            p.style.backgroundSize = `${level * 100}% ${level * 100}%`;
-            p.style.backgroundPosition = `${(x / (level - 1)) * 100}% ${(y / (level - 1)) * 100}%`;
-            
-            p.addEventListener('dragstart', function() { draggedPiece = this; });
-            p.addEventListener('dragover', e => e.preventDefault());
-            p.addEventListener('drop', function() {
-                if (this !== draggedPiece) {
-                    let tBg = this.style.backgroundPosition; let tId = this.dataset.trueIdx;
-                    this.style.backgroundPosition = draggedPiece.style.backgroundPosition; this.dataset.trueIdx = draggedPiece.dataset.trueIdx;
-                    draggedPiece.style.backgroundPosition = tBg; draggedPiece.dataset.trueIdx = tId;
-                    checkJigsawWin();
-                }
-            });
-            pieces.push(p);
-        }
-    }
-    pieces.sort(() => Math.random() - 0.5).forEach(p => board.appendChild(p));
+    let imgData = album.images[Math.floor(Math.random() * album.images.length)];
     
-    // Phát nhạc
-    const audio = document.getElementById('gramophone-audio');
-    if(audio) { audio.volume = 0.3; audio.play().catch(e => {}); }
+    // Tương thích ngược: Nếu data cũ là chuỗi URL, thì lấy chuỗi, nếu là object thì đọc obj
+    let imgUrl = typeof imgData === 'string' ? imgData : imgData.url;
+    let level = (typeof imgData === 'object' && imgData.diff) ? imgData.diff : 4; 
+
+    // QUAN TRỌNG: Load ảnh ảo để lấy chiều rộng/cao thật, set aspect-ratio cho board
+    let tmpImg = new Image();
+    tmpImg.onload = function() {
+        // Tự động set tỷ lệ khung hình (16:9, 9:16, 1:1, ...) dựa theo ảnh
+        board.style.aspectRatio = `${this.width} / ${this.height}`;
+        
+        board.style.gridTemplateColumns = `repeat(${level}, 1fr)`;
+        board.style.gridTemplateRows = `repeat(${level}, 1fr)`;
+
+        let pieces = [];
+        for(let y = 0; y < level; y++) {
+            for(let x = 0; x < level; x++) {
+                let p = document.createElement('div');
+                p.className = 'jigsaw-piece';
+                p.draggable = true;
+                p.dataset.trueIdx = y * level + x;
+                p.style.backgroundImage = `url(${imgUrl})`;
+                p.style.backgroundSize = `${level * 100}% ${level * 100}%`;
+                p.style.backgroundPosition = `${(x / (level - 1)) * 100}% ${(y / (level - 1)) * 100}%`;
+                
+                p.addEventListener('dragstart', function() { draggedPiece = this; });
+                p.addEventListener('dragover', e => e.preventDefault());
+                p.addEventListener('drop', function() {
+                    if (this !== draggedPiece) {
+                        let tBg = this.style.backgroundPosition; let tId = this.dataset.trueIdx;
+                        this.style.backgroundPosition = draggedPiece.style.backgroundPosition; this.dataset.trueIdx = draggedPiece.dataset.trueIdx;
+                        draggedPiece.style.backgroundPosition = tBg; draggedPiece.dataset.trueIdx = tId;
+                        checkJigsawWin();
+                    }
+                });
+                pieces.push(p);
+            }
+        }
+        pieces.sort(() => Math.random() - 0.5).forEach(p => board.appendChild(p));
+        
+        // Phát nhạc
+        const audio = document.getElementById('gramophone-audio');
+        if(audio) { audio.volume = 0.3; audio.play().catch(e => {}); }
+    };
+    tmpImg.src = imgUrl;
 }
 
-function fireConfetti() {
+window.fireConfetti = function() {
     const container = document.getElementById('confetti-container');
     container.innerHTML = '';
     const colors = ['#e8c382', '#fff', '#8b7355', '#d4c5b0'];
@@ -1299,7 +1335,7 @@ function fireConfetti() {
     }
 }
 
-function checkJigsawWin() {
+window.checkJigsawWin = function() {
     let allNodes = Array.from(document.getElementById("jigsaw-board").children);
     if(allNodes.every((node, idx) => node.dataset.trueIdx == idx)) {
         allNodes.forEach(n => { n.draggable = false; n.style.border = 'none'; });
