@@ -725,9 +725,9 @@
                         <audio id="gramophone-audio" loop>
                             <source src="https://raw.githubusercontent.com/c8948055-oss/nhagaMeown.crypto.io/c55e15d5e74dece9e250d2fa1ceb8a184eaa993e/%C4%90%C6%B0%E1%BB%9Dng%20L%C3%AAn%20Ph%C3%ADa%20Tr%C6%B0%E1%BB%9Bc%20-%20S%C3%A0i%20G%C3%B2n%20Chill%20ft.%20Ti%E1%BA%BFn%20Minh%20_%20%C4%90%C6%B0%E1%BB%9Dng%20L%C3%AAn%20Ph%C3%ADa%20Tr%C6%B0%E1%BB%9Bc%20%C3%81nh%20Tr%C4%83ng%20D%C3%ACm%20X%C3%A1c%20Th%C3%B9%20__%20%5BibMztUbPnMw%5D.mp3" type="audio/mpeg">
                         </audio>
-                    </div>
-                </div>
-            </div> <!-- ĐÃ SỬA: Đây là thẻ đóng Khu Giải Trí bị sót của bạn -->
+                    </div> <!-- Đóng phần Game 3 (Ghép Hình) -->
+                </div> <!-- Đóng khu-giai-tri-container -->
+            </div> <!-- Đóng section-view của Khu Giải Trí -->
 
             <!-- SỔ LƯU BÚT -->
             <div class="section-view hidden" id="view-guestbook">
@@ -1824,13 +1824,22 @@ setTimeout(() => loadUserJigsawOptions(), 1000);
                 let adminBtns = isAdminMode ? `<div class="admin-action-bar"><button class="admin-edit-post" onclick="openAdminPost('${type}', ${post.id})"><span class="icon-slot" data-icon="loop"></span> Sửa</button><button class="admin-delete-post" onclick="deletePostFromDB('${type}', ${post.id})"><span class="icon-slot" data-icon="trash"></span> Xóa</button></div>` : "";
                 
                 let imgsHtml = "";
-                if(post.images) { try { let parsedImgs = typeof post.images === 'string' ? JSON.parse(post.images) : post.images; if(parsedImgs.length > 0) { imgsHtml = `<div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:15px;">` + parsedImgs.map(src => `<img src="${src}" style="width:120px; height:120px; object-fit:cover; border:2px solid #333; cursor:zoom-in; border-radius:4px;" onclick="openLightbox(this.src, event)">`).join('') + `</div>`; } } catch(e) {} }
+                // FIX lỗi Crash nếu Database trả về null
+                let parsedImgs = [];
+                if(post.images) { 
+                    try { parsedImgs = typeof post.images === 'string' ? JSON.parse(post.images) : post.images; } catch(e) {} 
+                }
+                if (!Array.isArray(parsedImgs)) parsedImgs = [];
+                if(parsedImgs.length > 0) { 
+                    imgsHtml = `<div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:15px;">` + parsedImgs.map(src => `<img src="${src}" style="width:120px; height:120px; object-fit:cover; border:2px solid #333; cursor:zoom-in; border-radius:4px;" onclick="openLightbox(this.src, event)">`).join('') + `</div>`; 
+                }
                 
                 let reactObj = {like:0, love:0, haha:0, sad:0, angry:0};
                 if(post.reactions) { if(typeof post.reactions === 'string') try { reactObj = JSON.parse(post.reactions); } catch(e) {} else reactObj = post.reactions; }
                 
                 let cmtArr = [];
                 if(post.comments) { if(typeof post.comments === 'string') try { cmtArr = JSON.parse(post.comments); } catch(e) {} else cmtArr = post.comments; }
+                if (!Array.isArray(cmtArr)) cmtArr = []; // FIX chặn lỗi map is not a function
 
                 let myReact = localStorage.getItem(`reacted_guestbook_${post.id}`);
 
@@ -2327,24 +2336,29 @@ setTimeout(() => loadUserJigsawOptions(), 1000);
         window.deleteUpcoming = async function(botId, event) { event.stopPropagation(); if(confirm("XÓA HỒ SƠ DỰ BỊ này?")) { CONFIG.upcomingBots = CONFIG.upcomingBots.filter(b => b.id !== botId); await saveStationConfigToDB(true); renderUpcomingBots(); } };
 
         function renderUpcomingBots() {
-            const grid = document.getElementById("upcomingBotsGrid"); grid.innerHTML = "";
-            let upBots = CONFIG.upcomingBots || []; if(!isAdminMode) upBots = upBots.filter(b => !b.isHidden);
-            upBots.sort((a, b) => (b.votes || 0) - (a.votes || 0));
+    const grid = document.getElementById("upcomingBotsGrid"); grid.innerHTML = "";
+    let upBots = CONFIG.upcomingBots || []; if(!isAdminMode) upBots = upBots.filter(b => !b.isHidden);
+    upBots.sort((a, b) => (b.votes || 0) - (a.votes || 0));
 
-            if(upBots.length === 0) { grid.className = ""; grid.innerHTML = `<div class="upcoming-empty"><span class="icon-slot" data-icon="bench"></span><p>Sảnh tuyển dụng hiện đang im lìm... Các chuyến tàu đã đủ người vận hành. Nếu lữ khách muốn đề xuất một nhân viên mới, hãy gửi ý tưởng cho Trưởng ga ở mục Góp ý phía dưới.</p></div>`; setTimeout(() => loadIcons(), 10); return; }
-            grid.className = "staff-grid";
-            upBots.forEach(bot => {
-                const cardWrap = document.createElement("div"); cardWrap.className = "staff-card-container"; if(bot.isHidden && isAdminMode) cardWrap.classList.add("is-hidden");
-                let haremClass = (bot.haremWarning === 'Có thể chơi harem') ? 'warning-yes' : 'warning-no'; let haremText = bot.haremWarning || 'Không nên chơi harem'; let haremTagHTML = `<span class="c-tag ${haremClass}">⚠️ ${haremText}</span>`;
-                let regularTagHTML = (bot.tags||[]).map(t => `<span class="c-tag">${t.trim().startsWith('#')?t.trim():'#'+t.trim()}</span>`).join(''); let tagHTML = haremTagHTML + regularTagHTML;
-                let hiddenText = bot.isHidden ? '👁️ HIỆN' : '👁️ ẨN'; let adminControls = isAdminMode ? `<div style="position: absolute; top: -35px; left: 0; right: 0; display: flex; justify-content: center; gap: 8px; z-index: 50;"><button style="background:var(--amber); color:#000; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="openAdminForm('upcoming', 'edit', '${bot.id}')">✏️ SỬA</button><button style="background:#444; color:#FFF; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="toggleHideUpcoming('${bot.id}', event)">${hiddenText}</button><button style="background:#8B0000; color:#FFF; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="deleteUpcoming('${bot.id}', event)">🗑️ XÓA</button></div>` : "";
-                let hasVoted = localStorage.getItem('voted_upcoming_' + bot.id) === 'true'; let heartIcon = hasVoted ? 'heart_filled' : 'heart_empty'; let voteClass = hasVoted ? 'voted' : ''; let votesCount = bot.votes || 0;
+    if(upBots.length === 0) { grid.className = ""; grid.innerHTML = `<div class="upcoming-empty"><span class="icon-slot" data-icon="bench"></span><p>Sảnh tuyển dụng hiện đang im lìm... Các chuyến tàu đã đủ người vận hành. Nếu lữ khách muốn đề xuất một nhân viên mới, hãy gửi ý tưởng cho Trưởng ga ở mục Góp ý phía dưới.</p></div>`; setTimeout(() => loadIcons(), 10); return; }
+    grid.className = "staff-grid";
+    upBots.forEach(bot => {
+        const cardWrap = document.createElement("div"); cardWrap.className = "staff-card-container"; if(bot.isHidden && isAdminMode) cardWrap.classList.add("is-hidden");
+        let haremClass = (bot.haremWarning === 'Có thể chơi harem') ? 'warning-yes' : 'warning-no'; let haremText = bot.haremWarning || 'Không nên chơi harem'; let haremTagHTML = `<span class="c-tag ${haremClass}">⚠️ ${haremText}</span>`;
+        
+        // FIX: Đảm bảo tags luôn là mảng để không bị lỗi .map()
+        let tagsArr = Array.isArray(bot.tags) ? bot.tags : (typeof bot.tags === 'string' ? bot.tags.split(',') : []);
+        let regularTagHTML = tagsArr.map(t => `<span class="c-tag">${t.trim().startsWith('#')?t.trim():'#'+t.trim()}</span>`).join(''); 
+        let tagHTML = haremTagHTML + regularTagHTML;
+        
+        let hiddenText = bot.isHidden ? '👁️ HIỆN' : '👁️ ẨN'; let adminControls = isAdminMode ? `<div style="position: absolute; top: -35px; left: 0; right: 0; display: flex; justify-content: center; gap: 8px; z-index: 50;"><button style="background:var(--amber); color:#000; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="openAdminForm('upcoming', 'edit', '${bot.id}')">✏️ SỬA</button><button style="background:#444; color:#FFF; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="toggleHideUpcoming('${bot.id}', event)">${hiddenText}</button><button style="background:#8B0000; color:#FFF; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="deleteUpcoming('${bot.id}', event)">🗑️ XÓA</button></div>` : "";
+        let hasVoted = localStorage.getItem('voted_upcoming_' + bot.id) === 'true'; let heartIcon = hasVoted ? 'heart_filled' : 'heart_empty'; let voteClass = hasVoted ? 'voted' : ''; let votesCount = bot.votes || 0;
 
-                cardWrap.innerHTML = `${adminControls}<div class="staff-card-inner"><div class="up-card-front"><div class="c-id-header" style="color:var(--amber);">PENDING STAFF ID</div><div class="up-stamp" style="background:var(--amber); color:#000;">[ SẮP RA MẮT ]</div><div class="c-image-wrap" style="margin: 0 auto 15px auto; border-color:#333; width:140px; height:140px; border:4px solid #444; border-bottom:15px solid #444; background:#444; position:relative; box-shadow:2px 2px 10px rgba(0,0,0,0.8); transform:rotate(-2deg); flex-shrink: 0;"><img src="${bot.avatar}" style="width:100%; height:100%; object-fit:cover; filter:grayscale(1);"></div><div class="c-name">${bot.name}</div><div class="c-tags" style="display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin-bottom:10px; width:100%;">${tagHTML}</div><div class="c-hook" style="color:#aaa; font-weight:bold; font-size:12px; margin-bottom:10px; text-align:center; width:100%;">CHUYẾN: ${bot.train}</div><div class="up-idea-box" style="white-space: pre-wrap;">${bot.idea}</div><button class="up-vote-btn ${voteClass}" onclick="voteUpcoming('${bot.id}', event)"><span class="icon-slot" data-icon="${heartIcon}"></span> <span style="font-size:15px; color:var(--amber);">${votesCount}</span> <span style="font-weight:normal; margin-left:4px;">Hành khách mong đợi</span></button></div></div>`; 
-                grid.appendChild(cardWrap);
-            });
-            setTimeout(() => loadIcons(), 10);
-        }
+        cardWrap.innerHTML = `${adminControls}<div class="staff-card-inner"><div class="up-card-front"><div class="c-id-header" style="color:var(--amber);">PENDING STAFF ID</div><div class="up-stamp" style="background:var(--amber); color:#000;">[ SẮP RA MẮT ]</div><div class="c-image-wrap" style="margin: 0 auto 15px auto; border-color:#333; width:140px; height:140px; border:4px solid #444; border-bottom:15px solid #444; background:#444; position:relative; box-shadow:2px 2px 10px rgba(0,0,0,0.8); transform:rotate(-2deg); flex-shrink: 0;"><img src="${bot.avatar}" style="width:100%; height:100%; object-fit:cover; filter:grayscale(1);"></div><div class="c-name">${bot.name}</div><div class="c-tags" style="display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin-bottom:10px; width:100%;">${tagHTML}</div><div class="c-hook" style="color:#aaa; font-weight:bold; font-size:12px; margin-bottom:10px; text-align:center; width:100%;">CHUYẾN: ${bot.train}</div><div class="up-idea-box" style="white-space: pre-wrap;">${bot.idea}</div><button class="up-vote-btn ${voteClass}" onclick="voteUpcoming('${bot.id}', event)"><span class="icon-slot" data-icon="${heartIcon}"></span> <span style="font-size:15px; color:var(--amber);">${votesCount}</span> <span style="font-weight:normal; margin-left:4px;">Hành khách mong đợi</span></button></div></div>`; 
+        grid.appendChild(cardWrap);
+    });
+    setTimeout(() => loadIcons(), 10);
+}
 
         // ============================================================
         // LOGIC HỘP NHẠC
