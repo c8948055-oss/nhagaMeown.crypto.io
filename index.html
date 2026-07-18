@@ -351,7 +351,9 @@
         .suggest-btn { background: rgba(221, 170, 51, 0.15); color: var(--amber); border: 1px solid var(--amber); padding: 3px 10px; font-size: 10px; border-radius: 4px; cursor: pointer; margin-left: auto; text-transform: uppercase; font-family: var(--font-kicker); font-weight: bold; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
         .suggest-btn:hover { background: var(--amber); color: #000; box-shadow: 0 0 10px var(--amber-glow); }
         
-        /* --- KHU GIẢI TRÍ STYLES --- */
+        /* ============================================================
+   KHU GIẢI TRÍ STYLES (CẬP NHẬT MỚI NHẤT)
+   ============================================================ */
 .khu-giai-tri-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; color: #d4c5b0; font-family: "Times New Roman", serif; }
 @media (max-width: 768px) { .khu-giai-tri-container { grid-template-columns: 1fr; } }
 
@@ -392,12 +394,20 @@
 .affection-bar-bg { width: 80%; height: 10px; background: #222; margin: 10px auto; border-radius: 5px; overflow: hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.8);}
 .affection-bar-fill { height: 100%; background: #e8c382; transition: width 0.5s ease-in-out; }
 
-/* JIGSAW PUZZLE */
+/* JIGSAW PUZZLE & WIN SCREEN */
 .jigsaw-container { position: relative; width: 100%; max-width: 320px; aspect-ratio: 1/1; margin: 20px auto; background: #111; border: 4px solid #8b7355; box-shadow: inset 0 0 20px #000; display: grid; gap: 1px; }
 .jigsaw-piece { cursor: grab; background-repeat: no-repeat; border: 1px solid rgba(255,255,255,0.1); box-sizing: border-box; transition: transform 0.2s; }
 .jigsaw-piece:active { cursor: grabbing; transform: scale(0.95); z-index: 10; border: 1px solid #e8c382;}
 .memory-win-screen { margin-top: 20px; animation: fadeIn 2s; }
 .sparkle-img { width: 100%; max-width: 250px; border: 5px solid #fff; box-shadow: 0 0 30px #e8c382; margin: 0 auto 10px auto;}
+
+/* HIỆU ỨNG PHÁO HOA/BÓNG BAY CHÚC MỪNG */
+#confetti-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10; overflow: hidden; }
+.confetti { position: absolute; width: 8px; height: 8px; animation: fall 3s linear forwards; opacity: 0; }
+@keyframes fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(400px) rotate(720deg); opacity: 0; }
+}
 
 /* Modals Admin */
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; display: flex; justify-content: center; align-items: center; }
@@ -405,6 +415,7 @@
 .modal-box-small input, .modal-box-small textarea { width: 100%; background: #000; color: #fff; border: 1px solid #444; padding: 10px; box-sizing: border-box; font-family: inherit;}
 .modal-box-small input:focus, .modal-box-small textarea:focus { border-color: #e8c382; outline:none; }
 .admin-btn { background: none; border: none; color: #888; text-decoration: underline; cursor: pointer; margin-top: 10px; font-size: 12px; text-transform: uppercase; font-weight: bold;}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         /* ============================================================
            MÁY HÁT GRAMOPHONE
@@ -680,35 +691,39 @@
             </div>
         </div>
 
-        <!-- 3. Ghép Hình Kỷ Niệm -->
-        <div class="game-box vintage-border" style="grid-column: 1 / -1;">
+        <!-- 3. Ghép Hình Kỷ Niệm (Xé Mảnh - Bản Đặc Biệt) -->
+        <div class="game-box vintage-border" style="grid-column: 1 / -1; position: relative;">
             <h3 class="game-title">🧩 Ghép Hình Kỷ Niệm</h3>
-            <p class="game-desc">Chọn độ khó để phục hồi lại bức ảnh bị vỡ nát.</p>
-            <div class="btn-group" id="jigsaw-diff-btns">
-                <button class="btn-vintage" onclick="startJigsawGame(3, this)">Dễ (3x3)</button>
-                <button class="btn-vintage active" onclick="startJigsawGame(4, this)">TB (4x4)</button>
-                <button class="btn-vintage" onclick="startJigsawGame(5, this)">Khó (5x5)</button>
-                <button class="btn-vintage" onclick="startJigsawGame(6, this)">Siêu Khó (6x6)</button>
+            <p class="game-desc" style="color:#d4c5b0;">Hãy phục hồi lại những bức ảnh đã vỡ nát này để nhận được một bức ảnh siêu đặc biệt của nhân viên.</p>
+            
+            <div id="jigsaw-controls" style="margin-bottom: 20px; display:flex; justify-content:center; gap:10px; align-items:center; flex-wrap:wrap;">
+                <span style="font-size: 13px; font-weight:bold; color:var(--amber);">Chọn nhân viên:</span>
+                <select id="jigsaw-character-select" class="sort-select" style="width: 220px; padding: 10px;">
+                    <!-- Option tự động load bằng JS -->
+                </select>
+                <button class="btn-vintage active" onclick="startJigsawGame()">BẮT ĐẦU PHỤC HỒI</button>
             </div>
             
             <div id="jigsaw-board" class="jigsaw-container" style="display: none;"></div>
             
-            <div id="memory-win" class="memory-win-screen" style="display: none;">
-                <img id="win-sparkle-img" src="" alt="Kỷ niệm" class="sparkle-img">
-                <p style="color:#e8c382; font-weight:bold; font-size:16px;">✨ Ký ức đã được ghép lại trọn vẹn ✨</p>
+            <!-- Màn hình chiến thắng -->
+            <div id="memory-win" class="memory-win-screen" style="display: none; position: relative; overflow: hidden; padding: 20px; border: 2px dashed #8b7355; background: rgba(0,0,0,0.5); border-radius: 8px;">
+                <div id="confetti-container"></div>
+                <h3 style="color:#e8c382; font-family:var(--font-heading); font-size: 24px; text-transform: uppercase; margin-bottom: 5px;">Chúc mừng!</h3>
+                <p id="win-text-message" style="color:#fff; font-size:14px; margin-bottom: 15px; font-weight:bold;"></p>
+                <img id="win-sparkle-img" src="" alt="Kỷ niệm" class="sparkle-img" style="max-width: 300px;">
+                <br>
+                <a id="jigsaw-download-btn" href="#" download="KyUcMeown.jpg" class="btn-vintage active" style="display:inline-block; text-decoration:none; margin-top:10px; padding: 10px 20px;">📥 TẢI ẢNH VỀ MÁY</a>
             </div>
 
             <div class="admin-only-flex" style="justify-content:center; margin-top: 15px;">
-                <button onclick="openAdminJigsaw()" class="admin-btn">⚙️ Admin: Quản lý ảnh ghép hình</button>
+                <button onclick="openAdminJigsaw()" class="admin-btn">⚙️ Admin: Quản lý Album Ghép Hình</button>
             </div>
 
             <audio id="gramophone-audio" loop>
                 <source src="https://raw.githubusercontent.com/c8948055-oss/nhagaMeown.crypto.io/c55e15d5e74dece9e250d2fa1ceb8a184eaa993e/%C4%90%C6%B0%E1%BB%9Dng%20L%C3%AAn%20Ph%C3%ADa%20Tr%C6%B0%E1%BB%9Bc%20-%20S%C3%A0i%20G%C3%B2n%20Chill%20ft.%20Ti%E1%BA%BFn%20Minh%20_%20%C4%90%C6%B0%E1%BB%9Dng%20L%C3%AAn%20Ph%C3%ADa%20Tr%C6%B0%E1%BB%9Bc%20%C3%81nh%20Tr%C4%83ng%20D%C3%ACm%20X%C3%A1c%20Th%C3%B9%20__%20%5BibMztUbPnMw%5D.mp3" type="audio/mpeg">
             </audio>
         </div>
-
-    </div>
-</div>
 
 <!-- Modal Admin cho Game Bốc Bài -->
 <div id="admin-tarot-modal" class="modal-overlay" style="display: none;">
@@ -733,15 +748,34 @@
     </div>
 </div>
 
-<!-- Modal Admin cho Game Ghép Hình -->
+<!-- Modal Admin Album Ghép Hình -->
 <div id="admin-jigsaw-modal" class="modal-overlay" style="display: none;">
-    <div class="modal-box-small">
-        <h3 style="color:#e8c382; text-align:center; margin:0; border-bottom:1px dashed #8b7355; padding-bottom:10px;">KHO ẢNH GHÉP HÌNH</h3>
-        <p style="font-size:11px; color:#aaa; font-style:italic;">Web sẽ tự động bốc 1 ảnh trong này để cắt làm game.</p>
-        <div class="form-row file-upload-wrapper" style="margin:0;">
-            <label class="file-btn" style="border-color:#e8c382; color:#e8c382; width:100%;"><input type="file" accept="image/*" multiple id="admin-jigsaw-files" style="display:none;"> ➕ TẢI THÊM ẢNH MỚI</label>
+    <div class="modal-box-small" style="max-width: 500px;">
+        <h3 style="color:#e8c382; text-align:center; margin:0; border-bottom:1px dashed #8b7355; padding-bottom:10px;">QUẢN LÝ ALBUM GHÉP HÌNH</h3>
+        
+        <div style="background:#111; padding:15px; border:1px solid #444; border-radius:4px; display:flex; flex-direction:column; gap:10px;">
+            <input type="text" id="aj-name" placeholder="1. Tên nhân viên (VD: Cố Tử Thần)">
+            <input type="text" id="aj-bot" placeholder="2. Thuộc Bot nào (VD: Huyết Nguyệt)">
+            <input type="text" id="aj-train" placeholder="3. Chuyến số (VD: Chuyến 44)">
+            
+            <select id="aj-diff" style="background:#000; color:#fff; border:1px solid #444; padding:10px; font-family:inherit;">
+                <option value="3">Độ khó: Dễ (3x3)</option>
+                <option value="4" selected>Độ khó: Trung Bình (4x4)</option>
+                <option value="5">Độ khó: Khó (5x5)</option>
+                <option value="6">Độ khó: Siêu Khó (6x6)</option>
+            </select>
+            
+            <div class="file-upload-wrapper" style="margin:0;">
+                <label class="file-btn" style="border-color:#e8c382; color:#e8c382; width:100%;"><input type="file" accept="image/*" multiple id="aj-files" style="display:none;"> ➕ CHỌN ẢNH CHO ALBUM (Vuông là đẹp nhất)</label>
+                <div id="aj-preview" class="img-preview-grid" style="justify-content:center;"></div>
+            </div>
+            
+            <button class="btn-vintage active" style="width:100%; padding:10px;" onclick="saveJigsawAlbum()">TẠO ALBUM NÀY</button>
         </div>
-        <div id="admin-jigsaw-repo" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; max-height:300px; overflow-y:auto; padding-right:5px; margin-top:10px;"></div>
+
+        <p style="font-size:12px; color:#8b7355; font-weight:bold; margin:10px 0 0 0; text-transform:uppercase;">Danh sách Album hiện có:</p>
+        <div id="admin-jigsaw-repo" style="display:flex; flex-direction:column; gap:10px; max-height:200px; overflow-y:auto; padding-right:5px;"></div>
+        
         <div class="btn-group">
             <button class="btn-vintage" onclick="document.getElementById('admin-jigsaw-modal').style.display='none'">Đóng</button>
         </div>
@@ -1112,8 +1146,50 @@ setTimeout(() => {
 }, 500);
 
 
-// --- 3. GHÉP HÌNH KỶ NIỆM (JIGSAW) ---
+// --- 3. GHÉP HÌNH KỶ NIỆM ALBUM NHÂN VIÊN ---
 let draggedPiece = null;
+let currentJigsawAlbum = null;
+let ajTempImages = [];
+
+// Admin tải ảnh nháp lên
+document.getElementById("aj-files").addEventListener("change", async (e) => {
+    document.getElementById("aj-preview").innerHTML = "<span style='font-size:11px; color:#e8c382;'>Đang xử lý ảnh...</span>";
+    for(let f of e.target.files) {
+        try { ajTempImages.push(await resizeImage(f, 600)); } catch(err) { alert("Lỗi xử lý ảnh!"); }
+    }
+    document.getElementById("aj-preview").innerHTML = ajTempImages.map((img, idx) => `<div style="position:relative;"><img src="${img}" style="width:50px; height:50px; object-fit:cover; border:1px solid #8b7355;"><button onclick="removeAjTempImg(${idx})" style="position:absolute; top:-5px; right:-5px; background:red; color:#fff; border:none; border-radius:50%; width:15px; height:15px; font-size:10px; cursor:pointer;">X</button></div>`).join('');
+    e.target.value = "";
+});
+
+window.removeAjTempImg = function(idx) {
+    ajTempImages.splice(idx, 1);
+    document.getElementById("aj-preview").innerHTML = ajTempImages.map((img, i) => `<div style="position:relative;"><img src="${img}" style="width:50px; height:50px; object-fit:cover; border:1px solid #8b7355;"><button onclick="removeAjTempImg(${i})" style="position:absolute; top:-5px; right:-5px; background:red; color:#fff; border:none; border-radius:50%; width:15px; height:15px; font-size:10px; cursor:pointer;">X</button></div>`).join('');
+}
+
+// Lưu Album
+function saveJigsawAlbum() {
+    let name = document.getElementById("aj-name").value.trim();
+    let bot = document.getElementById("aj-bot").value.trim();
+    let train = document.getElementById("aj-train").value.trim();
+    let diff = parseInt(document.getElementById("aj-diff").value);
+    
+    if(!name || ajTempImages.length === 0) return alert("Vui lòng nhập Tên nhân viên và tải ít nhất 1 ảnh!");
+    
+    let albums = JSON.parse(localStorage.getItem('ga_puzzle_albums')) || [];
+    albums.push({ id: Date.now(), name, bot, train, diff, images: ajTempImages });
+    
+    try {
+        localStorage.setItem('ga_puzzle_albums', JSON.stringify(albums));
+        alert("Đã tạo Album thành công!");
+        document.getElementById("aj-name").value = "";
+        document.getElementById("aj-bot").value = "";
+        document.getElementById("aj-train").value = "";
+        ajTempImages = [];
+        document.getElementById("aj-preview").innerHTML = "";
+        renderAdminJigsawRepo();
+        loadUserJigsawOptions(); // Cập nhật dropdown cho khách
+    } catch(e) { alert("Bộ nhớ đã đầy, hãy xóa bớt dữ liệu cũ!"); }
+}
 
 function openAdminJigsaw() {
     document.getElementById('admin-jigsaw-modal').style.display='flex';
@@ -1121,43 +1197,59 @@ function openAdminJigsaw() {
 }
 
 function renderAdminJigsawRepo() {
-    let imgs = JSON.parse(localStorage.getItem('ga_puzzle_imgs')) || [];
-    let html = "";
-    imgs.forEach((img, idx) => {
-        html += `<div style="position:relative; background:#000; padding:5px; border:1px solid #444; border-radius:4px;">
-            <img src="${img}" style="width:100%; aspect-ratio:1/1; object-fit:cover; border:2px solid #8b7355;">
-            <button onclick="deleteJigsawImg(${idx})" style="position:absolute; top:8px; right:8px; background:#8B0000; color:#fff; border:1px solid #000; font-weight:bold; cursor:pointer; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center;">X</button>
-        </div>`;
-    });
-    document.getElementById('admin-jigsaw-repo').innerHTML = html || "<p style='font-size:11px; color:#888;'>Chưa có ảnh nào.</p>";
+    let albums = JSON.parse(localStorage.getItem('ga_puzzle_albums')) || [];
+    let html = albums.map((alb, idx) => `
+        <div style="background:#000; padding:10px; border:1px solid #444; border-radius:4px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <div style="color:#e8c382; font-weight:bold;">${alb.name} <span style="color:#888; font-size:11px;">(${alb.diff}x${alb.diff})</span></div>
+                <div style="font-size:11px; color:#aaa;">${alb.bot} | ${alb.train} | ${alb.images.length} Ảnh</div>
+            </div>
+            <button onclick="deleteJigsawAlbum(${idx})" style="background:#8B0000; color:#fff; border:1px solid #000; padding:5px 10px; font-weight:bold; cursor:pointer; border-radius:4px;">XÓA</button>
+        </div>
+    `).join('');
+    document.getElementById('admin-jigsaw-repo').innerHTML = html || "<p style='font-size:11px; color:#888;'>Chưa có Album nào.</p>";
 }
 
-document.getElementById("admin-jigsaw-files").addEventListener("change", async (e) => {
-    let imgs = JSON.parse(localStorage.getItem('ga_puzzle_imgs')) || [];
-    try {
-        for(let f of e.target.files) imgs.push(await resizeImage(f, 400));
-        localStorage.setItem('ga_puzzle_imgs', JSON.stringify(imgs));
-        renderAdminJigsawRepo(); 
-    } catch(err) { alert("Bộ nhớ đã đầy, không thể lưu thêm ảnh!"); }
-    e.target.value = "";
-});
-
-window.deleteJigsawImg = function(idx) {
-    let imgs = JSON.parse(localStorage.getItem('ga_puzzle_imgs')) || [];
-    imgs.splice(idx, 1); 
-    localStorage.setItem('ga_puzzle_imgs', JSON.stringify(imgs));
+window.deleteJigsawAlbum = function(idx) {
+    if(!confirm("Xóa album này?")) return;
+    let albums = JSON.parse(localStorage.getItem('ga_puzzle_albums')) || [];
+    albums.splice(idx, 1); 
+    localStorage.setItem('ga_puzzle_albums', JSON.stringify(albums));
     renderAdminJigsawRepo();
+    loadUserJigsawOptions();
 }
 
-function startJigsawGame(level, btnElement) {
-    document.getElementById('jigsaw-diff-btns').querySelectorAll('button').forEach(b => b.classList.remove('active'));
-    btnElement.classList.add('active');
+// KHÁCH: Load danh sách nhân viên vào thẻ Select
+function loadUserJigsawOptions() {
+    let albums = JSON.parse(localStorage.getItem('ga_puzzle_albums')) || [];
+    let selectEl = document.getElementById("jigsaw-character-select");
+    if(!selectEl) return;
+    if(albums.length === 0) {
+        selectEl.innerHTML = `<option value="">Hiện chưa có nhân viên nào</option>`;
+    } else {
+        selectEl.innerHTML = albums.map(a => `<option value="${a.id}">${a.name} ${a.bot ? `(${a.bot})` : ''}</option>`).join('');
+    }
+}
+
+// Bắt đầu game
+function startJigsawGame() {
+    let selectEl = document.getElementById("jigsaw-character-select");
+    let targetId = selectEl.value;
+    if(!targetId) return alert("Hiện chưa có nhân viên nào để phục hồi ảnh!");
+    
+    let albums = JSON.parse(localStorage.getItem('ga_puzzle_albums')) || [];
+    let album = albums.find(a => a.id == targetId);
+    if(!album || album.images.length === 0) return alert("Album này bị lỗi hoặc không có ảnh!");
+    
+    currentJigsawAlbum = album; // Lưu lại để dùng lúc chiến thắng
+    
     document.getElementById('memory-win').style.display = 'none';
     const board = document.getElementById('jigsaw-board');
     board.style.display = 'grid'; board.innerHTML = '';
     
-    let repoImgs = JSON.parse(localStorage.getItem('ga_puzzle_imgs')) || [];
-    let imgUrl = repoImgs.length > 0 ? repoImgs[Math.floor(Math.random() * repoImgs.length)] : "https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?w=400";
+    // Bốc 1 ảnh ngẫu nhiên trong Album
+    let imgUrl = album.images[Math.floor(Math.random() * album.images.length)];
+    let level = album.diff || 4; // Mặc định là 4 nếu lỗi
 
     board.style.gridTemplateColumns = `repeat(${level}, 1fr)`;
     board.style.gridTemplateRows = `repeat(${level}, 1fr)`;
@@ -1187,17 +1279,52 @@ function startJigsawGame(level, btnElement) {
         }
     }
     pieces.sort(() => Math.random() - 0.5).forEach(p => board.appendChild(p));
+    
+    // Phát nhạc
+    const audio = document.getElementById('gramophone-audio');
+    if(audio) { audio.volume = 0.3; audio.play().catch(e => {}); }
+}
+
+function fireConfetti() {
+    const container = document.getElementById('confetti-container');
+    container.innerHTML = '';
+    const colors = ['#e8c382', '#fff', '#8b7355', '#d4c5b0'];
+    for(let i=0; i<50; i++) {
+        let conf = document.createElement('div');
+        conf.className = 'confetti';
+        conf.style.left = Math.random() * 100 + '%';
+        conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        conf.style.animationDelay = Math.random() * 2 + 's';
+        container.appendChild(conf);
+    }
 }
 
 function checkJigsawWin() {
     let allNodes = Array.from(document.getElementById("jigsaw-board").children);
     if(allNodes.every((node, idx) => node.dataset.trueIdx == idx)) {
         allNodes.forEach(n => { n.draggable = false; n.style.border = 'none'; });
+        
         let imgUrl = allNodes[0].style.backgroundImage.slice(5, -2).replace(/"/g, "");
+        
+        // Cập nhật thông tin chiến thắng
+        document.getElementById('win-text-message').innerHTML = `Bạn đã khôi phục thành công ảnh đặc biệt của <span style="color:var(--amber);">${currentJigsawAlbum.name}</span>!`;
         document.getElementById('win-sparkle-img').src = imgUrl;
+        
+        // Nút tải ảnh
+        let dlBtn = document.getElementById('jigsaw-download-btn');
+        dlBtn.href = imgUrl;
+        dlBtn.download = `KyUc_${currentJigsawAlbum.name.replace(/\s+/g, '')}.jpg`;
+        
         document.getElementById('memory-win').style.display = 'block';
+        fireConfetti(); // Bắn pháo hoa
+        
+        const audio = document.getElementById('gramophone-audio');
+        if(audio) audio.pause();
     }
 }
+
+// Khởi chạy load dropdown lúc load trang
+setTimeout(() => loadUserJigsawOptions(), 1000);
 
         // ============================================================
         // GLOBAL KHÁCH XEM ALBUM & MỞ KHÓA
