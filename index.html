@@ -883,8 +883,7 @@
         // LOGIC KHU GIẢI TRÍ (TAROT, CAT 9:16, JIGSAW)
         // ============================================================
 
-// --- 1. BỐC BÀI KÝ ỨC (ĐÃ FIX LỖI LẬT BÀI) ---
-let hasDrawnToday = false;
+// --- 1. BỐC BÀI KÝ ỨC (ĐÃ CẬP NHẬT GIỚI HẠN 1 LƯỢT/NGÀY) ---
 let tarotTempB64 = "";
 
 function openAdminTarot() {
@@ -941,7 +940,16 @@ window.deleteTarotCard = function(idx) {
 }
 
 function drawTarotCard() {
-    if (hasDrawnToday) return; 
+    // Lấy ngày hiện tại (Reset tự động qua ngày mới theo giờ hệ thống)
+    const todayStr = new Date().toLocaleDateString('en-CA');
+    const lastDrawnDate = localStorage.getItem('ga_last_tarot_date');
+
+    // Chặn khách bốc nhiều lần trong ngày. Nếu là Admin thì thoải mái.
+    if (!isAdminMode && lastDrawnDate === todayStr) {
+        alert("Mỗi ngày lữ khách chỉ được bốc 1 lá bài thôi nhé! Hãy quay lại ga vào ngày mai để nhận thông điệp mới.");
+        return;
+    }
+
     let staffList = JSON.parse(localStorage.getItem('ga_tarotList'));
     if (!staffList || staffList.length === 0) {
         staffList = [{ name: "SÂN GA VẮNG", img: "https://images.unsplash.com/photo-1517488629431-6427e0ee1e5f?w=400", prompt: "Đường ray có thể dài, nghỉ chân chút đi lữ khách." }];
@@ -954,7 +962,11 @@ function drawTarotCard() {
     
     // Ép lật bằng inline CSS để 100% không kẹt
     document.getElementById('daily-card').style.transform = "rotateY(180deg)";
-    hasDrawnToday = true;
+    
+    // Chỉ lưu cờ đánh dấu đã bốc hôm nay nếu là khách
+    if (!isAdminMode) {
+        localStorage.setItem('ga_last_tarot_date', todayStr);
+    }
 }
 
 // --- 2. TRẠM CHĂM MÈO (PIXEL CHIBI 9:16) ---
