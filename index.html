@@ -1134,7 +1134,7 @@ setTimeout(() => {
     document.getElementById('affection-bar').style.width = catAffection + '%';
 }, 500);
 
-// --- 3. GHÉP HÌNH KỶ NIỆM ALBUM NHÂN VIÊN ---
+// --- 3. GHÉP HÌNH KỶ NIỆM ALBUM NHÂN VIÊN (ĐÃ CHUẨN HÓA ĐỒNG BỘ MẠNG) ---
 let draggedPiece = null;
 let currentJigsawAlbum = null;
 let ajTempImages = []; // Mảng chứa object { url: base64, diff: 4 }
@@ -1183,71 +1183,7 @@ window.removeAjTempImg = function(idx) {
     renderAjPreview();
 }
 
-// Lưu Album
-window.saveJigsawAlbum = function() {
-    let name = document.getElementById("aj-name").value.trim();
-    let bot = document.getElementById("aj-bot").value.trim();
-    let train = document.getElementById("aj-train").value.trim();
-    
-    if(!name || ajTempImages.length === 0) return alert("Vui lòng nhập Tên nhân viên và tải ít nhất 1 ảnh!");
-    
-    let albums = JSON.parse(localStorage.getItem('ga_puzzle_albums')) || [];
-    albums.push({ id: Date.now(), name, bot, train, images: [...ajTempImages] }); 
-    
-    try {
-        localStorage.setItem('ga_puzzle_albums', JSON.stringify(albums));
-        alert("Đã tạo Album thành công!");
-        document.getElementById("aj-name").value = "";
-        document.getElementById("aj-bot").value = "";
-        document.getElementById("aj-train").value = "";
-        ajTempImages = [];
-        renderAjPreview();
-        renderAdminJigsawRepo();
-        loadUserJigsawOptions(); 
-    } catch(e) { alert("Bộ nhớ đã đầy, hãy xóa bớt dữ liệu cũ!"); }
-}
-
-window.openAdminJigsaw = function() {
-    document.getElementById('admin-jigsaw-modal').style.display='flex';
-    renderAdminJigsawRepo();
-}
-
-window.renderAdminJigsawRepo = function() {
-    let albums = JSON.parse(localStorage.getItem('ga_puzzle_albums')) || [];
-    let html = albums.map((alb, idx) => `
-        <div style="background:#000; padding:10px; border:1px solid #444; border-radius:4px; display:flex; justify-content:space-between; align-items:center;">
-            <div>
-                <div style="color:#e8c382; font-weight:bold;">${alb.name}</div>
-                <div style="font-size:11px; color:#aaa;">${alb.bot} | ${alb.train} | ${alb.images.length} Ảnh</div>
-            </div>
-            <button onclick="deleteJigsawAlbum(${idx})" style="background:#8B0000; color:#fff; border:1px solid #000; padding:5px 10px; font-weight:bold; cursor:pointer; border-radius:4px;">XÓA</button>
-        </div>
-    `).join('');
-    document.getElementById('admin-jigsaw-repo').innerHTML = html || "<p style='font-size:11px; color:#888;'>Chưa có Album nào.</p>";
-}
-
-window.deleteJigsawAlbum = function(idx) {
-    if(!confirm("Xóa album này?")) return;
-    let albums = JSON.parse(localStorage.getItem('ga_puzzle_albums')) || [];
-    albums.splice(idx, 1); 
-    localStorage.setItem('ga_puzzle_albums', JSON.stringify(albums));
-    renderAdminJigsawRepo();
-    loadUserJigsawOptions();
-}
-
-// KHÁCH: Load danh sách nhân viên vào thẻ Select
-window.loadUserJigsawOptions = function() {
-    let albums = JSON.parse(localStorage.getItem('ga_puzzle_albums')) || [];
-    let selectEl = document.getElementById("jigsaw-character-select");
-    if(!selectEl) return;
-    if(albums.length === 0) {
-        selectEl.innerHTML = `<option value="">Hiện chưa có nhân viên nào</option>`;
-    } else {
-        selectEl.innerHTML = albums.map(a => `<option value="${a.id}">${a.name} ${a.bot ? `(${a.bot})` : ''}</option>`).join('');
-    }
-}
-
-// Bắt đầu game
+// Lưu Album lên hệ thống
 window.saveJigsawAlbum = async function() {
     let name = document.getElementById("aj-name").value.trim();
     let bot = document.getElementById("aj-bot").value.trim();
@@ -1267,6 +1203,11 @@ window.saveJigsawAlbum = async function() {
         document.getElementById("aj-train").value = "";
         ajTempImages = []; renderAjPreview(); renderAdminJigsawRepo(); loadUserJigsawOptions(); 
     } catch(e) { alert("Lỗi lưu dữ liệu!"); }
+}
+
+window.openAdminJigsaw = function() {
+    document.getElementById('admin-jigsaw-modal').style.display='flex';
+    renderAdminJigsawRepo();
 }
 
 window.renderAdminJigsawRepo = function() {
@@ -1291,6 +1232,7 @@ window.deleteJigsawAlbum = async function(idx) {
     renderAdminJigsawRepo(); loadUserJigsawOptions();
 }
 
+// KHÁCH: Load danh sách nhân viên vào thẻ ô chọn Select
 window.loadUserJigsawOptions = function() {
     let albums = CONFIG.puzzleAlbums || [];
     let selectEl = document.getElementById("jigsaw-character-select");
@@ -1302,6 +1244,7 @@ window.loadUserJigsawOptions = function() {
     }
 }
 
+// Bắt đầu game ghép hình
 window.startJigsawGame = function() {
     let selectEl = document.getElementById("jigsaw-character-select");
     let targetId = selectEl.value;
@@ -1358,47 +1301,6 @@ window.startJigsawGame = function() {
     };
     tmpImg.src = imgUrl;
 }
-
-window.fireConfetti = function() {
-    const container = document.getElementById('confetti-container');
-    container.innerHTML = '';
-    const colors = ['#e8c382', '#fff', '#8b7355', '#d4c5b0'];
-    for(let i=0; i<50; i++) {
-        let conf = document.createElement('div');
-        conf.className = 'confetti';
-        conf.style.left = Math.random() * 100 + '%';
-        conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        conf.style.animationDelay = Math.random() * 2 + 's';
-        container.appendChild(conf);
-    }
-}
-
-window.checkJigsawWin = function() {
-    let allNodes = Array.from(document.getElementById("jigsaw-board").children);
-    if(allNodes.every((node, idx) => node.dataset.trueIdx == idx)) {
-        allNodes.forEach(n => { n.draggable = false; n.style.border = 'none'; });
-        
-        let imgUrl = allNodes[0].style.backgroundImage.slice(5, -2).replace(/"/g, "");
-        
-        // Cập nhật thông tin chiến thắng
-        document.getElementById('win-text-message').innerHTML = `Bạn đã khôi phục thành công ảnh đặc biệt của <span style="color:var(--amber);">${currentJigsawAlbum.name}</span>!`;
-        document.getElementById('win-sparkle-img').src = imgUrl;
-        
-        // Nút tải ảnh
-        let dlBtn = document.getElementById('jigsaw-download-btn');
-        dlBtn.href = imgUrl;
-        dlBtn.download = `KyUc_${currentJigsawAlbum.name.replace(/\s+/g, '')}.jpg`;
-        
-        document.getElementById('memory-win').style.display = 'block';
-        fireConfetti(); // Bắn pháo hoa
-        
-        const audio = document.getElementById('gramophone-audio');
-        if(audio) audio.pause();
-    }
-}
-
-// Khởi chạy load dropdown lúc load trang
-setTimeout(() => loadUserJigsawOptions(), 1000);
 
         // ============================================================
         // GLOBAL KHÁCH XEM ALBUM & MỞ KHÓA
@@ -1660,6 +1562,8 @@ setTimeout(() => loadUserJigsawOptions(), 1000);
             localforage.config({ name: 'MeownStation' }); loadIcons(); createEmbers(); createFireflies(); checkAdminLogin(); 
 
             await fetchStationConfig();
+            // Đảm bảo nạp dữ liệu game ghép hình ngay khi Supabase tải xong cấu hình
+            loadUserJigsawOptions();
             
             let globalVisits = 0;
             try {
