@@ -898,29 +898,28 @@ document.getElementById("admin-nv-file").addEventListener("change", async (e) =>
     }
 });
 
-function saveStaffTarot() {
+async function saveStaffTarot() {
     const name = document.getElementById('admin-nv-name').value.trim();
     const prompt = document.getElementById('admin-nv-prompt').value.trim();
     if(!name || !prompt || !tarotTempB64) { alert("Vui lòng nhập Tên, Thông điệp và Tải ảnh!"); return; }
     
-    let staffList = JSON.parse(localStorage.getItem('ga_tarotList')) || [];
-    staffList.push({ name, img: tarotTempB64, prompt });
+    if(!CONFIG.tarotList) CONFIG.tarotList = [];
+    CONFIG.tarotList.push({ name, img: tarotTempB64, prompt });
     
     try {
-        localStorage.setItem('ga_tarotList', JSON.stringify(staffList));
-        alert("Đã lưu lá bài thành công!");
+        document.getElementById('admin-nv-name').value = 'Đang lưu lên đám mây...'; 
+        await saveStationConfigToDB(true); // Lưu lên Supabase
+        alert("Đã lưu lá bài đồng bộ lên hệ thống!");
         document.getElementById('admin-nv-name').value = '';
         document.getElementById('admin-nv-prompt').value = '';
         document.getElementById('admin-tarot-prev').innerHTML = '';
         tarotTempB64 = "";
         renderAdminTarotRepo();
-    } catch(e) {
-        alert("Bộ nhớ đầy! Hãy xóa bớt lá bài cũ hoặc ảnh ghép hình.");
-    }
+    } catch(e) { alert("Lỗi mạng, không thể lưu!"); }
 }
 
 function renderAdminTarotRepo() {
-    let list = JSON.parse(localStorage.getItem('ga_tarotList')) || [];
+    let list = CONFIG.tarotList || [];
     let html = "";
     list.forEach((item, idx) => {
         html += `<div style="background:#000; padding:6px; border:1px solid #444; position:relative; border-radius:4px;">
@@ -932,25 +931,25 @@ function renderAdminTarotRepo() {
     document.getElementById('admin-tarot-repo').innerHTML = html || "<p style='font-size:11px; color:#888;'>Chưa có lá bài nào.</p>";
 }
 
-window.deleteTarotCard = function(idx) {
-    let list = JSON.parse(localStorage.getItem('ga_tarotList')) || [];
-    list.splice(idx, 1);
-    localStorage.setItem('ga_tarotList', JSON.stringify(list));
-    renderAdminTarotRepo();
+window.deleteTarotCard = async function(idx) {
+    if(!CONFIG.tarotList) return;
+    if(confirm("Xóa vĩnh viễn lá bài này trên toàn hệ thống?")) {
+        CONFIG.tarotList.splice(idx, 1);
+        await saveStationConfigToDB(true);
+        renderAdminTarotRepo();
+    }
 }
 
 function drawTarotCard() {
-    // Lấy ngày hiện tại (Reset tự động qua ngày mới theo giờ hệ thống)
     const todayStr = new Date().toLocaleDateString('en-CA');
     const lastDrawnDate = localStorage.getItem('ga_last_tarot_date');
 
-    // Chặn khách bốc nhiều lần trong ngày. Nếu là Admin thì thoải mái.
     if (!isAdminMode && lastDrawnDate === todayStr) {
         alert("Mỗi ngày lữ khách chỉ được bốc 1 lá bài thôi nhé! Hãy quay lại ga vào ngày mai để nhận thông điệp mới.");
         return;
     }
 
-    let staffList = JSON.parse(localStorage.getItem('ga_tarotList'));
+    let staffList = CONFIG.tarotList || [];
     if (!staffList || staffList.length === 0) {
         staffList = [{ name: "SÂN GA VẮNG", img: "https://images.unsplash.com/photo-1517488629431-6427e0ee1e5f?w=400", prompt: "Đường ray có thể dài, nghỉ chân chút đi lữ khách." }];
     }
@@ -959,14 +958,9 @@ function drawTarotCard() {
     document.getElementById('tarot-img').src = randomStaff.img;
     document.getElementById('tarot-name').innerText = randomStaff.name;
     document.getElementById('tarot-message').innerText = `"${randomStaff.prompt}"`;
-    
-    // Ép lật bằng inline CSS để 100% không kẹt
     document.getElementById('daily-card').style.transform = "rotateY(180deg)";
     
-    // Chỉ lưu cờ đánh dấu đã bốc hôm nay nếu là khách
-    if (!isAdminMode) {
-        localStorage.setItem('ga_last_tarot_date', todayStr);
-    }
+    if (!isAdminMode) localStorage.setItem('ga_last_tarot_date', todayStr);
 }
 
 // --- 2. TRẠM CHĂM MÈO (PIXEL CHIBI 9:16) ---
@@ -1254,13 +1248,67 @@ window.loadUserJigsawOptions = function() {
 }
 
 // Bắt đầu game
+window.saveJigsawAlbum = async function() {
+    let name = document.getElementById("aj-name").value.trim();
+    let bot = document.getElementById("aj-bot").value.trim();
+    let train = document.getElementById("aj-train").value.trim();
+    
+    if(!name || ajTempImages.length === 0) return alert("Vui lòng nhập Tên nhân viên và tải ít nhất 1 ảnh!");
+    
+    if(!CONFIG.puzzleAlbums) CONFIG.puzzleAlbums = [];
+    CONFIG.puzzleAlbums.push({ id: Date.now(), name, bot, train, images: [...ajTempImages] }); 
+    
+    try {
+        document.getElementById("aj-name").value = "Đang lưu lên hệ thống...";
+        await saveStationConfigToDB(true); // Lưu lên Supabase
+        alert("Đã tạo Album đồng bộ thành công!");
+        document.getElementById("aj-name").value = "";
+        document.getElementById("aj-bot").value = "";
+        document.getElementById("aj-train").value = "";
+        ajTempImages = []; renderAjPreview(); renderAdminJigsawRepo(); loadUserJigsawOptions(); 
+    } catch(e) { alert("Lỗi lưu dữ liệu!"); }
+}
+
+window.renderAdminJigsawRepo = function() {
+    let albums = CONFIG.puzzleAlbums || [];
+    let html = albums.map((alb, idx) => `
+        <div style="background:#000; padding:10px; border:1px solid #444; border-radius:4px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <div style="color:#e8c382; font-weight:bold;">${alb.name}</div>
+                <div style="font-size:11px; color:#aaa;">${alb.bot} | ${alb.train} | ${alb.images.length} Ảnh</div>
+            </div>
+            <button onclick="deleteJigsawAlbum(${idx})" style="background:#8B0000; color:#fff; border:1px solid #000; padding:5px 10px; font-weight:bold; cursor:pointer; border-radius:4px;">XÓA</button>
+        </div>
+    `).join('');
+    document.getElementById('admin-jigsaw-repo').innerHTML = html || "<p style='font-size:11px; color:#888;'>Chưa có Album nào.</p>";
+}
+
+window.deleteJigsawAlbum = async function(idx) {
+    if(!confirm("Xóa album này trên toàn hệ thống?")) return;
+    if(!CONFIG.puzzleAlbums) return;
+    CONFIG.puzzleAlbums.splice(idx, 1); 
+    await saveStationConfigToDB(true);
+    renderAdminJigsawRepo(); loadUserJigsawOptions();
+}
+
+window.loadUserJigsawOptions = function() {
+    let albums = CONFIG.puzzleAlbums || [];
+    let selectEl = document.getElementById("jigsaw-character-select");
+    if(!selectEl) return;
+    if(albums.length === 0) {
+        selectEl.innerHTML = `<option value="">Hiện chưa có nhân viên nào</option>`;
+    } else {
+        selectEl.innerHTML = albums.map(a => `<option value="${a.id}">${a.name} ${a.bot ? `(${a.bot})` : ''}</option>`).join('');
+    }
+}
+
 window.startJigsawGame = function() {
     let selectEl = document.getElementById("jigsaw-character-select");
     let targetId = selectEl.value;
     if(!targetId) return alert("Hiện chưa có nhân viên nào để phục hồi ảnh!");
     
-    let albums = JSON.parse(localStorage.getItem('ga_puzzle_albums')) || [];
-    let album = albums.find(a => a.id == targetId);
+    let albums = CONFIG.puzzleAlbums || [];
+    let album = albums.find(a => String(a.id) === String(targetId));
     if(!album || !album.images || album.images.length === 0) return alert("Album này bị lỗi hoặc không có ảnh!");
     
     currentJigsawAlbum = album; 
@@ -1269,19 +1317,13 @@ window.startJigsawGame = function() {
     const board = document.getElementById('jigsaw-board');
     board.style.display = 'grid'; board.innerHTML = '';
     
-    // Bốc 1 ảnh ngẫu nhiên trong Album
     let imgData = album.images[Math.floor(Math.random() * album.images.length)];
-    
-    // Tương thích ngược: Nếu data cũ là chuỗi URL, thì lấy chuỗi, nếu là object thì đọc obj
     let imgUrl = typeof imgData === 'string' ? imgData : imgData.url;
     let level = (typeof imgData === 'object' && imgData.diff) ? imgData.diff : 4; 
 
-    // QUAN TRỌNG: Load ảnh ảo để lấy chiều rộng/cao thật, set aspect-ratio cho board
     let tmpImg = new Image();
     tmpImg.onload = function() {
-        // Tự động set tỷ lệ khung hình (16:9, 9:16, 1:1, ...) dựa theo ảnh
         board.style.aspectRatio = `${this.width} / ${this.height}`;
-        
         board.style.gridTemplateColumns = `repeat(${level}, 1fr)`;
         board.style.gridTemplateRows = `repeat(${level}, 1fr)`;
 
@@ -1311,7 +1353,6 @@ window.startJigsawGame = function() {
         }
         pieces.sort(() => Math.random() - 0.5).forEach(p => board.appendChild(p));
         
-        // Phát nhạc
         const audio = document.getElementById('gramophone-audio');
         if(audio) { audio.volume = 0.3; audio.play().catch(e => {}); }
     };
@@ -1572,7 +1613,7 @@ setTimeout(() => loadUserJigsawOptions(), 1000);
         const ADMIN_CAT_AVATAR = "ChatGPT_Image_02_56_58_7_thg_7__2026-removebg-preview-removebg-preview.png";
         const VERIFIED_TICK = `<svg style="width:14px; height:14px; display:inline-block; vertical-align:middle; margin-left:4px;" viewBox="0 0 24 24" fill="#0866FF"><circle cx="12" cy="12" r="10"/><path d="M16.5 8.5l-6 6-3-3" stroke="#fff" stroke-width="2" fill="none"/></svg>`;
         
-        let CONFIG = { stationMaster: { avatar: "", name: "Trưởng Ga", bio: "Chào mừng đến với nhà ga Meown.", facebook: {} }, trains: [], staff: [], upcomingBots: [], musicLibrary: [], lastUpdated: 0, musicLastUpdated: 0 };
+        let CONFIG = { stationMaster: { avatar: "", name: "Trưởng Ga", bio: "Chào mừng đến với nhà ga Meown.", facebook: {} }, trains: [], staff: [], upcomingBots: [], musicLibrary: [], tarotList: [], puzzleAlbums: [], lastUpdated: 0, musicLastUpdated: 0 };
         let isAdminMode = false; let activeMusicPl = null; let localGuestbook = []; let currentSearch = ""; 
 
         function removeAccents(str) { return str ? str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase() : ''; }
@@ -1712,6 +1753,19 @@ setTimeout(() => loadUserJigsawOptions(), 1000);
                     CONFIG = { ...CONFIG, ...dbConfig }; 
                     localforage.setItem("meown_config_backup", dbConfig);
                 }
+
+                // --- ĐOẠN MỚI THÊM: HÚT DỮ LIỆU CŨ LÊN ĐÁM MÂY ---
+                let needsMigration = false;
+                if (!CONFIG.tarotList || CONFIG.tarotList.length === 0) {
+                    let localTarot = JSON.parse(localStorage.getItem('ga_tarotList') || '[]');
+                    if (localTarot.length > 0) { CONFIG.tarotList = localTarot; needsMigration = true; }
+                }
+                if (!CONFIG.puzzleAlbums || CONFIG.puzzleAlbums.length === 0) {
+                    let localPuzzle = JSON.parse(localStorage.getItem('ga_puzzle_albums') || '[]');
+                    if (localPuzzle.length > 0) { CONFIG.puzzleAlbums = localPuzzle; needsMigration = true; }
+                }
+                if (needsMigration && isAdminMode) { saveStationConfigToDB(true); } // Đẩy âm thầm lên DB
+                // ---------------------------------------------------
                 
                 fetchMusicConfig();
             } catch(e) { console.warn("Lỗi đồng bộ dữ liệu hệ thống:", e); }
@@ -1754,7 +1808,7 @@ setTimeout(() => loadUserJigsawOptions(), 1000);
             if (!skipMusicSync) CONFIG.musicLastUpdated = Date.now();
             if (!CONFIG.musicLibrary) CONFIG.musicLibrary = []; 
 
-            const mainPayload = { stationMaster: CONFIG.stationMaster, trains: CONFIG.trains, staff: CONFIG.staff, upcomingBots: CONFIG.upcomingBots, lastUpdated: CONFIG.lastUpdated, musicLastUpdated: CONFIG.musicLastUpdated };
+            const mainPayload = { stationMaster: CONFIG.stationMaster, trains: CONFIG.trains, staff: CONFIG.staff, upcomingBots: CONFIG.upcomingBots, tarotList: CONFIG.tarotList || [], puzzleAlbums: CONFIG.puzzleAlbums || [], lastUpdated: CONFIG.lastUpdated, musicLastUpdated: CONFIG.musicLastUpdated };
             const musicPayload = { timestamp: CONFIG.musicLastUpdated, library: CONFIG.musicLibrary };
             
             try { 
