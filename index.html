@@ -842,7 +842,7 @@
             <div style="display:flex; flex-direction:column; gap:12px; padding:20px; background:#111; border:1px solid #444; border-radius: 8px;">
                 <h4 style="color:#fff; margin:0;" id="tarot-form-title">THÊM LÁ BÀI MỚI</h4>
                 <div class="form-row file-upload-wrapper" style="margin:0;">
-                    <label class="file-btn" style="border-color:#8b7355; color:#d4c5b0; width:100%; padding: 15px;"><input type="file" accept="image/*" id="admin-nv-file" style="display:none;"> 📸 TẢI ẢNH LÁ BÀI (TỶ LỆ DỌC 9:16)</label>
+                    <label class="file-btn" style="border-color:#8b7355; color:#d4c5b0; width:100%; padding: 15px;"><input type="file" accept="image/*" id="admin-nv-file" style="display:none;"> 📸 TẢI ẢNH LÁ BÀI (Tỷ lệ dọc 9:16)</label>
                     <div id="admin-tarot-prev" class="img-preview-grid" style="justify-content:center;"></div>
                 </div>
                 <input type="text" id="admin-nv-name" placeholder="Tên lá bài (VD: Tình Yêu, Sự Chờ Đợi...)">
@@ -969,123 +969,116 @@ let tarotTempB64 = "";
 let editingTarotIndex = -1;
 
 function openAdminTarot() {
-    document.getElementById('admin-tarot-modal').style.display='flex';
-    cancelEditTarot(); // Reset form
-    renderAdminTarotRepo();
+    document.getElementById('admin-tarot-modal').style.display='flex';
+    cancelEditTarot(); // Reset form
+    renderAdminTarotRepo();
 }
 
 document.getElementById("admin-nv-file").addEventListener("change", async (e) => {
-    if(e.target.files.length > 0) {
-        tarotTempB64 = await resizeImage(e.target.files[0], 800); 
-        // Đã trả về hình dọc 9:16
-        document.getElementById("admin-tarot-prev").innerHTML = `<img src="${tarotTempB64}" style="width:90px; height:160px; object-fit:cover; border:2px solid #8b7355; border-radius:4px;">`;
-    }
+    if(e.target.files.length > 0) {
+        tarotTempB64 = await resizeImage(e.target.files[0], 600); 
+        document.getElementById("admin-tarot-prev").innerHTML = `<img src="${tarotTempB64}" style="width:100px; height:auto; object-fit:cover; border:2px solid #8b7355; border-radius:4px;">`;
+    }
 });
 
 window.cancelEditTarot = function() {
-    editingTarotIndex = -1;
-    document.getElementById('tarot-form-title').innerText = "THÊM LÁ BÀI MỚI";
-    document.getElementById('admin-nv-name').value = '';
-    document.getElementById('admin-nv-prompt').value = '';
-    document.getElementById('admin-tarot-prev').innerHTML = '';
-    tarotTempB64 = "";
-    document.getElementById('btn-save-tarot').innerHTML = "➕ THÊM LÁ BÀI MỚI";
-    document.getElementById('btn-cancel-tarot').style.display = "none";
+    editingTarotIndex = -1;
+    document.getElementById('tarot-form-title').innerText = "THÊM LÁ BÀI MỚI";
+    document.getElementById('admin-nv-name').value = '';
+    document.getElementById('admin-nv-prompt').value = '';
+    document.getElementById('admin-tarot-prev').innerHTML = '';
+    tarotTempB64 = "";
+    document.getElementById('btn-save-tarot').innerHTML = "➕ THÊM LÁ BÀI MỚI";
+    document.getElementById('btn-cancel-tarot').style.display = "none";
 }
 
 window.editTarotCard = function(idx) {
-    let item = CONFIG.tarotList[idx];
-    if(!item) return;
-    editingTarotIndex = idx;
-    document.getElementById('tarot-form-title').innerText = `ĐANG SỬA: LÁ SỐ ${idx + 1}`;
-    document.getElementById('admin-nv-name').value = item.name || '';
-    document.getElementById('admin-nv-prompt').value = item.prompt || '';
-    tarotTempB64 = item.img || '';
-    // Đã trả về hình dọc 9:16
-    document.getElementById('admin-tarot-prev').innerHTML = `<img src="${tarotTempB64}" style="width:90px; height:160px; object-fit:cover; border:2px solid #8b7355; border-radius:4px;">`;
-    
-    document.getElementById('btn-save-tarot').innerHTML = "💾 LƯU THAY ĐỔI";
-    document.getElementById('btn-cancel-tarot').style.display = "inline-block";
-    document.getElementById('admin-tarot-modal').querySelector('.modal-box-large').scrollTo(0,0);
+    let item = CONFIG.tarotList[idx];
+    editingTarotIndex = idx;
+    document.getElementById('tarot-form-title').innerText = `ĐANG SỬA: LÁ SỐ ${idx + 1}`;
+    document.getElementById('admin-nv-name').value = item.name;
+    document.getElementById('admin-nv-prompt').value = item.prompt;
+    tarotTempB64 = item.img;
+    document.getElementById('admin-tarot-prev').innerHTML = `<img src="${tarotTempB64}" style="width:100px; height:auto; object-fit:cover; border:2px solid #8b7355; border-radius:4px;">`;
+    
+    document.getElementById('btn-save-tarot').innerHTML = "💾 LƯU THAY ĐỔI";
+    document.getElementById('btn-cancel-tarot').style.display = "inline-block";
+    document.getElementById('admin-tarot-modal').querySelector('.modal-box-large').scrollTo(0,0);
 }
 
 window.saveStaffTarot = async function() {
-    const name = document.getElementById('admin-nv-name').value.trim();
-    const prompt = document.getElementById('admin-nv-prompt').value.trim();
-    if(!name || !prompt || !tarotTempB64) { alert("Vui lòng nhập Tên, Thông điệp và Tải ảnh!"); return; }
-    
-    if(!CONFIG.tarotList) CONFIG.tarotList = [];
+    const name = document.getElementById('admin-nv-name').value.trim();
+    const prompt = document.getElementById('admin-nv-prompt').value.trim();
+    if(!name || !prompt || !tarotTempB64) { alert("Vui lòng nhập Tên, Thông điệp và Tải ảnh!"); return; }
+    
+    if(!CONFIG.tarotList) CONFIG.tarotList = [];
 
-    if (editingTarotIndex > -1) {
-        CONFIG.tarotList[editingTarotIndex] = { name, img: tarotTempB64, prompt };
-    } else {
-        CONFIG.tarotList.push({ name, img: tarotTempB64, prompt });
-    }
-    
-    try {
-        document.getElementById('btn-save-tarot').innerText = 'Đang lưu...'; 
-        await saveStationConfigToDB(true); 
-        alert(editingTarotIndex > -1 ? "Đã cập nhật lá bài!" : "Đã thêm lá bài mới!");
-        cancelEditTarot();
-        renderAdminTarotRepo();
-    } catch(e) { alert("Lỗi mạng, không thể lưu!"); document.getElementById('btn-save-tarot').innerText = 'LỖI!'; }
+    if (editingTarotIndex > -1) {
+        CONFIG.tarotList[editingTarotIndex] = { name, img: tarotTempB64, prompt };
+    } else {
+        CONFIG.tarotList.push({ name, img: tarotTempB64, prompt });
+    }
+    
+    try {
+        document.getElementById('btn-save-tarot').innerText = 'Đang lưu...'; 
+        await saveStationConfigToDB(true); 
+        alert(editingTarotIndex > -1 ? "Đã cập nhật lá bài!" : "Đã thêm lá bài mới!");
+        cancelEditTarot();
+        renderAdminTarotRepo();
+    } catch(e) { alert("Lỗi mạng, không thể lưu!"); document.getElementById('btn-save-tarot').innerText = 'LỖI!'; }
 }
 
 window.renderAdminTarotRepo = function() {
-    try {
-        let list = CONFIG.tarotList || [];
-        let html = "";
-        list.forEach((item, idx) => {
-            if (!item) return; 
-            html += `
-            <div class="admin-list-item">
-                <img src="${item.img || ''}" style="width:90px; height:160px; object-fit:cover; border:2px solid #8b7355; border-radius:4px;">
-                <div class="admin-list-content">
-                    <div class="admin-list-title">${item.name || 'Không có tên'}</div>
-                    <div class="admin-list-desc">"${item.prompt || ''}"</div>
-                    <div class="admin-action-row">
-                        <button class="admin-mini-btn" onclick="editTarotCard(${idx})">✏️ Sửa</button>
-                        <button class="admin-mini-btn del" onclick="deleteTarotCard(${idx})">🗑️ Xóa</button>
-                    </div>
-                </div>
-            </div>`;
-        });
-        let repo = document.getElementById('admin-tarot-repo');
-        if(repo) repo.innerHTML = html || "<p style='color:#888;'>Chưa có lá bài nào.</p>";
-    } catch (e) { console.error("Lỗi vẽ giao diện Tarot", e); }
+    let list = CONFIG.tarotList || [];
+    let html = "";
+    list.forEach((item, idx) => {
+        html += `
+        <div class="admin-list-item">
+            <img src="${item.img}">
+            <div class="admin-list-content">
+                <div class="admin-list-title">${item.name}</div>
+                <div class="admin-list-desc">"${item.prompt}"</div>
+                <div class="admin-action-row">
+                    <button class="admin-mini-btn" onclick="editTarotCard(${idx})">✏️ Sửa</button>
+                    <button class="admin-mini-btn del" onclick="deleteTarotCard(${idx})">🗑️ Xóa</button>
+                </div>
+            </div>
+        </div>`;
+    });
+    document.getElementById('admin-tarot-repo').innerHTML = html || "<p style='color:#888;'>Chưa có lá bài nào.</p>";
 }
 
 window.deleteTarotCard = async function(idx) {
-    if(!CONFIG.tarotList) return;
-    if(confirm("Xóa vĩnh viễn lá bài này trên toàn hệ thống?")) {
-        CONFIG.tarotList.splice(idx, 1);
-        await saveStationConfigToDB(true);
-        if (editingTarotIndex === idx) cancelEditTarot();
-        renderAdminTarotRepo();
-    }
+    if(!CONFIG.tarotList) return;
+    if(confirm("Xóa vĩnh viễn lá bài này trên toàn hệ thống?")) {
+        CONFIG.tarotList.splice(idx, 1);
+        await saveStationConfigToDB(true);
+        if (editingTarotIndex === idx) cancelEditTarot();
+        renderAdminTarotRepo();
+    }
 }
 
 function drawTarotCard() {
-    const todayStr = new Date().toLocaleDateString('en-CA');
-    const lastDrawnDate = localStorage.getItem('ga_last_tarot_date');
-    if (!isAdminMode && lastDrawnDate === todayStr) {
-        alert("Mỗi ngày lữ khách chỉ được bốc 1 lá bài thôi nhé! Hãy quay lại ga vào ngày mai để nhận thông điệp mới.");
-        return;
-    }
-    let staffList = CONFIG.tarotList || [];
-    if (!staffList || staffList.length === 0) {
-        staffList = [{ name: "SÂN GA VẮNG", img: "https://images.unsplash.com/photo-1517488629431-6427e0ee1e5f?w=400", prompt: "Đường ray có thể dài, nghỉ chân chút đi lữ khách." }];
-    }
-    const randomStaff = staffList[Math.floor(Math.random() * staffList.length)];
-    
-    document.getElementById('tarot-img').src = randomStaff.img || '';
-    document.getElementById('tarot-name').innerText = randomStaff.name || '';
-    document.getElementById('tarot-message').innerText = `"${randomStaff.prompt || ''}"`;
-    document.getElementById('daily-card').style.transform = "rotateY(180deg)";
-    
-    if (!isAdminMode) localStorage.setItem('ga_last_tarot_date', todayStr);
+    const todayStr = new Date().toLocaleDateString('en-CA');
+    const lastDrawnDate = localStorage.getItem('ga_last_tarot_date');
+    if (!isAdminMode && lastDrawnDate === todayStr) {
+        alert("Mỗi ngày lữ khách chỉ được bốc 1 lá bài thôi nhé! Hãy quay lại ga vào ngày mai để nhận thông điệp mới.");
+        return;
+    }
+    let staffList = CONFIG.tarotList || [];
+    if (!staffList || staffList.length === 0) {
+        staffList = [{ name: "SÂN GA VẮNG", img: "https://images.unsplash.com/photo-1517488629431-6427e0ee1e5f?w=400", prompt: "Đường ray có thể dài, nghỉ chân chút đi lữ khách." }];
+    }
+    const randomStaff = staffList[Math.floor(Math.random() * staffList.length)];
+    
+    document.getElementById('tarot-img').src = randomStaff.img;
+    document.getElementById('tarot-name').innerText = randomStaff.name;
+    document.getElementById('tarot-message').innerText = `"${randomStaff.prompt}"`;
+    document.getElementById('daily-card').style.transform = "rotateY(180deg)";
+    
+    if (!isAdminMode) localStorage.setItem('ga_last_tarot_date', todayStr);
 }
-        
+
 // --- 2. TRẠM CHĂM MÈO (PIXEL CHIBI 9:16) ---
 let catAffection = parseInt(localStorage.getItem('ga_catAffection')) || 0;
 
@@ -1260,238 +1253,223 @@ setTimeout(() => {
 // --- 3. GHÉP HÌNH KỶ NIỆM (JIGSAW PUZZLE) ---
 let draggedPiece = null;
 let currentJigsawAlbum = null;
-let ajTempImages = []; 
+let ajTempImages = []; 
 let editingJigsawIndex = -1;
 
 window.openAdminJigsaw = function() {
-    document.getElementById('admin-jigsaw-modal').style.display='flex';
-    cancelEditJigsaw();
-    renderAdminJigsawRepo();
+    document.getElementById('admin-jigsaw-modal').style.display='flex';
+    cancelEditJigsaw();
+    renderAdminJigsawRepo();
 }
 
 document.getElementById("aj-files").addEventListener("change", async (e) => {
-    let previewEl = document.getElementById("aj-preview");
-    previewEl.innerHTML += "<span id='loading-img-msg' style='font-size:11px; color:#e8c382;'>Đang nén ảnh...</span>";
-    for(let f of e.target.files) {
-        try { 
-            let b64 = await resizeImage(f, 800); 
-            ajTempImages.push({ url: b64, diff: 4 }); 
-        } catch(err) { alert("Lỗi xử lý ảnh!"); }
-    }
-    let msg = document.getElementById('loading-img-msg');
-    if(msg) msg.remove();
-    renderAjPreview();
-    e.target.value = "";
+    let previewEl = document.getElementById("aj-preview");
+    previewEl.innerHTML += "<span id='loading-img-msg' style='font-size:11px; color:#e8c382;'>Đang nén ảnh...</span>";
+    for(let f of e.target.files) {
+        try { 
+            let b64 = await resizeImage(f, 800); 
+            ajTempImages.push({ url: b64, diff: 4 }); 
+        } catch(err) { alert("Lỗi xử lý ảnh!"); }
+    }
+    let msg = document.getElementById('loading-img-msg');
+    if(msg) msg.remove();
+    renderAjPreview();
+    e.target.value = "";
 });
 
 window.renderAjPreview = function() {
-    let html = ajTempImages.map((imgObj, idx) => `
-        <div style="display:flex; gap:10px; align-items:center; background:#000; padding:10px; border:1px solid #444; border-radius:4px;">
-            <img src="${imgObj.url}" style="width:60px; height:60px; object-fit:cover; border:1px solid #8b7355; border-radius:4px;">
-            <div style="flex:1;">
-                <select onchange="updateAjTempDiff(${idx}, this.value)" style="width:100px; padding:5px; font-size:12px;">
-                    <option value="3" ${imgObj.diff == 3 ? 'selected' : ''}>Dễ (3x3)</option>
-                    <option value="4" ${imgObj.diff == 4 ? 'selected' : ''}>Vừa (4x4)</option>
-                    <option value="5" ${imgObj.diff == 5 ? 'selected' : ''}>Khó (5x5)</option>
-                    <option value="6" ${imgObj.diff == 6 ? 'selected' : ''}>Siêu Khó (6x6)</option>
-                </select>
-            </div>
-            <button class="admin-mini-btn del" onclick="removeAjTempImg(${idx})">XÓA</button>
-        </div>
-    `).join('');
-    document.getElementById("aj-preview").innerHTML = html;
+    let html = ajTempImages.map((imgObj, idx) => `
+        <div style="display:flex; gap:10px; align-items:center; background:#000; padding:10px; border:1px solid #444; border-radius:4px;">
+            <img src="${imgObj.url}" style="width:60px; height:60px; object-fit:cover; border:1px solid #8b7355; border-radius:4px;">
+            <div style="flex:1;">
+                <select onchange="updateAjTempDiff(${idx}, this.value)" style="width:100px; padding:5px; font-size:12px;">
+                    <option value="3" ${imgObj.diff == 3 ? 'selected' : ''}>Dễ (3x3)</option>
+                    <option value="4" ${imgObj.diff == 4 ? 'selected' : ''}>Vừa (4x4)</option>
+                    <option value="5" ${imgObj.diff == 5 ? 'selected' : ''}>Khó (5x5)</option>
+                    <option value="6" ${imgObj.diff == 6 ? 'selected' : ''}>Siêu Khó (6x6)</option>
+                </select>
+            </div>
+            <button class="admin-mini-btn del" onclick="removeAjTempImg(${idx})">XÓA</button>
+        </div>
+    `).join('');
+    document.getElementById("aj-preview").innerHTML = html;
 }
 
 window.updateAjTempDiff = function(idx, val) { if(ajTempImages[idx]) ajTempImages[idx].diff = parseInt(val); }
 window.removeAjTempImg = function(idx) { ajTempImages.splice(idx, 1); renderAjPreview(); }
 
 window.cancelEditJigsaw = function() {
-    editingJigsawIndex = -1;
-    document.getElementById('jigsaw-form-title').innerText = "TẠO ALBUM MỚI";
-    document.getElementById("aj-name").value = "";
-    document.getElementById("aj-bot").value = "";
-    document.getElementById("aj-train").value = "";
-    ajTempImages = []; 
-    renderAjPreview();
-    document.getElementById('btn-save-jigsaw').innerText = "💾 LƯU ALBUM";
-    document.getElementById('btn-cancel-jigsaw').style.display = "none";
+    editingJigsawIndex = -1;
+    document.getElementById('jigsaw-form-title').innerText = "TẠO ALBUM MỚI";
+    document.getElementById("aj-name").value = "";
+    document.getElementById("aj-bot").value = "";
+    document.getElementById("aj-train").value = "";
+    ajTempImages = []; 
+    renderAjPreview();
+    document.getElementById('btn-save-jigsaw').innerText = "💾 LƯU ALBUM";
+    document.getElementById('btn-cancel-jigsaw').style.display = "none";
 }
 
 window.editJigsawAlbum = function(idx) {
-    let alb = CONFIG.puzzleAlbums[idx];
-    editingJigsawIndex = idx;
-    document.getElementById('jigsaw-form-title').innerText = `ĐANG SỬA ALBUM: ${alb.name}`;
-    document.getElementById("aj-name").value = alb.name;
-    document.getElementById("aj-bot").value = alb.bot || "";
-    document.getElementById("aj-train").value = alb.train || "";
-    ajTempImages = JSON.parse(JSON.stringify(alb.images || [])); // Copy mảng
-    renderAjPreview();
-    
-    document.getElementById('btn-save-jigsaw').innerText = "💾 CẬP NHẬT ALBUM NÀY";
-    document.getElementById('btn-cancel-jigsaw').style.display = "inline-block";
-    document.getElementById('admin-jigsaw-modal').querySelector('.modal-box-large').scrollTo(0,0);
+    let alb = CONFIG.puzzleAlbums[idx];
+    editingJigsawIndex = idx;
+    document.getElementById('jigsaw-form-title').innerText = `ĐANG SỬA ALBUM: ${alb.name}`;
+    document.getElementById("aj-name").value = alb.name;
+    document.getElementById("aj-bot").value = alb.bot || "";
+    document.getElementById("aj-train").value = alb.train || "";
+    ajTempImages = JSON.parse(JSON.stringify(alb.images || [])); // Copy mảng
+    renderAjPreview();
+    
+    document.getElementById('btn-save-jigsaw').innerText = "💾 CẬP NHẬT ALBUM NÀY";
+    document.getElementById('btn-cancel-jigsaw').style.display = "inline-block";
+    document.getElementById('admin-jigsaw-modal').querySelector('.modal-box-large').scrollTo(0,0);
 }
 
 window.saveJigsawAlbum = async function() {
-    let name = document.getElementById("aj-name").value.trim();
-    let bot = document.getElementById("aj-bot").value.trim();
-    let train = document.getElementById("aj-train").value.trim();
-    
-    if(!name || ajTempImages.length === 0) return alert("Vui lòng nhập Tên nhân viên và chọn ít nhất 1 ảnh!");
-    
-    if(!CONFIG.puzzleAlbums) CONFIG.puzzleAlbums = [];
+    let name = document.getElementById("aj-name").value.trim();
+    let bot = document.getElementById("aj-bot").value.trim();
+    let train = document.getElementById("aj-train").value.trim();
+    
+    if(!name || ajTempImages.length === 0) return alert("Vui lòng nhập Tên nhân viên và chọn ít nhất 1 ảnh!");
+    
+    if(!CONFIG.puzzleAlbums) CONFIG.puzzleAlbums = [];
 
-    if (editingJigsawIndex > -1) {
-        CONFIG.puzzleAlbums[editingJigsawIndex] = { id: CONFIG.puzzleAlbums[editingJigsawIndex].id, name, bot, train, images: [...ajTempImages] };
-    } else {
-        CONFIG.puzzleAlbums.push({ id: Date.now(), name, bot, train, images: [...ajTempImages] }); 
-    }
-    
-    try {
-        document.getElementById("btn-save-jigsaw").innerText = "Đang lưu lên hệ thống...";
-        await saveStationConfigToDB(true); 
-        alert(editingJigsawIndex > -1 ? "Đã cập nhật Album!" : "Đã tạo Album mới thành công!");
-        cancelEditJigsaw();
-        renderAdminJigsawRepo(); 
-        loadUserJigsawOptions(); 
-    } catch(e) { alert("Lỗi lưu dữ liệu!"); }
+    if (editingJigsawIndex > -1) {
+        CONFIG.puzzleAlbums[editingJigsawIndex] = { id: CONFIG.puzzleAlbums[editingJigsawIndex].id, name, bot, train, images: [...ajTempImages] };
+    } else {
+        CONFIG.puzzleAlbums.push({ id: Date.now(), name, bot, train, images: [...ajTempImages] }); 
+    }
+    
+    try {
+        document.getElementById("btn-save-jigsaw").innerText = "Đang lưu lên hệ thống...";
+        await saveStationConfigToDB(true); 
+        alert(editingJigsawIndex > -1 ? "Đã cập nhật Album!" : "Đã tạo Album mới thành công!");
+        cancelEditJigsaw();
+        renderAdminJigsawRepo(); 
+        loadUserJigsawOptions(); 
+    } catch(e) { alert("Lỗi lưu dữ liệu!"); }
 }
 
 window.renderAdminJigsawRepo = function() {
-    try {
-        let albums = CONFIG.puzzleAlbums || [];
-        if (!Array.isArray(albums)) albums = []; // Ép mảng chống lỗi null
-        
-        let html = albums.map((alb, idx) => {
-            if (!alb) return '';
-            let imgArr = alb.images || [];
-            if (!Array.isArray(imgArr)) imgArr = []; // Chặn lỗi báo độ dài
-            
-            let imgsHtml = imgArr.map(img => `<img src="${img.url || img}" style="width:40px; height:40px; border-radius:2px; border:1px solid #555; object-fit:cover;">`).join('');
-            
-            return `
-            <div class="admin-list-item" style="flex-direction: column;">
-                <div style="display:flex; justify-content:space-between; width:100%; border-bottom:1px solid #333; padding-bottom:10px;">
-                    <div>
-                        <div class="admin-list-title">📁 ${alb.name || 'Không tên'}</div>
-                        <div class="admin-list-desc">Bot: ${alb.bot || 'Trống'} | Chuyến: ${alb.train || 'Trống'} | ${imgArr.length} Ký ức</div>
-                    </div>
-                    <div class="admin-action-row" style="margin:0;">
-                        <button class="admin-mini-btn" onclick="editJigsawAlbum(${idx})">✏️ Chỉnh Sửa & Thêm Ảnh</button>
-                        <button class="admin-mini-btn del" onclick="deleteJigsawAlbum(${idx})">🗑️ Xóa Cả Album</button>
-                    </div>
-                </div>
-                <div style="display:flex; gap:5px; flex-wrap:wrap; margin-top:10px;">${imgsHtml}</div>
-            </div>
-            `
-        }).join('');
-        
-        let repo = document.getElementById('admin-jigsaw-repo');
-        if(repo) repo.innerHTML = html || "<p style='color:#888; font-style:italic;'>Chưa có Album nào.</p>";
-        loadUserJigsawOptions(); 
-    } catch(e) {
-        console.error("Lỗi vẽ Giao diện Jigsaw Admin:", e);
-    }
+    let albums = CONFIG.puzzleAlbums || [];
+    let html = albums.map((alb, idx) => {
+        let imgsHtml = (alb.images || []).map(img => `<img src="${img.url || img}" style="width:40px; height:40px; border-radius:2px; border:1px solid #555;">`).join('');
+        return `
+        <div class="admin-list-item" style="flex-direction: column;">
+            <div style="display:flex; justify-content:space-between; width:100%; border-bottom:1px solid #333; padding-bottom:10px;">
+                <div>
+                    <div class="admin-list-title">📁 ${alb.name}</div>
+                    <div class="admin-list-desc">Bot: ${alb.bot || 'Trống'} | Chuyến: ${alb.train || 'Trống'} | ${alb.images.length} Ký ức</div>
+                </div>
+                <div class="admin-action-row" style="margin:0;">
+                    <button class="admin-mini-btn" onclick="editJigsawAlbum(${idx})">✏️ Chỉnh Sửa & Thêm Ảnh</button>
+                    <button class="admin-mini-btn del" onclick="deleteJigsawAlbum(${idx})">🗑️ Xóa Cả Album</button>
+                </div>
+            </div>
+            <div style="display:flex; gap:5px; flex-wrap:wrap; margin-top:10px;">${imgsHtml}</div>
+        </div>
+    `}).join('');
+    document.getElementById('admin-jigsaw-repo').innerHTML = html || "<p style='color:#888;'>Chưa có Album nào.</p>";
 }
-        
+
 window.deleteJigsawAlbum = async function(idx) {
-    if(!confirm("Xóa toàn bộ Album này?")) return;
-    if(!CONFIG.puzzleAlbums) return;
-    CONFIG.puzzleAlbums.splice(idx, 1); 
-    await saveStationConfigToDB(true);
-    if(editingJigsawIndex === idx) cancelEditJigsaw();
-    renderAdminJigsawRepo(); loadUserJigsawOptions();
+    if(!confirm("Xóa toàn bộ Album này?")) return;
+    if(!CONFIG.puzzleAlbums) return;
+    CONFIG.puzzleAlbums.splice(idx, 1); 
+    await saveStationConfigToDB(true);
+    if(editingJigsawIndex === idx) cancelEditJigsaw();
+    renderAdminJigsawRepo(); loadUserJigsawOptions();
 }
 
 window.loadUserJigsawOptions = function() {
-    let albums = CONFIG.puzzleAlbums || [];
-    let selectEl = document.getElementById("jigsaw-character-select");
-    if(!selectEl) return;
-    if(albums.length === 0) {
-        selectEl.innerHTML = `<option value="">Hiện chưa có nhân viên nào</option>`;
-    } else {
-        selectEl.innerHTML = albums.map(a => `<option value="${a.id}">${a.name} ${a.bot ? `(${a.bot})` : ''}</option>`).join('');
-    }
+    let albums = CONFIG.puzzleAlbums || [];
+    let selectEl = document.getElementById("jigsaw-character-select");
+    if(!selectEl) return;
+    if(albums.length === 0) {
+        selectEl.innerHTML = `<option value="">Hiện chưa có nhân viên nào</option>`;
+    } else {
+        selectEl.innerHTML = albums.map(a => `<option value="${a.id}">${a.name} ${a.bot ? `(${a.bot})` : ''}</option>`).join('');
+    }
 }
 
 window.startJigsawGame = function() {
-    let selectEl = document.getElementById("jigsaw-character-select");
-    let targetId = selectEl.value;
-    if(!targetId) return alert("Vui lòng chọn 1 nhân viên trước!");
-    
-    let albums = CONFIG.puzzleAlbums || [];
-    let album = albums.find(a => String(a.id) === String(targetId));
-    if(!album || !album.images || album.images.length === 0) return alert("Album này bị lỗi hoặc không có ảnh!");
-    
-    currentJigsawAlbum = album; 
-    
-    document.getElementById('memory-win').style.display = 'none';
-    const board = document.getElementById('jigsaw-board');
-    board.style.display = 'grid'; board.innerHTML = '';
-    
-    let imgData = album.images[Math.floor(Math.random() * album.images.length)];
-    let imgUrl = typeof imgData === 'string' ? imgData : imgData.url;
-    let level = (typeof imgData === 'object' && imgData.diff) ? imgData.diff : 4; 
+    let selectEl = document.getElementById("jigsaw-character-select");
+    let targetId = selectEl.value;
+    if(!targetId) return alert("Vui lòng chọn 1 nhân viên trước!");
+    
+    let albums = CONFIG.puzzleAlbums || [];
+    let album = albums.find(a => String(a.id) === String(targetId));
+    if(!album || !album.images || album.images.length === 0) return alert("Album này bị lỗi hoặc không có ảnh!");
+    
+    currentJigsawAlbum = album; 
+    
+    document.getElementById('memory-win').style.display = 'none';
+    const board = document.getElementById('jigsaw-board');
+    board.style.display = 'grid'; board.innerHTML = '';
+    
+    let imgData = album.images[Math.floor(Math.random() * album.images.length)];
+    let imgUrl = typeof imgData === 'string' ? imgData : imgData.url;
+    let level = (typeof imgData === 'object' && imgData.diff) ? imgData.diff : 4; 
 
-    let tmpImg = new Image();
-    tmpImg.onload = function() {
-        board.style.aspectRatio = `${this.width} / ${this.height}`;
-        board.style.gridTemplateColumns = `repeat(${level}, 1fr)`;
-        board.style.gridTemplateRows = `repeat(${level}, 1fr)`;
+    let tmpImg = new Image();
+    tmpImg.onload = function() {
+        board.style.aspectRatio = `${this.width} / ${this.height}`;
+        board.style.gridTemplateColumns = `repeat(${level}, 1fr)`;
+        board.style.gridTemplateRows = `repeat(${level}, 1fr)`;
 
-        let pieces = [];
-        for(let y = 0; y < level; y++) {
-            for(let x = 0; x < level; x++) {
-                let p = document.createElement('div');
-                p.className = 'jigsaw-piece';
-                p.draggable = true;
-                p.dataset.trueIdx = y * level + x;
-                p.style.backgroundImage = `url(${imgUrl})`;
-                p.style.backgroundSize = `${level * 100}% ${level * 100}%`;
-                p.style.backgroundPosition = `${(x / (level - 1)) * 100}% ${(y / (level - 1)) * 100}%`;
-                
-                p.addEventListener('dragstart', function() { draggedPiece = this; });
-                p.addEventListener('dragover', e => e.preventDefault());
-                p.addEventListener('drop', function() {
-                    if (this !== draggedPiece) {
-                        let tBg = this.style.backgroundPosition; let tId = this.dataset.trueIdx;
-                        this.style.backgroundPosition = draggedPiece.style.backgroundPosition; this.dataset.trueIdx = draggedPiece.dataset.trueIdx;
-                        draggedPiece.style.backgroundPosition = tBg; draggedPiece.dataset.trueIdx = tId;
-                        checkJigsawWin();
-                    }
-                });
-                pieces.push(p);
-            }
-        }
-        pieces.sort(() => Math.random() - 0.5).forEach(p => board.appendChild(p));
-        
-        // Đã tắt âm thanh gramophone khi bắt đầu ghép hình theo yêu cầu
-    };
-    tmpImg.src = imgUrl;
+        let pieces = [];
+        for(let y = 0; y < level; y++) {
+            for(let x = 0; x < level; x++) {
+                let p = document.createElement('div');
+                p.className = 'jigsaw-piece';
+                p.draggable = true;
+                p.dataset.trueIdx = y * level + x;
+                p.style.backgroundImage = `url(${imgUrl})`;
+                p.style.backgroundSize = `${level * 100}% ${level * 100}%`;
+                p.style.backgroundPosition = `${(x / (level - 1)) * 100}% ${(y / (level - 1)) * 100}%`;
+                
+                p.addEventListener('dragstart', function() { draggedPiece = this; });
+                p.addEventListener('dragover', e => e.preventDefault());
+                p.addEventListener('drop', function() {
+                    if (this !== draggedPiece) {
+                        let tBg = this.style.backgroundPosition; let tId = this.dataset.trueIdx;
+                        this.style.backgroundPosition = draggedPiece.style.backgroundPosition; this.dataset.trueIdx = draggedPiece.dataset.trueIdx;
+                        draggedPiece.style.backgroundPosition = tBg; draggedPiece.dataset.trueIdx = tId;
+                        checkJigsawWin();
+                    }
+                });
+                pieces.push(p);
+            }
+        }
+        pieces.sort(() => Math.random() - 0.5).forEach(p => board.appendChild(p));
+        
+        // Đã tắt âm thanh gramophone khi bắt đầu ghép hình theo yêu cầu
+    };
+    tmpImg.src = imgUrl;
 }
 
 window.checkJigsawWin = function() {
-    let allNodes = Array.from(document.getElementById("jigsaw-board").children);
-    if(allNodes.every((node, idx) => node.dataset.trueIdx == idx)) {
-        allNodes.forEach(n => { n.draggable = false; n.style.border = 'none'; });
-        
-        let imgUrl = allNodes[0].style.backgroundImage.slice(5, -2).replace(/"/g, "");
-        
-        document.getElementById('win-text-message').innerHTML = `Khôi phục thành công ảnh của <span style="color:var(--amber);">${currentJigsawAlbum.name}</span>!`;
-        document.getElementById('win-sparkle-img').src = imgUrl;
-        
-        let dlBtn = document.getElementById('jigsaw-download-btn');
-        dlBtn.href = imgUrl;
-        dlBtn.download = `KyUc_${currentJigsawAlbum.name.replace(/\s+/g, '')}.jpg`;
-        
-        document.getElementById('memory-win').style.display = 'block';
-        fireConfetti(); 
+    let allNodes = Array.from(document.getElementById("jigsaw-board").children);
+    if(allNodes.every((node, idx) => node.dataset.trueIdx == idx)) {
+        allNodes.forEach(n => { n.draggable = false; n.style.border = 'none'; });
+        
+        let imgUrl = allNodes[0].style.backgroundImage.slice(5, -2).replace(/"/g, "");
+        
+        document.getElementById('win-text-message').innerHTML = `Khôi phục thành công ảnh của <span style="color:var(--amber);">${currentJigsawAlbum.name}</span>!`;
+        document.getElementById('win-sparkle-img').src = imgUrl;
+        
+        let dlBtn = document.getElementById('jigsaw-download-btn');
+        dlBtn.href = imgUrl;
+        dlBtn.download = `KyUc_${currentJigsawAlbum.name.replace(/\s+/g, '')}.jpg`;
+        
+        document.getElementById('memory-win').style.display = 'block';
+        fireConfetti(); 
 
-        // THÊM THÔNG BÁO ALERT ĐỂ NGƯỜI CHƠI BIẾT NGAY LẬP TỨC
-        setTimeout(() => {
-            alert("🎉 CHÚC MỪNG BẠN ĐÃ GHÉP THÀNH CÔNG BỨC ẢNH KỶ NIỆM NÀY!");
-        }, 300);
-    }
+        // THÊM THÔNG BÁO ALERT ĐỂ NGƯỜI CHƠI BIẾT NGAY LẬP TỨC
+        setTimeout(() => {
+            alert("🎉 CHÚC MỪNG BẠN ĐÃ GHÉP THÀNH CÔNG BỨC ẢNH KỶ NIỆM NÀY!");
+        }, 300);
+    }
 }
 
         // ============================================================
@@ -2655,4 +2633,3 @@ window.checkJigsawWin = function() {
     </script>
 </body>
 </html>
-
