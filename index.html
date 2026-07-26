@@ -842,7 +842,7 @@
             <div style="display:flex; flex-direction:column; gap:12px; padding:20px; background:#111; border:1px solid #444; border-radius: 8px;">
                 <h4 style="color:#fff; margin:0;" id="tarot-form-title">THÊM LÁ BÀI MỚI</h4>
                 <div class="form-row file-upload-wrapper" style="margin:0;">
-                    <label class="file-btn" style="border-color:#8b7355; color:#d4c5b0; width:100%; padding: 15px;"><input type="file" accept="image/*" id="admin-nv-file" style="display:none;"> 📸 TẢI ẢNH LÁ BÀI (ẢNH NGANG 16:9)</label>
+                    <label class="file-btn" style="border-color:#8b7355; color:#d4c5b0; width:100%; padding: 15px;"><input type="file" accept="image/*" id="admin-nv-file" style="display:none;"> 📸 TẢI ẢNH LÁ BÀI (TỶ LỆ DỌC 9:16)</label>
                     <div id="admin-tarot-prev" class="img-preview-grid" style="justify-content:center;"></div>
                 </div>
                 <input type="text" id="admin-nv-name" placeholder="Tên lá bài (VD: Tình Yêu, Sự Chờ Đợi...)">
@@ -977,8 +977,8 @@ function openAdminTarot() {
 document.getElementById("admin-nv-file").addEventListener("change", async (e) => {
     if(e.target.files.length > 0) {
         tarotTempB64 = await resizeImage(e.target.files[0], 800); 
-        // Hiển thị ảnh ngang 16:9 (160x90)
-        document.getElementById("admin-tarot-prev").innerHTML = `<img src="${tarotTempB64}" style="width:160px; height:90px; object-fit:cover; border:2px solid #8b7355; border-radius:4px;">`;
+        // Đã trả về hình dọc 9:16
+        document.getElementById("admin-tarot-prev").innerHTML = `<img src="${tarotTempB64}" style="width:90px; height:160px; object-fit:cover; border:2px solid #8b7355; border-radius:4px;">`;
     }
 });
 
@@ -1001,7 +1001,8 @@ window.editTarotCard = function(idx) {
     document.getElementById('admin-nv-name').value = item.name || '';
     document.getElementById('admin-nv-prompt').value = item.prompt || '';
     tarotTempB64 = item.img || '';
-    document.getElementById('admin-tarot-prev').innerHTML = `<img src="${tarotTempB64}" style="width:160px; height:90px; object-fit:cover; border:2px solid #8b7355; border-radius:4px;">`;
+    // Đã trả về hình dọc 9:16
+    document.getElementById('admin-tarot-prev').innerHTML = `<img src="${tarotTempB64}" style="width:90px; height:160px; object-fit:cover; border:2px solid #8b7355; border-radius:4px;">`;
     
     document.getElementById('btn-save-tarot').innerHTML = "💾 LƯU THAY ĐỔI";
     document.getElementById('btn-cancel-tarot').style.display = "inline-block";
@@ -1035,10 +1036,10 @@ window.renderAdminTarotRepo = function() {
         let list = CONFIG.tarotList || [];
         let html = "";
         list.forEach((item, idx) => {
-            if (!item) return; // Chống lỗi nếu phần tử bị null
+            if (!item) return; 
             html += `
             <div class="admin-list-item">
-                <img src="${item.img || ''}" style="width:160px; height:90px; object-fit:cover; border:2px solid #8b7355; border-radius:4px;">
+                <img src="${item.img || ''}" style="width:90px; height:160px; object-fit:cover; border:2px solid #8b7355; border-radius:4px;">
                 <div class="admin-list-content">
                     <div class="admin-list-title">${item.name || 'Không có tên'}</div>
                     <div class="admin-list-desc">"${item.prompt || ''}"</div>
