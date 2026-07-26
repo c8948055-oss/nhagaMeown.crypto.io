@@ -2651,6 +2651,92 @@ window.checkJigsawWin = function() {
         document.getElementById("gramoPrev").addEventListener("click", () => { if(activeMusicPl && currentSongIndex > 0) playSong(activeMusicPl, currentSongIndex - 1); });
         document.getElementById("gramoNext").addEventListener("click", () => { const pl = CONFIG.musicLibrary.find(p => p.id === activeMusicPl); if(pl && currentSongIndex < pl.songs.length - 1) playSong(activeMusicPl, currentSongIndex + 1); });
         audioEl.addEventListener("ended", () => { const pl = CONFIG.musicLibrary.find(p => p.id === activeMusicPl); if(pl && currentSongIndex < pl.songs.length - 1) { playSong(activeMusicPl, currentSongIndex + 1); } else { isPlaying = false; document.getElementById("musicBoxVinyl").classList.remove("playing"); document.getElementById("musicBoxStylus").classList.remove("playing"); document.getElementById("gramoToggle").classList.add("paused"); document.getElementById("gramoPlay").innerHTML = '<span class="icon-slot" data-icon="play"></span>'; if(noteInterval) clearInterval(noteInterval); loadIcons(); } });
+    // ============================================================
+        // CODE FIX LỖI KHÔNG HIỆN THẺ BÀI / ALBUM TRONG ADMIN
+        // ============================================================
+        
+        // 1. Vẽ lại giao diện Tarot trong Admin (Dùng inline style để chống tàng hình)
+        window.renderAdminTarotRepo = function() {
+            try {
+                let list = CONFIG.tarotList || [];
+                let html = "";
+                list.forEach((item, idx) => {
+                    if (!item) return; 
+                    html += `
+                    <div style="display:flex; gap:15px; align-items:center; background:#111; padding:10px; border:1px solid #444; border-radius:6px; margin-bottom:10px;">
+                        <img src="${item.img || ''}" style="width:50px; height:80px; object-fit:cover; border:1px solid #8b7355; border-radius:4px; flex-shrink:0;">
+                        <div style="flex:1;">
+                            <div style="color:#e8c382; font-weight:bold; font-size:15px; margin-bottom:4px;">${item.name || 'Không có tên'}</div>
+                            <div style="color:#aaa; font-size:12px; font-style:italic;">"${item.prompt || ''}"</div>
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:6px;">
+                            <button style="background:var(--amber, #DDAA33); color:#000; padding:4px 8px; border:none; border-radius:3px; cursor:pointer; font-weight:bold; font-size:11px;" onclick="editTarotCard(${idx})">✏️ Sửa</button>
+                            <button style="background:#8B0000; color:#FFF; padding:4px 8px; border:none; border-radius:3px; cursor:pointer; font-weight:bold; font-size:11px;" onclick="deleteTarotCard(${idx})">🗑️ Xóa</button>
+                        </div>
+                    </div>`;
+                });
+                let repo = document.getElementById('admin-tarot-repo');
+                if(repo) repo.innerHTML = html || "<p style='color:#888;'>Chưa có lá bài nào.</p>";
+            } catch (e) { console.error("Lỗi render Tarot", e); }
+        }
+
+        // 2. Vẽ lại giao diện Jigsaw Album trong Admin (Dùng inline style)
+        window.renderAdminJigsawRepo = function() {
+            try {
+                let albums = CONFIG.puzzleAlbums || [];
+                if (!Array.isArray(albums)) albums = []; 
+                let html = albums.map((alb, idx) => {
+                    if (!alb) return '';
+                    let imgArr = alb.images || []; if (!Array.isArray(imgArr)) imgArr = []; 
+                    let imgsHtml = imgArr.map(img => `<img src="${img.url || img}" style="width:40px; height:40px; border-radius:2px; border:1px solid #555; object-fit:cover;">`).join('');
+                    return `
+                    <div style="display:flex; flex-direction:column; background:#111; padding:10px; border:1px solid #444; border-radius:6px; margin-bottom:10px;">
+                        <div style="display:flex; justify-content:space-between; width:100%; border-bottom:1px solid #333; padding-bottom:10px;">
+                            <div>
+                                <div style="color:#e8c382; font-weight:bold; font-size:15px; margin-bottom:4px;">📁 ${alb.name || 'Không tên'}</div>
+                                <div style="color:#aaa; font-size:12px;">Bot: ${alb.bot || 'Trống'} | Chuyến: ${alb.train || 'Trống'} | ${imgArr.length} Ký ức</div>
+                            </div>
+                            <div style="display:flex; flex-direction:column; gap:6px;">
+                                <button style="background:var(--amber, #DDAA33); color:#000; padding:4px 8px; border:none; border-radius:3px; cursor:pointer; font-weight:bold; font-size:11px;" onclick="editJigsawAlbum(${idx})">✏️ Sửa & Thêm Ảnh</button>
+                                <button style="background:#8B0000; color:#FFF; padding:4px 8px; border:none; border-radius:3px; cursor:pointer; font-weight:bold; font-size:11px;" onclick="deleteJigsawAlbum(${idx})">🗑️ Xóa Album</button>
+                            </div>
+                        </div>
+                        <div style="display:flex; gap:5px; flex-wrap:wrap; margin-top:10px;">${imgsHtml}</div>
+                    </div>`
+                }).join('');
+                let repo = document.getElementById('admin-jigsaw-repo'); 
+                if(repo) repo.innerHTML = html || "<p style='color:#888; font-style:italic;'>Chưa có Album nào.</p>";
+                loadUserJigsawOptions(); 
+            } catch(e) { console.error("Lỗi vẽ Giao diện Jigsaw Admin:", e); }
+        }
+
+        // 3. Nâng cấp hàm Save để bắt lỗi quá tải Data từ Supabase
+        window.saveStationConfigToDB = async function(skipMusicSync = false) {
+            CONFIG.lastUpdated = Date.now(); 
+            if (!skipMusicSync) CONFIG.musicLastUpdated = Date.now();
+            if (!CONFIG.musicLibrary) CONFIG.musicLibrary = []; 
+            const mainPayload = { stationMaster: CONFIG.stationMaster, trains: CONFIG.trains, staff: CONFIG.staff, upcomingBots: CONFIG.upcomingBots, tarotList: CONFIG.tarotList || [], puzzleAlbums: CONFIG.puzzleAlbums || [], lastUpdated: CONFIG.lastUpdated, musicLastUpdated: CONFIG.musicLastUpdated };
+            const musicPayload = { timestamp: CONFIG.musicLastUpdated, library: CONFIG.musicLibrary };
+            
+            try { 
+                await localforage.setItem("meown_config_backup", mainPayload); 
+                if(!skipMusicSync) await localforage.setItem("meown_music_backup", musicPayload); 
+            } catch(e) { console.warn("Lỗi lưu local:", e); }
+            
+            try { 
+                // BẮT LỖI TẠI ĐÂY: Lấy object error từ Supabase
+                const { error: err1 } = await supa.from('station_config').upsert([{ id: 1, data: JSON.stringify(mainPayload) }]); 
+                if (err1) { 
+                    alert("CẢNH BÁO: Dữ liệu quá nặng hoặc lỗi phân quyền Supabase. Ảnh/Album vừa thêm chưa được lưu lên Server!\nChi tiết: " + err1.message); 
+                    console.error("Supabase Error:", err1); 
+                }
+                
+                if(!skipMusicSync) { 
+                    const { error: err2 } = await supa.from('station_config').upsert([{ id: 2, data: JSON.stringify(musicPayload) }]); 
+                    if (err2) console.error("Supabase Music Error:", err2);
+                }
+            } catch(e) { throw e; }
+        }
     </script>
 </body>
 </html>
