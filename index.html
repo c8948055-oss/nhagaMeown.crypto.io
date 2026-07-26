@@ -473,13 +473,23 @@
     100% { transform: translateY(400px) rotate(720deg); opacity: 0; }
 }
 
-/* Modals Admin */
-.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; display: flex; justify-content: center; align-items: center; }
-.modal-box-small { background: #1e140f; padding: 25px; width: 90%; max-width: 450px; display: flex; flex-direction: column; gap: 15px; border: 2px solid #8b7355; border-radius: 8px; max-height: 90vh; overflow-y: auto; font-family: var(--font-body);}
-.modal-box-small input, .modal-box-small textarea { width: 100%; background: #000; color: #fff; border: 1px solid #444; padding: 10px; box-sizing: border-box; font-family: inherit;}
-.modal-box-small input:focus, .modal-box-small textarea:focus { border-color: #e8c382; outline:none; }
-.admin-btn { background: none; border: none; color: #888; text-decoration: underline; cursor: pointer; margin-top: 10px; font-size: 12px; text-transform: uppercase; font-weight: bold;}
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+/* Modals Admin Cập Nhật (To, rộng, dễ nhìn hơn) */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; justify-content: center; align-items: center; padding: 20px;}
+        .modal-box-large { background: #15100c; padding: 30px; width: 100%; max-width: 850px; display: flex; flex-direction: column; gap: 15px; border: 2px solid #8b7355; border-radius: 8px; max-height: 90vh; overflow-y: auto; font-family: var(--font-body); box-shadow: 0 0 30px rgba(0,0,0,0.8);}
+        .modal-box-large input, .modal-box-large textarea, .modal-box-large select { width: 100%; background: #000; color: #fff; border: 1px solid #444; padding: 12px; box-sizing: border-box; font-family: inherit; border-radius: 4px; font-size: 14px;}
+        .modal-box-large input:focus, .modal-box-large textarea:focus { border-color: #e8c382; outline:none; box-shadow: inset 0 0 5px rgba(232, 195, 130, 0.2);}
+        .admin-btn { background: none; border: none; color: #888; text-decoration: underline; cursor: pointer; margin-top: 10px; font-size: 12px; text-transform: uppercase; font-weight: bold;}
+        
+        .admin-list-item { background: #0a0a0c; border: 1px solid #333; padding: 15px; border-radius: 6px; margin-bottom: 15px; display: flex; gap: 15px; align-items: flex-start;}
+        .admin-list-item img { width: 80px; height: 80px; object-fit: cover; border: 2px solid #8b7355; border-radius: 4px;}
+        .admin-list-content { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+        .admin-list-title { color: #e8c382; font-weight: bold; font-size: 16px; font-family: var(--font-heading);}
+        .admin-list-desc { color: #aaa; font-size: 13px; font-style: italic; white-space: pre-wrap; line-height: 1.4;}
+        .admin-action-row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;}
+        .admin-mini-btn { background: #222; color: #fff; border: 1px solid #444; padding: 5px 10px; font-size: 11px; cursor: pointer; border-radius: 4px; font-weight: bold;}
+        .admin-mini-btn:hover { background: #e8c382; color: #000; border-color: #e8c382;}
+        .admin-mini-btn.del { background: #551111; border-color: #881111;}
+        .admin-mini-btn.del:hover { background: #ff4444; color: #fff;}
 
         /* ============================================================
            MÁY HÁT GRAMOPHONE
@@ -824,52 +834,63 @@
         </div>
     </section>
 
-    <!-- Modal Admin cho Game Bốc Bài -->
+    <!-- Modal Admin cho Game Bốc Bài (Bản Rộng) -->
     <div id="admin-tarot-modal" class="modal-overlay" style="display: none;">
-        <div class="modal-box-small">
-            <h3 style="color:#e8c382; text-align:center; margin:0; border-bottom:1px dashed #8b7355; padding-bottom:10px;">QUẢN LÝ LÁ BÀI</h3>
-            <div style="display:flex; flex-direction:column; gap:10px; padding:10px; background:#111; border:1px solid #333;">
+        <div class="modal-box-large">
+            <h3 style="color:#e8c382; text-align:center; margin:0; border-bottom:2px dashed #8b7355; padding-bottom:15px; font-size: 24px;">QUẢN LÝ LÁ BÀI TAROT</h3>
+            
+            <div style="display:flex; flex-direction:column; gap:12px; padding:20px; background:#111; border:1px solid #444; border-radius: 8px;">
+                <h4 style="color:#fff; margin:0;" id="tarot-form-title">THÊM LÁ BÀI MỚI</h4>
                 <div class="form-row file-upload-wrapper" style="margin:0;">
-                    <label class="file-btn" style="border-color:#8b7355; color:#d4c5b0; width:100%;"><input type="file" accept="image/*" id="admin-nv-file" style="display:none;"> 1. Tải ảnh lá bài</label>
+                    <label class="file-btn" style="border-color:#8b7355; color:#d4c5b0; width:100%; padding: 15px;"><input type="file" accept="image/*" id="admin-nv-file" style="display:none;"> 📸 TẢI ẢNH LÁ BÀI (Tỷ lệ dọc 9:16)</label>
                     <div id="admin-tarot-prev" class="img-preview-grid" style="justify-content:center;"></div>
                 </div>
-                <input type="text" id="admin-nv-name" placeholder="2. Tên lá bài (VD: Tình Yêu)">
-                <textarea id="admin-nv-prompt" placeholder="3. Thông điệp gửi gắm..." style="height: 60px;"></textarea>
-                <button class="btn-vintage active" style="width:100%;" onclick="saveStaffTarot()">➕ THÊM LÁ BÀI</button>
+                <input type="text" id="admin-nv-name" placeholder="Tên lá bài (VD: Tình Yêu, Sự Chờ Đợi...)">
+                <textarea id="admin-nv-prompt" placeholder="Thông điệp gửi gắm cho khách..." style="height: 80px;"></textarea>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn-vintage active" style="flex:1; padding: 12px; font-size: 14px;" id="btn-save-tarot" onclick="saveStaffTarot()">➕ LƯU LÁ BÀI NÀY</button>
+                    <button class="btn-vintage" style="display:none; padding: 12px;" id="btn-cancel-tarot" onclick="cancelEditTarot()">HỦY SỬA</button>
+                </div>
             </div>
             
-            <p style="font-size:12px; color:#8b7355; font-weight:bold; margin:10px 0 0 0;">CÁC LÁ BÀI ĐÃ TẠO:</p>
-            <div id="admin-tarot-repo" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; max-height:200px; overflow-y:auto; padding-right:5px;"></div>
+            <p style="font-size:14px; color:#8b7355; font-weight:bold; margin:15px 0 0 0; text-transform:uppercase;">DANH SÁCH LÁ BÀI ĐÃ TẠO:</p>
+            <div id="admin-tarot-repo" style="display:flex; flex-direction:column; max-height:400px; overflow-y:auto; padding-right:10px;"></div>
             
-            <div class="btn-group">
-                <button class="btn-vintage" onclick="document.getElementById('admin-tarot-modal').style.display='none'">Đóng</button>
+            <div class="btn-group" style="margin-top: 20px;">
+                <button class="btn-vintage" style="padding: 12px 30px; font-size: 16px;" onclick="document.getElementById('admin-tarot-modal').style.display='none'">ĐÓNG BẢNG</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal Admin Album Ghép Hình -->
+    <!-- Modal Admin Album Ghép Hình (Bản Rộng) -->
     <div id="admin-jigsaw-modal" class="modal-overlay" style="display: none;">
-        <div class="modal-box-small" style="max-width: 550px;">
-            <h3 style="color:#e8c382; text-align:center; margin:0; border-bottom:1px dashed #8b7355; padding-bottom:10px;">QUẢN LÝ ALBUM GHÉP HÌNH</h3>
+        <div class="modal-box-large">
+            <h3 style="color:#e8c382; text-align:center; margin:0; border-bottom:2px dashed #8b7355; padding-bottom:15px; font-size: 24px;">QUẢN LÝ ALBUM GHÉP HÌNH</h3>
             
-            <div style="background:#111; padding:15px; border:1px solid #444; border-radius:4px; display:flex; flex-direction:column; gap:10px;">
-                <input type="text" id="aj-name" placeholder="1. Tên nhân viên (VD: Cố Tử Thần)">
-                <input type="text" id="aj-bot" placeholder="2. Thuộc Bot nào (VD: Huyết Nguyệt)">
-                <input type="text" id="aj-train" placeholder="3. Chuyến số (VD: Chuyến 44)">
+            <div style="background:#111; padding:20px; border:1px solid #444; border-radius:8px; display:flex; flex-direction:column; gap:12px;">
+                <h4 style="color:#fff; margin:0;" id="jigsaw-form-title">TẠO ALBUM MỚI</h4>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="aj-name" placeholder="Tên nhân viên (Bắt buộc)">
+                    <input type="text" id="aj-bot" placeholder="Thuộc Bot (Tùy chọn)">
+                    <input type="text" id="aj-train" placeholder="Chuyến (Tùy chọn)">
+                </div>
                 
                 <div class="file-upload-wrapper" style="margin:0;">
-                    <label class="file-btn" style="border-color:#e8c382; color:#e8c382; width:100%;"><input type="file" accept="image/*" multiple id="aj-files" style="display:none;"> ➕ CHỌN ẢNH (Tự động thích ứng mọi Size)</label>
+                    <label class="file-btn" style="border-color:#e8c382; color:#e8c382; width:100%; padding: 15px;"><input type="file" accept="image/*" multiple id="aj-files" style="display:none;"> ➕ CHỌN ẢNH VÀO ALBUM (Nên chọn ảnh sắc nét)</label>
                     <div id="aj-preview" style="display:flex; flex-direction:column; gap:10px; margin-top:10px; max-height: 250px; overflow-y: auto; padding-right: 5px;"></div>
                 </div>
                 
-                <button class="btn-vintage active" style="width:100%; padding:10px;" onclick="saveJigsawAlbum()">TẠO ALBUM NÀY</button>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn-vintage active" style="flex:1; padding:12px; font-size: 14px;" id="btn-save-jigsaw" onclick="saveJigsawAlbum()">💾 LƯU ALBUM</button>
+                    <button class="btn-vintage" style="display:none; padding: 12px;" id="btn-cancel-jigsaw" onclick="cancelEditJigsaw()">HỦY SỬA</button>
+                </div>
             </div>
 
-            <p style="font-size:12px; color:#8b7355; font-weight:bold; margin:10px 0 0 0; text-transform:uppercase;">Danh sách Album hiện có:</p>
-            <div id="admin-jigsaw-repo" style="display:flex; flex-direction:column; gap:10px; max-height:200px; overflow-y:auto; padding-right:5px;"></div>
+            <p style="font-size:14px; color:#8b7355; font-weight:bold; margin:15px 0 0 0; text-transform:uppercase;">CÁC ALBUM TRÊN HỆ THỐNG:</p>
+            <div id="admin-jigsaw-repo" style="display:flex; flex-direction:column; max-height:400px; overflow-y:auto; padding-right:10px;"></div>
             
-            <div class="btn-group">
-                <button class="btn-vintage" onclick="document.getElementById('admin-jigsaw-modal').style.display='none'">Đóng</button>
+            <div class="btn-group" style="margin-top: 20px;">
+                <button class="btn-vintage" style="padding: 12px 30px; font-size: 16px;" onclick="document.getElementById('admin-jigsaw-modal').style.display='none'">ĐÓNG BẢNG</button>
             </div>
         </div>
     </div>
@@ -943,84 +964,119 @@
         // LOGIC KHU GIẢI TRÍ (TAROT, CAT 9:16, JIGSAW)
         // ============================================================
 
-// --- 1. BỐC BÀI KÝ ỨC (ĐÃ CẬP NHẬT GIỚI HẠN 1 LƯỢT/NGÀY) ---
+// --- 1. BỐC BÀI KÝ ỨC (TAROT 3D) ---
 let tarotTempB64 = "";
+let editingTarotIndex = -1;
 
 function openAdminTarot() {
-    document.getElementById('admin-tarot-modal').style.display='flex';
-    renderAdminTarotRepo();
+    document.getElementById('admin-tarot-modal').style.display='flex';
+    cancelEditTarot(); // Reset form
+    renderAdminTarotRepo();
 }
 
 document.getElementById("admin-nv-file").addEventListener("change", async (e) => {
-    if(e.target.files.length > 0) {
-        tarotTempB64 = await resizeImage(e.target.files[0], 400); // Nén ảnh tránh đầy bộ nhớ
-        document.getElementById("admin-tarot-prev").innerHTML = `<img src="${tarotTempB64}" style="width:60px; height:60px; object-fit:cover; border:2px solid #8b7355; border-radius:4px;">`;
-    }
+    if(e.target.files.length > 0) {
+        tarotTempB64 = await resizeImage(e.target.files[0], 600); 
+        document.getElementById("admin-tarot-prev").innerHTML = `<img src="${tarotTempB64}" style="width:100px; height:auto; object-fit:cover; border:2px solid #8b7355; border-radius:4px;">`;
+    }
 });
 
-async function saveStaffTarot() {
-    const name = document.getElementById('admin-nv-name').value.trim();
-    const prompt = document.getElementById('admin-nv-prompt').value.trim();
-    if(!name || !prompt || !tarotTempB64) { alert("Vui lòng nhập Tên, Thông điệp và Tải ảnh!"); return; }
-    
-    if(!CONFIG.tarotList) CONFIG.tarotList = [];
-    CONFIG.tarotList.push({ name, img: tarotTempB64, prompt });
-    
-    try {
-        document.getElementById('admin-nv-name').value = 'Đang lưu lên đám mây...'; 
-        await saveStationConfigToDB(true); // Lưu lên Supabase
-        alert("Đã lưu lá bài đồng bộ lên hệ thống!");
-        document.getElementById('admin-nv-name').value = '';
-        document.getElementById('admin-nv-prompt').value = '';
-        document.getElementById('admin-tarot-prev').innerHTML = '';
-        tarotTempB64 = "";
-        renderAdminTarotRepo();
-    } catch(e) { alert("Lỗi mạng, không thể lưu!"); }
+window.cancelEditTarot = function() {
+    editingTarotIndex = -1;
+    document.getElementById('tarot-form-title').innerText = "THÊM LÁ BÀI MỚI";
+    document.getElementById('admin-nv-name').value = '';
+    document.getElementById('admin-nv-prompt').value = '';
+    document.getElementById('admin-tarot-prev').innerHTML = '';
+    tarotTempB64 = "";
+    document.getElementById('btn-save-tarot').innerHTML = "➕ THÊM LÁ BÀI MỚI";
+    document.getElementById('btn-cancel-tarot').style.display = "none";
 }
 
-function renderAdminTarotRepo() {
-    let list = CONFIG.tarotList || [];
-    let html = "";
-    list.forEach((item, idx) => {
-        html += `<div style="background:#000; padding:6px; border:1px solid #444; position:relative; border-radius:4px;">
-            <img src="${item.img}" style="width:100%; height:90px; object-fit:cover; filter:sepia(0.3);">
-            <div style="font-size:11px; color:#e8c382; margin-top:6px; font-weight:bold; text-align:center;">${item.name}</div>
-            <button onclick="deleteTarotCard(${idx})" style="position:absolute; top:2px; right:2px; background:#8B0000; color:#fff; border:1px solid #000; font-weight:bold; width:20px; height:20px; display:flex; align-items:center; justify-content:center; cursor:pointer; border-radius:50%;">X</button>
-        </div>`;
-    });
-    document.getElementById('admin-tarot-repo').innerHTML = html || "<p style='font-size:11px; color:#888;'>Chưa có lá bài nào.</p>";
+window.editTarotCard = function(idx) {
+    let item = CONFIG.tarotList[idx];
+    editingTarotIndex = idx;
+    document.getElementById('tarot-form-title').innerText = `ĐANG SỬA: LÁ SỐ ${idx + 1}`;
+    document.getElementById('admin-nv-name').value = item.name;
+    document.getElementById('admin-nv-prompt').value = item.prompt;
+    tarotTempB64 = item.img;
+    document.getElementById('admin-tarot-prev').innerHTML = `<img src="${tarotTempB64}" style="width:100px; height:auto; object-fit:cover; border:2px solid #8b7355; border-radius:4px;">`;
+    
+    document.getElementById('btn-save-tarot').innerHTML = "💾 LƯU THAY ĐỔI";
+    document.getElementById('btn-cancel-tarot').style.display = "inline-block";
+    document.getElementById('admin-tarot-modal').querySelector('.modal-box-large').scrollTo(0,0);
+}
+
+window.saveStaffTarot = async function() {
+    const name = document.getElementById('admin-nv-name').value.trim();
+    const prompt = document.getElementById('admin-nv-prompt').value.trim();
+    if(!name || !prompt || !tarotTempB64) { alert("Vui lòng nhập Tên, Thông điệp và Tải ảnh!"); return; }
+    
+    if(!CONFIG.tarotList) CONFIG.tarotList = [];
+
+    if (editingTarotIndex > -1) {
+        CONFIG.tarotList[editingTarotIndex] = { name, img: tarotTempB64, prompt };
+    } else {
+        CONFIG.tarotList.push({ name, img: tarotTempB64, prompt });
+    }
+    
+    try {
+        document.getElementById('btn-save-tarot').innerText = 'Đang lưu...'; 
+        await saveStationConfigToDB(true); 
+        alert(editingTarotIndex > -1 ? "Đã cập nhật lá bài!" : "Đã thêm lá bài mới!");
+        cancelEditTarot();
+        renderAdminTarotRepo();
+    } catch(e) { alert("Lỗi mạng, không thể lưu!"); document.getElementById('btn-save-tarot').innerText = 'LỖI!'; }
+}
+
+window.renderAdminTarotRepo = function() {
+    let list = CONFIG.tarotList || [];
+    let html = "";
+    list.forEach((item, idx) => {
+        html += `
+        <div class="admin-list-item">
+            <img src="${item.img}">
+            <div class="admin-list-content">
+                <div class="admin-list-title">${item.name}</div>
+                <div class="admin-list-desc">"${item.prompt}"</div>
+                <div class="admin-action-row">
+                    <button class="admin-mini-btn" onclick="editTarotCard(${idx})">✏️ Sửa</button>
+                    <button class="admin-mini-btn del" onclick="deleteTarotCard(${idx})">🗑️ Xóa</button>
+                </div>
+            </div>
+        </div>`;
+    });
+    document.getElementById('admin-tarot-repo').innerHTML = html || "<p style='color:#888;'>Chưa có lá bài nào.</p>";
 }
 
 window.deleteTarotCard = async function(idx) {
-    if(!CONFIG.tarotList) return;
-    if(confirm("Xóa vĩnh viễn lá bài này trên toàn hệ thống?")) {
-        CONFIG.tarotList.splice(idx, 1);
-        await saveStationConfigToDB(true);
-        renderAdminTarotRepo();
-    }
+    if(!CONFIG.tarotList) return;
+    if(confirm("Xóa vĩnh viễn lá bài này trên toàn hệ thống?")) {
+        CONFIG.tarotList.splice(idx, 1);
+        await saveStationConfigToDB(true);
+        if (editingTarotIndex === idx) cancelEditTarot();
+        renderAdminTarotRepo();
+    }
 }
 
 function drawTarotCard() {
-    const todayStr = new Date().toLocaleDateString('en-CA');
-    const lastDrawnDate = localStorage.getItem('ga_last_tarot_date');
-
-    if (!isAdminMode && lastDrawnDate === todayStr) {
-        alert("Mỗi ngày lữ khách chỉ được bốc 1 lá bài thôi nhé! Hãy quay lại ga vào ngày mai để nhận thông điệp mới.");
-        return;
-    }
-
-    let staffList = CONFIG.tarotList || [];
-    if (!staffList || staffList.length === 0) {
-        staffList = [{ name: "SÂN GA VẮNG", img: "https://images.unsplash.com/photo-1517488629431-6427e0ee1e5f?w=400", prompt: "Đường ray có thể dài, nghỉ chân chút đi lữ khách." }];
-    }
-    const randomStaff = staffList[Math.floor(Math.random() * staffList.length)];
-    
-    document.getElementById('tarot-img').src = randomStaff.img;
-    document.getElementById('tarot-name').innerText = randomStaff.name;
-    document.getElementById('tarot-message').innerText = `"${randomStaff.prompt}"`;
-    document.getElementById('daily-card').style.transform = "rotateY(180deg)";
-    
-    if (!isAdminMode) localStorage.setItem('ga_last_tarot_date', todayStr);
+    const todayStr = new Date().toLocaleDateString('en-CA');
+    const lastDrawnDate = localStorage.getItem('ga_last_tarot_date');
+    if (!isAdminMode && lastDrawnDate === todayStr) {
+        alert("Mỗi ngày lữ khách chỉ được bốc 1 lá bài thôi nhé! Hãy quay lại ga vào ngày mai để nhận thông điệp mới.");
+        return;
+    }
+    let staffList = CONFIG.tarotList || [];
+    if (!staffList || staffList.length === 0) {
+        staffList = [{ name: "SÂN GA VẮNG", img: "https://images.unsplash.com/photo-1517488629431-6427e0ee1e5f?w=400", prompt: "Đường ray có thể dài, nghỉ chân chút đi lữ khách." }];
+    }
+    const randomStaff = staffList[Math.floor(Math.random() * staffList.length)];
+    
+    document.getElementById('tarot-img').src = randomStaff.img;
+    document.getElementById('tarot-name').innerText = randomStaff.name;
+    document.getElementById('tarot-message').innerText = `"${randomStaff.prompt}"`;
+    document.getElementById('daily-card').style.transform = "rotateY(180deg)";
+    
+    if (!isAdminMode) localStorage.setItem('ga_last_tarot_date', todayStr);
 }
 
 // --- 2. TRẠM CHĂM MÈO (PIXEL CHIBI 9:16) ---
@@ -1194,172 +1250,226 @@ setTimeout(() => {
     document.getElementById('affection-bar').style.width = catAffection + '%';
 }, 500);
 
-// --- 3. GHÉP HÌNH KỶ NIỆM ALBUM NHÂN VIÊN (ĐÃ CHUẨN HÓA ĐỒNG BỘ MẠNG) ---
+// --- 3. GHÉP HÌNH KỶ NIỆM (JIGSAW PUZZLE) ---
 let draggedPiece = null;
 let currentJigsawAlbum = null;
-let ajTempImages = []; // Mảng chứa object { url: base64, diff: 4 }
-
-// Admin tải ảnh nháp lên
-document.getElementById("aj-files").addEventListener("change", async (e) => {
-    let previewEl = document.getElementById("aj-preview");
-    previewEl.innerHTML += "<span id='loading-img-msg' style='font-size:11px; color:#e8c382;'>Đang xử lý ảnh...</span>";
-    for(let f of e.target.files) {
-        try { 
-            let b64 = await resizeImage(f, 800); // Nén 800px để ảnh dài 9:16 ko bị mờ
-            ajTempImages.push({ url: b64, diff: 4 }); // Mặc định mỗi ảnh là 4x4
-        } catch(err) { alert("Lỗi xử lý ảnh!"); }
-    }
-    let msg = document.getElementById('loading-img-msg');
-    if(msg) msg.remove();
-    renderAjPreview();
-    e.target.value = "";
-});
-
-function renderAjPreview() {
-    let html = ajTempImages.map((imgObj, idx) => `
-        <div style="display:flex; gap:10px; align-items:center; background:#000; padding:5px; border:1px solid #333; position:relative; border-radius:4px;">
-            <img src="${imgObj.url}" style="width:50px; height:50px; object-fit:contain; border:1px solid #8b7355; background:#222;">
-            <div style="flex:1; display:flex; flex-direction:column; gap:5px;">
-                <span style="font-size:11px; color:#aaa;">Độ khó cho ảnh này:</span>
-                <select onchange="updateAjTempDiff(${idx}, this.value)" style="background:#111; color:#fff; border:1px solid #444; padding:5px; border-radius:4px; font-family:inherit;">
-                    <option value="3" ${imgObj.diff == 3 ? 'selected' : ''}>Dễ (3x3)</option>
-                    <option value="4" ${imgObj.diff == 4 ? 'selected' : ''}>Trung Bình (4x4)</option>
-                    <option value="5" ${imgObj.diff == 5 ? 'selected' : ''}>Khó (5x5)</option>
-                    <option value="6" ${imgObj.diff == 6 ? 'selected' : ''}>Siêu Khó (6x6)</option>
-                </select>
-            </div>
-            <button onclick="removeAjTempImg(${idx})" style="background:#8B0000; color:#fff; border:none; padding:10px; cursor:pointer; font-weight:bold; border-radius:4px;">X</button>
-        </div>
-    `).join('');
-    document.getElementById("aj-preview").innerHTML = html;
-}
-
-window.updateAjTempDiff = function(idx, val) {
-    if(ajTempImages[idx]) ajTempImages[idx].diff = parseInt(val);
-}
-
-window.removeAjTempImg = function(idx) {
-    ajTempImages.splice(idx, 1);
-    renderAjPreview();
-}
-
-// Lưu Album lên hệ thống
-window.saveJigsawAlbum = async function() {
-    let name = document.getElementById("aj-name").value.trim();
-    let bot = document.getElementById("aj-bot").value.trim();
-    let train = document.getElementById("aj-train").value.trim();
-    
-    if(!name || ajTempImages.length === 0) return alert("Vui lòng nhập Tên nhân viên và tải ít nhất 1 ảnh!");
-    
-    if(!CONFIG.puzzleAlbums) CONFIG.puzzleAlbums = [];
-    CONFIG.puzzleAlbums.push({ id: Date.now(), name, bot, train, images: [...ajTempImages] }); 
-    
-    try {
-        document.getElementById("aj-name").value = "Đang lưu lên hệ thống...";
-        await saveStationConfigToDB(true); // Lưu lên Supabase
-        alert("Đã tạo Album đồng bộ thành công!");
-        document.getElementById("aj-name").value = "";
-        document.getElementById("aj-bot").value = "";
-        document.getElementById("aj-train").value = "";
-        ajTempImages = []; renderAjPreview(); renderAdminJigsawRepo(); loadUserJigsawOptions(); 
-    } catch(e) { alert("Lỗi lưu dữ liệu!"); }
-}
+let ajTempImages = []; 
+let editingJigsawIndex = -1;
 
 window.openAdminJigsaw = function() {
-    document.getElementById('admin-jigsaw-modal').style.display='flex';
-    renderAdminJigsawRepo();
+    document.getElementById('admin-jigsaw-modal').style.display='flex';
+    cancelEditJigsaw();
+    renderAdminJigsawRepo();
+}
+
+document.getElementById("aj-files").addEventListener("change", async (e) => {
+    let previewEl = document.getElementById("aj-preview");
+    previewEl.innerHTML += "<span id='loading-img-msg' style='font-size:11px; color:#e8c382;'>Đang nén ảnh...</span>";
+    for(let f of e.target.files) {
+        try { 
+            let b64 = await resizeImage(f, 800); 
+            ajTempImages.push({ url: b64, diff: 4 }); 
+        } catch(err) { alert("Lỗi xử lý ảnh!"); }
+    }
+    let msg = document.getElementById('loading-img-msg');
+    if(msg) msg.remove();
+    renderAjPreview();
+    e.target.value = "";
+});
+
+window.renderAjPreview = function() {
+    let html = ajTempImages.map((imgObj, idx) => `
+        <div style="display:flex; gap:10px; align-items:center; background:#000; padding:10px; border:1px solid #444; border-radius:4px;">
+            <img src="${imgObj.url}" style="width:60px; height:60px; object-fit:cover; border:1px solid #8b7355; border-radius:4px;">
+            <div style="flex:1;">
+                <select onchange="updateAjTempDiff(${idx}, this.value)" style="width:100px; padding:5px; font-size:12px;">
+                    <option value="3" ${imgObj.diff == 3 ? 'selected' : ''}>Dễ (3x3)</option>
+                    <option value="4" ${imgObj.diff == 4 ? 'selected' : ''}>Vừa (4x4)</option>
+                    <option value="5" ${imgObj.diff == 5 ? 'selected' : ''}>Khó (5x5)</option>
+                    <option value="6" ${imgObj.diff == 6 ? 'selected' : ''}>Siêu Khó (6x6)</option>
+                </select>
+            </div>
+            <button class="admin-mini-btn del" onclick="removeAjTempImg(${idx})">XÓA</button>
+        </div>
+    `).join('');
+    document.getElementById("aj-preview").innerHTML = html;
+}
+
+window.updateAjTempDiff = function(idx, val) { if(ajTempImages[idx]) ajTempImages[idx].diff = parseInt(val); }
+window.removeAjTempImg = function(idx) { ajTempImages.splice(idx, 1); renderAjPreview(); }
+
+window.cancelEditJigsaw = function() {
+    editingJigsawIndex = -1;
+    document.getElementById('jigsaw-form-title').innerText = "TẠO ALBUM MỚI";
+    document.getElementById("aj-name").value = "";
+    document.getElementById("aj-bot").value = "";
+    document.getElementById("aj-train").value = "";
+    ajTempImages = []; 
+    renderAjPreview();
+    document.getElementById('btn-save-jigsaw').innerText = "💾 LƯU ALBUM";
+    document.getElementById('btn-cancel-jigsaw').style.display = "none";
+}
+
+window.editJigsawAlbum = function(idx) {
+    let alb = CONFIG.puzzleAlbums[idx];
+    editingJigsawIndex = idx;
+    document.getElementById('jigsaw-form-title').innerText = `ĐANG SỬA ALBUM: ${alb.name}`;
+    document.getElementById("aj-name").value = alb.name;
+    document.getElementById("aj-bot").value = alb.bot || "";
+    document.getElementById("aj-train").value = alb.train || "";
+    ajTempImages = JSON.parse(JSON.stringify(alb.images || [])); // Copy mảng
+    renderAjPreview();
+    
+    document.getElementById('btn-save-jigsaw').innerText = "💾 CẬP NHẬT ALBUM NÀY";
+    document.getElementById('btn-cancel-jigsaw').style.display = "inline-block";
+    document.getElementById('admin-jigsaw-modal').querySelector('.modal-box-large').scrollTo(0,0);
+}
+
+window.saveJigsawAlbum = async function() {
+    let name = document.getElementById("aj-name").value.trim();
+    let bot = document.getElementById("aj-bot").value.trim();
+    let train = document.getElementById("aj-train").value.trim();
+    
+    if(!name || ajTempImages.length === 0) return alert("Vui lòng nhập Tên nhân viên và chọn ít nhất 1 ảnh!");
+    
+    if(!CONFIG.puzzleAlbums) CONFIG.puzzleAlbums = [];
+
+    if (editingJigsawIndex > -1) {
+        CONFIG.puzzleAlbums[editingJigsawIndex] = { id: CONFIG.puzzleAlbums[editingJigsawIndex].id, name, bot, train, images: [...ajTempImages] };
+    } else {
+        CONFIG.puzzleAlbums.push({ id: Date.now(), name, bot, train, images: [...ajTempImages] }); 
+    }
+    
+    try {
+        document.getElementById("btn-save-jigsaw").innerText = "Đang lưu lên hệ thống...";
+        await saveStationConfigToDB(true); 
+        alert(editingJigsawIndex > -1 ? "Đã cập nhật Album!" : "Đã tạo Album mới thành công!");
+        cancelEditJigsaw();
+        renderAdminJigsawRepo(); 
+        loadUserJigsawOptions(); 
+    } catch(e) { alert("Lỗi lưu dữ liệu!"); }
 }
 
 window.renderAdminJigsawRepo = function() {
-    let albums = CONFIG.puzzleAlbums || [];
-    let html = albums.map((alb, idx) => `
-        <div style="background:#000; padding:10px; border:1px solid #444; border-radius:4px; display:flex; justify-content:space-between; align-items:center;">
-            <div>
-                <div style="color:#e8c382; font-weight:bold;">${alb.name}</div>
-                <div style="font-size:11px; color:#aaa;">${alb.bot} | ${alb.train} | ${alb.images.length} Ảnh</div>
-            </div>
-            <button onclick="deleteJigsawAlbum(${idx})" style="background:#8B0000; color:#fff; border:1px solid #000; padding:5px 10px; font-weight:bold; cursor:pointer; border-radius:4px;">XÓA</button>
-        </div>
-    `).join('');
-    document.getElementById('admin-jigsaw-repo').innerHTML = html || "<p style='font-size:11px; color:#888;'>Chưa có Album nào.</p>";
+    let albums = CONFIG.puzzleAlbums || [];
+    let html = albums.map((alb, idx) => {
+        let imgsHtml = (alb.images || []).map(img => `<img src="${img.url || img}" style="width:40px; height:40px; border-radius:2px; border:1px solid #555;">`).join('');
+        return `
+        <div class="admin-list-item" style="flex-direction: column;">
+            <div style="display:flex; justify-content:space-between; width:100%; border-bottom:1px solid #333; padding-bottom:10px;">
+                <div>
+                    <div class="admin-list-title">📁 ${alb.name}</div>
+                    <div class="admin-list-desc">Bot: ${alb.bot || 'Trống'} | Chuyến: ${alb.train || 'Trống'} | ${alb.images.length} Ký ức</div>
+                </div>
+                <div class="admin-action-row" style="margin:0;">
+                    <button class="admin-mini-btn" onclick="editJigsawAlbum(${idx})">✏️ Chỉnh Sửa & Thêm Ảnh</button>
+                    <button class="admin-mini-btn del" onclick="deleteJigsawAlbum(${idx})">🗑️ Xóa Cả Album</button>
+                </div>
+            </div>
+            <div style="display:flex; gap:5px; flex-wrap:wrap; margin-top:10px;">${imgsHtml}</div>
+        </div>
+    `}).join('');
+    document.getElementById('admin-jigsaw-repo').innerHTML = html || "<p style='color:#888;'>Chưa có Album nào.</p>";
 }
 
 window.deleteJigsawAlbum = async function(idx) {
-    if(!confirm("Xóa album này trên toàn hệ thống?")) return;
-    if(!CONFIG.puzzleAlbums) return;
-    CONFIG.puzzleAlbums.splice(idx, 1); 
-    await saveStationConfigToDB(true);
-    renderAdminJigsawRepo(); loadUserJigsawOptions();
+    if(!confirm("Xóa toàn bộ Album này?")) return;
+    if(!CONFIG.puzzleAlbums) return;
+    CONFIG.puzzleAlbums.splice(idx, 1); 
+    await saveStationConfigToDB(true);
+    if(editingJigsawIndex === idx) cancelEditJigsaw();
+    renderAdminJigsawRepo(); loadUserJigsawOptions();
 }
 
-// KHÁCH: Load danh sách nhân viên vào thẻ ô chọn Select
 window.loadUserJigsawOptions = function() {
-    let albums = CONFIG.puzzleAlbums || [];
-    let selectEl = document.getElementById("jigsaw-character-select");
-    if(!selectEl) return;
-    if(albums.length === 0) {
-        selectEl.innerHTML = `<option value="">Hiện chưa có nhân viên nào</option>`;
-    } else {
-        selectEl.innerHTML = albums.map(a => `<option value="${a.id}">${a.name} ${a.bot ? `(${a.bot})` : ''}</option>`).join('');
-    }
+    let albums = CONFIG.puzzleAlbums || [];
+    let selectEl = document.getElementById("jigsaw-character-select");
+    if(!selectEl) return;
+    if(albums.length === 0) {
+        selectEl.innerHTML = `<option value="">Hiện chưa có nhân viên nào</option>`;
+    } else {
+        selectEl.innerHTML = albums.map(a => `<option value="${a.id}">${a.name} ${a.bot ? `(${a.bot})` : ''}</option>`).join('');
+    }
 }
 
-// Bắt đầu game ghép hình
 window.startJigsawGame = function() {
-    let selectEl = document.getElementById("jigsaw-character-select");
-    let targetId = selectEl.value;
-    if(!targetId) return alert("Hiện chưa có nhân viên nào để phục hồi ảnh!");
-    
-    let albums = CONFIG.puzzleAlbums || [];
-    let album = albums.find(a => String(a.id) === String(targetId));
-    if(!album || !album.images || album.images.length === 0) return alert("Album này bị lỗi hoặc không có ảnh!");
-    
-    currentJigsawAlbum = album; 
-    
-    document.getElementById('memory-win').style.display = 'none';
-    const board = document.getElementById('jigsaw-board');
-    board.style.display = 'grid'; board.innerHTML = '';
-    
-    let imgData = album.images[Math.floor(Math.random() * album.images.length)];
-    let imgUrl = typeof imgData === 'string' ? imgData : imgData.url;
-    let level = (typeof imgData === 'object' && imgData.diff) ? imgData.diff : 4; 
+    let selectEl = document.getElementById("jigsaw-character-select");
+    let targetId = selectEl.value;
+    if(!targetId) return alert("Vui lòng chọn 1 nhân viên trước!");
+    
+    let albums = CONFIG.puzzleAlbums || [];
+    let album = albums.find(a => String(a.id) === String(targetId));
+    if(!album || !album.images || album.images.length === 0) return alert("Album này bị lỗi hoặc không có ảnh!");
+    
+    currentJigsawAlbum = album; 
+    
+    document.getElementById('memory-win').style.display = 'none';
+    const board = document.getElementById('jigsaw-board');
+    board.style.display = 'grid'; board.innerHTML = '';
+    
+    let imgData = album.images[Math.floor(Math.random() * album.images.length)];
+    let imgUrl = typeof imgData === 'string' ? imgData : imgData.url;
+    let level = (typeof imgData === 'object' && imgData.diff) ? imgData.diff : 4; 
 
-    let tmpImg = new Image();
-    tmpImg.onload = function() {
-        board.style.aspectRatio = `${this.width} / ${this.height}`;
-        board.style.gridTemplateColumns = `repeat(${level}, 1fr)`;
-        board.style.gridTemplateRows = `repeat(${level}, 1fr)`;
+    let tmpImg = new Image();
+    tmpImg.onload = function() {
+        board.style.aspectRatio = `${this.width} / ${this.height}`;
+        board.style.gridTemplateColumns = `repeat(${level}, 1fr)`;
+        board.style.gridTemplateRows = `repeat(${level}, 1fr)`;
 
-        let pieces = [];
-        for(let y = 0; y < level; y++) {
-            for(let x = 0; x < level; x++) {
-                let p = document.createElement('div');
-                p.className = 'jigsaw-piece';
-                p.draggable = true;
-                p.dataset.trueIdx = y * level + x;
-                p.style.backgroundImage = `url(${imgUrl})`;
-                p.style.backgroundSize = `${level * 100}% ${level * 100}%`;
-                p.style.backgroundPosition = `${(x / (level - 1)) * 100}% ${(y / (level - 1)) * 100}%`;
-                
-                p.addEventListener('dragstart', function() { draggedPiece = this; });
-                p.addEventListener('dragover', e => e.preventDefault());
-                p.addEventListener('drop', function() {
-                    if (this !== draggedPiece) {
-                        let tBg = this.style.backgroundPosition; let tId = this.dataset.trueIdx;
-                        this.style.backgroundPosition = draggedPiece.style.backgroundPosition; this.dataset.trueIdx = draggedPiece.dataset.trueIdx;
-                        draggedPiece.style.backgroundPosition = tBg; draggedPiece.dataset.trueIdx = tId;
-                        checkJigsawWin();
-                    }
-                });
-                pieces.push(p);
-            }
-        }
-        pieces.sort(() => Math.random() - 0.5).forEach(p => board.appendChild(p));
-        
-        const audio = document.getElementById('gramophone-audio');
-        if(audio) { audio.volume = 0.3; audio.play().catch(e => {}); }
-    };
-    tmpImg.src = imgUrl;
+        let pieces = [];
+        for(let y = 0; y < level; y++) {
+            for(let x = 0; x < level; x++) {
+                let p = document.createElement('div');
+                p.className = 'jigsaw-piece';
+                p.draggable = true;
+                p.dataset.trueIdx = y * level + x;
+                p.style.backgroundImage = `url(${imgUrl})`;
+                p.style.backgroundSize = `${level * 100}% ${level * 100}%`;
+                p.style.backgroundPosition = `${(x / (level - 1)) * 100}% ${(y / (level - 1)) * 100}%`;
+                
+                p.addEventListener('dragstart', function() { draggedPiece = this; });
+                p.addEventListener('dragover', e => e.preventDefault());
+                p.addEventListener('drop', function() {
+                    if (this !== draggedPiece) {
+                        let tBg = this.style.backgroundPosition; let tId = this.dataset.trueIdx;
+                        this.style.backgroundPosition = draggedPiece.style.backgroundPosition; this.dataset.trueIdx = draggedPiece.dataset.trueIdx;
+                        draggedPiece.style.backgroundPosition = tBg; draggedPiece.dataset.trueIdx = tId;
+                        checkJigsawWin();
+                    }
+                });
+                pieces.push(p);
+            }
+        }
+        pieces.sort(() => Math.random() - 0.5).forEach(p => board.appendChild(p));
+        
+        // Đã tắt âm thanh gramophone khi bắt đầu ghép hình theo yêu cầu
+    };
+    tmpImg.src = imgUrl;
+}
+
+window.checkJigsawWin = function() {
+    let allNodes = Array.from(document.getElementById("jigsaw-board").children);
+    if(allNodes.every((node, idx) => node.dataset.trueIdx == idx)) {
+        allNodes.forEach(n => { n.draggable = false; n.style.border = 'none'; });
+        
+        let imgUrl = allNodes[0].style.backgroundImage.slice(5, -2).replace(/"/g, "");
+        
+        document.getElementById('win-text-message').innerHTML = `Khôi phục thành công ảnh của <span style="color:var(--amber);">${currentJigsawAlbum.name}</span>!`;
+        document.getElementById('win-sparkle-img').src = imgUrl;
+        
+        let dlBtn = document.getElementById('jigsaw-download-btn');
+        dlBtn.href = imgUrl;
+        dlBtn.download = `KyUc_${currentJigsawAlbum.name.replace(/\s+/g, '')}.jpg`;
+        
+        document.getElementById('memory-win').style.display = 'block';
+        fireConfetti(); 
+
+        // THÊM THÔNG BÁO ALERT ĐỂ NGƯỜI CHƠI BIẾT NGAY LẬP TỨC
+        setTimeout(() => {
+            alert("🎉 CHÚC MỪNG BẠN ĐÃ GHÉP THÀNH CÔNG BỨC ẢNH KỶ NIỆM NÀY!");
+        }, 300);
+    }
 }
 
         // ============================================================
@@ -2384,7 +2494,26 @@ window.startJigsawGame = function() {
         window.renderUpcomingBots = function() {
             const grid = document.getElementById("upcomingBotsGrid"); grid.innerHTML = "";
             let upBots = CONFIG.upcomingBots || []; if(!isAdminMode) upBots = upBots.filter(b => !b.isHidden);
-            upBots.sort((a, b) => (b.votes || 0) - (a.votes || 0));
+            
+            // --- LOGIC SẮP XẾP MỚI (Tiến độ -> Vote -> Cũ nhất) ---
+            upBots.sort((a, b) => {
+                // 1. So sánh tiến độ (% cao nhất lên trước)
+                let pA = a.progress || 0;
+                let pB = b.progress || 0;
+                if (pB !== pA) return pB - pA;
+                
+                // 2. Nếu tiến độ bằng nhau, so sánh lượt Vote (Nhiều vote lên trước)
+                let vA = a.votes || 0;
+                let vB = b.votes || 0;
+                if (vB !== vA) return vB - vA;
+                
+                // 3. Nếu Vote cũng bằng nhau, lấy cái Cũ nhất lên trước
+                // (Vì ID hồ sơ dự bị có dạng "u_171...xxx" chứa thời gian tạo)
+                let timeA = parseInt(a.id.replace('u_', '')) || 0;
+                let timeB = parseInt(b.id.replace('u_', '')) || 0;
+                return timeA - timeB;
+            });
+            // --------------------------------------------------------
             
             if(upBots.length === 0) { grid.className = ""; grid.innerHTML = `<div class="upcoming-empty"><span class="icon-slot" data-icon="bench"></span><p>Sảnh tuyển dụng hiện đang im lìm... Các chuyến tàu đã đủ người vận hành. Nếu lữ khách muốn đề xuất một nhân viên mới, hãy gửi ý tưởng cho Trưởng ga ở mục Góp ý phía dưới.</p></div>`; setTimeout(() => loadIcons(), 10); return; }
             grid.className = "staff-grid";
@@ -2400,7 +2529,6 @@ window.startJigsawGame = function() {
                 let hiddenText = bot.isHidden ? '👁️ HIỆN' : '👁️ ẨN'; let adminControls = isAdminMode ? `<div style="position: absolute; top: -35px; left: 0; right: 0; display: flex; justify-content: center; gap: 8px; z-index: 50;"><button style="background:var(--amber); color:#000; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="openAdminForm('upcoming', 'edit', '${bot.id}')">✏️ SỬA</button><button style="background:#444; color:#FFF; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="toggleHideUpcoming('${bot.id}', event)">${hiddenText}</button><button style="background:#8B0000; color:#FFF; padding:4px 8px; font-weight:bold; border:2px solid #000; cursor:pointer;" onclick="deleteUpcoming('${bot.id}', event)">🗑️ XÓA</button></div>` : "";
                 let hasVoted = localStorage.getItem('voted_upcoming_' + bot.id) === 'true'; let heartIcon = hasVoted ? 'heart_filled' : 'heart_empty'; let voteClass = hasVoted ? 'voted' : ''; let votesCount = bot.votes || 0;
                 
-                // --- ĐÂY LÀ ĐOẠN VẼ THANH TIẾN ĐỘ VÀ NOTE ---
                 let pVal = bot.progress || 0;
                 let pNoteHTML = bot.progressNote ? `<div class="up-progress-note"><span class="icon-note">➤</span><span>${bot.progressNote}</span></div>` : '';
                 let progressHTML = `
@@ -2411,7 +2539,6 @@ window.startJigsawGame = function() {
                     </div>
                 `;
 
-                // Cập nhật cardWrap.innerHTML có chứa ${progressHTML} ngay trên nút tim
                 cardWrap.innerHTML = `${adminControls}<div class="staff-card-inner"><div class="up-card-front"><div class="c-id-header" style="color:var(--amber);">PENDING STAFF ID</div><div class="up-stamp" style="background:var(--amber); color:#000;">[ SẮP RA MẮT ]</div><div class="c-image-wrap" style="margin: 0 auto 15px auto; border-color:#333; width:140px; height:140px; border:4px solid #444; border-bottom:15px solid #444; background:#444; position:relative; box-shadow:2px 2px 10px rgba(0,0,0,0.8); transform:rotate(-2deg); flex-shrink: 0;"><img src="${bot.avatar}" style="width:100%; height:100%; object-fit:cover; filter:grayscale(1);"></div><div class="c-name">${bot.name}</div><div class="c-tags" style="display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin-bottom:10px; width:100%;">${tagHTML}</div><div class="c-hook" style="color:#aaa; font-weight:bold; font-size:12px; margin-bottom:10px; text-align:center; width:100%;">CHUYẾN: ${bot.train}</div><div class="up-idea-box" style="white-space: pre-wrap; margin-bottom: 0;">${bot.idea}</div>${progressHTML}<button class="up-vote-btn ${voteClass}" onclick="voteUpcoming('${bot.id}', event)"><span class="icon-slot" data-icon="${heartIcon}"></span> <span style="font-size:15px; color:var(--amber);">${votesCount}</span> <span style="font-weight:normal; margin-left:4px;">Hành khách mong đợi</span></button></div></div>`; 
                 grid.appendChild(cardWrap);
             });
