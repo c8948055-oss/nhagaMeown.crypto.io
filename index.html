@@ -960,41 +960,6 @@
     </div>
 
     <script>
-// ============================================================
-        // VÁ LỖI: KHAI BÁO CÁC BIẾN VÀ HÀM BỊ THIẾU 
-        // ============================================================
-        
-        // 1. Biến cho hộp nhạc
-        let noteInterval = null; 
-
-        // 2. Khai báo các hàm UI / Đồ hoạ (Nếu bạn có code gốc, hãy đè lên các hàm này)
-        window.loadIcons = function() { console.log("Đã load icons"); };
-        window.createEmbers = function() { console.log("Tạo đốm lửa"); };
-        window.createFireflies = function() { console.log("Tạo đom đóm"); };
-        window.fireConfetti = function() { console.log("Bắn pháo hoa"); };
-        window.spawnNote = function() { console.log("Tạo nốt nhạc"); };
-
-        // 3. Khai báo các hàm Data / Logic
-        window.updateStationMasterUI = function() { console.log("Update UI Trưởng Ga"); };
-        window.fetchFeeds = async function() { console.log("Đang tải Feeds"); };
-        window.renderFeed = function(type) { console.log("Render Feed: " + type); };
-        
-        // 4. Khai báo hàm tương tác Form / Admin / Lightbox
-        window.openAdminForm = function(type, action, id) { 
-            console.log("Mở form Admin:", type, action, id); 
-            alert("Hàm mở form Admin (" + type + ") chưa có nội dung gốc!");
-        };
-        window.openLightbox = function(src, event) {
-            if(event) event.stopPropagation();
-            const lightbox = document.getElementById('imageLightbox');
-            const img = document.getElementById('lightboxImg');
-            if(lightbox && img) {
-                img.src = src;
-                lightbox.classList.remove('hidden');
-            }
-        };
-        // ============================================================
-
         // ============================================================
         // LOGIC KHU GIẢI TRÍ (TAROT, CAT 9:16, JIGSAW)
         // ============================================================
