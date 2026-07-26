@@ -842,7 +842,7 @@
             <div style="display:flex; flex-direction:column; gap:12px; padding:20px; background:#111; border:1px solid #444; border-radius: 8px;">
                 <h4 style="color:#fff; margin:0;" id="tarot-form-title">THÊM LÁ BÀI MỚI</h4>
                 <div class="form-row file-upload-wrapper" style="margin:0;">
-                    <label class="file-btn" style="border-color:#8b7355; color:#d4c5b0; width:100%; padding: 15px;"><input type="file" accept="image/*" id="admin-nv-file" style="display:none;"> 📸 TẢI ẢNH LÁ BÀI (Tỷ lệ dọc 9:16)</label>
+                    <label class="file-btn" style="border-color:#8b7355; color:#d4c5b0; width:100%; padding: 15px;"><input type="file" accept="image/*" id="admin-nv-file" style="display:none;"> 📸 TẢI ẢNH LÁ BÀI (ẢNH NGANG 16:9)</label>
                     <div id="admin-tarot-prev" class="img-preview-grid" style="justify-content:center;"></div>
                 </div>
                 <input type="text" id="admin-nv-name" placeholder="Tên lá bài (VD: Tình Yêu, Sự Chờ Đợi...)">
@@ -976,8 +976,9 @@ function openAdminTarot() {
 
 document.getElementById("admin-nv-file").addEventListener("change", async (e) => {
     if(e.target.files.length > 0) {
-        tarotTempB64 = await resizeImage(e.target.files[0], 600); 
-        document.getElementById("admin-tarot-prev").innerHTML = `<img src="${tarotTempB64}" style="width:100px; height:auto; object-fit:cover; border:2px solid #8b7355; border-radius:4px;">`;
+        tarotTempB64 = await resizeImage(e.target.files[0], 800); 
+        // Hiển thị ảnh ngang 16:9 (160x90)
+        document.getElementById("admin-tarot-prev").innerHTML = `<img src="${tarotTempB64}" style="width:160px; height:90px; object-fit:cover; border:2px solid #8b7355; border-radius:4px;">`;
     }
 });
 
@@ -994,12 +995,13 @@ window.cancelEditTarot = function() {
 
 window.editTarotCard = function(idx) {
     let item = CONFIG.tarotList[idx];
+    if(!item) return;
     editingTarotIndex = idx;
     document.getElementById('tarot-form-title').innerText = `ĐANG SỬA: LÁ SỐ ${idx + 1}`;
-    document.getElementById('admin-nv-name').value = item.name;
-    document.getElementById('admin-nv-prompt').value = item.prompt;
-    tarotTempB64 = item.img;
-    document.getElementById('admin-tarot-prev').innerHTML = `<img src="${tarotTempB64}" style="width:100px; height:auto; object-fit:cover; border:2px solid #8b7355; border-radius:4px;">`;
+    document.getElementById('admin-nv-name').value = item.name || '';
+    document.getElementById('admin-nv-prompt').value = item.prompt || '';
+    tarotTempB64 = item.img || '';
+    document.getElementById('admin-tarot-prev').innerHTML = `<img src="${tarotTempB64}" style="width:160px; height:90px; object-fit:cover; border:2px solid #8b7355; border-radius:4px;">`;
     
     document.getElementById('btn-save-tarot').innerHTML = "💾 LƯU THAY ĐỔI";
     document.getElementById('btn-cancel-tarot').style.display = "inline-block";
@@ -1029,23 +1031,27 @@ window.saveStaffTarot = async function() {
 }
 
 window.renderAdminTarotRepo = function() {
-    let list = CONFIG.tarotList || [];
-    let html = "";
-    list.forEach((item, idx) => {
-        html += `
-        <div class="admin-list-item">
-            <img src="${item.img}">
-            <div class="admin-list-content">
-                <div class="admin-list-title">${item.name}</div>
-                <div class="admin-list-desc">"${item.prompt}"</div>
-                <div class="admin-action-row">
-                    <button class="admin-mini-btn" onclick="editTarotCard(${idx})">✏️ Sửa</button>
-                    <button class="admin-mini-btn del" onclick="deleteTarotCard(${idx})">🗑️ Xóa</button>
+    try {
+        let list = CONFIG.tarotList || [];
+        let html = "";
+        list.forEach((item, idx) => {
+            if (!item) return; // Chống lỗi nếu phần tử bị null
+            html += `
+            <div class="admin-list-item">
+                <img src="${item.img || ''}" style="width:160px; height:90px; object-fit:cover; border:2px solid #8b7355; border-radius:4px;">
+                <div class="admin-list-content">
+                    <div class="admin-list-title">${item.name || 'Không có tên'}</div>
+                    <div class="admin-list-desc">"${item.prompt || ''}"</div>
+                    <div class="admin-action-row">
+                        <button class="admin-mini-btn" onclick="editTarotCard(${idx})">✏️ Sửa</button>
+                        <button class="admin-mini-btn del" onclick="deleteTarotCard(${idx})">🗑️ Xóa</button>
+                    </div>
                 </div>
-            </div>
-        </div>`;
-    });
-    document.getElementById('admin-tarot-repo').innerHTML = html || "<p style='color:#888;'>Chưa có lá bài nào.</p>";
+            </div>`;
+        });
+        let repo = document.getElementById('admin-tarot-repo');
+        if(repo) repo.innerHTML = html || "<p style='color:#888;'>Chưa có lá bài nào.</p>";
+    } catch (e) { console.error("Lỗi vẽ giao diện Tarot", e); }
 }
 
 window.deleteTarotCard = async function(idx) {
@@ -1071,14 +1077,14 @@ function drawTarotCard() {
     }
     const randomStaff = staffList[Math.floor(Math.random() * staffList.length)];
     
-    document.getElementById('tarot-img').src = randomStaff.img;
-    document.getElementById('tarot-name').innerText = randomStaff.name;
-    document.getElementById('tarot-message').innerText = `"${randomStaff.prompt}"`;
+    document.getElementById('tarot-img').src = randomStaff.img || '';
+    document.getElementById('tarot-name').innerText = randomStaff.name || '';
+    document.getElementById('tarot-message').innerText = `"${randomStaff.prompt || ''}"`;
     document.getElementById('daily-card').style.transform = "rotateY(180deg)";
     
     if (!isAdminMode) localStorage.setItem('ga_last_tarot_date', todayStr);
 }
-
+        
 // --- 2. TRẠM CHĂM MÈO (PIXEL CHIBI 9:16) ---
 let catAffection = parseInt(localStorage.getItem('ga_catAffection')) || 0;
 
@@ -1351,27 +1357,42 @@ window.saveJigsawAlbum = async function() {
 }
 
 window.renderAdminJigsawRepo = function() {
-    let albums = CONFIG.puzzleAlbums || [];
-    let html = albums.map((alb, idx) => {
-        let imgsHtml = (alb.images || []).map(img => `<img src="${img.url || img}" style="width:40px; height:40px; border-radius:2px; border:1px solid #555;">`).join('');
-        return `
-        <div class="admin-list-item" style="flex-direction: column;">
-            <div style="display:flex; justify-content:space-between; width:100%; border-bottom:1px solid #333; padding-bottom:10px;">
-                <div>
-                    <div class="admin-list-title">📁 ${alb.name}</div>
-                    <div class="admin-list-desc">Bot: ${alb.bot || 'Trống'} | Chuyến: ${alb.train || 'Trống'} | ${alb.images.length} Ký ức</div>
-                </div>
-                <div class="admin-action-row" style="margin:0;">
-                    <button class="admin-mini-btn" onclick="editJigsawAlbum(${idx})">✏️ Chỉnh Sửa & Thêm Ảnh</button>
-                    <button class="admin-mini-btn del" onclick="deleteJigsawAlbum(${idx})">🗑️ Xóa Cả Album</button>
-                </div>
-            </div>
-            <div style="display:flex; gap:5px; flex-wrap:wrap; margin-top:10px;">${imgsHtml}</div>
-        </div>
-    `}).join('');
-    document.getElementById('admin-jigsaw-repo').innerHTML = html || "<p style='color:#888;'>Chưa có Album nào.</p>";
+    try {
+        let albums = CONFIG.puzzleAlbums || [];
+        if (!Array.isArray(albums)) albums = []; // Ép mảng chống lỗi null
+        
+        let html = albums.map((alb, idx) => {
+            if (!alb) return '';
+            let imgArr = alb.images || [];
+            if (!Array.isArray(imgArr)) imgArr = []; // Chặn lỗi báo độ dài
+            
+            let imgsHtml = imgArr.map(img => `<img src="${img.url || img}" style="width:40px; height:40px; border-radius:2px; border:1px solid #555; object-fit:cover;">`).join('');
+            
+            return `
+            <div class="admin-list-item" style="flex-direction: column;">
+                <div style="display:flex; justify-content:space-between; width:100%; border-bottom:1px solid #333; padding-bottom:10px;">
+                    <div>
+                        <div class="admin-list-title">📁 ${alb.name || 'Không tên'}</div>
+                        <div class="admin-list-desc">Bot: ${alb.bot || 'Trống'} | Chuyến: ${alb.train || 'Trống'} | ${imgArr.length} Ký ức</div>
+                    </div>
+                    <div class="admin-action-row" style="margin:0;">
+                        <button class="admin-mini-btn" onclick="editJigsawAlbum(${idx})">✏️ Chỉnh Sửa & Thêm Ảnh</button>
+                        <button class="admin-mini-btn del" onclick="deleteJigsawAlbum(${idx})">🗑️ Xóa Cả Album</button>
+                    </div>
+                </div>
+                <div style="display:flex; gap:5px; flex-wrap:wrap; margin-top:10px;">${imgsHtml}</div>
+            </div>
+            `
+        }).join('');
+        
+        let repo = document.getElementById('admin-jigsaw-repo');
+        if(repo) repo.innerHTML = html || "<p style='color:#888; font-style:italic;'>Chưa có Album nào.</p>";
+        loadUserJigsawOptions(); 
+    } catch(e) {
+        console.error("Lỗi vẽ Giao diện Jigsaw Admin:", e);
+    }
 }
-
+        
 window.deleteJigsawAlbum = async function(idx) {
     if(!confirm("Xóa toàn bộ Album này?")) return;
     if(!CONFIG.puzzleAlbums) return;
