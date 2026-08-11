@@ -12,9 +12,9 @@
     <title>Quán Trọ Nhà Mèo | Creator Showcase</title>
     
     <!-- Favicon -->
-    <link rel="icon" href="Mèo cười.png" type="image/png">
-    <link rel="shortcut icon" href="Mèo cười.png" type="image/png">
-    <link rel="apple-touch-icon" href="Mèo cười.png">
+    <link rel="icon" href="ChatGPT_Image_21_48_57_31_thg_7__2026-removebg-preview.png" type="image/png">
+    <link rel="shortcut icon" href="ChatGPT_Image_21_48_57_31_thg_7__2026-removebg-preview.png" type="image/png">
+    <link rel="apple-touch-icon" href="ChatGPT_Image_21_48_57_31_thg_7__2026-removebg-preview.png">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -443,7 +443,7 @@
     <!-- HEADER: TÊN QUÁN & BẢNG HIỆU -->
     <header class="header-section">
         <div class="signboard-wrapper">
-            <img src="Mèo cười.png" alt="Peeking Cat" class="peeking-cat">
+            <img src="ChatGPT_Image_21_48_57_31_thg_7__2026-removebg-preview.png" alt="Peeking Cat" class="peeking-cat">
             <div class="cream-board" id="trigger-admin" title="">
                 <img src="ChatGPT_Image_22_00_11_31_thg_7__2026-removebg-preview.png" alt="Bell Icon" class="bell-icon">
                 <h1 class="station-title">QUÁN TRỌ NHÀ MÈO</h1>
@@ -563,7 +563,7 @@
             stationMaster: { 
                 shortDesc: "Một quán trọ nhỏ, nơi những chú mèo lười biếng phơi nắng bên suối...",
                 bio: "Cảm ơn các bạn đã ghé thăm trang của tui...", 
-                avatar: "Mèo cười.png",
+                avatar: "ChatGPT_Image_21_48_57_31_thg_7__2026-removebg-preview.png",
                 facebook: { name: "", url: "" }
             },
             staff: [], 
@@ -954,9 +954,7 @@
             }
 
             let formStarsHtml = "";
-            for(let i=1; i<=5; i++) {
-                formStarsHtml += `<svg class="svg-icon star-svg star-item" data-val="${i}" viewBox="0 0 16 16"><use href="#px-star-empty"></use></svg>`;
-            }
+            for(let i=1; i<=5; i++) { formStarsHtml += `<svg class="svg-icon star-svg star-item" data-val="${i}" viewBox="0 0 16 16"><use href="#px-star-empty"></use></svg>`; }
 
             body.innerHTML = `
                 <div class="fb-form">
@@ -964,12 +962,8 @@
                     <div class="stars-select" id="star-wrap">${formStarsHtml}</div>
                     
                     <div class="fb-privacy-wrap">
-                        <label class="fb-privacy-label">
-                            <input type="radio" name="fb_privacy" value="public" checked> 🌐 Đăng công khai
-                        </label>
-                        <label class="fb-privacy-label">
-                            <input type="radio" name="fb_privacy" value="private"> 🔒 Gửi riêng Admin
-                        </label>
+                        <label class="fb-privacy-label"><input type="radio" name="fb_privacy" value="public" checked> 🌐 Đăng công khai</label>
+                        <label class="fb-privacy-label"><input type="radio" name="fb_privacy" value="private"> 🔒 Gửi riêng Admin</label>
                     </div>
 
                     <input type="text" id="fb-name" class="fb-input" placeholder="Tên của bạn (Mặc định: Lữ Khách)...">
@@ -1038,7 +1032,7 @@
            MỞ MODAL: SẮP RA MẮT & CHỦ QUÁN
            ============================================================ */
         window.openSMModal = function() {
-            document.getElementById("modal-title").innerHTML = `<img src="Mèo cười.png" style="width:26px;height:26px; border-radius:50%;"> THÔNG TIN CHỦ TRỌ`;
+            document.getElementById("modal-title").innerHTML = `<img src="ChatGPT_Image_21_56_27_31_thg_7__2026-removebg-preview.png" style="width:26px;height:26px;"> THÔNG TIN CHỦ TRỌ`;
             let fbHtml = CONFIG.stationMaster.facebook && CONFIG.stationMaster.facebook.url ? `<div style="margin-top:20px; text-align:center;"><a href="${CONFIG.stationMaster.facebook.url}" target="_blank" style="display:inline-block; padding:12px 28px; background:var(--text-dark); color:#FFF; font-weight:800; border-radius:50px; box-shadow:0 4px 15px rgba(44, 62, 44, 0.2); font-family:var(--font-body); font-size:1rem;">Liên hệ Facebook Chủ Trọ</a></div>` : '';
             document.getElementById("modal-body").innerHTML = `
                 <div style="text-align:center; margin-bottom:20px;">${CONFIG.stationMaster.avatar ? `<img src="${CONFIG.stationMaster.avatar}" style="width:130px; height:130px; border-radius:50%; object-fit:cover; margin:0 auto; border:4px solid var(--accent-peach); box-shadow:var(--shadow-soft);">` : ''}</div>
@@ -1169,7 +1163,7 @@
                     <div class="admin-form-group"><label>Link FB</label><input type="text" id="ad-fburl" class="fb-input" value="${CONFIG.stationMaster.facebook?.url || ''}"></div>
                     <button class="fb-btn-submit" id="ad-save">LƯU LẠI THÔNG TIN</button>
                 `;
-                tempAdminImg = CONFIG.stationMaster.avatar || "Mèo cười.png";
+                tempAdminImg = CONFIG.stationMaster.avatar || "ChatGPT_Image_21_48_57_31_thg_7__2026-removebg-preview.png";
                 document.getElementById("ad-sm-img").onchange = async (e) => { if(e.target.files.length > 0) { tempAdminImg = await resizeImage(e.target.files[0], 600); document.getElementById("ad-sm-prev").innerHTML = `<img src="${tempAdminImg}" style="height:100px; border-radius:50%; border:3px solid var(--accent-peach);">`; } };
                 document.getElementById("ad-save").onclick = async () => { CONFIG.stationMaster.avatar = tempAdminImg; CONFIG.stationMaster.bio = document.getElementById("ad-bio").innerHTML; CONFIG.stationMaster.facebook = { name: document.getElementById("ad-fbname").value, url: document.getElementById("ad-fburl").value }; await saveConfig(); renderUI(); document.getElementById("admin-modal").classList.remove("show"); alert("Đã lưu Chủ Trọ!"); };
             }
