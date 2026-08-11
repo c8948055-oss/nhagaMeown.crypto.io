@@ -11,10 +11,15 @@
 
     <title>Quán Trọ Nhà Mèo | Creator Showcase</title>
     
+    <!-- Favicon -->
+    <link rel="icon" href="Mèo cười.png" type="image/png">
+    <link rel="shortcut icon" href="Mèo cười.png" type="image/png">
+    <link rel="apple-touch-icon" href="Mèo cười.png">
+    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:ital,wght@0,500;0,700;0,800;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Comfortaa:wght@500;700;800&family=Nunito:ital,wght@0,500;0,700;0,800;1,500;1,700&display=swap" rel="stylesheet">
     
     <!-- Supabase & LocalForage -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -26,474 +31,1310 @@
            ============================================================ */
         :root {
             color-scheme: light only;
-            --bg-cream: #F8F5EE;
-            --sage-green: #A3B899;
-            --moss-green: #4A5D23;
-            --forest-dark: #2C3E2C;
+            --bg-main: #EAF2EA; 
+            --bg-card: #FFFFFF; 
+            --text-dark: #2C3E2C; 
+            --text-muted: #6B806B; 
+            --accent-peach: #659165; 
+            --accent-pink: #A3CBA3; 
+            --accent-mocha: #CDE0CA; 
+            --border-soft: #DFEFDC;
             --wood-board: #D9C5A0;
             --paper-note: #FFFDF7;
             --accent-gold: #D4A373;
-            --text-main: #3D3D3D;
-            --font-heading: 'Baloo 2', cursive;
+            
+            --font-title: 'Baloo 2', cursive;
+            --font-heading: 'Comfortaa', cursive;
             --font-body: 'Nunito', sans-serif;
+            --shadow-soft: 0 8px 25px rgba(44, 62, 44, 0.08);
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
-                --bg-cream: #F8F5EE !important; --sage-green: #A3B899 !important; --moss-green: #4A5D23 !important;
-                --forest-dark: #2C3E2C !important; --wood-board: #D9C5A0 !important; --paper-note: #FFFDF7 !important;
-                --accent-gold: #D4A373 !important; --text-main: #3D3D3D !important;
+                --bg-main: #EAF2EA !important; --bg-card: #FFFFFF !important; 
+                --text-dark: #2C3E2C !important; --text-muted: #6B806B !important; 
+                --accent-peach: #659165 !important; --accent-pink: #A3CBA3 !important; 
+                --accent-mocha: #CDE0CA !important; --border-soft: #DFEFDC !important;
+                --wood-board: #D9C5A0 !important; --paper-note: #FFFDF7 !important;
             }
-            html, body { background-color: var(--bg-cream) !important; color: var(--text-main) !important; }
+            html, body { background-color: var(--bg-main) !important; color: var(--text-dark) !important; }
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; overflow-wrap: break-word; }
         html, body { max-width: 100vw; overflow-x: hidden; scroll-behavior: smooth; }
         
-        body {
-            background-color: var(--bg-cream); color: var(--text-main); font-family: var(--font-body); line-height: 1.6;
-            background-image: radial-gradient(var(--sage-green) 1px, transparent 1px);
-            background-size: 30px 30px; background-position: -15px -15px; background-attachment: fixed;
+        body { 
+            background-color: var(--bg-main);
+            background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg opacity='0.25'%3E%3Cpath d='M25 25 C25 20, 30 20, 30 25 C35 20, 40 20, 40 25 C40 30, 35 30, 32 30 C35 35, 30 40, 25 40 C20 40, 15 35, 18 30 C15 30, 10 30, 10 25 C10 20, 15 20, 15 25 C15 30, 20 30, 25 30 Z' fill='%23659165' transform='scale(0.4) translate(40, 40)'/%3E%3Cpath d='M70 80 Q80 70 90 80 T110 80' stroke='%23A3CBA3' stroke-width='2' fill='none'/%3E%3C/g%3E%3C/svg%3E");
+            color: var(--text-dark); font-family: var(--font-body); min-height: 100vh; line-height: 1.6;
         }
-
-        button, a, input, select, textarea { font-family: inherit; outline: none; touch-action: manipulation; }
-        button { cursor: pointer; border: none; background: none; }
-        input, select, textarea { font-size: 16px !important; } /* Khóa zoom trên iPhone */
+        
+        button, a, input, select { touch-action: manipulation; }
+        button { cursor: pointer; border: none; background: none; font-family: inherit; outline: none; }
+        input, select, textarea { font-family: inherit; outline: none; font-size: 16px !important; }
         img { max-width: 100%; display: block; }
         a { text-decoration: none; color: inherit; }
+        .hidden { display: none !important; }
+
+        .svg-icon { display: inline-block; vertical-align: middle; width: 22px; height: 22px; overflow: visible; shape-rendering: crispEdges; }
 
         /* ============================================================
-           HERO SECTION (SẢNH CHÍNH)
+           HEADER & BẢNG HIỆU
            ============================================================ */
-        .hero { text-align: center; padding: 12vh 20px 8vh 20px; background: linear-gradient(180deg, rgba(163,184,153,0.3) 0%, rgba(248,245,238,1) 100%); transition: margin-top 0.3s ease;}
-        body.is-admin .hero { padding-top: 15vh; } /* Nhường chỗ cho thanh admin */
-
-        .hero-title { font-family: var(--font-heading); font-size: clamp(2.5rem, 6vw, 4rem); color: var(--forest-dark); margin-bottom: 10px; text-shadow: 2px 2px 0px #FFF; cursor: pointer; user-select: none; }
-        .hero-tagline { font-size: 1.1rem; color: var(--moss-green); font-style: italic; font-weight: 700; max-width: 600px; margin: 0 auto 30px auto; }
+        .header-section { max-width: 850px; margin: 120px auto 15px auto; text-align: center; padding: 0 15px; transition: margin-top 0.3s ease; }
+        body.is-admin .header-section { margin-top: 150px; }
         
-        .avatar-wrap { display: flex; justify-content: center; margin-bottom: 20px; position: relative; }
-        .sm-avatar { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 4px solid var(--accent-gold); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .signboard-wrapper { position: relative; max-width: 550px; margin: 0 auto 15px auto; }
+        .peeking-cat { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); width: 140px; z-index: 1; margin-bottom: -15px; }
 
-        .btn-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
-        .btn { padding: 12px 28px; border-radius: 50px; font-weight: 800; font-size: 0.95rem; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px; }
-        .btn-primary { background-color: var(--moss-green); color: #FFF; box-shadow: 0 4px 15px rgba(74, 93, 35, 0.3); }
-        .btn-primary:hover { background-color: var(--forest-dark); transform: translateY(-3px); }
-        .btn-secondary { background-color: var(--paper-note); color: var(--forest-dark); border: 2px solid var(--moss-green); }
-        .btn-secondary:hover { background-color: var(--sage-green); color: var(--forest-dark); transform: translateY(-3px); }
+        .cream-board {
+            background: #FAFCFA; border: 4px solid var(--text-dark); border-radius: 35px; 
+            padding: 15px 30px; position: relative; z-index: 2; box-shadow: 0 8px 0 rgba(44, 62, 44, 0.1);
+            cursor: pointer; user-select: none; transition: 0.2s; display: flex; justify-content: center; align-items: center;
+        }
+        .cream-board:active { transform: scale(0.98); box-shadow: 0 4px 0 rgba(44, 62, 44, 0.1); }
+        .bell-icon { position: absolute; top: -25px; left: -25px; width: 85px; z-index: 3; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.15)); transform: rotate(-5deg); }
+
+        .station-title {
+            font-family: var(--font-title); font-size: clamp(1.8rem, 5vw, 3.2rem); font-weight: 800; color: var(--text-dark); margin: 0; line-height: 1.2; text-transform: uppercase; letter-spacing: 2px; white-space: normal;
+            text-shadow: -3px -3px 0 #FFF, 3px -3px 0 #FFF, -3px 3px 0 #FFF, 3px 3px 0 #FFF, 0px -3px 0 #FFF, 0px 3px 0 #FFF, -3px 0px 0 #FFF, 3px 0px 0 #FFF, -2px -3px 0 #FFF, 2px -3px 0 #FFF, -2px 3px 0 #FFF, 2px 3px 0 #FFF, -3px -2px 0 #FFF, 3px -2px 0 #FFF, -3px 2px 0 #FFF, 3px 2px 0 #FFF, 0px 6px 0px var(--accent-pink), -1px 6px 0px var(--accent-pink), 1px 6px 0px var(--accent-pink), -2px 6px 0px var(--accent-pink), 2px 6px 0px var(--accent-pink), -3px 6px 0px var(--accent-pink), 3px 6px 0px var(--accent-pink);
+        }
+
+        .intro-text-wrap { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0 auto 20px auto; max-width: 650px; }
+        .station-desc-freestyle { font-size: 0.95rem; color: var(--text-muted); font-style: italic; text-align: center; font-weight: 800; line-height: 1.6; }
+        .admin-edit-intro-btn { display: none; background: #FFF; border: 2px solid var(--border-soft); border-radius: 50%; width: 26px; height: 26px; align-items: center; justify-content: center; font-size: 0.7rem; cursor: pointer; color: var(--accent-peach); box-shadow: 0 3px 5px rgba(0,0,0,0.05); transition: 0.2s; flex-shrink: 0; }
+        body.is-admin .admin-edit-intro-btn { display: flex; }
+
+        .top-buttons { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px;}
+        .btn-top { padding: 12px 24px; border-radius: 50px; font-weight: 800; font-size: 0.85rem; background: #FFF; border: 2.5px solid var(--border-soft); color: var(--text-dark); transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.03); display: flex; align-items: center; gap: 8px; }
+        .btn-top:hover { border-color: var(--accent-peach); background: #EAF2EA; transform: translateY(-3px); }
 
         /* ============================================================
-           BẢNG GHIM (NOTICE BOARD)
+           THANH LỌC TAG ĐỘNG & TÌM KIẾM
            ============================================================ */
-        .board-section { max-width: 1000px; margin: 40px auto 80px auto; padding: 0 15px; }
-        .section-header { text-align: center; margin-bottom: 30px; }
-        .section-title { font-family: var(--font-heading); font-size: 2.2rem; color: var(--forest-dark); line-height: 1.2;}
-        .section-sub { font-size: 0.95rem; font-weight: 700; color: #5C4A3D; font-style: italic; }
+        .filter-section { max-width: 1000px; margin: 0 auto 30px auto; padding: 0 15px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .search-wrapper { width: 100%; max-width: 500px; position: relative; display: flex; align-items: center; }
+        .search-icon-box { position: absolute; left: 16px; display: flex; align-items: center; justify-content: center; color: var(--text-dark); }
+        .search-input { width: 100%; padding: 14px 20px 14px 45px; border-radius: 50px; background: #FFF; border: 2px solid var(--border-soft); color: var(--text-dark); font-weight: 800; transition: 0.3s; box-shadow: var(--shadow-soft); }
+        .search-input:focus { border-color: var(--accent-peach); }
+        .search-input::placeholder { color: #A3B8A3; font-weight: 700; }
 
-        .cork-board {
-            background-color: var(--wood-board); border: 12px solid #8B5A2B; border-radius: 10px;
-            padding: 40px 25px; box-shadow: inset 0 0 20px rgba(0,0,0,0.1), 0 15px 30px rgba(0,0,0,0.15);
-            position: relative;
-        }
+        .pill-tags-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 800px; }
+        .pill-tag { padding: 8px 16px; border-radius: 50px; font-size: 0.8rem; font-weight: 800; background: #FFF; border: 2px solid var(--border-soft); color: var(--text-muted); transition: 0.3s; box-shadow: 0 3px 6px rgba(0,0,0,0.03); }
+        .pill-tag:hover { background: #EAF2EA; transform: translateY(-2px); border-color: var(--accent-peach); color: var(--text-dark);}
+        .pill-tag.active { background: var(--accent-peach); border-color: var(--accent-peach); color: #FFF; box-shadow: 0 4px 10px rgba(101, 145, 101, 0.3); transform: translateY(-2px); }
 
-        .pin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 25px; }
+        /* ============================================================
+           MÀN CHÍNH
+           ============================================================ */
+        .main-container { max-width: 1200px; margin: 0 auto 80px auto; padding: 0 15px; }
+        .grid-header { display: flex; justify-content: flex-end; align-items: flex-end; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
+        .sort-select { padding: 10px 16px; border-radius: 50px; background: #FFF; border: 2.5px solid var(--border-soft); color: var(--text-dark); font-weight: 800; cursor: pointer; transition: 0.3s; }
 
-        .paper-card {
-            background-color: var(--paper-note); padding: 20px; border-radius: 4px; box-shadow: 2px 4px 10px rgba(0,0,0,0.1);
-            position: relative; transition: 0.3s; display: flex; flex-direction: column; min-height: 250px;
-        }
-        .paper-card:nth-child(odd) { transform: rotate(-1deg); }
-        .paper-card:nth-child(even) { transform: rotate(1deg); }
-        .paper-card:hover { transform: scale(1.03) rotate(0deg); z-index: 10; box-shadow: 5px 10px 20px rgba(0,0,0,0.15); }
-
-        .pin-tack {
-            position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 20px; height: 20px;
-            background: #EF4444; border-radius: 50%; box-shadow: inset -3px -3px 5px rgba(0,0,0,0.3), 2px 4px 5px rgba(0,0,0,0.2);
-        }
-
-        .slot-num { font-family: var(--font-heading); font-size: 1.8rem; color: var(--accent-gold); line-height: 1; border-bottom: 2px dashed var(--accent-gold); padding-bottom: 5px; margin-bottom: 12px; }
-        .card-title { font-weight: 800; font-size: 1.15rem; color: var(--forest-dark); margin-bottom: 8px; line-height: 1.3;}
-        .card-status { font-size: 0.8rem; font-weight: 700; color: var(--moss-green); background: #EAF2EA; padding: 4px 8px; border-radius: 6px; display: inline-block; margin-bottom: 12px;}
-        .card-desc { font-size: 0.9rem; flex: 1; margin-bottom: 15px; color: #555; }
+        /* LƯỚI THẺ BÀI */
+        .bot-grid, .up-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 20px; }
+        .bot-card { background: var(--bg-card); border-radius: 16px; overflow: hidden; position: relative; display: flex; flex-direction: column; box-shadow: var(--shadow-soft); border: 2px solid #FFF; transition: 0.3s; height: 100%; min-width: 0; }
+        .bot-card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(44, 62, 44, 0.1); border-color: var(--border-soft); }
         
-        .progress-wrap { width: 100%; background: #EAF2EA; border-radius: 50px; height: 8px; margin-bottom: 15px; overflow: hidden;}
-        .progress-fill { height: 100%; background: var(--accent-gold); border-radius: 50px;}
+        .b-img-wrap { width: 100%; aspect-ratio: 3/4; position: relative; overflow: hidden; background: #EAF2EA; border-radius: 14px 14px 0 0;}
+        .b-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
+        .bot-card:hover .b-img-wrap img { transform: scale(1.05); }
 
-        .btn-idea { width: 100%; padding: 10px; border: 2px dashed var(--moss-green); border-radius: 8px; background: transparent; color: var(--moss-green); font-weight: 800; transition: 0.2s; font-size: 0.85rem;}
-        .btn-idea:hover { background: var(--moss-green); color: #FFF; border-style: solid; }
+        .b-rating { position: absolute; top: 6px; right: 6px; background: #FFF; color: var(--text-dark); padding: 4px 10px; border-radius: 50px; font-size: 0.8rem; font-weight: 900; box-shadow: 0 3px 8px rgba(0,0,0,0.1); z-index: 2; display: flex; align-items: center; gap: 4px; font-family: var(--font-heading); }
+        .b-rating .svg-icon { width: 12px; height: 12px; }
+
+        .b-info { padding: 15px; display: flex; flex-direction: column; flex: 1; position: relative; background: #FFF; min-width: 0; }
+        .b-header-info { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .b-avatar-mini { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-peach); flex-shrink: 0; }
+        .b-name { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: var(--text-dark); line-height: 1.2; word-break: break-word;}
+        .b-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+        .b-tag { font-size: 0.7rem; padding: 4px 8px; background: var(--bg-main); border-radius: 50px; color: var(--text-dark); font-weight: 800; border: 1px solid var(--border-soft); }
+        .b-hook { font-size: 0.85rem; color: var(--text-muted); font-style: italic; margin-bottom: 20px; flex: 1; font-weight: 700; line-height: 1.5; word-break: break-word;}
+        
+        .b-actions { display: flex; flex-direction: column; gap: 10px; margin-top: auto;}
+        .b-btn { width: 100%; padding: 12px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: 900; text-align: center; transition: 0.2s; text-transform: uppercase; display: flex; justify-content: center; align-items: center; gap: 8px; font-family: var(--font-body); border: 2px solid transparent; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .b-btn .svg-icon { width: 16px; height: 16px; flex-shrink: 0;}
+        .b-btn-link { background: var(--accent-peach); color: #FFF; }
+        .b-btn-link:hover { background: #4D734D; }
+        .b-btn-fb { background: #FFF; color: var(--text-dark); border-color: var(--border-soft); }
+        .b-btn-fb:hover { background: var(--bg-main); border-color: var(--accent-peach);}
+
+        /* THẺ SẮP RA MẮT */
+        .up-card { background: var(--bg-card); border: 2px solid var(--border-soft); border-radius: 16px; padding: 20px 15px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; box-shadow: var(--shadow-soft); height: 100%; min-width: 0;}
+        .up-stamp { position: absolute; top: -8px; left: -8px; background: #EF4444; color: #FFF; font-weight: 900; font-size: 0.75rem; padding: 6px 14px; border: 2px solid #FFF; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 2; letter-spacing: 0.5px; transform: rotate(-5deg);}
+        .up-avatar-wrap { position: relative; margin-bottom: 15px; margin-top: 10px; }
+        .up-avatar { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; filter: blur(2px); border: 3px solid #FFF; box-shadow: 0 4px 10px rgba(44,62,44, 0.1);}
+        .up-name { font-family: var(--font-heading); font-size: 1.2rem; font-weight: 800; color: var(--text-dark); margin-bottom: 10px; line-height: 1.2; word-break: break-word;}
+        .up-progress-wrap { width: 100%; margin-bottom: 15px; text-align: left; background: var(--bg-main); padding: 12px; border-radius: 12px; border: 1.5px solid var(--border-soft); }
+        .up-p-header { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-dark); margin-bottom: 6px; font-weight: 800; }
+        .up-p-bar { width: 100%; height: 10px; background: #FFF; border-radius: 50px; overflow: hidden; border: 1px solid var(--border-soft); }
+        .up-p-fill { height: 100%; background: var(--accent-peach); border-radius: 50px; }
+        .up-vote-btn { width: 100%; padding: 12px; border-radius: 12px; background: #FFF; border: 2px solid var(--border-soft); color: var(--text-dark); font-weight: 800; transition: 0.3s; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-body); margin-top: auto; white-space: nowrap; }
+        .up-vote-btn.voted { border-color: var(--accent-pink); color: #FFF; background: var(--accent-pink); box-shadow: 0 2px 8px rgba(163,203,163,0.4); }
+        .up-vote-btn:hover { background: var(--bg-main); border-color: var(--accent-peach); transform: translateY(-2px); }
 
         /* ============================================================
-           KHO Ý TƯỞNG
+           HỆ THỐNG ÂM NHẠC (MUSIC PLAYER)
            ============================================================ */
-        .idea-section { max-width: 900px; margin: 0 auto 80px auto; padding: 0 20px; text-align: center; }
-        .idea-cloud { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-top: 25px; }
-        .idea-note {
-            background-color: #FFF; border-left: 4px solid var(--sage-green); padding: 12px 20px;
-            border-radius: 0 8px 8px 0; font-weight: 700; color: var(--text-main); font-size: 0.9rem;
-            box-shadow: 2px 2px 8px rgba(0,0,0,0.05); font-style: italic; position: relative;
+        .music-player-wrapper {
+            position: fixed; bottom: 20px; right: 20px; z-index: 990;
+            display: flex; flex-direction: column; align-items: flex-end; gap: 15px;
         }
+
+        /* 1. Đĩa than (Vinyl) */
+        .vinyl-container {
+            position: relative; width: 70px; height: 70px;
+        }
+        .vinyl-record {
+            width: 100%; height: 100%; background: #111; border-radius: 50%;
+            border: 4px solid var(--wood-board); box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+            display: flex; justify-content: center; align-items: center; cursor: pointer;
+            transition: transform 0.3s; position: relative; overflow: hidden;
+        }
+        .vinyl-record::before {
+            content: ''; position: absolute; width: 100%; height: 100%;
+            background: repeating-radial-gradient(#111, #111 4px, #222 5px, #111 6px);
+            border-radius: 50%; opacity: 0.5; pointer-events: none;
+        }
+        .vinyl-record::after {
+            content: ''; width: 22px; height: 22px; background: var(--accent-peach);
+            border-radius: 50%; border: 2px solid #FFF; position: relative; z-index: 2;
+        }
+        .vinyl-record:hover { transform: scale(1.05); }
+        .vinyl-record.playing { animation: spin 3s linear infinite; border-color: var(--accent-peach); }
+        
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .floating-notes { position: absolute; bottom: 50%; left: 50%; width: 10px; height: 10px; pointer-events: none; }
+        .music-note {
+            position: absolute; font-size: 1.2rem; color: var(--forest-dark); opacity: 0;
+            animation: floatUp 2s ease-out forwards;
+        }
+        @keyframes floatUp {
+            0% { transform: translate(0, 0) scale(0.8); opacity: 1; }
+            50% { opacity: 1; }
+            100% { transform: translate(-20px, -60px) scale(1.2); opacity: 0; }
+        }
+
+        /* 2. Bảng GÓC ÂM NHẠC */
+        .music-panel {
+            width: 320px; background: var(--paper-note); border: 3px solid var(--wood-board);
+            border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: none; flex-direction: column; overflow: hidden; transform-origin: bottom right;
+        }
+        .music-panel.show { display: flex; animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes scaleUp { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+
+        .mp-header {
+            background: var(--sage-green); color: var(--forest-dark); padding: 12px; text-align: center;
+            font-family: var(--font-heading); font-weight: 800; border-bottom: 2px dashed var(--moss-green);
+        }
+        
+        .mp-list { max-height: 220px; overflow-y: auto; padding: 10px; background: var(--bg-cream); }
+        .mp-list::-webkit-scrollbar { width: 4px; }
+        .mp-list::-webkit-scrollbar-thumb { background: var(--wood-board); border-radius: 10px; }
+        
+        .mp-item {
+            padding: 8px 12px; border-radius: 8px; cursor: pointer; transition: 0.2s;
+            border: 1px solid transparent; margin-bottom: 5px; line-height: 1.3;
+        }
+        .mp-item:hover { background: #FFF; border-color: var(--sage-green); }
+        .mp-item.active { background: var(--accent-peach); color: #FFF; box-shadow: 0 3px 8px rgba(101, 145, 101, 0.3); }
+        .mp-song { font-weight: 800; font-size: 0.9rem; margin-bottom: 2px; }
+        .mp-singer { font-size: 0.75rem; font-weight: 600; opacity: 0.8; }
+        .mp-item.active .mp-singer { color: #EAF2EA; opacity: 1; }
+
+        .mp-controls {
+            padding: 15px; border-top: 2px dashed var(--wood-board); display: flex; flex-direction: column;
+            align-items: center; background: #FFF;
+        }
+        .progress-bar-container { width: 100%; display: flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: bold; color: var(--text-muted); margin-bottom: 12px; }
+        .progress-bar { flex: 1; -webkit-appearance: none; appearance: none; height: 6px; border-radius: 10px; background: #EAF2EA; outline: none; cursor: pointer; }
+        .progress-bar::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--moss-green); cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        
+        .play-pause-btn { font-size: 1.8rem; color: var(--moss-green); cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; background: var(--bg-cream); border-radius: 50%; border: 2px solid var(--border-soft); }
+        .play-pause-btn:hover { color: var(--forest-dark); border-color: var(--accent-peach); transform: scale(1.05); }
+
 
         /* ============================================================
-           QUYỀN LỰC ADMIN
+           MODAL UX: BOTTOM SHEET TRÊN MOBILE
            ============================================================ */
-        .admin-bar {
-            position: fixed; top: 0; left: 0; right: 0; background: var(--forest-dark); padding: 10px 15px; z-index: 9999;
-            display: none; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        body.is-admin .admin-bar { display: flex; flex-wrap: wrap; gap: 10px;}
-        .admin-title { color: #FFF; font-weight: 800; font-family: var(--font-heading); display:flex; align-items:center; gap: 8px;}
-        .admin-controls { display: flex; gap: 8px; flex-wrap: wrap;}
-        .btn-ad { padding: 6px 12px; background: rgba(255,255,255,0.1); color: #FFF; border-radius: 5px; font-size: 0.8rem; font-weight: 800; transition: 0.2s; border: 1px solid rgba(255,255,255,0.2);}
-        .btn-ad:hover { background: var(--accent-gold); color: var(--forest-dark); border-color: var(--accent-gold);}
-        .btn-ad.danger { background: #EF4444; border-color: #EF4444; }
+        .modal-overlay, .sub-modal-overlay, .admin-modal { position: fixed; inset: 0; background: rgba(44, 62, 44, 0.6); backdrop-filter: blur(5px); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 2vh 15px; overflow: hidden; }
+        .modal-overlay.show, .sub-modal-overlay.show, .admin-modal.show { display: flex; animation: fadeIn 0.25s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        
+        .modal-content, .sub-modal-content, .admin-modal-box { background: #FFF; width: 100%; max-width: 650px; margin: auto; border-radius: 20px; display: flex; flex-direction: column; box-shadow: 0 15px 40px rgba(0,0,0,0.2); border: 3px solid var(--border-soft); max-height: 90vh; overflow: hidden; }
+        .m-header { padding: 16px 20px; border-bottom: 2px dashed var(--border-soft); display: flex; justify-content: space-between; align-items: center; background: #FFF; position: sticky; top: 0; z-index: 10; }
+        .m-title { font-family: var(--font-heading); font-size: 1.15rem; color: var(--text-dark); margin: 0; font-weight: 800; display: flex; align-items: center; gap: 8px;}
+        .m-close { font-size: 1.5rem; color: var(--text-muted); transition: 0.2s; font-weight: bold; width: 36px; height: 36px; display: flex; justify-content: center; align-items: center; border-radius: 50%; background: var(--bg-main);}
+        .m-close:hover { color: #FFF; background: #EF4444; }
+        
+        .m-body, .idea-modal-body, #admin-form-body { padding: 20px; overflow-y: auto; flex: 1; background: var(--bg-main); }
+        .m-body::-webkit-scrollbar, .idea-modal-body::-webkit-scrollbar, #admin-form-body::-webkit-scrollbar { width: 6px; }
+        .m-body::-webkit-scrollbar-thumb, .idea-modal-body::-webkit-scrollbar-thumb, #admin-form-body::-webkit-scrollbar-thumb { background: var(--accent-mocha); border-radius: 10px;}
 
-        .card-admin-overlay { position: absolute; top: 5px; right: 5px; z-index: 20; display: none; gap: 5px; flex-direction: column; }
+        /* CÁC CHI TIẾT TRONG MODAL */
+        .bio-content { color: var(--text-dark); background: #FFF; padding: 20px; border-radius: 16px; border: 2px dashed var(--accent-mocha); margin-bottom: 20px; box-shadow: var(--shadow-soft); text-align: left; }
+        .bio-content * { font-family: 'Nunito', sans-serif !important; line-height: 1.6 !important; background-color: transparent !important; font-size: 1rem !important; }
+        
+        /* CỤM FEEDBACK FORM */
+        .fb-form { background: #FFF; padding: 20px; border-radius: 16px; border: 2px solid var(--border-soft); margin-bottom: 25px; box-shadow: var(--shadow-soft); }
+        .stars-select { display: flex; gap: 8px; justify-content: center; margin-bottom: 15px; cursor: pointer; }
+        .star-svg { width: 34px; height: 34px; color: var(--border-soft); transition: 0.2s; }
+        .star-svg.active { color: #F59E0B; filter: drop-shadow(0 3px 5px rgba(245, 158, 11, 0.3)); transform: scale(1.1); }
+        .fb-privacy-wrap { display: flex; justify-content: center; gap: 20px; margin-bottom: 15px; }
+        .fb-privacy-label { font-size: 0.9rem; font-weight: 800; color: var(--text-dark); display: flex; align-items: center; gap: 5px; cursor: pointer; }
+        .fb-privacy-label input { accent-color: var(--accent-peach); width: 18px; height: 18px; }
+        .fb-input { width: 100%; padding: 14px 16px; background: var(--bg-main); border: 2px solid var(--border-soft); border-radius: 12px; color: var(--text-dark); margin-bottom: 12px; font-weight: 700; }
+        .fb-input:focus { border-color: var(--accent-peach); background: #FFF; }
+        textarea.fb-input { resize: none; min-height: 60px; max-height: 150px; overflow-y: auto; line-height: 1.5; }
+        .fb-btn-submit { width: 100%; padding: 14px; background: var(--text-dark); color: #FFF; font-weight: 900; border-radius: 12px; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s; font-size: 1rem; font-family: var(--font-body); }
+        .fb-btn-submit:hover { background: var(--accent-peach); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(101, 145, 101, 0.3); }
+        .file-upload-label { display: inline-block; padding: 12px 14px; background: #FFF; border: 2px dashed var(--accent-mocha); border-radius: 10px; font-size: 0.9rem; color: var(--text-dark); font-weight: 800; cursor: pointer; margin-bottom: 10px; transition: 0.3s; width: 100%; text-align: center; }
+        .file-upload-label:hover { background: var(--bg-main); border-color: var(--accent-peach); }
+        .img-preview { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+        .img-preview img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; border: 2px solid var(--accent-mocha); }
+
+        /* DANH SÁCH FEEDBACK */
+        .fb-list { display: flex; flex-direction: column; gap: 15px; }
+        .fb-item { background: #FFF; padding: 15px; border-radius: 16px; border: 2px solid var(--border-soft); box-shadow: var(--shadow-soft); position: relative; min-width: 0; }
+        .fb-item-header { display: flex; justify-content: space-between; margin-bottom: 8px; align-items: flex-start; }
+        .fb-item-user-info { display: flex; align-items: center; gap: 10px; flex: 1; }
+        .fb-avatar-letter { width: 38px; height: 38px; border-radius: 50%; background: var(--accent-peach); color: #FFF; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-weight: 900; font-size: 1.1rem; flex-shrink: 0; }
+        .fb-item-name-group { display: flex; flex-direction: column; flex: 1; }
+        .fb-item-name { font-weight: 800; color: var(--text-dark); font-size: 1rem; line-height: 1.2; overflow-wrap: anywhere; word-break: break-word; }
+        .fb-item-date { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-top: 2px; }
+        .fb-item-stars { display: flex; gap: 2px; flex-shrink: 0; }
+        .fb-item-text { color: var(--text-dark); font-size: 0.95rem; line-height: 1.5; white-space: pre-wrap; margin-bottom: 10px; font-weight: 600; }
+        
+        .reply-section { border-top: 2px dashed var(--border-soft); padding-top: 15px; }
+        .reply-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+        .reply-item { background: var(--bg-main); padding: 12px 15px; border-radius: 12px; font-size: 0.9rem; color: var(--text-dark); position: relative; border: 1.5px solid var(--border-soft); font-weight: 600; overflow-wrap: anywhere; word-break: break-word; }
+        .reply-name { font-weight: 800; margin-bottom: 4px; display: flex; justify-content: space-between; font-size: 0.95rem; }
+        .reply-time { font-size: 0.75rem; color: var(--text-muted); font-weight: 700; margin-top: 6px; }
+        
+        .reply-input-wrap { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; width: 100%; }
+        .reply-name-input { max-width: 150px; height: 42px; }
+        .reply-row { display: flex; gap: 8px; align-items: flex-end; width: 100%; }
+        .reply-input { flex: 1; padding: 10px 14px; border-radius: 20px; border: 2px solid var(--border-soft); font-weight: 600; font-size: 16px; background: #FFF; color: var(--text-dark); font-family: var(--font-body); }
+        .reply-input:focus { border-color: var(--accent-mocha); }
+        textarea.reply-input { resize: none; height: 42px; min-height: 42px; max-height: 120px; overflow-y: auto; line-height: 18px; padding-top: 10px; padding-bottom: 10px; }
+        .reply-btn { height: 42px; padding: 0 18px; background: var(--text-dark); color: #FFF; font-weight: 800; border-radius: 50px; font-size: 0.85rem; transition: 0.2s; white-space: nowrap; display: flex; align-items: center; justify-content: center; }
+        .reply-btn:hover { background: var(--accent-peach); transform: translateY(-2px); }
+
+        .idea-modal-text { border-radius: 16px; border: 2.5px dashed var(--accent-mocha); color: var(--text-dark); font-size: 1.05rem; line-height: 1.8; white-space: pre-wrap; font-weight: 600; text-align: left !important; padding: 20px; }
+
+        .lightbox { position: fixed; inset: 0; background: rgba(44, 62, 44, 0.95); z-index: 10000; display: none; justify-content: center; align-items: center; cursor: zoom-out; }
+        .lightbox img { max-width: 95vw; max-height: 90vh; border-radius: 12px; border: 3px solid #FFF; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+
+        /* ============================================================
+           ADMIN PANEL
+           ============================================================ */
+        .admin-bar { position: fixed; top: 0; left: 0; right: 0; background: #FFF; padding: 10px 15px; z-index: 999; display: none; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 2px solid var(--border-soft); flex-wrap: wrap; gap: 10px; }
+        body.is-admin .admin-bar { display: flex; }
+        .admin-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center; width: 100%; }
+        @media (min-width: 769px) { .admin-controls { width: auto; justify-content: flex-end; } }
+
+        .btn-ad { padding: 8px 14px; background: var(--bg-main); color: var(--text-dark); border-radius: 50px; font-size: 0.85rem; font-weight: 800; border: 2px solid var(--border-soft); transition: 0.2s; display: flex; align-items: center; gap: 5px; }
+        .btn-ad:hover { background: var(--accent-peach); color: #FFF; border-color: var(--accent-peach); }
+        .btn-ad.danger { background: #FFF; border-color: #EF4444; color: #EF4444; }
+        .btn-ad.danger:hover { background: #EF4444; color: #FFF; }
+        
+        .noti-btn { position: relative; cursor: pointer; color: var(--text-dark); display: flex; align-items: center; justify-content: center; padding: 8px; background: var(--bg-main); border-radius: 50%; border: 2px solid var(--border-soft); transition: 0.2s; }
+        .noti-btn:hover { background: var(--accent-mocha); border-color: var(--accent-mocha); color: #FFF; }
+        .noti-badge { position: absolute; top: -6px; right: -6px; background: #EF4444; color: #FFF; font-size: 0.7rem; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: 900; border: 2px solid #FFF; }
+
+        .card-admin-overlay { position: absolute; top: 8px; left: 8px; z-index: 20; display: none; gap: 6px; flex-direction: column; }
         body.is-admin .card-admin-overlay { display: flex; }
-        .btn-card-ad { background: rgba(255,255,255,0.9); color: var(--forest-dark); border: 1px solid var(--forest-dark); padding: 4px 8px; font-size: 0.7rem; font-weight:800; border-radius: 4px; transition:0.2s;}
-        .btn-card-ad:hover { background: var(--forest-dark); color: #FFF; }
-        
-        body.is-admin .idea-note { padding-right: 40px; }
-        .del-idea-btn { position:absolute; right: 5px; top: 5px; color: #EF4444; font-weight: 900; display: none; cursor:pointer; font-size: 1.2rem; background: #FFF; border-radius: 50%; width: 24px; height: 24px; line-height: 24px;}
-        body.is-admin .del-idea-btn { display: block; }
+        .btn-card-ad { background: #FFF; color: var(--text-dark); border: 2px solid var(--text-dark); padding: 6px 12px; font-size: 0.8rem; font-weight: 800; border-radius: 50px; transition: 0.2s; }
+        .btn-card-ad:hover { background: var(--accent-peach); color: #FFF; border-color: var(--accent-peach); }
+
+        .admin-form-group { margin-bottom: 18px; }
+        .admin-form-group label { display: block; font-weight: 800; margin-bottom: 8px; font-size: 1rem; color: var(--text-dark); }
+        .tag-input-box { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+        .tag-input-box input { flex: 1; padding: 12px 18px; border-radius: 50px; border: 2px solid var(--border-soft); font-weight: 600; min-width: 200px; }
+        .tag-input-box button { padding: 12px 24px; background: var(--text-dark); color: #FFF; font-weight: 800; border-radius: 50px; transition: 0.2s; }
+        .tag-input-box button:hover { background: var(--accent-peach); }
+        #ad-tags-wrapper { display: flex; flex-wrap: wrap; gap: 8px; }
+        .ad-mini-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--bg-main); color: var(--text-dark); border: 2px solid var(--border-soft); padding: 6px 12px; border-radius: 50px; font-size: 0.85rem; font-weight: 800; }
+        .ad-mini-tag span { cursor: pointer; color: #EF4444; font-weight: 900; font-size: 1rem; transition: 0.2s; }
 
         /* ============================================================
-           MODAL CHUNG DÀNH CHO ADMIN
-           ============================================================ */
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(44, 62, 44, 0.7); backdrop-filter: blur(4px);
-            z-index: 10000; display: none; justify-content: center; align-items: center; padding: 2vh 15px;
-        }
-        .modal-overlay.show { display: flex; }
-        
-        .modal-content {
-            background: var(--bg-cream); width: 100%; max-width: 500px; border-radius: 12px;
-            display: flex; flex-direction: column; box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-            border: 4px solid var(--moss-green); max-height: 90vh; overflow: hidden;
-        }
-        
-        .m-header { padding: 15px 20px; background: var(--moss-green); color: #FFF; display: flex; justify-content: space-between; align-items: center;}
-        .m-title { font-family: var(--font-heading); font-size: 1.2rem; font-weight: 800; margin: 0;}
-        .m-close { font-size: 1.5rem; color: #FFF; font-weight: bold; }
-        
-        .m-body { padding: 20px; overflow-y: auto; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-weight: 800; margin-bottom: 5px; color: var(--forest-dark); font-size: 0.9rem;}
-        .fb-input { width: 100%; padding: 10px 12px; border-radius: 6px; border: 2px solid var(--sage-green); background: #FFF; color: var(--text-main); font-weight: 600;}
-        .fb-input:focus { border-color: var(--moss-green); }
-        .fb-btn-submit { width: 100%; padding: 12px; background: var(--moss-green); color: #FFF; font-weight: 800; border-radius: 6px; font-size: 1rem;}
-        .fb-btn-submit:hover { background: var(--forest-dark); }
-
-        #loading-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 99999; color: #FFF; flex-direction: column; justify-content: center; align-items: center; font-size: 1.2rem; font-weight: bold; }
-
-        /* ============================================================
-           MOBILE RESPONSIVE
+           CSS MOBILE 
            ============================================================ */
         @media (max-width: 600px) {
-            .hero-title { font-size: 2.2rem; }
-            .cork-board { padding: 20px 15px; border-width: 8px;}
-            .pin-grid { grid-template-columns: 1fr; gap: 20px; } /* Mobile: 1 thẻ 1 hàng cho dễ đọc */
-            .admin-bar { justify-content: center; }
-            .modal-overlay { align-items: flex-end; padding: 0; }
-            .modal-content { border-radius: 20px 20px 0 0; border-bottom: none; }
+            .header-section { margin-top: 100px; }
+            body.is-admin .header-section { margin-top: 160px; } 
+            
+            .bot-grid, .up-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .b-info { padding: 8px; }
+            .b-header-info { gap: 6px; margin-bottom: 8px; }
+            .b-avatar-mini { width: 28px; height: 28px; }
+            .b-name { font-size: 0.95rem; }
+            .b-tag { font-size: 0.6rem; padding: 2px 6px; }
+            .b-hook { font-size: 0.75rem; margin-bottom: 10px; }
+            
+            .b-btn { padding: 6px; font-size: 0.65rem; border-radius: 8px; gap: 3px; }
+            .b-btn .svg-icon { width: 12px; height: 12px; margin-right: 2px; }
+            
+            .up-card { padding: 12px 8px; }
+            .up-avatar { width: 70px; height: 70px; }
+            .up-name { font-size: 1rem; }
+            .up-progress-wrap { padding: 6px; margin-bottom: 10px; }
+            .up-vote-btn { padding: 8px; font-size: 0.75rem; border-radius: 8px; }
+
+            .cream-board { padding: 12px 15px 12px 40px; border-radius: 25px; }
+            .peeking-cat { width: 100px; margin-bottom: -10px; }
+            .bell-icon { width: 65px; top: -20px; left: -15px; }
+            .station-title { font-size: 1.5rem; letter-spacing: 1px; }
+            .search-input { padding: 12px 15px 12px 40px; }
+            .pill-tag { padding: 6px 12px; }
+            .btn-top { padding: 10px 18px; }
+            
+            .modal-overlay, .sub-modal-overlay, .admin-modal { align-items: flex-end; padding: 0; }
+            .modal-content, .sub-modal-content, .admin-modal-box {
+                border-radius: 24px 24px 0 0; border-bottom: none; border-left: none; border-right: none;
+                max-height: 85vh; animation: slideUp 0.3s cubic-bezier(0.1, 0.9, 0.2, 1);
+            }
+            .m-header { padding: 14px 15px; }
+            .m-body, .idea-modal-body, #admin-form-body { padding: 15px; }
+            
+            /* Music Player Mobile adjustments */
+            .music-panel { width: calc(100vw - 40px); bottom: 100px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- TRẠM ADMIN NẰM ẨN -->
+    <!-- KHO CHỨA ICONS PIXEL -->
+    <svg style="display: none;" viewBox="0 0 16 16">
+        <defs>
+            <g id="px-search"><rect x="5" y="2" width="4" height="1" fill="currentColor"/><rect x="4" y="3" width="1" height="1" fill="currentColor"/><rect x="9" y="3" width="1" height="1" fill="currentColor"/><rect x="3" y="4" width="1" height="4" fill="currentColor"/><rect x="10" y="4" width="1" height="4" fill="currentColor"/><rect x="4" y="8" width="1" height="1" fill="currentColor"/><rect x="9" y="8" width="1" height="1" fill="currentColor"/><rect x="5" y="9" width="4" height="1" fill="currentColor"/><rect x="4" y="4" width="6" height="4" fill="var(--bg-card)"/> <rect x="9" y="9" width="2" height="2" fill="currentColor"/><rect x="11" y="11" width="2" height="2" fill="currentColor"/><rect x="13" y="13" width="2" height="2" fill="currentColor"/></g>
+            <g id="px-gift"><rect x="5" y="1" width="2" height="3" fill="var(--text-dark)"/><rect x="9" y="1" width="2" height="3" fill="var(--text-dark)"/><rect x="7" y="3" width="2" height="2" fill="var(--text-dark)"/><rect x="2" y="5" width="12" height="3" fill="var(--accent-mocha)"/><rect x="2" y="5" width="12" height="3" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges"/><rect x="3" y="8" width="10" height="7" fill="var(--bg-main)"/><rect x="3" y="8" width="10" height="7" fill="none" stroke="currentColor" stroke-width="1" shape-rendering="crispEdges"/><rect x="7" y="5" width="2" height="10" fill="var(--text-dark)"/></g>
+            <g id="px-user"><rect x="5" y="2" width="6" height="6" fill="currentColor"/><rect x="3" y="9" width="10" height="5" fill="currentColor"/></g>
+            <g id="px-room"><rect x="3" y="3" width="10" height="11" fill="none" stroke="currentColor" stroke-width="2"/><rect x="9" y="8" width="2" height="2" fill="currentColor"/></g>
+            <g id="px-key"><rect x="2" y="5" width="5" height="5" fill="currentColor"/><rect x="3" y="6" width="3" height="3" fill="var(--bg-main)"/> <rect x="7" y="7" width="7" height="2" fill="currentColor"/><rect x="10" y="9" width="1" height="2" fill="currentColor"/><rect x="12" y="9" width="2" height="2" fill="currentColor"/></g>
+            <g id="px-bell"><rect x="7" y="2" width="2" height="2" fill="currentColor"/><rect x="5" y="4" width="6" height="2" fill="currentColor"/><rect x="4" y="6" width="8" height="6" fill="currentColor"/><rect x="2" y="12" width="12" height="2" fill="currentColor"/><rect x="7" y="14" width="2" height="2" fill="currentColor"/></g>
+            <g id="px-star-filled"><rect x="7" y="1" width="2" height="2" fill="#F59E0B"/><rect x="6" y="3" width="4" height="2" fill="#F59E0B"/><rect x="2" y="5" width="12" height="2" fill="#F59E0B"/><rect x="3" y="7" width="10" height="2" fill="#F59E0B"/><rect x="4" y="9" width="8" height="2" fill="#F59E0B"/><rect x="3" y="11" width="3" height="4" fill="#F59E0B"/><rect x="10" y="11" width="3" height="4" fill="#F59E0B"/></g>
+            <g id="px-star-empty"><rect x="7" y="1" width="2" height="2" fill="currentColor"/><rect x="6" y="3" width="4" height="2" fill="currentColor"/><rect x="2" y="5" width="12" height="2" fill="currentColor"/><rect x="3" y="7" width="10" height="2" fill="currentColor"/><rect x="4" y="9" width="8" height="2" fill="currentColor"/><rect x="3" y="11" width="3" height="4" fill="currentColor"/><rect x="10" y="11" width="3" height="4" fill="currentColor"/><rect x="7" y="3" width="2" height="2" fill="var(--bg-main)"/><rect x="3" y="6" width="10" height="1" fill="var(--bg-main)"/><rect x="4" y="7" width="8" height="2" fill="var(--bg-main)"/><rect x="5" y="9" width="6" height="2" fill="var(--bg-main)"/><rect x="4" y="11" width="1" height="3" fill="var(--bg-main)"/><rect x="11" y="11" width="1" height="3" fill="var(--bg-main)"/></g>
+            <g id="px-music"><rect x="5" y="2" width="6" height="2" fill="currentColor"/><rect x="4" y="3" width="2" height="10" fill="currentColor"/><rect x="10" y="3" width="2" height="8" fill="currentColor"/><rect x="2" y="11" width="4" height="3" fill="currentColor"/><rect x="8" y="9" width="4" height="3" fill="currentColor"/></g>
+        </defs>
+    </svg>
+
+    <!-- THANH ADMIN -->
     <div class="admin-bar">
-        <div class="admin-title">🛠️ QUẢN TRỊ QUÁN TRỌ</div>
+        <div style="font-weight: 900; color: var(--text-dark); display:flex; align-items:center; gap:6px; font-family:var(--font-heading); font-size:1rem; width:100%; justify-content:center;">
+            <svg class="svg-icon" viewBox="0 0 16 16"><use href="#px-user"></use></svg> TRẠM ĐIỀU KHIỂN
+        </div>
         <div class="admin-controls">
-            <button class="btn-ad" onclick="openAdminModal('info')">Đổi Avatar & Lời Chào</button>
-            <button class="btn-ad" onclick="openAdminModal('pin')">+ Thêm Project Ghim</button>
-            <button class="btn-ad" onclick="openAdminModal('idea')">+ Viết Ý Tưởng Mới</button>
+            <div class="noti-btn" onclick="openNotiModal()" title="BẢNG THÔNG BÁO">
+                <svg class="svg-icon" viewBox="0 0 16 16" style="width:18px; height:18px;"><use href="#px-bell"></use></svg>
+                <span class="noti-badge" id="noti-badge" style="display:none;">0</span>
+            </div>
+            <button class="btn-ad" onclick="openAdminForm('sm')">Thông tin Chủ Trọ</button>
+            <button class="btn-ad" onclick="openAdminForm('bot', 'add')">+ Thêm Phòng</button>
+            <button class="btn-ad" onclick="openAdminForm('up', 'add')">+ Thêm Dự Bị</button>
+            <button class="btn-ad" onclick="openAdminForm('music')" style="background: var(--accent-gold); color: #fff; border-color: var(--accent-gold);">🎵 Quản Lý Nhạc</button>
             <button class="btn-ad danger" onclick="exitAdmin()">Thoát Admin</button>
         </div>
     </div>
 
-    <!-- MÀN HÌNH CHỜ ĐỒNG BỘ -->
-    <div id="loading-overlay">
-        <div>Đang lưu phép thuật vào mây... ☁️</div>
-    </div>
-
-    <!-- SẢNH CHÍNH QUÁN TRỌ -->
-    <section class="hero">
-        <div class="avatar-wrap">
-            <img src="ChatGPT_Image_21_48_57_31_thg_7__2026-removebg-preview.png" alt="Chủ Trọ" class="sm-avatar" id="ui-avatar">
-        </div>
-        <h1 class="hero-title" id="trigger-admin">🏮 QUÁN TRỌ NHÀ MÈO</h1>
-        <p class="hero-tagline" id="ui-tagline">"Một quán trọ nhỏ, nơi mỗi cánh cửa là một chuyến phiêu lưu."</p>
-        
-        <div class="btn-group">
-            <a href="#notice-board" class="btn btn-primary">📌 Xem Bảng Ghim</a>
-            <a href="#" class="btn btn-secondary">🚪 Đến Nhà Chung</a>
-        </div>
-    </section>
-
-    <!-- BẢNG GHIM 4 CÁNH CỬA -->
-    <section id="notice-board" class="board-section">
-        <div class="section-header">
-            <h2 class="section-title">BẢNG GHIM CỦA CHỦ TRỌ</h2>
-            <p class="section-sub">Những cánh cửa đang được ưu tiên mở tiếp theo...</p>
-        </div>
-
-        <div class="cork-board">
-            <div class="pin-grid" id="pinned-container">
-                <!-- Javascript sẽ vẽ thẻ ở đây -->
+    <!-- HEADER: TÊN QUÁN & BẢNG HIỆU -->
+    <header class="header-section">
+        <div class="signboard-wrapper">
+            <img src="Mèo cười.png" alt="Peeking Cat" class="peeking-cat">
+            <div class="cream-board" id="trigger-admin" title="">
+                <img src="ChatGPT_Image_22_00_11_31_thg_7__2026-removebg-preview.png" alt="Bell Icon" class="bell-icon">
+                <h1 class="station-title">QUÁN TRỌ NHÀ MÈO</h1>
             </div>
         </div>
-    </section>
+        
+        <div class="intro-text-wrap">
+            <img src="ChatGPT_Image_22_00_11_31_thg_7__2026-removebg-preview.png" style="width:16px; height:16px; object-fit:contain;"> 
+            <div class="station-desc-freestyle" id="station-bio">Một quán trọ nhỏ, nơi những chú mèo lười biếng phơi nắng bên suối...</div>
+            <div class="admin-edit-intro-btn" onclick="editShortDesc()" title="Sửa dòng giới thiệu này">✏️</div>
+            <img src="ChatGPT_Image_22_00_11_31_thg_7__2026-removebg-preview.png" style="width:16px; height:16px; object-fit:contain;"> 
+        </div>
 
-    <!-- KHO Ý TƯỞNG NGỦ QUÊN -->
-    <section class="idea-section">
-        <h2 class="section-title" style="font-size: 1.8rem;">💭 KHO Ý TƯỞNG ĐANG NGỦ</h2>
-        <p class="section-sub">Những dòng suy nghĩ viết vội trên giấy note...</p>
-        <div class="idea-cloud" id="idea-container">
-            <!-- Javascript sẽ vẽ ý tưởng ở đây -->
+        <div class="top-buttons">
+            <button class="btn-top" onclick="openSMModal()">
+                <img src="ChatGPT_Image_21_56_27_31_thg_7__2026-removebg-preview.png" style="width:24px;height:24px;object-fit:contain;">
+                Thông tin chủ trọ
+            </button>
+            <button class="btn-top" onclick="openUpcomingModal()">
+                <svg class="svg-icon" viewBox="0 0 16 16" style="width:18px;height:18px;"><use href="#px-gift"></use></svg> 
+                Sắp Ra Mắt
+            </button>
+        </div>
+    </header>
+
+    <!-- BỘ LỌC & TÌM KIẾM -->
+    <section class="filter-section">
+        <div class="pill-tags-container" id="route-tags-container"></div>
+        <div class="search-wrapper">
+            <div class="search-icon-box"><svg class="svg-icon" viewBox="0 0 16 16" style="width: 18px; height: 18px;"><use href="#px-search"></use></svg></div>
+            <input type="text" id="search-inp" class="search-input" placeholder="Tìm tên phòng...">
         </div>
     </section>
 
-    <!-- KHUNG NHẬP LIỆU CỦA ADMIN -->
-    <div class="modal-overlay" id="admin-modal" onclick="closeModal(event)">
+    <!-- MAIN GRID THẺ NHÂN VIÊN -->
+    <main class="main-container">
+        <div class="grid-header">
+            <select id="sort-select" class="sort-select">
+                <option value="newest">Mới nhất</option>
+                <option value="rating">Yêu thích nhất</option>
+            </select>
+        </div>
+        <div class="bot-grid" id="bot-grid"></div>
+    </main>
+
+    <!-- TRẠM PHÁT NHẠC (MUSIC PLAYER) NẰM GÓC DƯỚI PHẢI -->
+    <div class="music-player-wrapper">
+        <!-- Bảng GÓC ÂM NHẠC -->
+        <div class="music-panel" id="music-panel">
+            <div class="mp-header">🎵 GÓC ÂM NHẠC</div>
+            <div class="mp-list" id="mp-list">
+                <!-- Danh sách bài hát render động -->
+            </div>
+            <div class="mp-controls">
+                <div class="progress-bar-container">
+                    <span id="current-time">0:00</span>
+                    <input type="range" class="progress-bar" id="music-progress" value="0" min="0" max="100">
+                    <span id="duration-time">0:00</span>
+                </div>
+                <button class="play-pause-btn" id="play-pause-btn" onclick="togglePlayPause()">▶</button>
+            </div>
+        </div>
+
+        <!-- Đĩa Than -->
+        <div class="vinyl-container">
+            <div class="floating-notes" id="floating-notes"></div>
+            <div class="vinyl-record" id="vinyl-record" onclick="toggleMusicPanel()"></div>
+        </div>
+    </div>
+    
+    <!-- Element Audio Ẩn -->
+    <audio id="bg-audio"></audio>
+
+    <!-- MODAL CHUNG -->
+    <div class="modal-overlay" id="main-modal" onclick="closeModal(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="m-header">
-                <h2 class="m-title" id="modal-title">Cài Đặt</h2>
+                <h2 class="m-title" id="modal-title">Tiêu Đề</h2>
                 <button class="m-close" onclick="closeModal(true)">✕</button>
             </div>
-            <div class="m-body" id="modal-body">
-                <!-- Nội dung form sẽ render động -->
-            </div>
+            <div class="m-body" id="modal-body"></div>
         </div>
     </div>
 
+    <!-- MODAL PHỤ CHO Ý TƯỞNG -->
+    <div class="sub-modal-overlay" id="sub-modal" onclick="closeSubModal(event)">
+        <div class="sub-modal-content" onclick="event.stopPropagation()">
+            <div class="m-header">
+                <h2 class="m-title" id="sub-modal-title">Tiêu Đề</h2>
+                <button class="m-close" onclick="closeSubModal(true)">✕</button>
+            </div>
+            <div class="idea-modal-body" id="sub-modal-body"></div>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX (Zoom ảnh) -->
+    <div class="lightbox" id="lightbox" onclick="this.style.display='none'">
+        <img src="" id="lightbox-img">
+    </div>
+
+    <!-- MODAL FORM ADMIN -->
+    <div class="admin-modal" id="admin-modal" onclick="closeAdminModal(event)">
+        <div class="admin-modal-box" onclick="event.stopPropagation()">
+            <div class="m-header">
+                <h2 class="m-title" id="admin-form-title">Tiêu Đề Form</h2>
+                <button class="m-close" onclick="closeAdminModal(true)">✕</button>
+            </div>
+            <div id="admin-form-body"></div>
+        </div>
+    </div>
 
     <script>
         /* ============================================================
-           DỮ LIỆU CỐT LÕI (Mặc định nếu Cloud chưa có)
+           CƠ SỞ DỮ LIỆU & TRẠNG THÁI
            ============================================================ */
         let CONFIG = {
             stationMaster: { 
-                avatar: "ChatGPT_Image_21_48_57_31_thg_7__2026-removebg-preview.png",
-                tagline: "Một quán trọ nhỏ, nơi mỗi cánh cửa là một chuyến phiêu lưu."
+                shortDesc: "Một quán trọ nhỏ, nơi những chú mèo lười biếng phơi nắng bên suối...",
+                bio: "Cảm ơn các bạn đã ghé thăm trang của tui...", 
+                avatar: "Mèo cười.png",
+                facebook: { name: "", url: "" }
             },
-            pinnedProjects: [], // Chứa tối đa 4 bot
-            ideas: [] // Chứa các ý tưởng text
+            staff: [], 
+            upcomingBots: [],
+            playlist: [] // Khởi tạo mảng chứa nhạc
         };
         
         let isAdminMode = false;
+        let activeRouteFilter = "all";
+        let searchQuery = "";
+
         const SUPABASE_URL = "https://gmejjxvahnqqrhihahid.supabase.co";
         const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdtZWpqeHZhaG5xcXJoaWhhaGlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM3NTM5OTQsImV4cCI6MjA5OTMyOTk5NH0.Q1uit-9R_Lrs0uM_Azgbn9GGKMoyFl-cFfl3M7IeSMU";
         const supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         /* ============================================================
-           ĐỒNG BỘ CLOUD SUPABASE
+           HỆ THỐNG ÂM NHẠC (MUSIC LOGIC)
            ============================================================ */
-        async function fetchConfig() {
-            try {
-                // Tận dụng bảng station_config có sẵn từ code cũ
-                const { data } = await supa.from('station_config').select('data').eq('id', 888).single();
-                if (data && data.data) {
-                    CONFIG = typeof data.data === 'string' ? JSON.parse(data.data) : data.data;
-                } else {
-                    let localBackup = await localforage.getItem("cat_v2");
-                    if (localBackup) CONFIG = { ...CONFIG, ...localBackup };
-                }
-                if(!Array.isArray(CONFIG.pinnedProjects)) CONFIG.pinnedProjects = [];
-                if(!Array.isArray(CONFIG.ideas)) CONFIG.ideas = [];
-                renderAll();
-            } catch(e) { console.error("Lỗi lấy dữ liệu:", e); renderAll(); }
+        const audioEl = document.getElementById("bg-audio");
+        const vinylRecord = document.getElementById("vinyl-record");
+        const musicPanel = document.getElementById("music-panel");
+        const playPauseBtn = document.getElementById("play-pause-btn");
+        const progressBar = document.getElementById("music-progress");
+        const currentTimeEl = document.getElementById("current-time");
+        const durationTimeEl = document.getElementById("duration-time");
+        const floatingNotesContainer = document.getElementById("floating-notes");
+
+        let isPlaying = false;
+        let currentSongIndex = -1;
+        let isSequential = false; // Phân biệt chế độ random / thứ tự
+        let shuffleQueue = [];
+        let floatInterval;
+
+        function toggleMusicPanel() {
+            musicPanel.classList.toggle("show");
+            if (musicPanel.classList.contains("show") && CONFIG.playlist.length > 0 && currentSongIndex === -1 && !isPlaying) {
+                // Nếu bấm mở đĩa nhạc lần đầu tiên (chưa play gì cả) -> Play random
+                playNextRandom();
+            }
         }
 
-        async function saveConfig() {
-            document.getElementById("loading-overlay").style.display = "flex";
-            try {
-                await localforage.setItem("cat_v2", CONFIG);
-                await supa.from('station_config').upsert([{ id: 888, data: JSON.stringify(CONFIG) }]);
-                renderAll();
-            } catch(e) { alert("Lỗi khi lưu: " + e.message); }
-            setTimeout(() => { document.getElementById("loading-overlay").style.display = "none"; }, 500);
+        function renderMusicList() {
+            const listEl = document.getElementById("mp-list");
+            if (!CONFIG.playlist || CONFIG.playlist.length === 0) {
+                listEl.innerHTML = "<div style='text-align:center; padding:15px; font-size:0.85rem; color:var(--text-muted); font-style:italic;'>Không có đĩa nhạc nào ở đây...</div>";
+                return;
+            }
+            listEl.innerHTML = CONFIG.playlist.map((song, idx) => `
+                <div class="mp-item ${idx === currentSongIndex ? 'active' : ''}" onclick="clickSongInList(${idx})">
+                    <div class="mp-song">${song.name}</div>
+                    <div class="mp-singer">${song.singer || "Unknown Artist"}</div>
+                </div>
+            `).join('');
+        }
+
+        function togglePlayPause() {
+            if (!CONFIG.playlist || CONFIG.playlist.length === 0) return alert("Quán trọ chưa có đĩa nhạc nào!");
+            if (isPlaying) {
+                audioEl.pause();
+            } else {
+                if (currentSongIndex === -1) playNextRandom();
+                else audioEl.play();
+            }
+        }
+
+        function playSongAtIndex(idx) {
+            currentSongIndex = idx;
+            audioEl.src = CONFIG.playlist[idx].url;
+            audioEl.play().catch(e => console.log("Trình duyệt chặn Autoplay", e));
+            renderMusicList();
+        }
+
+        function playNextRandom() {
+            isSequential = false;
+            if (!CONFIG.playlist || CONFIG.playlist.length === 0) return;
+            
+            // Nếu hộp bốc thăm trống, nạp đầy và xáo trộn lại
+            if (shuffleQueue.length === 0) {
+                shuffleQueue = CONFIG.playlist.map((_, i) => i);
+                shuffleQueue.sort(() => Math.random() - 0.5);
+            }
+            
+            let nextIdx = shuffleQueue.pop();
+            playSongAtIndex(nextIdx);
+        }
+
+        function playNextSequential() {
+            if (!CONFIG.playlist || CONFIG.playlist.length === 0) return;
+            let nextIdx = (currentSongIndex + 1) % CONFIG.playlist.length;
+            playSongAtIndex(nextIdx);
+        }
+
+        function clickSongInList(idx) {
+            isSequential = true; // Bấm trực tiếp từ list -> đổi sang mode phát thứ tự
+            playSongAtIndex(idx);
+        }
+
+        // Sự kiện Audio
+        audioEl.onended = () => {
+            if (isSequential) playNextSequential();
+            else playNextRandom();
+        };
+
+        audioEl.onplay = () => {
+            isPlaying = true;
+            vinylRecord.classList.add("playing");
+            playPauseBtn.innerHTML = "⏸";
+            startFloatingNotes();
+        };
+
+        audioEl.onpause = () => {
+            isPlaying = false;
+            vinylRecord.classList.remove("playing");
+            playPauseBtn.innerHTML = "▶";
+            stopFloatingNotes();
+        };
+
+        // Cập nhật thanh thời gian
+        audioEl.ontimeupdate = () => {
+            if (!audioEl.duration) return;
+            let percent = (audioEl.currentTime / audioEl.duration) * 100;
+            progressBar.value = percent;
+            currentTimeEl.textContent = formatTime(audioEl.currentTime);
+            durationTimeEl.textContent = formatTime(audioEl.duration);
+        };
+
+        progressBar.oninput = (e) => {
+            if (!audioEl.duration) return;
+            audioEl.currentTime = (e.target.value / 100) * audioEl.duration;
+        };
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            let m = Math.floor(seconds / 60);
+            let s = Math.floor(seconds % 60);
+            return `${m}:${s < 10 ? '0'+s : s}`;
+        }
+
+        // Hiệu ứng nốt nhạc bay
+        function startFloatingNotes() {
+            const symbols = ['🎵', '🎶', '✨', '♪'];
+            if(floatInterval) clearInterval(floatInterval);
+            floatInterval = setInterval(() => {
+                if(!isPlaying) return;
+                let note = document.createElement("div");
+                note.className = "music-note";
+                note.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                note.style.left = (Math.random() * 40 - 20) + "px"; // Lệch random
+                floatingNotesContainer.appendChild(note);
+                setTimeout(() => note.remove(), 2000);
+            }, 800);
+        }
+        function stopFloatingNotes() {
+            clearInterval(floatInterval);
         }
 
         /* ============================================================
-           HỆ THỐNG VẼ GIAO DIỆN (RENDER)
+           CÁC HÀM GIAO DIỆN CŨ (Đã tinh chỉnh)
            ============================================================ */
-        function renderAll() {
-            // Render Hero
-            document.getElementById("ui-avatar").src = CONFIG.stationMaster.avatar || "";
-            document.getElementById("ui-tagline").textContent = `"${CONFIG.stationMaster.tagline}"`;
+        function removeAccents(str) { return str ? str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase() : ''; }
+        function openLightbox(src, e) { e.stopPropagation(); document.getElementById("lightbox-img").src = src; document.getElementById("lightbox").style.display = "flex"; }
+        function closeModal(force = false) { if(force || event.target.id === 'main-modal') { document.getElementById("main-modal").classList.remove("show"); document.body.style.overflow = "auto"; } }
+        function closeSubModal(force = false) { if(force || event.target.id === 'sub-modal') { document.getElementById("sub-modal").classList.remove("show"); } }
+        function closeAdminModal(force = false) { if(force || event.target.id === 'admin-modal') { document.getElementById("admin-modal").classList.remove("show"); document.body.style.overflow = "auto"; } }
+        
+        async function resizeImage(file, maxSize = 1200) { 
+            return new Promise((resolve) => { 
+                const reader = new FileReader(); 
+                reader.onload = (e) => { 
+                    const img = new Image(); 
+                    img.onload = () => { 
+                        const canvas = document.createElement('canvas');
+                        let w = img.width, h = img.height; 
+                        if(w > maxSize || h > maxSize) { if(w > h) { h = Math.round((h * maxSize) / w); w = maxSize; } else { w = Math.round((w * maxSize) / h); h = maxSize; } } 
+                        canvas.width = w; canvas.height = h; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, w, h); resolve(canvas.toDataURL('image/jpeg', 0.85)); 
+                    }; img.src = e.target.result; 
+                }; reader.readAsDataURL(file); 
+            }); 
+        }
 
-            // Render Bảng Ghim
-            const pinContainer = document.getElementById("pinned-container");
-            if (CONFIG.pinnedProjects.length === 0) {
-                pinContainer.innerHTML = "<p style='text-align:center; grid-column: 1/-1; color: var(--moss-green); font-style: italic;'>Chủ trọ đang dọn dẹp bảng ghim, chưa có gì ở đây cả...</p>";
-            } else {
-                pinContainer.innerHTML = CONFIG.pinnedProjects.map((p, index) => {
-                    let order = (index + 1).toString().padStart(2, '0');
-                    let adminBtns = isAdminMode ? `
-                        <div class="card-admin-overlay">
-                            <button class="btn-card-ad" onclick="openAdminModal('pin', '${p.id}')">✏️ Sửa</button>
-                            <button class="btn-card-ad" onclick="movePin('${p.id}', -1)" ${index === 0 ? 'style="opacity:0.5;pointer-events:none;"':''}>⬆️ Lên</button>
-                            <button class="btn-card-ad" onclick="movePin('${p.id}', 1)" ${index === CONFIG.pinnedProjects.length-1 ? 'style="opacity:0.5;pointer-events:none;"':''}>⬇️ Xuống</button>
-                            <button class="btn-card-ad" style="color:red;" onclick="deletePin('${p.id}')">🗑️ Xóa</button>
+        function getAvgRating(bot) {
+            if(!bot.feedbacks || bot.feedbacks.length === 0) return "0";
+            let sum = bot.feedbacks.reduce((acc, curr) => acc + curr.stars, 0);
+            return (sum / bot.feedbacks.length).toFixed(1);
+        }
+
+        async function fetchConfig() {
+            try {
+                const { data } = await supa.from('station_config').select('data').eq('id', 777).single();
+                if (data && data.data) { CONFIG = typeof data.data === 'string' ? JSON.parse(data.data) : data.data; } 
+                else { let localBackup = await localforage.getItem("cat_config_v1"); if (localBackup) CONFIG = { ...CONFIG, ...localBackup }; }
+
+                if(!Array.isArray(CONFIG.staff)) CONFIG.staff = [];
+                if(!Array.isArray(CONFIG.upcomingBots)) CONFIG.upcomingBots = [];
+                if(!Array.isArray(CONFIG.playlist)) CONFIG.playlist = [];
+                
+                CONFIG.staff.forEach(s => { 
+                    if(!Array.isArray(s.feedbacks)) s.feedbacks = []; 
+                    s.feedbacks.forEach(f => { if(!Array.isArray(f.replies)) f.replies = []; if(!f.id) f.id = "fb_" + Date.now() + Math.random(); if(f.isPrivate === undefined) f.isPrivate = false; });
+                });
+
+                renderUI();
+                checkNotifications();
+                renderMusicList(); // Cập nhật list nhạc
+            } catch(e) { console.error("Lỗi lấy dữ liệu:", e); renderUI(); }
+        }
+
+        async function saveConfig() {
+            try { await localforage.setItem("cat_config_v1", CONFIG); await supa.from('station_config').upsert([{ id: 777, data: JSON.stringify(CONFIG) }]); } 
+            catch(e) { console.error("Lỗi lưu DB:", e); }
+        }
+
+        function renderUI() {
+            document.getElementById("station-bio").textContent = CONFIG.stationMaster.shortDesc;
+            renderTags();
+            renderGrid();
+        }
+
+        function renderTags() {
+            const container = document.getElementById("route-tags-container");
+            container.innerHTML = "";
+            let uniqueTags = new Set();
+            
+            CONFIG.staff.forEach(b => { if(!b.isHidden || isAdminMode) { if(b.tags && Array.isArray(b.tags)) { b.tags.forEach(t => { if(t.trim()) uniqueTags.add(t.trim().replace(/^#/, '')); }); } } });
+            CONFIG.upcomingBots.forEach(b => { if(!b.isHidden || isAdminMode) { if(b.tags && Array.isArray(b.tags)) { b.tags.forEach(t => { if(t.trim()) uniqueTags.add(t.trim().replace(/^#/, '')); }); } } });
+
+            const allBtn = document.createElement("button");
+            allBtn.className = `pill-tag ${activeRouteFilter === 'all' ? 'active' : ''}`;
+            allBtn.textContent = "Tất cả";
+            allBtn.onclick = () => { activeRouteFilter = 'all'; renderUI(); };
+            container.appendChild(allBtn);
+
+            Array.from(uniqueTags).sort().forEach(tag => {
+                const btn = document.createElement("button");
+                btn.className = `pill-tag ${activeRouteFilter === tag ? 'active' : ''}`;
+                btn.textContent = "#" + tag;
+                btn.onclick = () => { activeRouteFilter = tag; renderUI(); };
+                container.appendChild(btn);
+            });
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById("bot-grid");
+            grid.innerHTML = "";
+            const sortMode = document.getElementById("sort-select").value;
+            const q = removeAccents(searchQuery);
+
+            let displayBots = CONFIG.staff.filter(b => {
+                if(b.isHidden && !isAdminMode) return false;
+                let isMatchSearch = true;
+                if(q !== "") { const matchName = removeAccents(b.name).includes(q); const matchTags = (b.tags||[]).some(t => removeAccents(t).includes(q)); if(!matchName && !matchTags) isMatchSearch = false; }
+                let isMatchTag = true;
+                if(activeRouteFilter !== 'all') { const botCleanTags = (b.tags||[]).map(t => t.trim().replace(/^#/, '')); if(!botCleanTags.includes(activeRouteFilter)) isMatchTag = false; }
+                return isMatchSearch && isMatchTag;
+            });
+
+            displayBots.sort((a,b) => {
+                if(sortMode === 'rating') return parseFloat(getAvgRating(b)) - parseFloat(getAvgRating(a));
+                return (b.createdAt || 0) - (a.createdAt || 0);
+            });
+
+            if(displayBots.length === 0) {
+                grid.innerHTML = "<p style='color:var(--text-muted); width:100%; text-align:center; padding: 30px; font-weight:800; font-size:1.1rem;'><svg class='svg-icon' viewBox='0 0 16 16'><use href='#px-paw'></use></svg> Hiện không có phòng nào phù hợp.</p>";
+                return;
+            }
+
+            displayBots.forEach(bot => {
+                const card = document.createElement("div");
+                card.className = "bot-card";
+                
+                let adminOver = isAdminMode ? `<div class="card-admin-overlay"><button class="btn-card-ad" onclick="openAdminForm('bot', 'edit', '${bot.id}'); event.stopPropagation();">Sửa</button><button class="btn-card-ad" onclick="toggleHideBot('${bot.id}', event)">${bot.isHidden ? 'Đang Ẩn' : 'Hiện'}</button><button class="btn-card-ad" style="color:#EF4444; border-color:#EF4444;" onclick="deleteBot('${bot.id}', event)">Xóa</button></div>` : "";
+                let tagsHtml = (bot.tags||[]).map(t => `<span class="b-tag">${t.startsWith('#')?t:'#'+t}</span>`).join('');
+                let rating = getAvgRating(bot);
+                let coverImg = bot.bgImage || bot.avatar || '';
+
+                card.innerHTML = `
+                    ${adminOver}
+                    <div class="b-img-wrap">
+                        <img src="${coverImg}" loading="lazy">
+                        <div class="b-rating"><svg class="svg-icon" viewBox="0 0 16 16" style="width:12px;height:12px;"><use href="#px-star-filled"></use></svg> ${rating}</div>
+                    </div>
+                    
+                    <div class="b-info">
+                        <div class="b-header-info">
+                            <img src="${bot.avatar || ''}" class="b-avatar-mini">
+                            <div class="b-name">${bot.name}</div>
                         </div>
-                    ` : "";
+                        <div class="b-tags">${tagsHtml}</div>
+                        <div class="b-hook">"${bot.hook || '...'}"</div>
+                        
+                        <div class="b-actions">
+                            <button class="b-btn b-btn-fb" onclick="openFeedbackModal('${bot.id}'); event.stopPropagation();">
+                                💬 Góc Feedback (${bot.feedbacks.length})
+                            </button>
+                            ${bot.link 
+                                ? `<a href="${bot.link}" target="_blank" class="b-btn b-btn-link" onclick="event.stopPropagation();"><svg class="svg-icon" viewBox="0 0 16 16"><use href="#px-key"></use></svg> Ghé Thăm Phòng</a>` 
+                                : `<button class="b-btn b-btn-link" style="opacity:0.5; cursor:not-allowed;" onclick="event.stopPropagation();">ĐANG DỌN PHÒNG</button>`}
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        document.getElementById("search-inp").addEventListener("input", e => { searchQuery = e.target.value.trim(); renderGrid(); renderUpcomingBotsFilter(); });
+        document.getElementById("sort-select").addEventListener("change", renderGrid);
+
+        /* ============================================================
+           MỞ MODAL: GÓC FEEDBACK 
+           ============================================================ */
+        let tempFbImgs = [];
+        let currentStars = 0;
+
+        window.openFeedbackModal = function(botId) {
+            const bot = CONFIG.staff.find(b => b.id === botId);
+            if(!bot) return;
+            
+            tempFbImgs = []; currentStars = 0;
+            document.getElementById("modal-title").innerHTML = `💬 GÓC FEEDBACK: <span style="color:var(--accent-peach)">${bot.name.toUpperCase()}</span>`;
+            const body = document.getElementById("modal-body");
+            
+            let displayFbs = bot.feedbacks.filter(fb => isAdminMode || !fb.isPrivate);
+
+            let fbListHtml = "";
+            if(displayFbs.length === 0) {
+                fbListHtml = "<p style='color:var(--text-muted); font-style:italic; text-align:center; font-size:1rem; font-weight:700;'>Chưa có lữ khách nào để lại lời nhắn ở đây...</p>";
+            } else {
+                let sortedFb = [...displayFbs].sort((a,b) => b.date - a.date);
+                fbListHtml = sortedFb.map((fb) => {
+                    let imgsHtml = (fb.imgs||[]).map(src => `<img src="${src}" onclick="openLightbox(this.src, event)">`).join('');
+                    let delBtn = isAdminMode ? `<button class="fb-del-btn" onclick="deleteFeedback('${botId}', '${fb.id}')">✕ Xóa FB</button>` : '';
+                    
+                    let repliesHtml = (fb.replies||[]).map((r, rIdx) => {
+                        let delRepBtn = isAdminMode ? `<button style="background:none; border:none; color:#EF4444; font-size:0.8rem; font-weight:800; cursor:pointer;" onclick="deleteReply('${botId}', '${fb.id}', ${rIdx})">Xóa</button>` : '';
+                        let nameColor = r.name.toLowerCase() === 'chủ trọ' ? 'color:var(--accent-peach);' : 'color:var(--text-dark);';
+                        return `
+                            <div class="reply-item">
+                                <div class="reply-name"><span style="${nameColor}">${r.name}</span> <span>${delRepBtn}</span></div>
+                                <div>${r.text}</div>
+                                <div class="reply-time">${new Date(r.date).toLocaleString('vi-VN')}</div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    let replyInputHtml = `
+                        <div class="reply-input-wrap">
+                            <input type="text" id="rep-name-${fb.id}" class="reply-input reply-name-input" placeholder="Tên của bạn...">
+                            <div class="reply-row">
+                                <textarea id="rep-text-${fb.id}" class="reply-input" placeholder="Viết phản hồi..." oninput="this.style.height = '42px'; this.style.height = Math.min(this.scrollHeight, 120) + 'px'"></textarea>
+                                <button class="reply-btn" onclick="sendReply('${botId}', '${fb.id}')">GỬI</button>
+                            </div>
+                        </div>
+                    `;
+
+                    let starsVisual = "";
+                    for(let i=0; i<5; i++) {
+                        starsVisual += i < fb.stars 
+                            ? `<svg class="svg-icon" viewBox="0 0 16 16" style="width:16px;height:16px;color:#F59E0B"><use href="#px-star-filled"></use></svg>`
+                            : `<svg class="svg-icon" viewBox="0 0 16 16" style="width:16px;height:16px;color:var(--border-soft)"><use href="#px-star-empty"></use></svg>`;
+                    }
+
+                    let initial = (fb.name || "K").charAt(0).toUpperCase();
+                    let privacyBadge = fb.isPrivate ? `<span style="background:#EF4444; color:#FFF; font-size:0.65rem; padding:2px 8px; border-radius:6px; margin-left:6px; vertical-align:middle;">🔒 Thư Mật</span>` : '';
 
                     return `
-                        <div class="paper-card">
-                            ${adminBtns}
-                            <div class="pin-tack"></div>
-                            <div class="slot-num">#${order}</div>
-                            <h3 class="card-title">${p.title}</h3>
-                            <div><span class="card-status">🔨 ${p.status}</span></div>
-                            <p class="card-desc">${p.desc}</p>
-                            <div class="progress-wrap"><div class="progress-fill" style="width: ${p.progress || 0}%"></div></div>
-                            <button class="btn-idea" onclick="alert('Bản update sau Mèo sẽ mở popup hiển thị Full Concept Wordbuilding nha!')">💡 Xem ý tưởng (${p.progress||0}%)</button>
+                        <div class="fb-item">
+                            ${delBtn}
+                            <div class="fb-item-header">
+                                <div class="fb-item-user-info">
+                                    <div class="fb-avatar-letter">${initial}</div>
+                                    <div class="fb-item-name-group">
+                                        <div class="fb-item-name">${fb.name} ${privacyBadge}</div>
+                                        <div class="fb-item-date">${new Date(fb.date).toLocaleString('vi-VN')}</div>
+                                    </div>
+                                </div>
+                                <div class="fb-item-stars">${starsVisual}</div>
+                            </div>
+                            ${fb.text ? `<div class="fb-item-text">${fb.text}</div>` : ''}
+                            ${imgsHtml ? `<div class="fb-item-imgs">${imgsHtml}</div>` : ''}
+                            
+                            <div class="reply-section" style="${(fb.replies&&fb.replies.length>0)?'':'border:none; padding-top:0;'}">
+                                <div class="reply-list">${repliesHtml}</div>
+                                ${replyInputHtml}
+                            </div>
                         </div>
                     `;
                 }).join('');
             }
 
-            // Render Kho Ý Tưởng
-            const ideaContainer = document.getElementById("idea-container");
-            if (CONFIG.ideas.length === 0) {
-                ideaContainer.innerHTML = "<p style='font-style:italic; color:#888;'>Kho ý tưởng đang trống trơn...</p>";
-            } else {
-                ideaContainer.innerHTML = CONFIG.ideas.map(idea => `
-                    <div class="idea-note">
-                        ${idea.text}
-                        <span class="del-idea-btn" title="Xóa ý tưởng này" onclick="deleteIdea('${idea.id}')">✕</span>
+            let formStarsHtml = "";
+            for(let i=1; i<=5; i++) {
+                formStarsHtml += `<svg class="svg-icon star-svg star-item" data-val="${i}" viewBox="0 0 16 16"><use href="#px-star-empty"></use></svg>`;
+            }
+
+            body.innerHTML = `
+                <div class="fb-form">
+                    <div style="text-align:center; margin-bottom:15px; color:var(--text-muted); font-weight:800; font-size:1rem;">CHẤM ĐIỂM TRẢI NGHIỆM TẠI PHÒNG NÀY</div>
+                    <div class="stars-select" id="star-wrap">${formStarsHtml}</div>
+                    
+                    <div class="fb-privacy-wrap">
+                        <label class="fb-privacy-label">
+                            <input type="radio" name="fb_privacy" value="public" checked> 🌐 Đăng công khai
+                        </label>
+                        <label class="fb-privacy-label">
+                            <input type="radio" name="fb_privacy" value="private"> 🔒 Gửi riêng Admin
+                        </label>
                     </div>
-                `).join('');
+
+                    <input type="text" id="fb-name" class="fb-input" placeholder="Tên của bạn (Mặc định: Lữ Khách)...">
+                    <textarea id="fb-text" class="fb-input" placeholder="Viết vài lời cảm nhận (Không bắt buộc)..." oninput="this.style.height = '60px'; this.style.height = Math.min(this.scrollHeight, 150) + 'px'"></textarea>
+                    
+                    <label class="file-upload-label"><input type="file" accept="image/*" multiple id="fb-file" style="display:none;"> 📸 Đính kèm ảnh minh chứng (Tối đa 3 ảnh)</label>
+                    <div class="img-preview" id="fb-preview"></div>
+                    
+                    <button class="fb-btn-submit" id="fb-submit-btn">GỬI ĐÁNH GIÁ</button>
+                </div>
+                <div style="font-family:var(--font-heading); font-size:1.3rem; color:var(--text-dark); margin-bottom:15px; font-weight:800; border-bottom:2px dashed var(--border-soft); padding-bottom:8px;">GÓC TÁM CHUYỆN</div>
+                <div class="fb-list" id="fb-list-wrap">${fbListHtml}</div>
+            `;
+
+            const starItems = body.querySelectorAll('.star-item');
+            starItems.forEach((s, idx) => {
+                s.onclick = () => {
+                    currentStars = parseInt(s.dataset.val);
+                    starItems.forEach((st, stIdx) => {
+                        if(stIdx < currentStars) { st.innerHTML = '<use href="#px-star-filled"></use>'; st.classList.add('active'); } 
+                        else { st.innerHTML = '<use href="#px-star-empty"></use>'; st.classList.remove('active'); }
+                    });
+                };
+            });
+
+            document.getElementById("fb-file").onchange = async (e) => {
+                const prev = document.getElementById("fb-preview");
+                if(e.target.files.length + tempFbImgs.length > 3) return alert("Chỉ được gửi tối đa 3 ảnh!");
+                prev.innerHTML = "<span style='color:var(--text-dark); font-size:14px; font-weight:800;'>Đang xử lý ảnh...</span>";
+                for(let f of e.target.files) { tempFbImgs.push(await resizeImage(f, 1000)); }
+                prev.innerHTML = tempFbImgs.map((src, i) => `<div style="position:relative;"><img src="${src}"><button style="position:absolute;top:-6px;right:-6px;background:#EF4444;color:#fff;border-radius:50%;width:24px;height:24px;font-size:12px;font-weight:900;border:none;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,0.2);" onclick="removeFbImg(${i}, '${botId}')">✕</button></div>`).join('');
+            };
+
+            document.getElementById("fb-submit-btn").onclick = async () => {
+                if(currentStars === 0) return alert("Vui lòng chấm điểm (Sao) cho phòng này nhé!");
+                const text = document.getElementById("fb-text").value.trim();
+                const name = document.getElementById("fb-name").value.trim() || "Lữ Khách";
+                const isPriv = document.querySelector('input[name="fb_privacy"]:checked').value === 'private';
+                const newFb = { id: "fb_"+Date.now(), name: name, stars: currentStars, text: text, imgs: [...tempFbImgs], date: Date.now(), replies: [], isPrivate: isPriv };
+                bot.feedbacks.push(newFb);
+                document.getElementById("fb-submit-btn").textContent = "ĐANG GỬI...";
+                await saveConfig();
+                if(isPriv) { alert("Đã gửi thư mật thành công! Lời nhắn của bạn đã được ẩn đi, chỉ có Chủ Trọ mới xem được."); }
+                renderUI(); openFeedbackModal(botId);
+            };
+
+            if(isAdminMode) { body.querySelectorAll("input[id^='rep-name-']").forEach(inp => inp.value = "Chủ Trọ"); }
+            document.getElementById("main-modal").classList.add("show"); document.body.style.overflow = "hidden";
+        };
+
+        window.removeFbImg = function(idx, botId) { tempFbImgs.splice(idx, 1); const prev = document.getElementById("fb-preview"); prev.innerHTML = tempFbImgs.map((src, i) => `<div style="position:relative;"><img src="${src}"><button style="position:absolute;top:-6px;right:-6px;background:#EF4444;color:#fff;border-radius:50%;width:24px;height:24px;font-size:12px;font-weight:900;border:none;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,0.2);" onclick="removeFbImg(${i}, '${botId}')">✕</button></div>`).join(''); }
+
+        window.sendReply = async function(botId, fbId) {
+            const nameInput = document.getElementById(`rep-name-${fbId}`);
+            const textInput = document.getElementById(`rep-text-${fbId}`);
+            if(!textInput.value.trim()) return;
+            const bot = CONFIG.staff.find(b => b.id === botId);
+            const fb = bot.feedbacks.find(f => f.id === fbId);
+            if(fb) { fb.replies.push({ name: nameInput.value.trim() || "Khách", text: textInput.value.trim(), date: Date.now() }); await saveConfig(); openFeedbackModal(botId); }
+        };
+
+        window.deleteFeedback = async function(botId, fbId) { if(!confirm("Xóa vĩnh viễn feedback này?")) return; const bot = CONFIG.staff.find(b => b.id === botId); bot.feedbacks = bot.feedbacks.filter(f => f.id !== fbId); await saveConfig(); renderUI(); openFeedbackModal(botId); };
+        window.deleteReply = async function(botId, fbId, rIdx) { if(!confirm("Xóa phản hồi này?")) return; const bot = CONFIG.staff.find(b => b.id === botId); const fb = bot.feedbacks.find(f => f.id === fbId); fb.replies.splice(rIdx, 1); await saveConfig(); openFeedbackModal(botId); };
+
+        /* ============================================================
+           MỞ MODAL: SẮP RA MẮT & CHỦ QUÁN
+           ============================================================ */
+        window.openSMModal = function() {
+            document.getElementById("modal-title").innerHTML = `<img src="Mèo cười.png" style="width:26px;height:26px; border-radius:50%;"> THÔNG TIN CHỦ TRỌ`;
+            let fbHtml = CONFIG.stationMaster.facebook && CONFIG.stationMaster.facebook.url ? `<div style="margin-top:20px; text-align:center;"><a href="${CONFIG.stationMaster.facebook.url}" target="_blank" style="display:inline-block; padding:12px 28px; background:var(--text-dark); color:#FFF; font-weight:800; border-radius:50px; box-shadow:0 4px 15px rgba(44, 62, 44, 0.2); font-family:var(--font-body); font-size:1rem;">Liên hệ Facebook Chủ Trọ</a></div>` : '';
+            document.getElementById("modal-body").innerHTML = `
+                <div style="text-align:center; margin-bottom:20px;">${CONFIG.stationMaster.avatar ? `<img src="${CONFIG.stationMaster.avatar}" style="width:130px; height:130px; border-radius:50%; object-fit:cover; margin:0 auto; border:4px solid var(--accent-peach); box-shadow:var(--shadow-soft);">` : ''}</div>
+                <div class="bio-content">${CONFIG.stationMaster.bio}</div>${fbHtml}
+            `;
+            document.getElementById("main-modal").classList.add("show"); document.body.style.overflow = "hidden";
+        };
+
+        window.openUpcomingModal = function() {
+            document.getElementById("modal-title").innerHTML = `<svg class="svg-icon" viewBox="0 0 16 16"><use href="#px-gift"></use></svg> PHÒNG SẮP RA MẮT`;
+            renderUpcomingBotsFilter(); document.getElementById("main-modal").classList.add("show"); document.body.style.overflow = "hidden";
+        };
+
+        window.openIdeaModal = function(id) {
+            const bot = CONFIG.upcomingBots.find(b => b.id === id); if(!bot) return;
+            document.getElementById("sub-modal-title").innerHTML = `💡 Ý TƯỞNG: ${bot.name}`;
+            document.getElementById("sub-modal-body").innerHTML = `<div class="idea-modal-text">${bot.idea || "Chưa có nội dung ý tưởng nào được ghi lại..."}</div>`;
+            document.getElementById("sub-modal").classList.add("show");
+        };
+
+        function renderUpcomingBotsFilter() {
+            const body = document.getElementById("modal-body");
+            const q = removeAccents(searchQuery);
+
+            let displayBots = CONFIG.upcomingBots.filter(b => {
+                if(b.isHidden && !isAdminMode) return false;
+                let isMatchSearch = true;
+                if(q !== "") { const matchName = removeAccents(b.name).includes(q); const matchTags = (b.tags||[]).some(t => removeAccents(t).includes(q)); if(!matchName && !matchTags) isMatchSearch = false; }
+                let isMatchTag = true;
+                if(activeRouteFilter !== 'all') { const botCleanTags = (b.tags||[]).map(t => t.trim().replace(/^#/, '')); if(!botCleanTags.includes(activeRouteFilter)) isMatchTag = false; }
+                return isMatchSearch && isMatchTag;
+            });
+
+            displayBots.sort((a,b) => (b.progress - a.progress) || (b.votes - a.votes));
+
+            if(displayBots.length === 0) {
+                body.innerHTML = "<p style='text-align:center; color:var(--text-muted); padding:30px; font-weight:800; font-size:1.1rem;'><svg class='svg-icon' viewBox='0 0 16 16'><use href='#px-paw'></use></svg> Khu vực đang dọn dẹp, chưa có phòng mới nào.</p>";
+            } else {
+                let html = `<div class="up-grid">`;
+                displayBots.forEach(bot => {
+                    let adminOver = isAdminMode ? `<div class="card-admin-overlay"><button class="btn-card-ad" onclick="openAdminForm('up', 'edit', '${bot.id}')">Sửa</button><button class="btn-card-ad" onclick="toggleHideUp('${bot.id}')">${bot.isHidden?'Đang Ẩn':'Hiện'}</button><button class="btn-card-ad" style="color:#EF4444; border-color:#EF4444;" onclick="deleteUp('${bot.id}')">Xóa</button></div>` : '';
+                    let hasVoted = localStorage.getItem('vote_up_' + bot.id) === 'true';
+                    let tagsHtml = (bot.tags||[]).map(t => `<span class="b-tag">${t.startsWith('#')?t:'#'+t}</span>`).join('');
+                    
+                    html += `
+                        <div class="up-card">
+                            ${adminOver}
+                            <div class="up-stamp">SẮP RA MẮT</div>
+                            <div class="up-avatar-wrap"><img src="${bot.avatar}" class="up-avatar"></div>
+                            <div class="up-name">${bot.name}</div>
+                            <div class="b-tags" style="justify-content:center; margin-bottom:10px;">${tagsHtml}</div>
+                            <button class="b-btn b-btn-fb" style="margin-bottom:15px; width:auto; padding:8px 18px; border-radius:50px; font-size:0.85rem;" onclick="openIdeaModal('${bot.id}')">💡 Xem Ý Tưởng</button>
+                            <div class="up-progress-wrap">
+                                <div class="up-p-header"><span>Hoàn thiện:</span><span>${bot.progress}%</span></div>
+                                <div class="up-p-bar"><div class="up-p-fill" style="width:${bot.progress}%"></div></div>
+                                ${bot.progressNote ? `<div class="up-p-header" style="color:var(--text-muted); margin-top:8px; font-style:italic; font-size:0.75rem; font-weight:700;">➤ ${bot.progressNote}</div>` : ''}
+                            </div>
+                            <button class="up-vote-btn ${hasVoted?'voted':''}" onclick="voteUp('${bot.id}')">
+                                ${hasVoted ? '❤️ Đã gửi tình yêu' : '🤍 Chấm hóng'} (${bot.votes || 0})
+                            </button>
+                        </div>
+                    `;
+                });
+                html += `</div>`; body.innerHTML = html;
             }
         }
 
+        window.voteUp = async function(id) {
+            if(localStorage.getItem('vote_up_' + id) === 'true') return;
+            let bot = CONFIG.upcomingBots.find(b => b.id === id);
+            if(bot) { bot.votes = (bot.votes || 0) + 1; localStorage.setItem('vote_up_' + id, 'true'); await saveConfig(); openUpcomingModal(); }
+        };
+
         /* ============================================================
-           BẢNG ĐIỀU KHIỂN CỦA ADMIN
+           QUẢN LÝ ADMIN
            ============================================================ */
         let lastTap = 0;
         document.getElementById("trigger-admin").addEventListener("click", (e) => {
-            const currentTime = new Date().getTime();
-            if (currentTime - lastTap < 400 && currentTime - lastTap > 0) {
-                if(!isAdminMode) {
-                    if(prompt("Đọc Thần Chú Mở Khóa Admin:") === "bhnt2006") {
-                        isAdminMode = true; document.body.classList.add("is-admin"); renderAll();
-                    }
-                }
+            const currentTime = new Date().getTime(); const tapLength = currentTime - lastTap;
+            if (tapLength < 400 && tapLength > 0) {
+                if(!isAdminMode) { if(prompt("Mật mã Chủ Trọ:") === "bhnt2006") { isAdminMode = true; document.body.classList.add("is-admin"); renderUI(); checkNotifications(); } } 
+                else { if(confirm("Thoát chế độ Admin?")) exitAdmin(); }
+                e.preventDefault();
             }
             lastTap = currentTime;
         });
 
-        function exitAdmin() { isAdminMode = false; document.body.classList.remove("is-admin"); renderAll(); }
+        function exitAdmin() { isAdminMode = false; document.body.classList.remove("is-admin"); renderUI(); document.getElementById("noti-badge").style.display="none"; }
+        window.editShortDesc = async function() { let newDesc = prompt("Sửa dòng giới thiệu ngắn:", CONFIG.stationMaster.shortDesc); if(newDesc !== null) { CONFIG.stationMaster.shortDesc = newDesc.trim(); await saveConfig(); renderUI(); } }
+        window.toggleHideBot = async function(id, e) { e.stopPropagation(); let b = CONFIG.staff.find(x => x.id === id); if(b) { b.isHidden = !b.isHidden; await saveConfig(); renderUI(); } };
+        window.deleteBot = async function(id, e) { e.stopPropagation(); if(confirm("Xóa vĩnh viễn phòng này?")) { CONFIG.staff = CONFIG.staff.filter(x => x.id !== id); await saveConfig(); renderUI(); } };
+        window.toggleHideUp = async function(id) { let b = CONFIG.upcomingBots.find(x => x.id === id); if(b) { b.isHidden = !b.isHidden; await saveConfig(); openUpcomingModal(); } };
+        window.deleteUp = async function(id) { if(confirm("Xóa thẻ dự bị này?")) { CONFIG.upcomingBots = CONFIG.upcomingBots.filter(x => x.id !== id); await saveConfig(); openUpcomingModal(); } };
 
-        // Mở Form
-        function openAdminModal(type, editId = null) {
-            const modal = document.getElementById("admin-modal");
-            const title = document.getElementById("modal-title");
-            const body = document.getElementById("modal-body");
+        window.insertToggleHTML = function() { 
+            const id = 'det_' + Date.now(); const html = `&nbsp;<details class="capy-toggle"><summary>Tên nút đóng mở</summary><div class="toggle-content">Nội dung bên trong...</div></details><div id="${id}"><br></div>`; 
+            document.execCommand('insertHTML', false, html); 
+            setTimeout(() => { const el = document.getElementById(id); if(el) { const range = document.createRange(); const sel = window.getSelection(); range.setStart(el, 0); range.collapse(true); sel.removeAllRanges(); sel.addRange(range); } }, 10);
+        };
 
-            if (type === 'info') {
-                title.textContent = "Sửa Thông Tin Chủ Trọ";
+        window.forceNewLine = function() {
+            const editor = document.getElementById('ad-bio');
+            if(editor) { const div = document.createElement('div'); div.innerHTML = '<br>'; editor.appendChild(div); const range = document.createRange(); const sel = window.getSelection(); range.setStart(div, 0); range.collapse(true); sel.removeAllRanges(); sel.addRange(range); editor.focus(); }
+        };
+
+        window.openAdminForm = function(type, action, id) {
+            document.getElementById("admin-form-title").innerHTML = `<svg class="svg-icon" viewBox="0 0 16 16"><use href="#px-paw"></use></svg> BẢNG ĐIỀU KHIỂN`;
+            const body = document.getElementById("admin-form-body");
+            let tempAdminImg = ""; let tempBgImg = ""; let tempTags = [];
+
+            if (type === 'sm') {
                 body.innerHTML = `
-                    <div class="form-group"><label>Link Ảnh Avatar</label><input type="text" id="fm-ava" class="fb-input" value="${CONFIG.stationMaster.avatar}"></div>
-                    <div class="form-group"><label>Câu Giới Thiệu (Tagline)</label><textarea id="fm-tag" class="fb-input" style="height:80px">${CONFIG.stationMaster.tagline}</textarea></div>
-                    <button class="fb-btn-submit" onclick="saveInfo()">Lưu Lại</button>
+                    <label class="file-upload-label" style="width:100%; text-align:center;"><input type="file" accept="image/*" id="ad-sm-img" style="display:none;"> 📸 ĐỔI ẢNH CHỦ TRỌ</label>
+                    <div id="ad-sm-prev" style="text-align:center; margin-bottom:15px;">${CONFIG.stationMaster.avatar ? `<img src="${CONFIG.stationMaster.avatar}" style="height:100px; border-radius:50%; border:3px solid var(--accent-peach);">` : ''}</div>
+                    <div class="admin-form-group">
+                        <label>Tiểu sử Chủ Trọ (Hỗ trợ định dạng chữ)</label>
+                        <div class="rt-toolbar">
+                            <button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="document.execCommand('bold',false,null)"><b>B</b></button>
+                            <button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="document.execCommand('italic',false,null)"><i>I</i></button>
+                            <button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="document.execCommand('insertUnorderedList',false,null)">• List</button>
+                            <input type="color" class="rt-btn" style="padding:0; width:30px; height:30px; border-radius:4px; cursor:pointer;" onmousedown="event.preventDefault()" oninput="document.execCommand('styleWithCSS', false, true); document.execCommand('foreColor',false,this.value)">
+                            <button type="button" class="rt-btn" onmousedown="event.preventDefault()" onclick="insertToggleHTML()">Thêm Nút Đóng Mở</button>
+                            <button type="button" class="rt-btn" style="background:var(--accent-peach); color:#fff; border-color:var(--accent-peach);" onmousedown="event.preventDefault()" onclick="forceNewLine()">↵ Xuống Dòng</button>
+                        </div>
+                        <div id="ad-bio" class="rt-editor bio-content" contenteditable="true">${CONFIG.stationMaster.bio}</div>
+                    </div>
+                    <div class="admin-form-group"><label>Tên hiển thị FB</label><input type="text" id="ad-fbname" class="fb-input" value="${CONFIG.stationMaster.facebook?.name || ''}"></div>
+                    <div class="admin-form-group"><label>Link FB</label><input type="text" id="ad-fburl" class="fb-input" value="${CONFIG.stationMaster.facebook?.url || ''}"></div>
+                    <button class="fb-btn-submit" id="ad-save">LƯU LẠI THÔNG TIN</button>
                 `;
-            } 
-            else if (type === 'pin') {
-                if(!editId && CONFIG.pinnedProjects.length >= 4) return alert("Bảng ghim chỉ treo tối đa 4 tờ giấy thôi nhe! Hãy xóa bớt trước khi thêm.");
+                tempAdminImg = CONFIG.stationMaster.avatar || "Mèo cười.png";
+                document.getElementById("ad-sm-img").onchange = async (e) => { if(e.target.files.length > 0) { tempAdminImg = await resizeImage(e.target.files[0], 600); document.getElementById("ad-sm-prev").innerHTML = `<img src="${tempAdminImg}" style="height:100px; border-radius:50%; border:3px solid var(--accent-peach);">`; } };
+                document.getElementById("ad-save").onclick = async () => { CONFIG.stationMaster.avatar = tempAdminImg; CONFIG.stationMaster.bio = document.getElementById("ad-bio").innerHTML; CONFIG.stationMaster.facebook = { name: document.getElementById("ad-fbname").value, url: document.getElementById("ad-fburl").value }; await saveConfig(); renderUI(); document.getElementById("admin-modal").classList.remove("show"); alert("Đã lưu Chủ Trọ!"); };
+            }
+            else if (type === 'bot') {
+                let d = { name: "", hook: "", link: "", tags: [] };
+                if (action === 'edit') { const b = CONFIG.staff.find(x => x.id === id); if(b) { d = b; tempAdminImg = b.avatar; tempBgImg = b.bgImage || b.avatar; tempTags = [...(b.tags||[])]; } }
+                body.innerHTML = `
+                    <div class="admin-form-group"><label>Tên Phòng (OC)</label><input type="text" id="ad-name" value="${d.name}" class="fb-input"></div>
+                    <div style="display:flex; gap:10px; margin-bottom:15px;">
+                        <div style="flex:1;">
+                            <label class="file-upload-label" style="padding:8px; font-size:0.85rem;"><input type="file" accept="image/*" id="ad-img-bg" style="display:none;"> 📸 ẢNH BÌA LỚN (3:4)</label>
+                            <div id="ad-prev-bg" style="text-align:center;">${tempBgImg ? `<img src="${tempBgImg}" style="height:120px; width:90px; object-fit:cover; border-radius:8px; border:2px solid var(--accent-mocha);">` : ''}</div>
+                        </div>
+                        <div style="flex:1;">
+                            <label class="file-upload-label" style="padding:8px; font-size:0.85rem;"><input type="file" accept="image/*" id="ad-img-ava" style="display:none;"> 📸 AVATAR NHỎ (1:1)</label>
+                            <div id="ad-prev-ava" style="text-align:center;">${tempAdminImg ? `<img src="${tempAdminImg}" style="height:70px; width:70px; object-fit:cover; border-radius:50%; margin:0 auto; border:2px solid var(--accent-mocha);">` : ''}</div>
+                        </div>
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Tags Thể Loại</label>
+                        <div class="tag-input-box"><input type="text" id="ad-tag-input" placeholder="Nhập một thẻ tag mới..." onkeypress="if(event.key==='Enter') addAdminTag()"><button type="button" onclick="addAdminTag()">Thêm</button></div>
+                        <div id="ad-tags-wrapper"></div>
+                    </div>
+                    <div class="admin-form-group"><label>Câu thoại mồi (Hook)</label><textarea id="ad-hook" class="fb-input" style="height:90px;">${d.hook}</textarea></div>
+                    <div class="admin-form-group"><label>Link Web Chi Tiết (Nhấn nút Ghé Phòng sẽ ra link này)</label><input type="text" id="ad-link" class="fb-input" value="${d.link || ''}" placeholder="https://..."></div>
+                    <button class="fb-btn-submit" id="ad-save">LƯU PHÒNG</button>
+                `;
+                renderAdminTags();
+                window.addAdminTag = function() { const inp = document.getElementById("ad-tag-input"); const val = inp.value.trim().replace(/^#/, ''); if(val) { tempTags.push(val); inp.value = ""; renderAdminTags(); } };
+                window.removeAdminTag = function(idx) { tempTags.splice(idx, 1); renderAdminTags(); };
+                function renderAdminTags() { document.getElementById("ad-tags-wrapper").innerHTML = tempTags.map((t, i) => `<div class="ad-mini-tag">#${t} <span onclick="removeAdminTag(${i})">✕</span></div>`).join(''); }
+
+                document.getElementById("ad-img-bg").onchange = async (e) => { if(e.target.files.length > 0) { document.getElementById("ad-prev-bg").innerHTML = "<span style='font-size:0.8rem;'>Đang xử lý...</span>"; tempBgImg = await resizeImage(e.target.files[0], 1000); document.getElementById("ad-prev-bg").innerHTML = `<img src="${tempBgImg}" style="height:120px; width:90px; object-fit:cover; border-radius:8px; border:2px solid var(--accent-mocha);">`; } };
+                document.getElementById("ad-img-ava").onchange = async (e) => { if(e.target.files.length > 0) { document.getElementById("ad-prev-ava").innerHTML = "<span style='font-size:0.8rem;'>Đang xử lý...</span>"; tempAdminImg = await resizeImage(e.target.files[0], 400); document.getElementById("ad-prev-ava").innerHTML = `<img src="${tempAdminImg}" style="height:70px; width:70px; object-fit:cover; border-radius:50%; margin:0 auto; border:2px solid var(--accent-mocha);">`; } };
+
+                document.getElementById("ad-save").onclick = async () => {
+                    if(!tempAdminImg || !tempBgImg) return alert("Vui lòng tải đủ cả 2 ảnh!");
+                    let finalData = { name: document.getElementById("ad-name").value.trim(), bgImage: tempBgImg, avatar: tempAdminImg, tags: tempTags, hook: document.getElementById("ad-hook").value.trim(), link: document.getElementById("ad-link").value.trim() };
+                    if(action === 'add') { finalData.id = "b_" + Date.now(); finalData.createdAt = Date.now(); finalData.feedbacks = []; finalData.isHidden = false; CONFIG.staff.push(finalData); } else { Object.assign(CONFIG.staff.find(x => x.id === id), finalData); }
+                    document.getElementById("ad-save").textContent = "Đang lưu..."; await saveConfig(); renderUI(); document.getElementById("admin-modal").classList.remove("show");
+                };
+            }
+            else if (type === 'up') {
+                let d = { name: "", idea: "", progressNote: "", progress: 10, tags: [] };
+                if (action === 'edit') { const b = CONFIG.upcomingBots.find(x => x.id === id); if(b) { d = b; tempAdminImg = b.avatar; tempTags = [...(b.tags||[])]; } }
+                body.innerHTML = `
+                    <div class="admin-form-group"><label>Tên Dự Kiến</label><input type="text" id="ad-name" value="${d.name}" class="fb-input"></div>
+                    <label class="file-upload-label" style="width:100%; text-align:center;"><input type="file" accept="image/*" id="ad-img" style="display:none;"> 📸 TẢI ẢNH BÌA (VUÔNG)</label>
+                    <div id="ad-prev" style="text-align:center; margin-bottom:15px;">${tempAdminImg ? `<img src="${tempAdminImg}" style="height:90px; border-radius:50%; border:3px solid var(--accent-mocha);">` : ''}</div>
+                    <div class="admin-form-group">
+                        <label>Tags Thể Loại</label>
+                        <div class="tag-input-box"><input type="text" id="ad-tag-input" placeholder="Nhập một thẻ tag mới..." onkeypress="if(event.key==='Enter') addAdminTag()"><button type="button" onclick="addAdminTag()">Thêm</button></div>
+                        <div id="ad-tags-wrapper"></div>
+                    </div>
+                    <div class="admin-form-group"><label>Ý Tưởng</label><textarea id="ad-idea" class="fb-input" style="height:90px;">${d.idea}</textarea></div>
+                    <div style="display:flex; gap:10px; margin-bottom:10px; flex-wrap:wrap;">
+                        <div class="admin-form-group" style="flex:1;"><label>Tiến độ (%)</label><input type="number" id="ad-prog" value="${d.progress}" min="0" max="100" class="fb-input"></div>
+                        <div class="admin-form-group" style="flex:2; min-width:180px;"><label>Ghi chú tiến độ</label><input type="text" id="ad-note" value="${d.progressNote}" class="fb-input"></div>
+                    </div>
+                    <button class="fb-btn-submit" id="ad-save">LƯU HỒ SƠ DỰ BỊ</button>
+                `;
+                renderAdminTags();
+                window.addAdminTag = function() { const inp = document.getElementById("ad-tag-input"); const val = inp.value.trim().replace(/^#/, ''); if(val) { tempTags.push(val); inp.value = ""; renderAdminTags(); } };
+                window.removeAdminTag = function(idx) { tempTags.splice(idx, 1); renderAdminTags(); };
+                function renderAdminTags() { document.getElementById("ad-tags-wrapper").innerHTML = tempTags.map((t, i) => `<div class="ad-mini-tag">#${t} <span onclick="removeAdminTag(${i})">✕</span></div>`).join(''); }
+
+                document.getElementById("ad-img").onchange = async (e) => { if(e.target.files.length > 0) { tempAdminImg = await resizeImage(e.target.files[0], 600); document.getElementById("ad-prev").innerHTML = `<img src="${tempAdminImg}" style="height:90px; border-radius:50%; border:3px solid var(--accent-mocha);">`; } };
+
+                document.getElementById("ad-save").onclick = async () => {
+                    if(!tempAdminImg) return alert("Nhớ úp ảnh cho bạn ấy nhé!");
+                    let finalData = { name: document.getElementById("ad-name").value.trim(), avatar: tempAdminImg, tags: tempTags, idea: document.getElementById("ad-idea").value.trim(), progressNote: document.getElementById("ad-note").value, progress: parseInt(document.getElementById("ad-prog").value) || 0 };
+                    if(action === 'add') { finalData.id = "u_" + Date.now(); finalData.votes = 0; finalData.isHidden = false; CONFIG.upcomingBots.push(finalData); } else { Object.assign(CONFIG.upcomingBots.find(x => x.id === id), finalData); }
+                    await saveConfig(); document.getElementById("admin-modal").classList.remove("show"); openUpcomingModal();
+                };
+            }
+            else if (type === 'music') {
+                body.innerHTML = `
+                    <div class="admin-form-group"><label>Link nhạc (MP3/M4A...)</label><input type="text" id="ad-song-url" class="fb-input" placeholder="https://..."></div>
+                    <div style="display:flex; gap:10px;">
+                        <div class="admin-form-group" style="flex:1;"><label>Tên bài hát</label><input type="text" id="ad-song-name" class="fb-input"></div>
+                        <div class="admin-form-group" style="flex:1;"><label>Ca sĩ / Tác giả</label><input type="text" id="ad-song-singer" class="fb-input"></div>
+                    </div>
+                    <button class="fb-btn-submit" onclick="addMusic()">+ THÊM BÀI HÁT</button>
+                    <div style="margin-top:20px; border-top:2px dashed var(--border-soft); padding-top:15px;" id="ad-music-list"></div>
+                `;
                 
-                let d = { title: "", status: "Lên ý tưởng", desc: "", progress: 10 };
-                if(editId) { d = CONFIG.pinnedProjects.find(x => x.id === editId) || d; }
+                window.renderAdminMusicList = function() {
+                    const wrap = document.getElementById("ad-music-list");
+                    if(CONFIG.playlist.length === 0) { wrap.innerHTML = "<div style='text-align:center; font-style:italic; font-size:0.9rem; color:#888;'>Danh sách nhạc trống.</div>"; return; }
+                    wrap.innerHTML = CONFIG.playlist.map((song, i) => `
+                        <div style="display:flex; justify-content:space-between; background:var(--bg-main); padding:8px 12px; border-radius:8px; margin-bottom:8px; align-items:center;">
+                            <div style="flex:1; min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">
+                                <div style="font-weight:800; font-size:0.9rem; color:var(--text-dark);">${song.name}</div>
+                                <div style="font-size:0.75rem; color:var(--text-muted);">${song.singer}</div>
+                            </div>
+                            <button onclick="deleteMusic(${i})" style="color:#EF4444; font-weight:bold; font-size:1.2rem; margin-left:10px;">✕</button>
+                        </div>
+                    `).join('');
+                };
+                
+                window.addMusic = async function() {
+                    const url = document.getElementById("ad-song-url").value.trim();
+                    const name = document.getElementById("ad-song-name").value.trim() || "Unknown Song";
+                    const singer = document.getElementById("ad-song-singer").value.trim() || "Unknown Artist";
+                    if(!url) return alert("Vui lòng nhập Link nhạc!");
+                    CONFIG.playlist.push({ id: "m_"+Date.now(), url, name, singer });
+                    document.getElementById("ad-song-url").value = "";
+                    document.getElementById("ad-song-name").value = "";
+                    document.getElementById("ad-song-singer").value = "";
+                    await saveConfig(); renderAdminMusicList();
+                };
+                
+                window.deleteMusic = async function(idx) {
+                    if(confirm("Xóa bài nhạc này?")) {
+                        CONFIG.playlist.splice(idx, 1);
+                        await saveConfig(); renderAdminMusicList();
+                    }
+                };
 
-                title.textContent = editId ? "Sửa Project Đã Ghim" : "Ghim Project Mới";
-                body.innerHTML = `
-                    <div class="form-group"><label>Tên Project</label><input type="text" id="fm-p-title" class="fb-input" value="${d.title}"></div>
-                    <div class="form-group"><label>Trạng thái (Vd: Đang viết code...)</label><input type="text" id="fm-p-status" class="fb-input" value="${d.status}"></div>
-                    <div class="form-group"><label>Mô tả ngắn</label><textarea id="fm-p-desc" class="fb-input" style="height:80px">${d.desc}</textarea></div>
-                    <div class="form-group"><label>Mức độ hoàn thành (%)</label><input type="number" id="fm-p-prog" class="fb-input" value="${d.progress}" min="0" max="100"></div>
-                    <button class="fb-btn-submit" onclick="savePin('${editId || ''}')">${editId ? 'Lưu Thay Đổi' : 'Đóng Ghim Lên Bảng'}</button>
-                `;
+                renderAdminMusicList();
             }
-            else if (type === 'idea') {
-                title.textContent = "Thêm Ý Tưởng Mới";
-                body.innerHTML = `
-                    <div class="form-group"><label>Nội dung ý tưởng</label><textarea id="fm-i-text" class="fb-input" placeholder="Ví dụ: Bot game sinh tồn trên đảo hoang..." style="height:100px"></textarea></div>
-                    <button class="fb-btn-submit" onclick="saveIdea()">Dán Lên Tường</button>
-                `;
-            }
-
-            modal.classList.add("show");
+            
+            document.getElementById("admin-modal").classList.add("show");
             document.body.style.overflow = "hidden";
+        };
+
+        function checkNotifications() {
+            if(!isAdminMode) return;
+            let lastRead = parseInt(localStorage.getItem("capy_admin_read") || "0");
+            let unreadCount = 0;
+            CONFIG.staff.forEach(bot => { (bot.feedbacks||[]).forEach(fb => { if(fb.date > lastRead) unreadCount++; (fb.replies||[]).forEach(r => { if(r.date > lastRead) unreadCount++; }); }); });
+            const badge = document.getElementById("noti-badge");
+            if(unreadCount > 0) { badge.textContent = unreadCount > 9 ? "9+" : unreadCount; badge.style.display = "flex"; }
+            else { badge.style.display = "none"; }
         }
 
-        function closeModal(force = false) {
-            if(force || event.target.id === 'admin-modal') {
-                document.getElementById("admin-modal").classList.remove("show"); document.body.style.overflow = "auto";
+        window.openNotiModal = function() {
+            document.getElementById("modal-title").innerHTML = `<svg class="svg-icon" viewBox="0 0 16 16"><use href="#px-bell"></use></svg> BẢNG THÔNG BÁO`;
+            let lastRead = parseInt(localStorage.getItem("capy_admin_read") || "0");
+            let allNotis = [];
+            CONFIG.staff.forEach(bot => {
+                (bot.feedbacks||[]).forEach(fb => {
+                    allNotis.push({ type: 'fb', botId: bot.id, botName: bot.name, name: fb.name, date: fb.date, text: fb.text, isPrivate: fb.isPrivate });
+                    (fb.replies||[]).forEach(r => { if(r.name.toLowerCase() !== 'chủ trọ') { allNotis.push({ type: 'rep', botId: bot.id, botName: bot.name, name: r.name, fbName: fb.name, date: r.date, text: r.text, isPrivate: fb.isPrivate }); } });
+                });
+            });
+            allNotis.sort((a,b) => b.date - a.date);
+            if(allNotis.length === 0) { document.getElementById("modal-body").innerHTML = "<p style='color:var(--text-muted); text-align:center; font-weight:800; padding: 20px;'>Chưa có hoạt động nào từ hành khách.</p>"; }
+            else {
+                document.getElementById("modal-body").innerHTML = allNotis.map(item => {
+                    let isNew = item.date > lastRead ? `<span style="color:#FFF; background:#EF4444; font-weight:900; font-size:0.75rem; padding:3px 10px; border-radius:12px; margin-left:8px;">MỚI</span>` : "";
+                    let privBadge = item.isPrivate ? `<span style="background:#EF4444; color:#FFF; font-size:0.7rem; padding:3px 8px; border-radius:8px; margin-right:8px;">🔒 Thư Mật</span>` : '';
+                    let contentTitle = item.type === 'fb' ? `${privBadge}Khách <b style="color:var(--accent-peach);">${item.name}</b> review cho phòng <b style="color:var(--text-dark);">${item.botName}</b> ${isNew}` : `${privBadge}Khách <b style="color:var(--accent-peach);">${item.name}</b> rep bình luận ở phòng <b style="color:var(--text-dark);">${item.botName}</b> ${isNew}`;
+                    return `<div style="background:#FFF; padding:18px; border-radius:16px; border:2px dashed var(--accent-mocha); margin-bottom:12px; cursor:pointer; box-shadow:var(--shadow-soft); transition:0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'" onclick="closeModal(); openFeedbackModal('${item.botId}')"><div style="font-size:1rem; color:var(--text-dark); font-weight:800;">${contentTitle}</div><div style="font-size:0.95rem; color:var(--text-muted); margin-top:8px; font-style:italic; font-weight:700;">"${item.text.substring(0, 80)}..."</div><div style="font-size:0.75rem; color:#A0AEC0; margin-top:10px; font-weight:800;">${new Date(item.date).toLocaleString('vi-VN')}</div></div>`;
+                }).join('');
             }
-        }
+            document.getElementById("main-modal").classList.add("show"); document.body.style.overflow = "hidden";
+            localStorage.setItem("capy_admin_read", Date.now()); document.getElementById("noti-badge").style.display = "none";
+        };
 
-        // Lưu thông tin
-        window.saveInfo = async function() {
-            CONFIG.stationMaster.avatar = document.getElementById("fm-ava").value.trim();
-            CONFIG.stationMaster.tagline = document.getElementById("fm-tag").value.trim();
-            await saveConfig(); closeModal(true);
-        }
-
-        window.savePin = async function(editId) {
-            let data = {
-                title: document.getElementById("fm-p-title").value.trim(),
-                status: document.getElementById("fm-p-status").value.trim(),
-                desc: document.getElementById("fm-p-desc").value.trim(),
-                progress: parseInt(document.getElementById("fm-p-prog").value) || 0
-            };
-            if(!data.title) return alert("Phải có tên Project chớ!");
-
-            if(editId) {
-                Object.assign(CONFIG.pinnedProjects.find(x => x.id === editId), data);
-            } else {
-                data.id = "p_" + Date.now();
-                CONFIG.pinnedProjects.push(data);
-            }
-            await saveConfig(); closeModal(true);
-        }
-
-        window.deletePin = async function(id) {
-            if(confirm("Giật tờ giấy này xuống khỏi bảng ghim?")) {
-                CONFIG.pinnedProjects = CONFIG.pinnedProjects.filter(x => x.id !== id);
-                await saveConfig();
-            }
-        }
-
-        window.movePin = async function(id, direction) {
-            let idx = CONFIG.pinnedProjects.findIndex(x => x.id === id);
-            if (idx < 0) return;
-            let newIdx = idx + direction;
-            if (newIdx < 0 || newIdx >= CONFIG.pinnedProjects.length) return;
-            
-            // Đổi chỗ
-            let temp = CONFIG.pinnedProjects[idx];
-            CONFIG.pinnedProjects[idx] = CONFIG.pinnedProjects[newIdx];
-            CONFIG.pinnedProjects[newIdx] = temp;
-            
-            await saveConfig();
-        }
-
-        window.saveIdea = async function() {
-            let text = document.getElementById("fm-i-text").value.trim();
-            if(!text) return;
-            CONFIG.ideas.push({ id: "i_" + Date.now(), text: text });
-            await saveConfig(); closeModal(true);
-        }
-
-        window.deleteIdea = async function(id) {
-            if(confirm("Xé mẩu giấy note này?")) {
-                CONFIG.ideas = CONFIG.ideas.filter(x => x.id !== id);
-                await saveConfig();
-            }
-        }
-
-        /* Khởi chạy khi vào web */
+        /* ============================================================
+           KHỞI CHẠY LÚC LOAD TRANG
+           ============================================================ */
         document.addEventListener("DOMContentLoaded", () => {
-            localforage.config({ name: 'CatStationV2' });
+            localforage.config({ name: 'CatStationV1' });
             fetchConfig(); 
         });
 
